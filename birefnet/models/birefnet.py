@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 from kornia.filters import laplacian
-from huggingface_hub import PyTorchModelHubMixin
+# from huggingface_hub import PyTorchModelHubMixin
 
 from ..config import Config
 from ..dataset import class_labels_TR_sorted
@@ -283,56 +283,57 @@ class SimpleConvs(nn.Module):
 
 ###########
 
-
-class BiRefNetC2F(
-    nn.Module,
-    PyTorchModelHubMixin,
-    library_name="birefnet_c2f",
-    repo_url="https://github.com/ZhengPeng7/BiRefNet_C2F",
-    tags=['Image Segmentation', 'Background Removal', 'Mask Generation', 'Dichotomous Image Segmentation', 'Camouflaged Object Detection', 'Salient Object Detection']
-):
-    def __init__(self, bb_pretrained=True):
-        super(BiRefNetC2F, self).__init__()
-        self.config = Config()
-        self.epoch = 1
-        self.grid = 4
-        self.model_coarse = BiRefNet(bb_pretrained=True)
-        self.model_fine = BiRefNet(bb_pretrained=True)
-        self.input_mixer = nn.Conv2d(4, 3, 1, 1, 0)
-        self.output_mixer_merge_post = nn.Sequential(nn.Conv2d(1, 16, 3, 1, 1), nn.Conv2d(16, 1, 3, 1, 1))
-
-    def forward(self, x):
-        x_ori = x.clone()
-        ########## Coarse ##########
-        x = F.interpolate(x, size=[s//self.grid for s in self.config.size[::-1]], mode='bilinear', align_corners=True)
-
-        if self.training:
-            scaled_preds, class_preds_lst = self.model_coarse(x)
-        else:
-            scaled_preds = self.model_coarse(x)
-        ##########  Fine  ##########
-        x_HR_patches = image2patches(x_ori, patch_ref=x, transformation='b c (hg h) (wg w) -> (b hg wg) c h w')
-        pred = F.interpolate(scaled_preds[-1] if not (self.config.out_ref and self.training) else scaled_preds[1][-1], size=x_ori.shape[2:], mode='bilinear', align_corners=True)
-        pred_patches = image2patches(pred, patch_ref=x, transformation='b c (hg h) (wg w) -> (b hg wg) c h w')
-        t = torch.cat([x_HR_patches, pred_patches], dim=1)
-        x_HR = self.input_mixer(t)
-
-        pred_patches = image2patches(pred, patch_ref=x_HR, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
-        if self.training:
-            scaled_preds_HR, class_preds_lst_HR = self.model_fine(x_HR)
-        else:
-            scaled_preds_HR = self.model_fine(x_HR)
-        if self.training:
-            if self.config.out_ref:
-                [outs_gdt_pred, outs_gdt_label], outs = scaled_preds
-                [outs_gdt_pred_HR, outs_gdt_label_HR], outs_HR = scaled_preds_HR
-                for idx_out, out_HR in enumerate(outs_HR):
-                    outs_HR[idx_out] = self.output_mixer_merge_post(patches2image(out_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)'))
-                return [([outs_gdt_pred + outs_gdt_pred_HR, outs_gdt_label + outs_gdt_label_HR], outs + outs_HR), class_preds_lst]    # handle gt here
-            else:
-                return [
-                    scaled_preds + [self.output_mixer_merge_post(patches2image(scaled_pred_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)')) for scaled_pred_HR in scaled_preds_HR],
-                    class_preds_lst
-                ]
-        else:
-            return scaled_preds + [self.output_mixer_merge_post(patches2image(scaled_pred_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)')) for scaled_pred_HR in scaled_preds_HR]
+# Not used, avoid PyTorchModelHubMixin
+#
+# class BiRefNetC2F(
+#     nn.Module,
+#     PyTorchModelHubMixin,
+#     library_name="birefnet_c2f",
+#     repo_url="https://github.com/ZhengPeng7/BiRefNet_C2F",
+#     tags=['Image Segmentation', 'Background Removal', 'Mask Generation', 'Dichotomous Image Segmentation', 'Camouflaged Object Detection', 'Salient Object Detection']
+# ):
+#     def __init__(self, bb_pretrained=True):
+#         super(BiRefNetC2F, self).__init__()
+#         self.config = Config()
+#         self.epoch = 1
+#         self.grid = 4
+#         self.model_coarse = BiRefNet(bb_pretrained=True)
+#         self.model_fine = BiRefNet(bb_pretrained=True)
+#         self.input_mixer = nn.Conv2d(4, 3, 1, 1, 0)
+#         self.output_mixer_merge_post = nn.Sequential(nn.Conv2d(1, 16, 3, 1, 1), nn.Conv2d(16, 1, 3, 1, 1))
+#
+#     def forward(self, x):
+#         x_ori = x.clone()
+#         ########## Coarse ##########
+#         x = F.interpolate(x, size=[s//self.grid for s in self.config.size[::-1]], mode='bilinear', align_corners=True)
+#
+#         if self.training:
+#             scaled_preds, class_preds_lst = self.model_coarse(x)
+#         else:
+#             scaled_preds = self.model_coarse(x)
+#         ##########  Fine  ##########
+#         x_HR_patches = image2patches(x_ori, patch_ref=x, transformation='b c (hg h) (wg w) -> (b hg wg) c h w')
+#         pred = F.interpolate(scaled_preds[-1] if not (self.config.out_ref and self.training) else scaled_preds[1][-1], size=x_ori.shape[2:], mode='bilinear', align_corners=True)
+#         pred_patches = image2patches(pred, patch_ref=x, transformation='b c (hg h) (wg w) -> (b hg wg) c h w')
+#         t = torch.cat([x_HR_patches, pred_patches], dim=1)
+#         x_HR = self.input_mixer(t)
+#
+#         pred_patches = image2patches(pred, patch_ref=x_HR, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+#         if self.training:
+#             scaled_preds_HR, class_preds_lst_HR = self.model_fine(x_HR)
+#         else:
+#             scaled_preds_HR = self.model_fine(x_HR)
+#         if self.training:
+#             if self.config.out_ref:
+#                 [outs_gdt_pred, outs_gdt_label], outs = scaled_preds
+#                 [outs_gdt_pred_HR, outs_gdt_label_HR], outs_HR = scaled_preds_HR
+#                 for idx_out, out_HR in enumerate(outs_HR):
+#                     outs_HR[idx_out] = self.output_mixer_merge_post(patches2image(out_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)'))
+#                 return [([outs_gdt_pred + outs_gdt_pred_HR, outs_gdt_label + outs_gdt_label_HR], outs + outs_HR), class_preds_lst]    # handle gt here
+#             else:
+#                 return [
+#                     scaled_preds + [self.output_mixer_merge_post(patches2image(scaled_pred_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)')) for scaled_pred_HR in scaled_preds_HR],
+#                     class_preds_lst
+#                 ]
+#         else:
+#             return scaled_preds + [self.output_mixer_merge_post(patches2image(scaled_pred_HR, grid_h=self.grid, grid_w=self.grid, transformation='(b hg wg) c h w -> b c (hg h) (wg w)')) for scaled_pred_HR in scaled_preds_HR]
