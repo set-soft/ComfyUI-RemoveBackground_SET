@@ -1,8 +1,6 @@
 # Important dependencies
 opencv-python
 timm
-# Needed by BiRefNet code, should be avoided
-functools
 # Already pulled by ComfyUI
 numpy
 einops
