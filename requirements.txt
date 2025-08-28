@@ -1,3 +1,15 @@
-numpy
+# Important dependencies
 opencv-python
 timm
+# Needed by BiRefNet code, should be avoided
+huggingface_hub
+functools
+# Already pulled by ComfyUI
+numpy
+einops
+kornia
+Pillow
+safetensors
+# Black listed by manager to avoid side effects
+# torch
+# torchvision
