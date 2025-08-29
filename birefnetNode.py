@@ -295,6 +295,9 @@ class BlurFusionForegroundEstimation:
             out_masks = masks.unsqueeze(1)
 
         # 需要转成pil用cv2.blur，结果图的背景色比较纯（gaussian_blur的背景色不纯，边缘轮廓线比较重），应用遮罩时不能用点乘，结果可能有边缘轮廓
+        # You need to convert it to PIL and use cv2.blur. The background color of the resulting image is relatively pure (the
+        # background color of gaussian_blur is not pure, and the edge contour line is relatively heavy). Do not use dot
+        # multiplication when applying the mask, and the result may have edge contours.
         _image_maskeds = []
         # for _image, _out_mask in images, out_masks:
         for idx, (_image, _out_mask) in enumerate(zip(images.unbind(dim=0), out_masks.unbind(dim=0))):
@@ -306,10 +309,6 @@ class BlurFusionForegroundEstimation:
         _image_masked_tensor = torch.cat(_image_maskeds, dim=0)
         del _image_maskeds
 
-        # (b, c, h, w)
-        # _image_masked = refine_foreground(image_bchw, out_masks, r1=blur_size, r2=blur_size_two)
-        # (b, c, h, w) => (b, h, w, c)
-        # _image_masked = _image_masked.permute(0, 2, 3, 1)
         if fill_color and color is not None:
             r = torch.full([b, h, w, 1], ((color >> 16) & 0xFF) / 0xFF)
             g = torch.full([b, h, w, 1], ((color >> 8) & 0xFF) / 0xFF)
