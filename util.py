@@ -1,8 +1,6 @@
 import numpy as np
 import torch
 from PIL import Image
-import torchvision.transforms.v2 as T
-import cv2
 
 
 def tensor_to_pil(image):
@@ -11,6 +9,58 @@ def tensor_to_pil(image):
 
 def pil_to_tensor(image):
     return torch.from_numpy(np.array(image).astype(np.float32) / 255.0).unsqueeze(0)
+
+
+# ==============================================================================
+# Implementation of cv2.blur using PyTorch (Gemini 2.5 Pro)
+# ==============================================================================
+
+def _pad_reflect_101(tensor, padding):
+    """ A correct manual implementation of OpenCV's default BORDER_REFLECT_101 padding. """
+    pad_left, pad_right, pad_top, pad_bottom = padding
+
+    left_pad = tensor[:, :, :, 1:1 + pad_left].flip(dims=[3])
+    right_pad = tensor[:, :, :, -1 - pad_right:-1].flip(dims=[3])
+    tensor = torch.cat([left_pad, tensor, right_pad], dim=3)
+
+    top_pad = tensor[:, :, 1:1 + pad_top, :].flip(dims=[2])
+    bottom_pad = tensor[:, :, -1 - pad_bottom:-1, :].flip(dims=[2])
+    tensor = torch.cat([top_pad, tensor, bottom_pad], dim=2)
+
+    return tensor
+
+
+def _blur_torch(np_array, kernel_size):
+    """
+    PyTorch replacement for the default cv2.blur().
+    """
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    is_grayscale = np_array.ndim == 2
+    if is_grayscale:
+        tensor = torch.from_numpy(np_array).unsqueeze(0).unsqueeze(0)
+    else:
+        # Transpose from (H, W, C) to (N, C, H, W)
+        tensor = torch.from_numpy(np_array.transpose((2, 0, 1))).unsqueeze(0)
+    tensor = tensor.to(device, dtype=torch.float32)
+
+    # Correct padding calculation for even/odd kernel anchor points
+    pad_left_top = kernel_size // 2
+    pad_right_bottom = (kernel_size - 1) - pad_left_top
+    padding_tuple = (pad_left_top, pad_right_bottom, pad_left_top, pad_right_bottom)
+
+    # Correct manual padding to match cv2.BORDER_REFLECT_101
+    padded_tensor = _pad_reflect_101(tensor, padding_tuple)
+
+    # Stable averaging operation
+    pool = torch.nn.AvgPool2d(kernel_size=kernel_size, stride=1)
+    blurred_tensor = pool(padded_tensor)
+
+    if is_grayscale:
+        return blurred_tensor.squeeze().cpu().numpy()
+    else:
+        # Squeeze N dimension and transpose from (C, H, W) back to (H, W, C)
+        return blurred_tensor.squeeze(0).permute(1, 2, 0).cpu().numpy()
 
 
 ### copied and modified image_proc.py
@@ -37,12 +87,12 @@ def FB_blur_fusion_foreground_estimator_pil_2(image, alpha, r1=90, r2=6):
 def FB_blur_fusion_foreground_estimator_pil(image, F, B, alpha, r=90):
     if isinstance(image, Image.Image):
         image = np.array(image) / 255.0
-    blurred_alpha = cv2.blur(alpha, (r, r))[:, :, None]
+    blurred_alpha = _blur_torch(alpha, (r, r))[:, :, None]
 
-    blurred_FA = cv2.blur(F * alpha, (r, r))
+    blurred_FA = _blur_torch(F * alpha, (r, r))
     blurred_F = blurred_FA / (blurred_alpha + 1e-5)
 
-    blurred_B1A = cv2.blur(B * (1 - alpha), (r, r))
+    blurred_B1A = _blur_torch(B * (1 - alpha), (r, r))
     blurred_B = blurred_B1A / ((1 - blurred_alpha) + 1e-5)
     F = blurred_F + alpha * (image - alpha * blurred_F - (1 - alpha) * blurred_B)
     F = np.clip(F, 0, 1)

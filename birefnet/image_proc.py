@@ -1,7 +1,7 @@
 import random
 from PIL import Image, ImageEnhance
 import numpy as np
-import cv2
+# import cv2
 
 
 def refine_foreground(image, mask, r=90):

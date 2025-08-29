@@ -4,25 +4,25 @@ import torch
 from torchvision import transforms
 import numpy as np
 import random
-import cv2
+# import cv2
 from PIL import Image
 
 
-def path_to_image(path, size=(1024, 1024), color_type=['rgb', 'gray'][0]):
-    if color_type.lower() == 'rgb':
-        image = cv2.imread(path)
-    elif color_type.lower() == 'gray':
-        image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-    else:
-        print('Select the color_type to return, either to RGB or gray image.')
-        return
-    if size:
-        image = cv2.resize(image, size, interpolation=cv2.INTER_LINEAR)
-    if color_type.lower() == 'rgb':
-        image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)).convert('RGB')
-    else:
-        image = Image.fromarray(image).convert('L')
-    return image
+# def path_to_image(path, size=(1024, 1024), color_type=['rgb', 'gray'][0]):
+#     if color_type.lower() == 'rgb':
+#         image = cv2.imread(path)
+#     elif color_type.lower() == 'gray':
+#         image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+#     else:
+#         print('Select the color_type to return, either to RGB or gray image.')
+#         return
+#     if size:
+#         image = cv2.resize(image, size, interpolation=cv2.INTER_LINEAR)
+#     if color_type.lower() == 'rgb':
+#         image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)).convert('RGB')
+#     else:
+#         image = Image.fromarray(image).convert('L')
+#     return image
 
 
 

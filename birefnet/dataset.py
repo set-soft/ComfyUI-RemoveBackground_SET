@@ -1,7 +1,7 @@
 import os
 import random
 import numpy as np
-import cv2
+# import cv2
 from tqdm import tqdm
 from PIL import Image
 from torch.utils import data

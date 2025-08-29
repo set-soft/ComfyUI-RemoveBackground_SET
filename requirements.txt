@@ -1,5 +1,4 @@
 # Important dependencies
-opencv-python
 timm
 # Already pulled by ComfyUI
 numpy
