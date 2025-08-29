@@ -8,7 +8,7 @@ from torchvision.models import vgg16, vgg16_bn
 from torchvision.models import resnet50
 
 from ...config import Config
-from ...dataset import class_labels_TR_sorted
+from ...labels import class_labels_TR_sorted
 from ..backbones.build_backbone import build_backbone
 from ..modules.decoder_blocks import BasicDecBlk
 from ..modules.lateral_blocks import BasicLatBlk

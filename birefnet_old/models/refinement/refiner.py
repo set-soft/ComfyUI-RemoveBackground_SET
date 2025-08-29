@@ -8,7 +8,7 @@ import torch.nn.functional as F
 # from torchvision.models import resnet50
 
 from birefnet_old.config import Config
-from birefnet_old.dataset import class_labels_TR_sorted
+from birefnet_old.labels import class_labels_TR_sorted
 from birefnet_old.models.backbones.build_backbone import build_backbone
 from birefnet_old.models.modules.decoder_blocks import BasicDecBlk
 from birefnet_old.models.modules.lateral_blocks import BasicLatBlk

@@ -6,7 +6,7 @@ from kornia.filters import laplacian
 # from huggingface_hub import PyTorchModelHubMixin
 
 from ..config import Config
-from ..dataset import class_labels_TR_sorted
+from ..labels import class_labels_TR_sorted
 from .backbones.build_backbone import build_backbone
 from .modules.decoder_blocks import BasicDecBlk, ResBlk
 from .modules.lateral_blocks import BasicLatBlk
