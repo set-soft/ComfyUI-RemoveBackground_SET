@@ -70,7 +70,7 @@ def refine_foreground_pil(image, mask, r1=90, r2=6):
     if mask.size != image.size:
         mask = mask.resize(image.size)
     image = np.array(image) / 255.0
-    mask = np.array(mask) / 255.0
+    mask = np.array(mask.convert("L")) / 255.0
     estimated_foreground = FB_blur_fusion_foreground_estimator_pil_2(image, mask, r1=r1, r2=r2)
     image_masked = Image.fromarray((estimated_foreground * 255.0).astype(np.uint8))
     return image_masked
@@ -79,20 +79,19 @@ def refine_foreground_pil(image, mask, r1=90, r2=6):
 def FB_blur_fusion_foreground_estimator_pil_2(image, alpha, r1=90, r2=6):
     # Thanks to the source: https://github.com/Photoroom/fast-foreground-estimation
     alpha = alpha[:, :, None]
-    F, blur_B = FB_blur_fusion_foreground_estimator_pil(
-        image, image, image, alpha, r=r1)
+    F, blur_B = FB_blur_fusion_foreground_estimator_pil(image, image, image, alpha, r=r1)
     return FB_blur_fusion_foreground_estimator_pil(image, F, blur_B, alpha, r=r2)[0]
 
 
 def FB_blur_fusion_foreground_estimator_pil(image, F, B, alpha, r=90):
     if isinstance(image, Image.Image):
         image = np.array(image) / 255.0
-    blurred_alpha = _blur_torch(alpha, (r, r))[:, :, None]
+    blurred_alpha = _blur_torch(alpha.squeeze(), r)[:, :, None]
 
-    blurred_FA = _blur_torch(F * alpha, (r, r))
+    blurred_FA = _blur_torch(F * alpha, r)
     blurred_F = blurred_FA / (blurred_alpha + 1e-5)
 
-    blurred_B1A = _blur_torch(B * (1 - alpha), (r, r))
+    blurred_B1A = _blur_torch(B * (1 - alpha), r)
     blurred_B = blurred_B1A / ((1 - blurred_alpha) + 1e-5)
     F = blurred_F + alpha * (image - alpha * blurred_F - (1 - alpha) * blurred_B)
     F = np.clip(F, 0, 1)
