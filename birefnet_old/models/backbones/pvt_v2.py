@@ -1,18 +1,12 @@
 import torch
 import torch.nn as nn
 from functools import partial
-
-try:
-    # version > 0.6.13
-    from timm.layers import DropPath, to_2tuple, trunc_normal_
-except Exception:
-    from timm.models.layers import DropPath, to_2tuple, trunc_normal_
-
 import math
 
-from ...config import Config
+from ...config import Config, DropPath, to_2tuple, trunc_normal_
 
 config = Config()
+
 
 class Mlp(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU, drop=0.):

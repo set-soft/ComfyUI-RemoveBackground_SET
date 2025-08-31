@@ -3,13 +3,7 @@ from functools import partial
 import torch
 import torch.nn as nn
 
-try:
-    # version > 0.6.13
-    from timm.layers import DropPath, to_2tuple, trunc_normal_
-except Exception:
-    from timm.models.layers import DropPath, to_2tuple, trunc_normal_
-
-from ...config import Config
+from ...config import Config, DropPath, to_2tuple, trunc_normal_
 
 config = Config()
 

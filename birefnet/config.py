@@ -201,3 +201,39 @@ class Config:
         #         self.save_step = int([l.strip() for l in lines if '"{}")'.format(self.task) in l and 'step=' in l][0].split('step=')[-1].split()[0])
 
 
+# This code is used to decouple the code from TIMM when used for inference
+if False:
+    # For training
+    try:
+        # version > 0.6.13
+        from timm.layers import DropPath, to_2tuple, trunc_normal_
+    except Exception:
+        from timm.models.layers import DropPath, to_2tuple, trunc_normal_
+else:
+    import torch.nn as nn
+    from itertools import repeat
+    import collections.abc
+
+    # 1. Alias DropPath to nn.Identity for inference.
+    DropPath = nn.Identity
+
+
+    # 2. Dummy function for trunc_normal_ since it's not needed for inference.
+    def trunc_normal_(tensor, mean=0., std=1., a=-2., b=2.):
+        # This function is only used for initializing weights.
+        # For inference, we load pre-trained weights, so this function is not needed.
+        # We can simply pass.
+        pass
+
+
+    # 3. Copied and simplified implementation of to_2tuple.
+    # From PyTorch internals
+    def _ntuple(n):
+        def parse(x):
+            if isinstance(x, collections.abc.Iterable) and not isinstance(x, str):
+                return tuple(x)
+            return tuple(repeat(x, n))
+        return parse
+
+
+    to_2tuple = _ntuple(2)
