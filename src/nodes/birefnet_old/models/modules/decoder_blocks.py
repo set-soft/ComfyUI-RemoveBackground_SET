@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from ..modules.aspp import ASPP, ASPPDeformable
-from ..modules.attentions import PSA, SGE
+from .aspp import ASPP, ASPPDeformable
+from .attentions import PSA, SGE
 from ...config import Config
 
 

@@ -5,10 +5,10 @@ from PIL import Image
 from torch.utils import data
 from torchvision import transforms
 
-from birefnet_old.preproc import preproc
-from birefnet_old.config import Config
-from birefnet_old.utils import path_to_image
-from birefnet_old.labels import class_labels_TR_sorted
+from .preproc import preproc
+from .config import Config
+from .utils import path_to_image
+from .labels import class_labels_TR_sorted
 
 Image.MAX_IMAGE_PIXELS = None       # remove DecompressionBombWarning
 config = Config()

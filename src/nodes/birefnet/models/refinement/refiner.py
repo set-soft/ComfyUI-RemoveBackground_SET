@@ -12,7 +12,7 @@ from ...labels import class_labels_TR_sorted
 from ..backbones.build_backbone import build_backbone
 from ..modules.decoder_blocks import BasicDecBlk
 from ..modules.lateral_blocks import BasicLatBlk
-from ..refinement.stem_layer import StemLayer
+from .stem_layer import StemLayer
 
 
 class RefinerPVTInChannels4(nn.Module):

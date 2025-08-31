@@ -1,5 +1,5 @@
 import torch.nn as nn
-from birefnet_old.models.modules.utils import build_act_layer, build_norm_layer
+from ..modules.utils import build_act_layer, build_norm_layer
 
 
 class StemLayer(nn.Module):

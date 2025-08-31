@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from ..modules.aspp import ASPP, ASPPDeformable
+from .aspp import ASPP, ASPPDeformable
 from ...config import Config
 
 
