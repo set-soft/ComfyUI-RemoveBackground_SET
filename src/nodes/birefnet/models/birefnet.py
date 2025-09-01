@@ -8,7 +8,8 @@ from kornia.filters import laplacian
 from ..config import Config
 from ..labels import class_labels_TR_sorted
 from .backbones.build_backbone import build_backbone
-from .refinement.stem_layer import StemLayer
+from .modules.decoder_blocks import BasicDecBlk
+from .modules.lateral_blocks import BasicLatBlk
 
 
 def image2patches(image, grid_h=2, grid_w=2, patch_ref=None, transformation='b c (hg h) (wg w) -> (b hg wg) c h w'):
@@ -40,27 +41,10 @@ class BiRefNet(nn.Module):
                 nn.Linear(channels[0], len(class_labels_TR_sorted))
             )
 
-        if self.config.squeeze_block:
-            self.squeeze_module = nn.Sequential(*[
-                eval(self.config.squeeze_block.split('_x')[0])(channels[0]+sum(self.config.cxt), channels[0])
-                for _ in range(eval(self.config.squeeze_block.split('_x')[1]))
-            ])
+        # BasicDecBlk_x1
+        self.squeeze_module = nn.Sequential(BasicDecBlk(channels[0]+sum(self.config.cxt), channels[0]))
 
         self.decoder = Decoder(channels)
-
-        if self.config.ender:
-            self.dec_end = nn.Sequential(
-                nn.Conv2d(1, 16, 3, 1, 1),
-                nn.Conv2d(16, 1, 3, 1, 1),
-                nn.ReLU(inplace=True),
-            )
-
-        # refine patch-level segmentation
-        if self.config.refine:
-            if self.config.refine == 'itself':
-                self.stem_layer = StemLayer(in_channels=3+1, inter_channels=48, out_channels=3, norm_layer='BN' if self.config.batch_size > 1 else 'LN')
-            else:
-                self.refiner = eval('{}({})'.format(self.config.refine, 'in_channels=3+1'))
 
         if self.config.freeze_bb:
             # Freeze the backbone...
@@ -109,8 +93,7 @@ class BiRefNet(nn.Module):
     def forward_ori(self, x):
         # ######### Encoder ##########
         (x1, x2, x3, x4), class_preds = self.forward_enc(x)
-        if self.config.squeeze_block:
-            x4 = self.squeeze_module(x4)
+        x4 = self.squeeze_module(x4)
         # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
         if self.training and self.config.out_ref:
@@ -128,8 +111,8 @@ class Decoder(nn.Module):
     def __init__(self, channels):
         super(Decoder, self).__init__()
         self.config = Config()
-        DecoderBlock = eval(self.config.dec_blk)
-        LateralBlock = eval(self.config.lat_blk)
+        DecoderBlock = BasicDecBlk
+        LateralBlock = BasicLatBlk
 
         if self.config.dec_ipt:
             self.split = self.config.dec_ipt_split

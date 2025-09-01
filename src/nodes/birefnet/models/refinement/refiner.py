@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from ...config import Config
 from ..backbones.build_backbone import build_backbone
 from ..modules.decoder_blocks import BasicDecBlk
+from ..modules.lateral_blocks import BasicLatBlk
 from .stem_layer import StemLayer
 
 
@@ -104,8 +105,8 @@ class Decoder(nn.Module):
     def __init__(self, channels):
         super(Decoder, self).__init__()
         self.config = Config()
-        DecoderBlock = eval('BasicDecBlk')
-        LateralBlock = eval('BasicLatBlk')
+        DecoderBlock = BasicDecBlk
+        LateralBlock = BasicLatBlk
 
         self.decoder_block4 = DecoderBlock(channels[0], channels[1])
         self.decoder_block3 = DecoderBlock(channels[1], channels[2])
