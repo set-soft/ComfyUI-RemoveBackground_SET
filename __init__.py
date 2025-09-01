@@ -1,6 +1,5 @@
 import os
 import folder_paths
-from .src.nodes import birefnetNode
 
 
 models_dir_key = "birefnet"
@@ -12,6 +11,11 @@ else:
     if not os.path.exists(models_dir_default):
         os.makedirs(models_dir_default, exist_ok=True)
     folder_paths.add_model_folder_path(models_dir_key, models_dir_default)
+
+
+# Done here because we need to first register "birefnet"
+from .src.nodes import birefnetNode  # noqa: E402
+
 
 NODE_CLASS_MAPPINGS = {**birefnetNode.NODE_CLASS_MAPPINGS}
 NODE_DISPLAY_NAME_MAPPINGS = {**birefnetNode.NODE_DISPLAY_NAME_MAPPINGS}
