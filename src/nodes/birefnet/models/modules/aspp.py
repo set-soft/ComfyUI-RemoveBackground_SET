@@ -12,7 +12,7 @@ class _ASPPModule(nn.Module):
     def __init__(self, in_channels, planes, kernel_size, padding, dilation):
         super(_ASPPModule, self).__init__()
         self.atrous_conv = nn.Conv2d(in_channels, planes, kernel_size=kernel_size,
-                                            stride=1, padding=padding, dilation=dilation, bias=False)
+                                     stride=1, padding=padding, dilation=dilation, bias=False)
         self.bn = nn.BatchNorm2d(planes) if config.batch_size > 1 else nn.Identity()
         self.relu = nn.ReLU(inplace=True)
 
@@ -67,7 +67,7 @@ class ASPP(nn.Module):
         return self.dropout(x)
 
 
-##################### Deformable
+# #################### Deformable
 class _ASPPModuleDeformable(nn.Module):
     def __init__(self, in_channels, planes, kernel_size, padding):
         super(_ASPPModuleDeformable, self).__init__()

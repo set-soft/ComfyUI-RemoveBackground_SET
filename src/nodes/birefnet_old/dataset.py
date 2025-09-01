@@ -43,7 +43,7 @@ class MyData(data.Dataset):
         self.label_paths = []
         for p in self.image_paths:
             for ext in ['.png', '.jpg', '.PNG', '.JPG', '.JPEG']:
-                ## 'im' and 'gt' may need modifying
+                # 'im' and 'gt' may need modifying
                 p_gt = p.replace('/im/', '/gt/').replace('.'+p.split('.')[-1], ext)
                 if os.path.exists(p_gt):
                     self.label_paths.append(p_gt)
@@ -60,7 +60,6 @@ class MyData(data.Dataset):
                 self.class_labels_loaded.append(
                     self.cls_name2id[label_path.split('/')[-1].split('#')[3]] if self.is_train and config.auxiliary_classification else -1
                 )
-
 
     def __getitem__(self, index):
 

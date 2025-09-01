@@ -1,4 +1,3 @@
-import os
 import math
 import torch
 import folder_paths
@@ -84,7 +83,7 @@ class Config:
         }
 
         # Training
-        self.num_workers = 5        # will be decrease to min(it, batch_size) at the initialization of the data_loader 
+        self.num_workers = 5        # will be decrease to min(it, batch_size) at the initialization of the data_loader
         self.optimizer = ['Adam', 'AdamW'][0]
         self.lr = 1e-5 * math.sqrt(self.batch_size / 5)  # adapt the lr linearly
         self.lr_decay_epochs = [1e4]    # Set to negative N to decay the lr in the last N-th epoch.
@@ -151,14 +150,12 @@ else:
     # 1. Alias DropPath to nn.Identity for inference.
     DropPath = nn.Identity
 
-
     # 2. Dummy function for trunc_normal_ since it's not needed for inference.
     def trunc_normal_(tensor, mean=0., std=1., a=-2., b=2.):
         # This function is only used for initializing weights.
         # For inference, we load pre-trained weights, so this function is not needed.
         # We can simply pass.
         pass
-
 
     # 3. Copied and simplified implementation of to_2tuple.
     # From PyTorch internals
@@ -168,6 +165,5 @@ else:
                 return tuple(x)
             return tuple(repeat(x, n))
         return parse
-
 
     to_2tuple = _ntuple(2)

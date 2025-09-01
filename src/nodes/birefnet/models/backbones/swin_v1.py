@@ -9,12 +9,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
-import numpy as np
 
 from ...config import Config, DropPath, to_2tuple, trunc_normal_
 
-
 config = Config()
+
 
 class Mlp(nn.Module):
     """ Multilayer perceptron."""
@@ -578,7 +577,6 @@ class SwinTransformer(nn.Module):
                 for param in m.parameters():
                     param.requires_grad = False
 
-
     def forward(self, x):
         """Forward function."""
         x = self.patch_embed(x)
@@ -587,9 +585,9 @@ class SwinTransformer(nn.Module):
         if self.ape:
             # interpolate the position embedding to the corresponding size
             absolute_pos_embed = F.interpolate(self.absolute_pos_embed, size=(Wh, Ww), mode='bicubic')
-            x = (x + absolute_pos_embed) # B Wh*Ww C
-            
-        outs = []#x.contiguous()]
+            x = (x + absolute_pos_embed)  # B Wh*Ww C
+
+        outs = []  # x.contiguous()]
         x = x.flatten(2).transpose(1, 2)
         x = self.pos_drop(x)
         for i in range(self.num_layers):
@@ -610,17 +608,21 @@ class SwinTransformer(nn.Module):
         super(SwinTransformer, self).train(mode)
         self._freeze_stages()
 
+
 def swin_v1_t():
     model = SwinTransformer(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7)
     return model
+
 
 def swin_v1_s():
     model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
     return model
 
+
 def swin_v1_b():
     model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
     return model
+
 
 def swin_v1_l():
     model = SwinTransformer(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12)

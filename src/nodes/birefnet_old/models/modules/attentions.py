@@ -1,7 +1,5 @@
-import numpy as np
 import torch
 from torch import nn
-from torch.nn import init
 
 
 class SEWeightModule(nn.Module):
@@ -41,12 +39,12 @@ class PSA(nn.Module):
         b, c, h, w = x.size()
 
         # Step1: SPC module
-        SPC_out = x.view(b, self.S, c//self.S, h, w) #bs,s,ci,h,w
+        SPC_out = x.view(b, self.S, c//self.S, h, w)  # bs,s,ci,h,w
         for idx, conv in enumerate(self.convs):
-            SPC_out[:,idx,:,:,:] = conv(SPC_out[:,idx,:,:,:].clone())
+            SPC_out[:, idx, :, :, :] = conv(SPC_out[:, idx, :, :, :].clone())
 
         # Step2: SE weight
-        se_out=[]
+        se_out = []
         for idx in range(self.S):
             se_out.append(self.se_block(SPC_out[:, idx, :, :, :]))
         SE_out = torch.stack(se_out, dim=1)
@@ -66,28 +64,27 @@ class SGE(nn.Module):
 
     def __init__(self, groups):
         super().__init__()
-        self.groups=groups
+        self.groups = groups
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.weight=nn.Parameter(torch.zeros(1,groups,1,1))
-        self.bias=nn.Parameter(torch.zeros(1,groups,1,1))
-        self.sig=nn.Sigmoid()
+        self.weight = nn.Parameter(torch.zeros(1, groups, 1, 1))
+        self.bias = nn.Parameter(torch.zeros(1, groups, 1, 1))
+        self.sig = nn.Sigmoid()
 
     def forward(self, x):
-        b, c, h,w=x.shape
-        x=x.view(b*self.groups,-1,h,w) #bs*g,dim//g,h,w
-        xn=x*self.avg_pool(x) #bs*g,dim//g,h,w
-        xn=xn.sum(dim=1,keepdim=True) #bs*g,1,h,w
-        t=xn.view(b*self.groups,-1) #bs*g,h*w
+        b, c, h, w = x.shape
+        x = x.view(b*self.groups, -1, h, w)  # bs*g,dim//g,h,w
+        xn = x * self.avg_pool(x)  # bs*g,dim//g,h,w
+        xn = xn.sum(dim=1, keepdim=True)  # bs*g,1,h,w
+        t = xn.view(b * self.groups, -1)  # bs*g,h*w
 
-        t=t-t.mean(dim=1,keepdim=True) #bs*g,h*w
-        std=t.std(dim=1,keepdim=True)+1e-5
-        t=t/std #bs*g,h*w
-        t=t.view(b,self.groups,h,w) #bs,g,h*w
-        
-        t=t*self.weight+self.bias #bs,g,h*w
-        t=t.view(b*self.groups,1,h,w) #bs*g,1,h*w
-        x=x*self.sig(t)
-        x=x.view(b,c,h,w)
+        t = t - t.mean(dim=1, keepdim=True)  # bs*g,h*w
+        std = t.std(dim=1, keepdim=True) + 1e-5
+        t = t / std  # bs*g,h*w
+        t = t.view(b, self.groups, h, w)  # bs,g,h*w
 
-        return x 
+        t = t * self.weight + self.bias  # bs,g,h*w
+        t = t.view(b*self.groups, 1, h, w)  # bs*g,1,h*w
+        x = x * self.sig(t)
+        x = x.view(b, c, h, w)
 
+        return x

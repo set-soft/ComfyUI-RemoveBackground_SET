@@ -1,7 +1,6 @@
 from PIL import Image, ImageEnhance
 import random
 import numpy as np
-import random
 
 
 def preproc(image, label, preproc_methods=['flip']):

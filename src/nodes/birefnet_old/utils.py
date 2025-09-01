@@ -5,7 +5,7 @@ from torchvision import transforms
 import numpy as np
 import random
 # import cv2
-from PIL import Image
+# from PIL import Image
 
 
 # def path_to_image(path, size=(1024, 1024), color_type=['rgb', 'gray'][0]):
@@ -23,7 +23,6 @@ from PIL import Image
 #     else:
 #         image = Image.fromarray(image).convert('L')
 #     return image
-
 
 
 def check_state_dict(state_dict, unwanted_prefix='_orig_mod.'):
@@ -50,10 +49,10 @@ class Logger():
         self.logger.addHandler(self.stdout_handler)
         self.logger.setLevel(logging.INFO)
         self.logger.propagate = False
-    
+
     def info(self, txt):
         self.logger.info(txt)
-    
+
     def close(self):
         self.file_handler.close()
         self.stdout_handler.close()

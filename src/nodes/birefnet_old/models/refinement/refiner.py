@@ -8,11 +8,8 @@ import torch.nn.functional as F
 # from torchvision.models import resnet50
 
 from ...config import Config
-from ...labels import class_labels_TR_sorted
 from ..backbones.build_backbone import build_backbone
 from ..modules.decoder_blocks import BasicDecBlk
-from ..modules.lateral_blocks import BasicLatBlk
-from ..modules.ing import *
 from .stem_layer import StemLayer
 
 
@@ -41,7 +38,7 @@ class RefinerPVTInChannels4(nn.Module):
     def forward(self, x):
         if isinstance(x, list):
             x = torch.cat(x, dim=1)
-        ########## Encoder ##########
+        # ######### Encoder ##########
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
             x1 = self.bb.conv1(x)
             x2 = self.bb.conv2(x1)
@@ -52,7 +49,7 @@ class RefinerPVTInChannels4(nn.Module):
 
         x4 = self.squeeze_module(x4)
 
-        ########## Decoder ##########
+        # ######### Decoder ##########
 
         features = [x, x1, x2, x3, x4]
         scaled_preds = self.decoder(features)
@@ -87,7 +84,7 @@ class Refiner(nn.Module):
         if isinstance(x, list):
             x = torch.cat(x, dim=1)
         x = self.stem_layer(x)
-        ########## Encoder ##########
+        # ######### Encoder ##########
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
             x1 = self.bb.conv1(x)
             x2 = self.bb.conv2(x1)
@@ -98,7 +95,7 @@ class Refiner(nn.Module):
 
         x4 = self.squeeze_module(x4)
 
-        ########## Decoder ##########
+        # ######### Decoder ##########
 
         features = [x, x1, x2, x3, x4]
         scaled_preds = self.decoder(features)

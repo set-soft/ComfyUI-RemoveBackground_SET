@@ -1,9 +1,6 @@
-import math
-import torch
 import torch.nn as nn
-from functools import partial
 
-from ...config import DropPath, to_2tuple, trunc_normal_
+from ...config import DropPath, to_2tuple
 
 
 class MLPLayer(nn.Module):
@@ -113,4 +110,3 @@ class OverlapPatchEmbed(nn.Module):
         x = x.flatten(2).transpose(1, 2)
         x = self.norm(x)
         return x, H, W
-

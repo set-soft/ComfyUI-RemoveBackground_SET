@@ -7,6 +7,7 @@ from ...config import Config, DropPath, to_2tuple, trunc_normal_
 
 config = Config()
 
+
 class Mlp(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU, drop=0.):
         super().__init__()
@@ -271,9 +272,10 @@ class PyramidVisionTransformerImpr(nn.Module):
                 m.bias.data.zero_()
 
     def init_weights(self, pretrained=None):
-        if isinstance(pretrained, str):
-            logger = 1
-            #load_checkpoint(self, pretrained, map_location='cpu', strict=False, logger=logger)
+        pass
+        # if isinstance(pretrained, str):
+        #     logger = 1
+        #     load_checkpoint(self, pretrained, map_location='cpu', strict=False, logger=logger)
 
     def reset_drop_path(self, drop_path_rate):
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(self.depths))]

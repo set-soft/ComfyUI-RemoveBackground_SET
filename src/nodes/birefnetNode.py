@@ -64,6 +64,7 @@ def download_birefnet_model(model_name):
     )
     download_models(model_root, model_urls)
 
+
 interpolation_modes_mapping = {
     "nearest": 0,
     "bilinear": 2,
@@ -71,6 +72,7 @@ interpolation_modes_mapping = {
     "nearest-exact": 0,
     # "lanczos": 1, #不支持
 }
+
 
 class ImagePreprocessor:
     def __init__(self, resolution, upscale_method="bilinear") -> None:
@@ -94,14 +96,15 @@ class ImagePreprocessor:
         image = self.transform_image_old(image)
         return image
 
+
 VERSION = ["old", "v1"]
 old_models_name = ["BiRefNet-DIS_ep580.pth", "BiRefNet-ep480.pth"]
-
-torch_dtype={
+torch_dtype = {
     "float16": torch.float16,
     "float32": torch.float32,
     "bfloat16": torch.bfloat16,
 }
+
 
 class AutoDownloadBiRefNetModel:
 

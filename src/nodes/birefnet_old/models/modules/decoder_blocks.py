@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 from .aspp import ASPP, ASPPDeformable
 from .attentions import PSA, SGE
@@ -51,7 +50,7 @@ class ResBlk(nn.Module):
 
         self.conv_out = nn.Conv2d(inter_channels, out_channels, 3, 1, padding=1)
         self.bn_out = nn.BatchNorm2d(out_channels)
-        
+
         self.conv_resi = nn.Conv2d(in_channels, out_channels, 1, 1, 0)
 
     def forward(self, x):

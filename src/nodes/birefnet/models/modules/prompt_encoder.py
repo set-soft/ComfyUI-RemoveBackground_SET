@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from typing import Any, Optional, Tuple, Type
+from typing import Any, Optional, Tuple
 
 
 class PromptEncoder(nn.Module):
@@ -11,8 +11,7 @@ class PromptEncoder(nn.Module):
             image_embedding_size=1024,
             input_image_size=(1024, 1024),
             mask_in_chans=16,
-            activation=nn.GELU
-        ) -> None:
+            activation=nn.GELU) -> None:
         super().__init__()
         """
         Codes are partially from SAM: https://github.com/facebookresearch/segment-anything/blob/6fdee8f2727f4506cfbbe553e23b895e27956588/segment_anything/modeling/prompt_encoder.py.
@@ -219,4 +218,3 @@ class LayerNorm2d(nn.Module):
         x = (x - u) / torch.sqrt(s + self.eps)
         x = self.weight[:, None, None] * x + self.bias[:, None, None]
         return x
-    

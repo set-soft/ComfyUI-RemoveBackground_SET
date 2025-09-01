@@ -1,21 +1,16 @@
 # import torch
 # import torch.nn as nn
-from collections import OrderedDict
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision.models import vgg16, vgg16_bn
-from torchvision.models import resnet50
+# from torchvision.models import vgg16, vgg16_bn
+# from torchvision.models import resnet50
 from kornia.filters import laplacian
 
 from ..config import Config
 from ..labels import class_labels_TR_sorted
 from .backbones.build_backbone import build_backbone
-from .modules.decoder_blocks import BasicDecBlk, ResBlk, HierarAttDecBlk
-from .modules.lateral_blocks import BasicLatBlk
-from .modules.aspp import ASPP, ASPPDeformable
-from .modules.ing import *
-from .refinement.refiner import Refiner, RefinerPVTInChannels4, RefUNet
+from .modules.decoder_blocks import BasicDecBlk
 from .refinement.stem_layer import StemLayer
 
 
@@ -73,7 +68,10 @@ class BiRefNet(nn.Module):
 
     def forward_enc(self, x):
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
-            x1 = self.bb.conv1(x); x2 = self.bb.conv2(x1); x3 = self.bb.conv3(x2); x4 = self.bb.conv4(x3)
+            x1 = self.bb.conv1(x)
+            x2 = self.bb.conv2(x1)
+            x3 = self.bb.conv3(x2)
+            x4 = self.bb.conv4(x3)
         else:
             x1, x2, x3, x4 = self.bb(x)
             if self.config.mul_scl_ipt == 'cat':
@@ -106,11 +104,11 @@ class BiRefNet(nn.Module):
         return (x1, x2, x3, x4), class_preds
 
     def forward_ori(self, x):
-        ########## Encoder ##########
+        # ######### Encoder ##########
         (x1, x2, x3, x4), class_preds = self.forward_enc(x)
         if self.config.squeeze_block:
             x4 = self.squeeze_module(x4)
-        ########## Decoder ##########
+        # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
         if self.config.out_ref:
             features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
@@ -133,7 +131,6 @@ class BiRefNet(nn.Module):
     def forward_ref_end(self, x):
         # remove the grids of concatenated preds
         return self.dec_end(x) if self.config.ender else x
-
 
     def forward(self, x):
         scaled_preds, class_preds = self.forward_ori(x)
@@ -185,11 +182,10 @@ class Decoder(nn.Module):
                 # self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                
+
                 # self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-
 
     def get_patches_batch(self, x, p):
         _size_h, _size_w = p.shape[2:]

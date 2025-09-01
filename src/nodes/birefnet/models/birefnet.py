@@ -8,10 +8,6 @@ from kornia.filters import laplacian
 from ..config import Config
 from ..labels import class_labels_TR_sorted
 from .backbones.build_backbone import build_backbone
-from .modules.decoder_blocks import BasicDecBlk, ResBlk
-from .modules.lateral_blocks import BasicLatBlk
-from .modules.aspp import ASPP, ASPPDeformable
-from .refinement.refiner import Refiner, RefinerPVTInChannels4, RefUNet
 from .refinement.stem_layer import StemLayer
 
 
@@ -21,11 +17,13 @@ def image2patches(image, grid_h=2, grid_w=2, patch_ref=None, transformation='b c
     patches = rearrange(image, transformation, hg=grid_h, wg=grid_w)
     return patches
 
+
 def patches2image(patches, grid_h=2, grid_w=2, patch_ref=None, transformation='(b hg wg) c h w -> b c (hg h) (wg w)'):
     if patch_ref is not None:
         grid_h, grid_w = patch_ref.shape[-2] // patches[0].shape[-2], patch_ref.shape[-1] // patches[0].shape[-1]
     image = rearrange(patches, transformation, hg=grid_h, wg=grid_w)
     return image
+
 
 class BiRefNet(nn.Module):
     def __init__(self, bb_pretrained=True, bb_index=6):
@@ -73,7 +71,10 @@ class BiRefNet(nn.Module):
 
     def forward_enc(self, x):
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
-            x1 = self.bb.conv1(x); x2 = self.bb.conv2(x1); x3 = self.bb.conv3(x2); x4 = self.bb.conv4(x3)
+            x1 = self.bb.conv1(x)
+            x2 = self.bb.conv2(x1)
+            x3 = self.bb.conv3(x2)
+            x4 = self.bb.conv4(x3)
         else:
             x1, x2, x3, x4 = self.bb(x)
             if self.config.mul_scl_ipt == 'cat':
@@ -106,11 +107,11 @@ class BiRefNet(nn.Module):
         return (x1, x2, x3, x4), class_preds
 
     def forward_ori(self, x):
-        ########## Encoder ##########
+        # ######### Encoder ##########
         (x1, x2, x3, x4), class_preds = self.forward_enc(x)
         if self.config.squeeze_block:
             x4 = self.squeeze_module(x4)
-        ########## Decoder ##########
+        # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
         if self.training and self.config.out_ref:
             features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
@@ -168,7 +169,7 @@ class Decoder(nn.Module):
                 self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                
+
                 self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
                 self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
