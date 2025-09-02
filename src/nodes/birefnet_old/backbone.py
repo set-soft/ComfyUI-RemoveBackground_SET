@@ -4,6 +4,7 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ze Liu, Yutong Lin, Yixuan Wei
 # --------------------------------------------------------
+# Code from backbones/swin_v1.py and backbones/build_backbone.py
 
 import torch
 import torch.nn as nn
@@ -617,16 +618,26 @@ def swin_v1_t():
     return model
 
 
-def swin_v1_s():
-    model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
-    return model
-
-
-def swin_v1_b():
-    model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
-    return model
+# def swin_v1_s():
+#     model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
+#     return model
+#
+#
+# def swin_v1_b():
+#     model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
+#     return model
 
 
 def swin_v1_l():
     model = SwinTransformer(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12)
     return model
+
+
+def build_backbone(bb_name, pretrained=True, params_settings=''):
+    if bb_name == 'swin_v1_t':
+        bb = swin_v1_t()
+    elif bb_name == 'swin_v1_l':
+        bb = swin_v1_l()
+    else:
+        raise ValueError('Unsupported back bone')
+    return bb

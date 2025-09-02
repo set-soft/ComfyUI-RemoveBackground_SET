@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
-from .backbones.build_backbone import build_backbone
+from .backbone import build_backbone
 from .modules.decoder_blocks import BasicDecBlk
 from .modules.lateral_blocks import BasicLatBlk
 
