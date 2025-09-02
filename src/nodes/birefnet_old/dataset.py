@@ -8,7 +8,6 @@ from torchvision import transforms
 from .preproc import preproc
 from .config import Config
 from .utils import path_to_image
-from .labels import class_labels_TR_sorted
 
 Image.MAX_IMAGE_PIXELS = None       # remove DecompressionBombWarning
 config = Config()
@@ -23,8 +22,6 @@ class MyData(data.Dataset):
         self.is_train = is_train
         self.load_all = config.load_all
         self.device = config.device
-        if self.is_train and config.auxiliary_classification:
-            self.cls_name2id = {_name: _id for _id, _name in enumerate(class_labels_TR_sorted)}
         self.transform_image = transforms.Compose([
             transforms.Resize(self.data_size),
             transforms.ToTensor(),
@@ -57,20 +54,18 @@ class MyData(data.Dataset):
                 _label = path_to_image(label_path, size=(config.size, config.size), color_type='gray')
                 self.images_loaded.append(_image)
                 self.labels_loaded.append(_label)
-                self.class_labels_loaded.append(
-                    self.cls_name2id[label_path.split('/')[-1].split('#')[3]] if self.is_train and config.auxiliary_classification else -1
-                )
+                self.class_labels_loaded.append(-1)
 
     def __getitem__(self, index):
 
         if self.load_all:
             image = self.images_loaded[index]
             label = self.labels_loaded[index]
-            class_label = self.class_labels_loaded[index] if self.is_train and config.auxiliary_classification else -1
+            class_label = -1
         else:
             image = path_to_image(self.image_paths[index], size=(config.size, config.size), color_type='rgb')
             label = path_to_image(self.label_paths[index], size=(config.size, config.size), color_type='gray')
-            class_label = self.cls_name2id[self.label_paths[index].split('/')[-1].split('#')[3]] if self.is_train and config.auxiliary_classification else -1
+            class_label = -1
 
         # loading image and label
         if self.is_train:

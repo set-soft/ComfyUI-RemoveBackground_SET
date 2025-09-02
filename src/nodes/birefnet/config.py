@@ -99,7 +99,7 @@ class Config:
         # self.progressive_ref = self.refine and True
         # self.ender = self.progressive_ref and False
         # self.scale = self.progressive_ref and 2
-        self.auxiliary_classification = False       # Only for DIS5K, where class labels are saved in `dataset.py`.
+        # self.auxiliary_classification = False       # Only for DIS5K, where class labels are saved in `dataset.py`.
         self.refine_iteration = 1
         self.freeze_bb = False
         self.model = [

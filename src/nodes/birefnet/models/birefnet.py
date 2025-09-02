@@ -6,7 +6,6 @@ from kornia.filters import laplacian
 # from huggingface_hub import PyTorchModelHubMixin
 
 from ..config import Config
-from ..labels import class_labels_TR_sorted
 from .backbones.build_backbone import build_backbone
 from .modules.decoder_blocks import BasicDecBlk
 from .modules.lateral_blocks import BasicLatBlk
@@ -34,12 +33,6 @@ class BiRefNet(nn.Module):
         self.bb = build_backbone(self.config.bb, pretrained=bb_pretrained)
 
         channels = self.config.lateral_channels_in_collection
-
-        if self.config.auxiliary_classification:
-            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-            self.cls_head = nn.Sequential(
-                nn.Linear(channels[0], len(class_labels_TR_sorted))
-            )
 
         # BasicDecBlk_x1
         self.squeeze_module = nn.Sequential(BasicDecBlk(channels[0]+sum(self.config.cxt), channels[0]))
@@ -75,7 +68,7 @@ class BiRefNet(nn.Module):
                 x2 = x2 + F.interpolate(x2_, size=x2.shape[2:], mode='bilinear', align_corners=True)
                 x3 = x3 + F.interpolate(x3_, size=x3.shape[2:], mode='bilinear', align_corners=True)
                 x4 = x4 + F.interpolate(x4_, size=x4.shape[2:], mode='bilinear', align_corners=True)
-        class_preds = self.cls_head(self.avgpool(x4).view(x4.shape[0], -1)) if self.training and self.config.auxiliary_classification else None
+        class_preds = None
         if self.config.cxt:
             x4 = torch.cat(
                 (
