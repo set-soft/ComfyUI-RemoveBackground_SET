@@ -30,7 +30,6 @@ class BiRefNet(nn.Module):
         x2 = torch.cat([x2, F.interpolate(x2_, size=x2.shape[2:], mode='bilinear', align_corners=True)], dim=1)
         x3 = torch.cat([x3, F.interpolate(x3_, size=x3.shape[2:], mode='bilinear', align_corners=True)], dim=1)
         x4 = torch.cat([x4, F.interpolate(x4_, size=x4.shape[2:], mode='bilinear', align_corners=True)], dim=1)
-        class_preds = None
         x4 = torch.cat(
             (
                 F.interpolate(x1, size=x4.shape[2:], mode='bilinear', align_corners=True),
@@ -40,20 +39,16 @@ class BiRefNet(nn.Module):
             ),
             dim=1
         )
-        return (x1, x2, x3, x4), class_preds
+        return (x1, x2, x3, x4)
 
-    def forward_ori(self, x):
+    def forward(self, x):
         # ######### Encoder ##########
-        (x1, x2, x3, x4), class_preds = self.forward_enc(x)
+        (x1, x2, x3, x4) = self.forward_enc(x)
         x4 = self.squeeze_module(x4)
         # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
         features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
         scaled_preds = self.decoder(features)
-        return scaled_preds, class_preds
-
-    def forward(self, x):
-        scaled_preds, class_preds = self.forward_ori(x)
         return scaled_preds
 
 
