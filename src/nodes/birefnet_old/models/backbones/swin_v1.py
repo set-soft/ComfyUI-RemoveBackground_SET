@@ -10,10 +10,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
 
-from ...config import Config, to_2tuple
-
-config = Config()
-
 
 class Mlp(nn.Module):
     """ Multilayer perceptron."""

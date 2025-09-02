@@ -1,4 +1,3 @@
-import torch
 from itertools import repeat
 import collections.abc
 

@@ -1,10 +1,5 @@
 import torch.nn as nn
 
-from ...config import Config
-
-
-config = Config()
-
 
 class BasicLatBlk(nn.Module):
     def __init__(self, in_channels=64, out_channels=64, inter_channels=64):

@@ -2,10 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from .deform_conv import DeformableConv2d
-from ...config import Config
-
-
-config = Config()
 
 
 class ASPPComplex(nn.Module):
