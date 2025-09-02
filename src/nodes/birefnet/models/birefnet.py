@@ -38,19 +38,13 @@ class BiRefNet(nn.Module):
         self.decoder = Decoder(channels)
 
     def forward_enc(self, x):
-        if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
-            x1 = self.bb.conv1(x)
-            x2 = self.bb.conv2(x1)
-            x3 = self.bb.conv3(x2)
-            x4 = self.bb.conv4(x3)
-        else:
-            x1, x2, x3, x4 = self.bb(x)
-            B, C, H, W = x.shape
-            x1_, x2_, x3_, x4_ = self.bb(F.interpolate(x, size=(H//2, W//2), mode='bilinear', align_corners=True))
-            x1 = torch.cat([x1, F.interpolate(x1_, size=x1.shape[2:], mode='bilinear', align_corners=True)], dim=1)
-            x2 = torch.cat([x2, F.interpolate(x2_, size=x2.shape[2:], mode='bilinear', align_corners=True)], dim=1)
-            x3 = torch.cat([x3, F.interpolate(x3_, size=x3.shape[2:], mode='bilinear', align_corners=True)], dim=1)
-            x4 = torch.cat([x4, F.interpolate(x4_, size=x4.shape[2:], mode='bilinear', align_corners=True)], dim=1)
+        x1, x2, x3, x4 = self.bb(x)
+        B, C, H, W = x.shape
+        x1_, x2_, x3_, x4_ = self.bb(F.interpolate(x, size=(H//2, W//2), mode='bilinear', align_corners=True))
+        x1 = torch.cat([x1, F.interpolate(x1_, size=x1.shape[2:], mode='bilinear', align_corners=True)], dim=1)
+        x2 = torch.cat([x2, F.interpolate(x2_, size=x2.shape[2:], mode='bilinear', align_corners=True)], dim=1)
+        x3 = torch.cat([x3, F.interpolate(x3_, size=x3.shape[2:], mode='bilinear', align_corners=True)], dim=1)
+        x4 = torch.cat([x4, F.interpolate(x4_, size=x4.shape[2:], mode='bilinear', align_corners=True)], dim=1)
         class_preds = None
         if self.config.cxt:
             x4 = torch.cat(
