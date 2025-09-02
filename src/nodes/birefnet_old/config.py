@@ -7,7 +7,6 @@ import collections.abc
 class Config:
     def __init__(self) -> None:
         self.locate_head = False
-        self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder
         self.mul_scl_ipt = ['', 'add', 'cat'][2]
         # self.refine = ['', 'itself', 'RefUNet', 'Refiner', 'RefinerPVTInChannels4'][0]
         # self.progressive_ref = self.refine and True
@@ -49,7 +48,7 @@ class Config:
         }[self.bb]
         if self.mul_scl_ipt == 'cat':
             self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
-        self.cxt = self.lateral_channels_in_collection[1:][::-1][-self.cxt_num:] if self.cxt_num else []
+        self.cxt = self.lateral_channels_in_collection[1:][::-1][-3:]
         # self.sys_home_dir = '/root/autodl-tmp'
         # self.weights_root_dir = os.path.join(self.sys_home_dir, 'weights')
         # self.weights = {

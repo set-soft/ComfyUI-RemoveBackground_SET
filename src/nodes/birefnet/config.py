@@ -6,8 +6,6 @@ import collections.abc
 class Config:
     def __init__(self, bb_index: int = 6) -> None:
         # MODEL settings
-        self.dec_ipt_split = True
-        self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder
         self.mul_scl_ipt = ['', 'add', 'cat'][2]
         # self.dec_att = ['', 'ASPP', 'ASPPDeformable'][2]
         # self.squeeze_block = ['', 'BasicDecBlk_x1', 'ResBlk_x4', 'ASPP_x3', 'ASPPDeformable_x3'][1]
@@ -34,7 +32,7 @@ class Config:
         }[self.bb]
         if self.mul_scl_ipt == 'cat':
             self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
-        self.cxt = self.lateral_channels_in_collection[1:][::-1][-self.cxt_num:] if self.cxt_num else []
+        self.cxt = self.lateral_channels_in_collection[1:][::-1][-3:]
 
         # MODEL settings - inactive
         # self.lat_blk = ['BasicLatBlk'][0]
