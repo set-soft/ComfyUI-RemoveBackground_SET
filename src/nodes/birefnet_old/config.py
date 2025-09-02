@@ -25,7 +25,6 @@ class Config:
         self.precisionHigh = True
         self.compile = True
         self.load_all = True
-        self.verbose_eval = True
 
         self.size = 1024
         self.batch_size = 2
@@ -82,55 +81,10 @@ class Config:
         }
 
         # Training
-        self.num_workers = 5        # will be decrease to min(it, batch_size) at the initialization of the data_loader
-        self.optimizer = ['Adam', 'AdamW'][0]
-        self.lr = 1e-5 * math.sqrt(self.batch_size / 5)  # adapt the lr linearly
-        self.lr_decay_epochs = [1e4]    # Set to negative N to decay the lr in the last N-th epoch.
-        self.lr_decay_rate = 0.5
-        self.only_S_MAE = False
         self.SDPA_enabled = False    # Bug. Slower and errors occur in multi-GPUs
-
-        # Data
-        # self.data_root_dir = os.path.join(self.sys_home_dir, 'datasets/dis')
-        self.task = ['DIS5K', 'COD', 'HRSOD'][0]
-        self.training_set = {
-            'DIS5K': 'DIS-TR',
-            'COD': 'TR-COD10K+TR-CAMO',
-            'HRSOD': ['TR-DUTS', 'TR-HRSOD+TR-UHRSD', 'TR-DUTS+TR-HRSOD+TR-UHRSD'][1]
-        }[self.task]
-        self.preproc_methods = ['flip', 'enhance', 'rotate', 'pepper', 'crop'][:4]
-
-        # Loss
-        self.lambdas_pix_last = {
-            # not 0 means opening this loss
-            # original rate -- 1 : 30 : 1.5 : 0.2, bce x 30
-            'bce': 30 * 1,          # high performance
-            'iou': 0.5 * 1,         # 0 / 255
-            'iou_patch': 0.5 * 0,   # 0 / 255, win_size = (64, 64)
-            'mse': 150 * 0,         # can smooth the saliency map
-            'triplet': 3 * 0,
-            'reg': 100 * 0,
-            'ssim': 10 * 1,          # help contours,
-            'cnt': 5 * 0,          # help contours
-        }
-        self.lambdas_cls = {
-            'ce': 5.0
-        }
-        # Adv
-        self.lambda_adv_g = 10. * 0        # turn to 0 to avoid adv training
-        self.lambda_adv_d = 3. * (self.lambda_adv_g > 0)
 
         # others
         self.device = [0, 'cpu'][0 if torch.cuda.is_available() else 1]     # .to(0) == .to('cuda:0')
-
-        self.batch_size_valid = 1
-        self.rand_seed = 7
-        # run_sh_file = [f for f in os.listdir('.') if 'train.sh' == f] + [os.path.join('..', f) for f in os.listdir('..') if 'train.sh' == f]
-        # with open(run_sh_file[0], 'r') as f:
-        #     lines = f.readlines()
-        #     self.save_last = int([l.strip() for l in lines if 'val_last=' in l][0].split('=')[-1])
-        #     self.save_step = int([l.strip() for l in lines if 'step=' in l][0].split('=')[-1])
-        # self.val_step = [0, self.save_step][0]
 
 
 # This code is used to decouple the code from TIMM when used for inference

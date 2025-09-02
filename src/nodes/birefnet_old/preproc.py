@@ -3,20 +3,6 @@ import random
 import numpy as np
 
 
-def preproc(image, label, preproc_methods=['flip']):
-    if 'flip' in preproc_methods:
-        image, label = cv_random_flip(image, label)
-    if 'crop' in preproc_methods:
-        image, label = random_crop(image, label)
-    if 'rotate' in preproc_methods:
-        image, label = random_rotate(image, label)
-    if 'enhance' in preproc_methods:
-        image = color_enhance(image)
-    if 'pepper' in preproc_methods:
-        label = random_pepper(label)
-    return image, label
-
-
 def cv_random_flip(img, label):
     if random.random() > 0.5:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
