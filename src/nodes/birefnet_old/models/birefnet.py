@@ -1,10 +1,6 @@
-# import torch
-# import torch.nn as nn
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-# from torchvision.models import vgg16, vgg16_bn
-# from torchvision.models import resnet50
 from kornia.filters import laplacian
 
 from ..config import Config

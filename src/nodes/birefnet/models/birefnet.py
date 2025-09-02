@@ -24,9 +24,9 @@ def patches2image(patches, grid_h=2, grid_w=2, patch_ref=None, transformation='(
 
 
 class BiRefNet(nn.Module):
-    def __init__(self, bb_pretrained=True, bb_index=6):
+    def __init__(self, bb_pretrained=True, small=False):
         super(BiRefNet, self).__init__()
-        self.config = Config(bb_index)
+        self.config = Config(small)
         self.epoch = 1
         self.bb = build_backbone(self.config.bb, pretrained=bb_pretrained)
 

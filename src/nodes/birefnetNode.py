@@ -127,8 +127,8 @@ class AutoDownloadBiRefNetModel:
     DESCRIPTION = "Auto download BiRefNet model from huggingface to models/BiRefNet/{model_name}.safetensors"
 
     def load_model(self, model_name, device, dtype="float32"):
-        bb_index = 3 if model_name == "General-Lite" or model_name == "General-Lite-2K" or model_name == "Matting-Lite" else 6
-        biRefNet_model = BiRefNet(bb_pretrained=False, bb_index=bb_index)
+        small = model_name in ["General-Lite", "General-Lite-2K", "Matting-Lite"]
+        biRefNet_model = BiRefNet(bb_pretrained=False, small=small)
         model_file_name = f'{model_name}.safetensors'
         model_full_path = folder_paths.get_full_path(models_dir_key, model_file_name)
         if model_full_path is None:
@@ -172,8 +172,8 @@ class LoadRembgByBiRefNetModel:
             biRefNet_model = OldBiRefNet(bb_pretrained=use_weight)
         else:
             version = VERSION[1]
-            bb_index = 3 if model == "General-Lite.safetensors" or model == "General-Lite-2K.safetensors" or model == "Matting-Lite.safetensors" else 6
-            biRefNet_model = BiRefNet(bb_pretrained=use_weight, bb_index=bb_index)
+            small = model_name in ["General-Lite", "General-Lite-2K", "Matting-Lite"]
+            biRefNet_model = BiRefNet(bb_pretrained=use_weight, small=small)
 
         model_path = folder_paths.get_full_path(models_dir_key, model)
         if device == "AUTO":

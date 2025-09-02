@@ -37,13 +37,7 @@ class RefinerPVTInChannels4(nn.Module):
         if isinstance(x, list):
             x = torch.cat(x, dim=1)
         # ######### Encoder ##########
-        if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
-            x1 = self.bb.conv1(x)
-            x2 = self.bb.conv2(x1)
-            x3 = self.bb.conv3(x2)
-            x4 = self.bb.conv4(x3)
-        else:
-            x1, x2, x3, x4 = self.bb(x)
+        x1, x2, x3, x4 = self.bb(x)
 
         x4 = self.squeeze_module(x4)
 
@@ -83,13 +77,7 @@ class Refiner(nn.Module):
             x = torch.cat(x, dim=1)
         x = self.stem_layer(x)
         # ######### Encoder ##########
-        if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
-            x1 = self.bb.conv1(x)
-            x2 = self.bb.conv2(x1)
-            x3 = self.bb.conv3(x2)
-            x4 = self.bb.conv4(x3)
-        else:
-            x1, x2, x3, x4 = self.bb(x)
+        x1, x2, x3, x4 = self.bb(x)
 
         x4 = self.squeeze_module(x4)
 
