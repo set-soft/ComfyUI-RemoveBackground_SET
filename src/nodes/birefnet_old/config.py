@@ -7,27 +7,10 @@ import collections.abc
 class Config:
     def __init__(self) -> None:
         self.locate_head = False
-        # self.refine = ['', 'itself', 'RefUNet', 'Refiner', 'RefinerPVTInChannels4'][0]
-        # self.progressive_ref = self.refine and True
-        # self.ender = self.progressive_ref and False
-        # self.scale = self.progressive_ref and 2
-        # self.dec_att = ['', 'ASPP', 'ASPPDeformable'][2]
-        # self.squeeze_block = ['', 'BasicDecBlk_x1', 'ResBlk_x4', 'ASPP_x3', 'ASPPDeformable_x3'][1]
-        # self.dec_blk = ['BasicDecBlk', 'ResBlk', 'HierarAttDecBlk'][0]
-        # self.auxiliary_classification = False
-        # self.refine_iteration = 1
-        # self.freeze_bb = False
 
         self.size = 1024
         self.batch_size = 2
         self.IoU_finetune_last_epochs = [0, -20][1]     # choose 0 to skip
-        # if self.dec_blk == 'HierarAttDecBlk':
-        #    self.batch_size = 2 ** [0, 1, 2, 3, 4][2]
-        # self.model = 'BiRefNet'
-
-        # Components
-        # self.lat_blk = ['BasicLatBlk'][0]
-        # self.dec_channels_inter = ['fixed', 'adap'][0]
 
         # Backbone
         # Only swin_v1_l used
