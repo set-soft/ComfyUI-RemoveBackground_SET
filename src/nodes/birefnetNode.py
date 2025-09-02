@@ -7,7 +7,7 @@ import comfy
 from comfy import model_management
 import folder_paths
 from .birefnet.birefnet import BiRefNet
-from .birefnet_old.birefnet import BiRefNet as OldBiRefNet
+from .birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, check_state_dict
 deviceType = model_management.get_torch_device().type
 
