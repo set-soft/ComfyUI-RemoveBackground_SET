@@ -35,13 +35,6 @@ class BiRefNet(nn.Module):
                 )
             ])
 
-        if self.config.freeze_bb:
-            # Freeze the backbone...
-            print(self.named_parameters())
-            for key, value in self.named_parameters():
-                if 'bb.' in key and 'refiner.' not in key:
-                    value.requires_grad = False
-
     def forward_enc(self, x):
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
             x1 = self.bb.conv1(x)

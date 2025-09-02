@@ -74,6 +74,7 @@ class Config:
         self.num_workers = max(4, self.batch_size)          # will be decrease to min(it, batch_size) at the initialization of the data_loader
 
         # Backbone settings
+        # Only swin_v1_l and swin_v1_t used
         self.bb = [
             'vgg16', 'vgg16bn', 'resnet50',         # 0, 1, 2
             'swin_v1_t', 'swin_v1_s',               # 3, 4
@@ -101,7 +102,7 @@ class Config:
         # self.scale = self.progressive_ref and 2
         # self.auxiliary_classification = False       # Only for DIS5K, where class labels are saved in `dataset.py`.
         self.refine_iteration = 1
-        self.freeze_bb = False
+        # self.freeze_bb = False
         self.model = [
             'BiRefNet',
             'BiRefNetC2F',

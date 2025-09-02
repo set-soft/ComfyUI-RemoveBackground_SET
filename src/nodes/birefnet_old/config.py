@@ -21,7 +21,7 @@ class Config:
         # self.dec_blk = ['BasicDecBlk', 'ResBlk', 'HierarAttDecBlk'][0]
         # self.auxiliary_classification = False
         self.refine_iteration = 1
-        self.freeze_bb = False
+        # self.freeze_bb = False
         self.precisionHigh = True
         self.compile = True
         self.load_all = True
@@ -41,6 +41,7 @@ class Config:
         # self.dec_channels_inter = ['fixed', 'adap'][0]
 
         # Backbone
+        # Only swin_v1_l used
         self.bb = [
             'vgg16', 'vgg16bn', 'resnet50',         # 0, 1, 2
             'pvt_v2_b2', 'pvt_v2_b5',               # 3-bs10, 4-bs5
