@@ -95,16 +95,16 @@ class Decoder(nn.Module):
         DecoderBlock = BasicDecBlk
         LateralBlock = BasicLatBlk
 
-        self.split = self.config.dec_ipt_split
+        self.split = True
         N_dec_ipt = 64
         DBlock = SimpleConvs
         ic = 64
         ipt_cha_opt = 1
-        self.ipt_blk5 = DBlock(2**10*3 if self.split else 3, [N_dec_ipt, channels[0]//8][ipt_cha_opt], inter_channels=ic)
-        self.ipt_blk4 = DBlock(2**8*3 if self.split else 3, [N_dec_ipt, channels[0]//8][ipt_cha_opt], inter_channels=ic)
-        self.ipt_blk3 = DBlock(2**6*3 if self.split else 3, [N_dec_ipt, channels[1]//8][ipt_cha_opt], inter_channels=ic)
-        self.ipt_blk2 = DBlock(2**4*3 if self.split else 3, [N_dec_ipt, channels[2]//8][ipt_cha_opt], inter_channels=ic)
-        self.ipt_blk1 = DBlock(2**0*3 if self.split else 3, [N_dec_ipt, channels[3]//8][ipt_cha_opt], inter_channels=ic)
+        self.ipt_blk5 = DBlock(2**10*3, [N_dec_ipt, channels[0]//8][ipt_cha_opt], inter_channels=ic)
+        self.ipt_blk4 = DBlock(2**8*3, [N_dec_ipt, channels[0]//8][ipt_cha_opt], inter_channels=ic)
+        self.ipt_blk3 = DBlock(2**6*3, [N_dec_ipt, channels[1]//8][ipt_cha_opt], inter_channels=ic)
+        self.ipt_blk2 = DBlock(2**4*3, [N_dec_ipt, channels[2]//8][ipt_cha_opt], inter_channels=ic)
+        self.ipt_blk1 = DBlock(2**0*3, [N_dec_ipt, channels[3]//8][ipt_cha_opt], inter_channels=ic)
 
         self.decoder_block4 = DecoderBlock(channels[0]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[1])
         self.decoder_block3 = DecoderBlock(channels[1]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[2])
@@ -137,7 +137,7 @@ class Decoder(nn.Module):
         x, x1, x2, x3, x4 = features
         outs = []
 
-        patches_batch = image2patches(x, patch_ref=x4, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
+        patches_batch = image2patches(x, patch_ref=x4, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
         x4 = torch.cat((x4, self.ipt_blk5(F.interpolate(patches_batch, size=x4.shape[2:], mode='bilinear', align_corners=True))), 1)
         p4 = self.decoder_block4(x4)
         p4_gdt = self.gdt_convs_4(p4)
@@ -147,7 +147,7 @@ class Decoder(nn.Module):
         _p4 = F.interpolate(p4, size=x3.shape[2:], mode='bilinear', align_corners=True)
         _p3 = _p4 + self.lateral_block4(x3)
 
-        patches_batch = image2patches(x, patch_ref=_p3, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
+        patches_batch = image2patches(x, patch_ref=_p3, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
         _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear', align_corners=True))), 1)
         p3 = self.decoder_block3(_p3)
         p3_gdt = self.gdt_convs_3(p3)
@@ -158,7 +158,7 @@ class Decoder(nn.Module):
         _p3 = F.interpolate(p3, size=x2.shape[2:], mode='bilinear', align_corners=True)
         _p2 = _p3 + self.lateral_block3(x2)
 
-        patches_batch = image2patches(x, patch_ref=_p2, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
+        patches_batch = image2patches(x, patch_ref=_p2, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
         _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear', align_corners=True))), 1)
         p2 = self.decoder_block2(_p2)
         p2_gdt = self.gdt_convs_2(p2)
@@ -168,12 +168,12 @@ class Decoder(nn.Module):
         _p2 = F.interpolate(p2, size=x1.shape[2:], mode='bilinear', align_corners=True)
         _p1 = _p2 + self.lateral_block2(x1)
 
-        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
+        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
         _p1 = torch.cat((_p1, self.ipt_blk2(F.interpolate(patches_batch, size=x1.shape[2:], mode='bilinear', align_corners=True))), 1)
         _p1 = self.decoder_block1(_p1)
         _p1 = F.interpolate(_p1, size=x.shape[2:], mode='bilinear', align_corners=True)
 
-        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
+        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
         _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear', align_corners=True))), 1)
         p1_out = self.conv_out1(_p1)
 
