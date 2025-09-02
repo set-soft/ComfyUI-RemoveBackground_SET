@@ -8,8 +8,7 @@ from comfy import model_management
 import folder_paths
 from .birefnet.models.birefnet import BiRefNet
 from .birefnet_old.models.birefnet import BiRefNet as OldBiRefNet
-from .birefnet.utils import check_state_dict
-from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui
+from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, check_state_dict
 deviceType = model_management.get_torch_device().type
 
 models_dir_key = "birefnet"
