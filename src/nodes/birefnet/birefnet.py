@@ -4,8 +4,7 @@ import torch.nn.functional as F
 from einops import rearrange
 
 from .backbone import build_backbone
-from .decoder_blocks import BasicDecBlk
-from .lateral_blocks import BasicLatBlk
+from .blocks import BasicDecBlk, BasicLatBlk
 
 
 def image2patches(image, grid_h=2, grid_w=2, patch_ref=None, transformation='b c (hg h) (wg w) -> (b hg wg) c h w'):
