@@ -5,8 +5,7 @@ import folder_paths
 
 class Config:
     def __init__(self) -> None:
-        self.ms_supervision = True
-        self.out_ref = self.ms_supervision and True
+        self.out_ref = True
         self.dec_ipt = True
         self.dec_ipt_split = True
         self.locate_head = False

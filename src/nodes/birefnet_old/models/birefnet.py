@@ -132,24 +132,23 @@ class Decoder(nn.Module):
         self.lateral_block3 = LateralBlock(channels[2], channels[2])
         self.lateral_block2 = LateralBlock(channels[3], channels[3])
 
-        if self.config.ms_supervision:
-            self.conv_ms_spvn_4 = nn.Conv2d(channels[1], 1, 1, 1, 0)
-            self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
-            self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
+        self.conv_ms_spvn_4 = nn.Conv2d(channels[1], 1, 1, 1, 0)
+        self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
+        self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
 
-            if self.config.out_ref:
-                _N = 16
-                # self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
-                self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
-                self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+        if self.config.out_ref:
+            _N = 16
+            # self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+            self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+            self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
 
-                # self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            # self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
-                # self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-                self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            # self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+            self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
     def get_patches_batch(self, x, p):
         _size_h, _size_w = p.shape[2:]
@@ -172,7 +171,7 @@ class Decoder(nn.Module):
             x, x1, x2, x3, x4 = features
         outs = []
         p4 = self.decoder_block4(x4)
-        m4 = self.conv_ms_spvn_4(p4) if self.config.ms_supervision else None
+        m4 = self.conv_ms_spvn_4(p4)
         _p4 = F.interpolate(p4, size=x3.shape[2:], mode='bilinear', align_corners=True)
         _p3 = _p4 + self.lateral_block4(x3)
         if self.config.dec_ipt:
@@ -180,7 +179,7 @@ class Decoder(nn.Module):
             _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear', align_corners=True))), 1)
 
         p3 = self.decoder_block3(_p3)
-        m3 = self.conv_ms_spvn_3(p3) if self.config.ms_supervision else None
+        m3 = self.conv_ms_spvn_3(p3)
         if self.config.out_ref:
             # >> GT:
             # m3 --dilation--> m3_dia
@@ -205,7 +204,7 @@ class Decoder(nn.Module):
             _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear', align_corners=True))), 1)
 
         p2 = self.decoder_block2(_p2)
-        m2 = self.conv_ms_spvn_2(p2) if self.config.ms_supervision else None
+        m2 = self.conv_ms_spvn_2(p2)
         if self.config.out_ref:
             # >> GT:
             m2_dia = m2
@@ -231,10 +230,9 @@ class Decoder(nn.Module):
             _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear', align_corners=True))), 1)
         p1_out = self.conv_out1(_p1)
 
-        if self.config.ms_supervision:
-            outs.append(m4)
-            outs.append(m3)
-            outs.append(m2)
+        outs.append(m4)
+        outs.append(m3)
+        outs.append(m2)
         outs.append(p1_out)
         return outs if not (self.config.out_ref and self.training) else ([outs_gdt_pred, outs_gdt_label], outs)
 

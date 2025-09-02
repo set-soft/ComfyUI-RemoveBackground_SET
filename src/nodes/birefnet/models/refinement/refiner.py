@@ -117,10 +117,9 @@ class Decoder(nn.Module):
         self.lateral_block3 = LateralBlock(channels[2], channels[2])
         self.lateral_block2 = LateralBlock(channels[3], channels[3])
 
-        if self.config.ms_supervision:
-            self.conv_ms_spvn_4 = nn.Conv2d(channels[1], 1, 1, 1, 0)
-            self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
-            self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
+        self.conv_ms_spvn_4 = nn.Conv2d(channels[1], 1, 1, 1, 0)
+        self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
+        self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
         self.conv_out1 = nn.Sequential(nn.Conv2d(channels[3]//2, 1, 1, 1, 0))
 
     def forward(self, features):
@@ -142,10 +141,9 @@ class Decoder(nn.Module):
         _p1 = F.interpolate(_p1, size=x.shape[2:], mode='bilinear', align_corners=True)
         p1_out = self.conv_out1(_p1)
 
-        if self.config.ms_supervision:
-            outs.append(self.conv_ms_spvn_4(p4))
-            outs.append(self.conv_ms_spvn_3(p3))
-            outs.append(self.conv_ms_spvn_2(p2))
+        outs.append(self.conv_ms_spvn_4(p4))
+        outs.append(self.conv_ms_spvn_3(p3))
+        outs.append(self.conv_ms_spvn_2(p2))
         outs.append(p1_out)
         return outs
 

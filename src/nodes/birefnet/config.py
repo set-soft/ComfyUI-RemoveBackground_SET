@@ -24,8 +24,7 @@ class Config:
         self.precisionHigh = True
 
         # MODEL settings
-        self.ms_supervision = True
-        self.out_ref = self.ms_supervision and True
+        self.out_ref = True
         self.dec_ipt = True
         self.dec_ipt_split = True
         self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder
