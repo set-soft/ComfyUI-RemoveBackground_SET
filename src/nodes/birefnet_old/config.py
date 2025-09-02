@@ -36,15 +36,7 @@ class Config:
         self.device = [0, 'cpu'][0 if torch.cuda.is_available() else 1]     # .to(0) == .to('cuda:0')
 
 
-# 2. Dummy function for trunc_normal_ since it's not needed for inference.
-def trunc_normal_(tensor, mean=0., std=1., a=-2., b=2.):
-    # This function is only used for initializing weights.
-    # For inference, we load pre-trained weights, so this function is not needed.
-    # We can simply pass.
-    pass
-
-
-# 3. Copied and simplified implementation of to_2tuple.
+# Copied and simplified implementation of to_2tuple.
 # From PyTorch internals
 def _ntuple(n):
     def parse(x):
