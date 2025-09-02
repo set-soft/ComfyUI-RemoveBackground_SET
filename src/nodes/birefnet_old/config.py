@@ -6,7 +6,6 @@ import collections.abc
 
 class Config:
     def __init__(self) -> None:
-        self.out_ref = True
         self.dec_ipt = True
         self.dec_ipt_split = True
         self.locate_head = False
@@ -22,9 +21,6 @@ class Config:
         # self.auxiliary_classification = False
         # self.refine_iteration = 1
         # self.freeze_bb = False
-        self.precisionHigh = True
-        self.compile = True
-        self.load_all = True
 
         self.size = 1024
         self.batch_size = 2

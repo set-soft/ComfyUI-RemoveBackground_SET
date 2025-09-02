@@ -78,8 +78,7 @@ class BiRefNet(nn.Module):
         x4 = self.squeeze_module(x4)
         # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
-        if self.config.out_ref:
-            features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
+        features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
         scaled_preds = self.decoder(features)
         return scaled_preds, class_preds
 
@@ -135,19 +134,18 @@ class Decoder(nn.Module):
         self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
         self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
 
-        if self.config.out_ref:
-            _N = 16
-            # self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
-            self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
-            self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+        _N = 16
+        # self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+        self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
+        self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N), nn.ReLU(inplace=True))
 
-            # self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        # self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
-            # self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        # self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
     def get_patches_batch(self, x, p):
         _size_h, _size_w = p.shape[2:]
@@ -162,12 +160,9 @@ class Decoder(nn.Module):
         return torch.cat(patches_batch, dim=0)
 
     def forward(self, features):
-        if self.config.out_ref:
-            outs_gdt_pred = []
-            outs_gdt_label = []
-            x, x1, x2, x3, x4, gdt_gt = features
-        else:
-            x, x1, x2, x3, x4 = features
+        outs_gdt_pred = []
+        outs_gdt_label = []
+        x, x1, x2, x3, x4, gdt_gt = features
         outs = []
         p4 = self.decoder_block4(x4)
         m4 = self.conv_ms_spvn_4(p4)
@@ -179,23 +174,22 @@ class Decoder(nn.Module):
 
         p3 = self.decoder_block3(_p3)
         m3 = self.conv_ms_spvn_3(p3)
-        if self.config.out_ref:
-            # >> GT:
-            # m3 --dilation--> m3_dia
-            # G_3^gt * m3_dia --> G_3^m, which is the label of gradient
-            m3_dia = m3
-            gdt_label_main_3 = gdt_gt * F.interpolate(m3_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
-            outs_gdt_label.append(gdt_label_main_3)
-            # >> Pred:
-            # p3 --conv--BN--> F_3^G, where F_3^G predicts the \hat{G_3} with xx
-            # F_3^G --sigmoid--> A_3^G
-            p3_gdt = self.gdt_convs_3(p3)
-            gdt_pred_3 = self.gdt_convs_pred_3(p3_gdt)
-            outs_gdt_pred.append(gdt_pred_3)
-            gdt_attn_3 = self.gdt_convs_attn_3(p3_gdt).sigmoid()
-            # >> Finally:
-            # p3 = p3 * A_3^G
-            p3 = p3 * gdt_attn_3
+        # >> GT:
+        # m3 --dilation--> m3_dia
+        # G_3^gt * m3_dia --> G_3^m, which is the label of gradient
+        m3_dia = m3
+        gdt_label_main_3 = gdt_gt * F.interpolate(m3_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
+        outs_gdt_label.append(gdt_label_main_3)
+        # >> Pred:
+        # p3 --conv--BN--> F_3^G, where F_3^G predicts the \hat{G_3} with xx
+        # F_3^G --sigmoid--> A_3^G
+        p3_gdt = self.gdt_convs_3(p3)
+        gdt_pred_3 = self.gdt_convs_pred_3(p3_gdt)
+        outs_gdt_pred.append(gdt_pred_3)
+        gdt_attn_3 = self.gdt_convs_attn_3(p3_gdt).sigmoid()
+        # >> Finally:
+        # p3 = p3 * A_3^G
+        p3 = p3 * gdt_attn_3
         _p3 = F.interpolate(p3, size=x2.shape[2:], mode='bilinear', align_corners=True)
         _p2 = _p3 + self.lateral_block3(x2)
         if self.config.dec_ipt:
@@ -204,18 +198,17 @@ class Decoder(nn.Module):
 
         p2 = self.decoder_block2(_p2)
         m2 = self.conv_ms_spvn_2(p2)
-        if self.config.out_ref:
-            # >> GT:
-            m2_dia = m2
-            gdt_label_main_2 = gdt_gt * F.interpolate(m2_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
-            outs_gdt_label.append(gdt_label_main_2)
-            # >> Pred:
-            p2_gdt = self.gdt_convs_2(p2)
-            gdt_pred_2 = self.gdt_convs_pred_2(p2_gdt)
-            outs_gdt_pred.append(gdt_pred_2)
-            gdt_attn_2 = self.gdt_convs_attn_2(p2_gdt).sigmoid()
-            # >> Finally:
-            p2 = p2 * gdt_attn_2
+        # >> GT:
+        m2_dia = m2
+        gdt_label_main_2 = gdt_gt * F.interpolate(m2_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
+        outs_gdt_label.append(gdt_label_main_2)
+        # >> Pred:
+        p2_gdt = self.gdt_convs_2(p2)
+        gdt_pred_2 = self.gdt_convs_pred_2(p2_gdt)
+        outs_gdt_pred.append(gdt_pred_2)
+        gdt_attn_2 = self.gdt_convs_attn_2(p2_gdt).sigmoid()
+        # >> Finally:
+        p2 = p2 * gdt_attn_2
         _p2 = F.interpolate(p2, size=x1.shape[2:], mode='bilinear', align_corners=True)
         _p1 = _p2 + self.lateral_block2(x1)
         if self.config.dec_ipt:

@@ -5,26 +5,7 @@ import collections.abc
 
 class Config:
     def __init__(self, bb_index: int = 6) -> None:
-        # PATH settings
-        # Make up your file system as: SYS_HOME_DIR/codes/dis/BiRefNet, SYS_HOME_DIR/datasets/dis/xx, SYS_HOME_DIR/weights/xx
-        # self.sys_home_dir = [os.path.expanduser('~'), '/mnt/data'][0] # Default, custom
-        # self.data_root_dir = os.path.join(self.sys_home_dir, 'datasets/dis')
-
-        # Data settings
-        self.dynamic_size = [None, ((512-256, 2048+256), (512-256, 2048+256))][0]    # wid, hei. It might cause errors in using compile.
-        self.background_color_synthesis = False             # whether to use pure bg color to replace the original backgrounds.
-
-        # Faster-Training settings
-        self.load_all = False and self.dynamic_size is None   # Turn it on/off by your case. It may consume a lot of CPU memory. And for multi-GPU (N), it would cost N times the CPU memory to load the data.
-        # 1. Trigger CPU memory leak in some extend, which is an inherent problem of PyTorch.
-        #   Machines with > 70GB CPU memory can run the whole training on DIS5K with default setting.
-        # 2. Higher PyTorch version may fix it: https://github.com/pytorch/pytorch/issues/119607.
-        # 3. But compile in 2.0.1 < Pytorch < 2.5.0 seems to bring no acceleration for training.
-        self.compile = True
-        self.precisionHigh = True
-
         # MODEL settings
-        self.out_ref = True
         self.dec_ipt = True
         self.dec_ipt_split = True
         self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder

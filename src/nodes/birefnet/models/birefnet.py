@@ -123,19 +123,18 @@ class Decoder(nn.Module):
         self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
         self.conv_ms_spvn_2 = nn.Conv2d(channels[3], 1, 1, 1, 0)
 
-        if self.config.out_ref:
-            _N = 16
-            self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
-            self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
-            self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
+        _N = 16
+        self.gdt_convs_4 = nn.Sequential(nn.Conv2d(channels[1], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
+        self.gdt_convs_3 = nn.Sequential(nn.Conv2d(channels[2], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
+        self.gdt_convs_2 = nn.Sequential(nn.Conv2d(channels[3], _N, 3, 1, 1), nn.BatchNorm2d(_N) if self.config.batch_size > 1 else nn.Identity(), nn.ReLU(inplace=True))
 
-            self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_pred_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_pred_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_pred_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
-            self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
-            self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_attn_4 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
+        self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
     def forward(self, features):
         x, x1, x2, x3, x4 = features
@@ -145,11 +144,10 @@ class Decoder(nn.Module):
             patches_batch = image2patches(x, patch_ref=x4, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             x4 = torch.cat((x4, self.ipt_blk5(F.interpolate(patches_batch, size=x4.shape[2:], mode='bilinear', align_corners=True))), 1)
         p4 = self.decoder_block4(x4)
-        if self.config.out_ref:
-            p4_gdt = self.gdt_convs_4(p4)
-            gdt_attn_4 = self.gdt_convs_attn_4(p4_gdt).sigmoid()
-            # >> Finally:
-            p4 = p4 * gdt_attn_4
+        p4_gdt = self.gdt_convs_4(p4)
+        gdt_attn_4 = self.gdt_convs_attn_4(p4_gdt).sigmoid()
+        # >> Finally:
+        p4 = p4 * gdt_attn_4
         _p4 = F.interpolate(p4, size=x3.shape[2:], mode='bilinear', align_corners=True)
         _p3 = _p4 + self.lateral_block4(x3)
 
@@ -157,12 +155,11 @@ class Decoder(nn.Module):
             patches_batch = image2patches(x, patch_ref=_p3, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear', align_corners=True))), 1)
         p3 = self.decoder_block3(_p3)
-        if self.config.out_ref:
-            p3_gdt = self.gdt_convs_3(p3)
-            gdt_attn_3 = self.gdt_convs_attn_3(p3_gdt).sigmoid()
-            # >> Finally:
-            # p3 = p3 * A_3^G
-            p3 = p3 * gdt_attn_3
+        p3_gdt = self.gdt_convs_3(p3)
+        gdt_attn_3 = self.gdt_convs_attn_3(p3_gdt).sigmoid()
+        # >> Finally:
+        # p3 = p3 * A_3^G
+        p3 = p3 * gdt_attn_3
         _p3 = F.interpolate(p3, size=x2.shape[2:], mode='bilinear', align_corners=True)
         _p2 = _p3 + self.lateral_block3(x2)
 
@@ -170,11 +167,10 @@ class Decoder(nn.Module):
             patches_batch = image2patches(x, patch_ref=_p2, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear', align_corners=True))), 1)
         p2 = self.decoder_block2(_p2)
-        if self.config.out_ref:
-            p2_gdt = self.gdt_convs_2(p2)
-            gdt_attn_2 = self.gdt_convs_attn_2(p2_gdt).sigmoid()
-            # >> Finally:
-            p2 = p2 * gdt_attn_2
+        p2_gdt = self.gdt_convs_2(p2)
+        gdt_attn_2 = self.gdt_convs_attn_2(p2_gdt).sigmoid()
+        # >> Finally:
+        p2 = p2 * gdt_attn_2
         _p2 = F.interpolate(p2, size=x1.shape[2:], mode='bilinear', align_corners=True)
         _p1 = _p2 + self.lateral_block2(x1)
 
