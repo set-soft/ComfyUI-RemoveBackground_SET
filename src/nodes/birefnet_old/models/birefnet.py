@@ -98,8 +98,7 @@ class BiRefNet(nn.Module):
 
     def forward(self, x):
         scaled_preds, class_preds = self.forward_ori(x)
-        class_preds_lst = [class_preds]
-        return [scaled_preds, class_preds_lst] if self.training else scaled_preds
+        return scaled_preds
 
 
 class Decoder(nn.Module):
@@ -234,7 +233,7 @@ class Decoder(nn.Module):
         outs.append(m3)
         outs.append(m2)
         outs.append(p1_out)
-        return outs if not (self.config.out_ref and self.training) else ([outs_gdt_pred, outs_gdt_label], outs)
+        return outs
 
 
 class SimpleConvs(nn.Module):

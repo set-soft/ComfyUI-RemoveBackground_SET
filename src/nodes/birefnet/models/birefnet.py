@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
-from kornia.filters import laplacian
 
 from ..config import Config
 from .backbones.build_backbone import build_backbone
@@ -81,15 +80,12 @@ class BiRefNet(nn.Module):
         x4 = self.squeeze_module(x4)
         # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
-        if self.training and self.config.out_ref:
-            features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
         scaled_preds = self.decoder(features)
         return scaled_preds, class_preds
 
     def forward(self, x):
         scaled_preds, class_preds = self.forward_ori(x)
-        class_preds_lst = [class_preds]
-        return [scaled_preds, class_preds_lst] if self.training else scaled_preds
+        return scaled_preds
 
 
 class Decoder(nn.Module):
@@ -142,29 +138,15 @@ class Decoder(nn.Module):
             self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
     def forward(self, features):
-        if self.training and self.config.out_ref:
-            outs_gdt_pred = []
-            outs_gdt_label = []
-            x, x1, x2, x3, x4, gdt_gt = features
-        else:
-            x, x1, x2, x3, x4 = features
+        x, x1, x2, x3, x4 = features
         outs = []
 
         if self.config.dec_ipt:
             patches_batch = image2patches(x, patch_ref=x4, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             x4 = torch.cat((x4, self.ipt_blk5(F.interpolate(patches_batch, size=x4.shape[2:], mode='bilinear', align_corners=True))), 1)
         p4 = self.decoder_block4(x4)
-        m4 = self.conv_ms_spvn_4(p4) if self.training else None
         if self.config.out_ref:
             p4_gdt = self.gdt_convs_4(p4)
-            if self.training:
-                # >> GT:
-                m4_dia = m4
-                gdt_label_main_4 = gdt_gt * F.interpolate(m4_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
-                outs_gdt_label.append(gdt_label_main_4)
-                # >> Pred:
-                gdt_pred_4 = self.gdt_convs_pred_4(p4_gdt)
-                outs_gdt_pred.append(gdt_pred_4)
             gdt_attn_4 = self.gdt_convs_attn_4(p4_gdt).sigmoid()
             # >> Finally:
             p4 = p4 * gdt_attn_4
@@ -175,21 +157,8 @@ class Decoder(nn.Module):
             patches_batch = image2patches(x, patch_ref=_p3, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear', align_corners=True))), 1)
         p3 = self.decoder_block3(_p3)
-        m3 = self.conv_ms_spvn_3(p3) if self.training else None
         if self.config.out_ref:
             p3_gdt = self.gdt_convs_3(p3)
-            if self.training:
-                # >> GT:
-                # m3 --dilation--> m3_dia
-                # G_3^gt * m3_dia --> G_3^m, which is the label of gradient
-                m3_dia = m3
-                gdt_label_main_3 = gdt_gt * F.interpolate(m3_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
-                outs_gdt_label.append(gdt_label_main_3)
-                # >> Pred:
-                # p3 --conv--BN--> F_3^G, where F_3^G predicts the \hat{G_3} with xx
-                # F_3^G --sigmoid--> A_3^G
-                gdt_pred_3 = self.gdt_convs_pred_3(p3_gdt)
-                outs_gdt_pred.append(gdt_pred_3)
             gdt_attn_3 = self.gdt_convs_attn_3(p3_gdt).sigmoid()
             # >> Finally:
             # p3 = p3 * A_3^G
@@ -201,17 +170,8 @@ class Decoder(nn.Module):
             patches_batch = image2patches(x, patch_ref=_p2, transformation='b c (hg h) (wg w) -> b (c hg wg) h w') if self.split else x
             _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear', align_corners=True))), 1)
         p2 = self.decoder_block2(_p2)
-        m2 = self.conv_ms_spvn_2(p2) if self.training else None
         if self.config.out_ref:
             p2_gdt = self.gdt_convs_2(p2)
-            if self.training:
-                # >> GT:
-                m2_dia = m2
-                gdt_label_main_2 = gdt_gt * F.interpolate(m2_dia, size=gdt_gt.shape[2:], mode='bilinear', align_corners=True)
-                outs_gdt_label.append(gdt_label_main_2)
-                # >> Pred:
-                gdt_pred_2 = self.gdt_convs_pred_2(p2_gdt)
-                outs_gdt_pred.append(gdt_pred_2)
             gdt_attn_2 = self.gdt_convs_attn_2(p2_gdt).sigmoid()
             # >> Finally:
             p2 = p2 * gdt_attn_2
@@ -229,12 +189,8 @@ class Decoder(nn.Module):
             _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear', align_corners=True))), 1)
         p1_out = self.conv_out1(_p1)
 
-        if self.training:
-            outs.append(m4)
-            outs.append(m3)
-            outs.append(m2)
         outs.append(p1_out)
-        return outs if not (self.config.out_ref and self.training) else ([outs_gdt_pred, outs_gdt_label], outs)
+        return outs
 
 
 class SimpleConvs(nn.Module):
