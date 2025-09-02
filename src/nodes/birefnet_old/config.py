@@ -6,7 +6,6 @@ import collections.abc
 
 class Config:
     def __init__(self) -> None:
-        self.dec_ipt = True
         self.dec_ipt_split = True
         self.locate_head = False
         self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder

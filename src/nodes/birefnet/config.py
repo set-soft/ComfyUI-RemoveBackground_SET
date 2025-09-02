@@ -6,7 +6,6 @@ import collections.abc
 class Config:
     def __init__(self, bb_index: int = 6) -> None:
         # MODEL settings
-        self.dec_ipt = True
         self.dec_ipt_split = True
         self.cxt_num = [0, 3][1]    # multi-scale skip connections from encoder
         self.mul_scl_ipt = ['', 'add', 'cat'][2]
