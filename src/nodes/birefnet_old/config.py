@@ -32,9 +32,7 @@ class Config:
         self.IoU_finetune_last_epochs = [0, -20][1]     # choose 0 to skip
         # if self.dec_blk == 'HierarAttDecBlk':
         #    self.batch_size = 2 ** [0, 1, 2, 3, 4][2]
-        self.model = [
-            'BiRefNet',
-        ][0]
+        # self.model = 'BiRefNet'
 
         # Components
         # self.lat_blk = ['BasicLatBlk'][0]

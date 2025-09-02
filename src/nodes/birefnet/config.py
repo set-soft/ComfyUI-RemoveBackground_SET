@@ -103,10 +103,7 @@ class Config:
         # self.auxiliary_classification = False       # Only for DIS5K, where class labels are saved in `dataset.py`.
         # self.refine_iteration = 1
         # self.freeze_bb = False
-        self.model = [
-            'BiRefNet',
-            'BiRefNetC2F',
-        ][0]
+        # self.model = 'BiRefNet'
 
         # TRAINING settings - inactive
         self.preproc_methods = ['flip', 'enhance', 'rotate', 'pepper', 'crop'][:4 if not self.background_color_synthesis else 1]
