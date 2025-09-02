@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
-from ..config import Config
 from .backbones.build_backbone import build_backbone
 from .modules.decoder_blocks import BasicDecBlk
 from .modules.lateral_blocks import BasicLatBlk
@@ -24,14 +23,12 @@ def patches2image(patches, grid_h=2, grid_w=2, patch_ref=None, transformation='(
 
 
 class BiRefNet(nn.Module):
-    def __init__(self, bb_pretrained=True, small=False):
+    def __init__(self, small=False):
         super(BiRefNet, self).__init__()
-        self.config = Config(small)
-        self.epoch = 1
-        self.bb = build_backbone(self.config.bb, pretrained=bb_pretrained)
+        self.bb = build_backbone('swin_v1_t' if small else 'swin_v1_l')
 
         # BasicDecBlk_x1
-        channels = self.config.lateral_channels_in_collection
+        channels = [1536, 768, 384, 192] if small else [3072, 1536, 768, 384]
         self.squeeze_module = nn.Sequential(BasicDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)

@@ -9,7 +9,21 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
-from ...config import to_2tuple
+from itertools import repeat
+import collections.abc
+
+
+# Copied and simplified implementation of to_2tuple.
+# From PyTorch internals
+def _ntuple(n):
+    def parse(x):
+        if isinstance(x, collections.abc.Iterable) and not isinstance(x, str):
+            return tuple(x)
+        return tuple(repeat(x, n))
+    return parse
+
+
+to_2tuple = _ntuple(2)
 
 
 class Mlp(nn.Module):

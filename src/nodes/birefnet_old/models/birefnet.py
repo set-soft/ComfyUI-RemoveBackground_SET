@@ -3,21 +3,18 @@ import torch.nn as nn
 import torch.nn.functional as F
 from kornia.filters import laplacian
 
-from ..config import Config
 from .backbones.build_backbone import build_backbone
 from .modules.decoder_blocks import BasicDecBlk
 from .modules.lateral_blocks import BasicLatBlk
 
 
 class BiRefNet(nn.Module):
-    def __init__(self, bb_pretrained=True):
+    def __init__(self):
         super(BiRefNet, self).__init__()
-        self.config = Config()
-        self.epoch = 1
-        self.bb = build_backbone(self.config.bb, pretrained=bb_pretrained)
+        self.bb = build_backbone('swin_v1_l')
 
         # BasicDecBlk_x1
-        channels = self.config.lateral_channels_in_collection
+        channels = [3072, 1536, 768, 384]
         self.squeeze_module = nn.Sequential(BasicDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)

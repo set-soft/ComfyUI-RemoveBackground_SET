@@ -128,7 +128,7 @@ class AutoDownloadBiRefNetModel:
 
     def load_model(self, model_name, device, dtype="float32"):
         small = model_name in ["General-Lite", "General-Lite-2K", "Matting-Lite"]
-        biRefNet_model = BiRefNet(bb_pretrained=False, small=small)
+        biRefNet_model = BiRefNet(small=small)
         model_file_name = f'{model_name}.safetensors'
         model_full_path = folder_paths.get_full_path(models_dir_key, model_file_name)
         if model_full_path is None:
@@ -169,11 +169,11 @@ class LoadRembgByBiRefNetModel:
     def load_model(self, model, device, use_weight=False, dtype="float32"):
         if model in old_models_name:
             version = VERSION[0]
-            biRefNet_model = OldBiRefNet(bb_pretrained=use_weight)
+            biRefNet_model = OldBiRefNet()
         else:
             version = VERSION[1]
-            small = model_name in ["General-Lite", "General-Lite-2K", "Matting-Lite"]
-            biRefNet_model = BiRefNet(bb_pretrained=use_weight, small=small)
+            small = model in ["General-Lite", "General-Lite-2K", "Matting-Lite"]
+            biRefNet_model = BiRefNet(small=small)
 
         model_path = folder_paths.get_full_path(models_dir_key, model)
         if device == "AUTO":
