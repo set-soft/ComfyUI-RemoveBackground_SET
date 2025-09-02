@@ -56,19 +56,6 @@ class BiRefNet(nn.Module):
         scaled_preds = self.decoder(features)
         return scaled_preds, class_preds
 
-    def forward_ref(self, x, pred):
-        # refine patch-level segmentation
-        if pred.shape[2:] != x.shape[2:]:
-            pred = F.interpolate(pred, size=x.shape[2:], mode='bilinear', align_corners=True)
-        # pred = pred.sigmoid()
-        scaled_preds = self.refiner([x, pred])
-        class_preds = None
-        return scaled_preds, class_preds
-
-    def forward_ref_end(self, x):
-        # remove the grids of concatenated preds
-        return x
-
     def forward(self, x):
         scaled_preds, class_preds = self.forward_ori(x)
         return scaled_preds
