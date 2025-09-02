@@ -6,7 +6,6 @@ import collections.abc
 class Config:
     def __init__(self, bb_index: int = 6) -> None:
         # MODEL settings
-        self.mul_scl_ipt = ['', 'add', 'cat'][2]
         # self.dec_att = ['', 'ASPP', 'ASPPDeformable'][2]
         # self.squeeze_block = ['', 'BasicDecBlk_x1', 'ResBlk_x4', 'ASPP_x3', 'ASPPDeformable_x3'][1]
         # self.dec_blk = ['BasicDecBlk', 'ResBlk'][0]
@@ -30,8 +29,7 @@ class Config:
             'swin_v1_t': [768, 384, 192, 96], 'swin_v1_s': [768, 384, 192, 96],
             'pvt_v2_b0': [256, 160, 64, 32], 'pvt_v2_b1': [512, 320, 128, 64],
         }[self.bb]
-        if self.mul_scl_ipt == 'cat':
-            self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
+        self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
         self.cxt = self.lateral_channels_in_collection[1:][::-1][-3:]
 
         # MODEL settings - inactive
