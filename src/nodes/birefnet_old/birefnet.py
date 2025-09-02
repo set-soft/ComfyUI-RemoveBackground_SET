@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from kornia.filters import laplacian
 
 from .backbone import build_backbone
-from .decoder_blocks import BasicDecBlk
+from .decoder_blocks import OldDecBlk
 from .lateral_blocks import BasicLatBlk
 
 
@@ -15,7 +15,7 @@ class BiRefNet(nn.Module):
 
         # BasicDecBlk_x1
         channels = [3072, 1536, 768, 384]
-        self.squeeze_module = nn.Sequential(BasicDecBlk(sum(channels), channels[0]))
+        self.squeeze_module = nn.Sequential(OldDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)
 
@@ -62,10 +62,10 @@ class Decoder(nn.Module):
         self.ipt_blk2 = DBlock(2**4*3, [N_dec_ipt, channels[2]//8][ipt_cha_opt], inter_channels=ic)
         self.ipt_blk1 = DBlock(2**0*3, [N_dec_ipt, channels[3]//8][ipt_cha_opt], inter_channels=ic)
 
-        self.decoder_block4 = BasicDecBlk(channels[0], channels[1])
-        self.decoder_block3 = BasicDecBlk(channels[1]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[2])
-        self.decoder_block2 = BasicDecBlk(channels[2]+([N_dec_ipt, channels[1]//8][ipt_cha_opt]), channels[3])
-        self.decoder_block1 = BasicDecBlk(channels[3]+([N_dec_ipt, channels[2]//8][ipt_cha_opt]), channels[3]//2)
+        self.decoder_block4 = OldDecBlk(channels[0], channels[1])
+        self.decoder_block3 = OldDecBlk(channels[1]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[2])
+        self.decoder_block2 = OldDecBlk(channels[2]+([N_dec_ipt, channels[1]//8][ipt_cha_opt]), channels[3])
+        self.decoder_block1 = OldDecBlk(channels[3]+([N_dec_ipt, channels[2]//8][ipt_cha_opt]), channels[3]//2)
         self.conv_out1 = nn.Sequential(nn.Conv2d(channels[3]//2+([N_dec_ipt, channels[3]//8][ipt_cha_opt]), 1, 1, 1, 0))
 
         self.lateral_block4 = BasicLatBlk(channels[1], channels[1])
