@@ -4,8 +4,8 @@ import torch.nn.functional as F
 from kornia.filters import laplacian
 
 from .backbone import build_backbone
-from .modules.decoder_blocks import BasicDecBlk
-from .modules.lateral_blocks import BasicLatBlk
+from .decoder_blocks import BasicDecBlk
+from .lateral_blocks import BasicLatBlk
 
 
 class BiRefNet(nn.Module):
