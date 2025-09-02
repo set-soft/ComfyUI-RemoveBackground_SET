@@ -27,14 +27,6 @@ class BiRefNet(nn.Module):
 
         self.decoder = Decoder(channels)
 
-        if self.config.locate_head:
-            self.locate_header = nn.ModuleList([
-                BasicDecBlk(channels[0], channels[-1]),
-                nn.Sequential(
-                    nn.Conv2d(channels[-1], 1, 1, 1, 0),
-                )
-            ])
-
     def forward_enc(self, x):
         if self.config.bb in ['vgg16', 'vgg16bn', 'resnet50']:
             x1 = self.bb.conv1(x)
