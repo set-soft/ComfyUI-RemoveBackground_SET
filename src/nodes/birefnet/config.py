@@ -23,9 +23,6 @@ class Config:
         self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
         self.cxt = self.lateral_channels_in_collection[1:][::-1][-3:]
 
-        # others
-        self.device = [0, 'cpu'][0]     # .to(0) == .to('cuda:0')
-
 
 # Copied and simplified implementation of to_2tuple.
 # From PyTorch internals
