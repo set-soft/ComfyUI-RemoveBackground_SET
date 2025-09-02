@@ -13,7 +13,7 @@ class _ASPPModule(nn.Module):
         super(_ASPPModule, self).__init__()
         self.atrous_conv = nn.Conv2d(in_channels, planes, kernel_size=kernel_size,
                                      stride=1, padding=padding, dilation=dilation, bias=False)
-        self.bn = nn.BatchNorm2d(planes) if config.batch_size > 1 else nn.Identity()
+        self.bn = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
@@ -44,10 +44,10 @@ class ASPP(nn.Module):
 
         self.global_avg_pool = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)),
                                              nn.Conv2d(in_channels, self.in_channelster, 1, stride=1, bias=False),
-                                             nn.BatchNorm2d(self.in_channelster) if config.batch_size > 1 else nn.Identity(),
+                                             nn.BatchNorm2d(self.in_channelster),
                                              nn.ReLU(inplace=True))
         self.conv1 = nn.Conv2d(self.in_channelster * 5, out_channels, 1, bias=False)
-        self.bn1 = nn.BatchNorm2d(out_channels) if config.batch_size > 1 else nn.Identity()
+        self.bn1 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
         self.dropout = nn.Dropout(0.5)
 
@@ -73,7 +73,7 @@ class _ASPPModuleDeformable(nn.Module):
         super(_ASPPModuleDeformable, self).__init__()
         self.atrous_conv = DeformableConv2d(in_channels, planes, kernel_size=kernel_size,
                                             stride=1, padding=padding, bias=False)
-        self.bn = nn.BatchNorm2d(planes) if config.batch_size > 1 else nn.Identity()
+        self.bn = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
@@ -98,10 +98,10 @@ class ASPPDeformable(nn.Module):
 
         self.global_avg_pool = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)),
                                              nn.Conv2d(in_channels, self.in_channelster, 1, stride=1, bias=False),
-                                             nn.BatchNorm2d(self.in_channelster) if config.batch_size > 1 else nn.Identity(),
+                                             nn.BatchNorm2d(self.in_channelster),
                                              nn.ReLU(inplace=True))
         self.conv1 = nn.Conv2d(self.in_channelster * (2 + len(self.aspp_deforms)), out_channels, 1, bias=False)
-        self.bn1 = nn.BatchNorm2d(out_channels) if config.batch_size > 1 else nn.Identity()
+        self.bn1 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
         self.dropout = nn.Dropout(0.5)
 
