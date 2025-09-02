@@ -9,7 +9,6 @@ class Config:
         self.locate_head = False
 
         self.size = 1024
-        self.batch_size = 2
         self.IoU_finetune_last_epochs = [0, -20][1]     # choose 0 to skip
 
         # Backbone

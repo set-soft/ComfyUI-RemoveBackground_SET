@@ -5,9 +5,6 @@ import collections.abc
 
 class Config:
     def __init__(self, bb_index: int = 6) -> None:
-        # TRAINING settings
-        self.batch_size = 4
-
         # Backbone settings
         # Only swin_v1_l and swin_v1_t used
         self.bb = [
