@@ -20,7 +20,7 @@ class Config:
         # self.squeeze_block = ['', 'BasicDecBlk_x1', 'ResBlk_x4', 'ASPP_x3', 'ASPPDeformable_x3'][1]
         # self.dec_blk = ['BasicDecBlk', 'ResBlk', 'HierarAttDecBlk'][0]
         # self.auxiliary_classification = False
-        self.refine_iteration = 1
+        # self.refine_iteration = 1
         # self.freeze_bb = False
         self.precisionHigh = True
         self.compile = True
