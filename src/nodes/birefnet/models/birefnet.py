@@ -68,10 +68,6 @@ class BiRefNet(nn.Module):
 class Decoder(nn.Module):
     def __init__(self, channels):
         super(Decoder, self).__init__()
-        self.config = Config()
-        DecoderBlock = BasicDecBlk
-        LateralBlock = BasicLatBlk
-
         self.split = True
         N_dec_ipt = 64
         DBlock = SimpleConvs
@@ -83,15 +79,15 @@ class Decoder(nn.Module):
         self.ipt_blk2 = DBlock(2**4*3, [N_dec_ipt, channels[2]//8][ipt_cha_opt], inter_channels=ic)
         self.ipt_blk1 = DBlock(2**0*3, [N_dec_ipt, channels[3]//8][ipt_cha_opt], inter_channels=ic)
 
-        self.decoder_block4 = DecoderBlock(channels[0]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[1])
-        self.decoder_block3 = DecoderBlock(channels[1]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[2])
-        self.decoder_block2 = DecoderBlock(channels[2]+([N_dec_ipt, channels[1]//8][ipt_cha_opt]), channels[3])
-        self.decoder_block1 = DecoderBlock(channels[3]+([N_dec_ipt, channels[2]//8][ipt_cha_opt]), channels[3]//2)
+        self.decoder_block4 = BasicDecBlk(channels[0]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[1])
+        self.decoder_block3 = BasicDecBlk(channels[1]+([N_dec_ipt, channels[0]//8][ipt_cha_opt]), channels[2])
+        self.decoder_block2 = BasicDecBlk(channels[2]+([N_dec_ipt, channels[1]//8][ipt_cha_opt]), channels[3])
+        self.decoder_block1 = BasicDecBlk(channels[3]+([N_dec_ipt, channels[2]//8][ipt_cha_opt]), channels[3]//2)
         self.conv_out1 = nn.Sequential(nn.Conv2d(channels[3]//2+([N_dec_ipt, channels[3]//8][ipt_cha_opt]), 1, 1, 1, 0))
 
-        self.lateral_block4 = LateralBlock(channels[1], channels[1])
-        self.lateral_block3 = LateralBlock(channels[2], channels[2])
-        self.lateral_block2 = LateralBlock(channels[3], channels[3])
+        self.lateral_block4 = BasicLatBlk(channels[1], channels[1])
+        self.lateral_block3 = BasicLatBlk(channels[2], channels[2])
+        self.lateral_block2 = BasicLatBlk(channels[3], channels[3])
 
         self.conv_ms_spvn_4 = nn.Conv2d(channels[1], 1, 1, 1, 0)
         self.conv_ms_spvn_3 = nn.Conv2d(channels[2], 1, 1, 1, 0)
