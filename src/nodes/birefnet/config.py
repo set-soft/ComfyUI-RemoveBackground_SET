@@ -23,9 +23,6 @@ class Config:
         self.lateral_channels_in_collection = [channel * 2 for channel in self.lateral_channels_in_collection]
         self.cxt = self.lateral_channels_in_collection[1:][::-1][-3:]
 
-        # Callbacks - inactive
-        self.SDPA_enabled = False    # Bugs. Slower and errors occur in multi-GPUs
-
         # others
         self.device = [0, 'cpu'][0]     # .to(0) == .to('cuda:0')
 

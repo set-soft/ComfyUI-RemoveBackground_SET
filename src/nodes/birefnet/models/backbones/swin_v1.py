@@ -129,30 +129,24 @@ class WindowAttention(nn.Module):
 
         q = q * self.scale
 
-        if config.SDPA_enabled:
-            x = torch.nn.functional.scaled_dot_product_attention(
-                q, k, v,
-                attn_mask=None, dropout_p=self.attn_drop_prob, is_causal=False
-            ).transpose(1, 2).reshape(B_, N, C)
+        attn = (q @ k.transpose(-2, -1))
+
+        relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
+            self.window_size[0] * self.window_size[1], self.window_size[0] * self.window_size[1], -1)  # Wh*Ww,Wh*Ww,nH
+        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
+        attn = attn + relative_position_bias.unsqueeze(0)
+
+        if mask is not None:
+            nW = mask.shape[0]
+            attn = attn.view(B_ // nW, nW, self.num_heads, N, N) + mask.unsqueeze(1).unsqueeze(0)
+            attn = attn.view(-1, self.num_heads, N, N)
+            attn = self.softmax(attn)
         else:
-            attn = (q @ k.transpose(-2, -1))
+            attn = self.softmax(attn)
 
-            relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
-                self.window_size[0] * self.window_size[1], self.window_size[0] * self.window_size[1], -1)  # Wh*Ww,Wh*Ww,nH
-            relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
-            attn = attn + relative_position_bias.unsqueeze(0)
+        attn = self.attn_drop(attn)
 
-            if mask is not None:
-                nW = mask.shape[0]
-                attn = attn.view(B_ // nW, nW, self.num_heads, N, N) + mask.unsqueeze(1).unsqueeze(0)
-                attn = attn.view(-1, self.num_heads, N, N)
-                attn = self.softmax(attn)
-            else:
-                attn = self.softmax(attn)
-
-            attn = self.attn_drop(attn)
-
-            x = (attn @ v).transpose(1, 2).reshape(B_, N, C)
+        x = (attn @ v).transpose(1, 2).reshape(B_, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
