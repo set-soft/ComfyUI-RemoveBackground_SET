@@ -16,10 +16,9 @@ class BiRefNet(nn.Module):
         self.epoch = 1
         self.bb = build_backbone(self.config.bb, pretrained=bb_pretrained)
 
-        channels = self.config.lateral_channels_in_collection
-
         # BasicDecBlk_x1
-        self.squeeze_module = nn.Sequential(BasicDecBlk(channels[0]+sum(self.config.cxt), channels[0]))
+        channels = self.config.lateral_channels_in_collection
+        self.squeeze_module = nn.Sequential(BasicDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)
 
@@ -32,18 +31,15 @@ class BiRefNet(nn.Module):
         x3 = torch.cat([x3, F.interpolate(x3_, size=x3.shape[2:], mode='bilinear', align_corners=True)], dim=1)
         x4 = torch.cat([x4, F.interpolate(x4_, size=x4.shape[2:], mode='bilinear', align_corners=True)], dim=1)
         class_preds = None
-        if self.config.cxt:
-            x4 = torch.cat(
-                (
-                    *[
-                        F.interpolate(x1, size=x4.shape[2:], mode='bilinear', align_corners=True),
-                        F.interpolate(x2, size=x4.shape[2:], mode='bilinear', align_corners=True),
-                        F.interpolate(x3, size=x4.shape[2:], mode='bilinear', align_corners=True),
-                    ][-len(self.config.cxt):],
-                    x4
-                ),
-                dim=1
-            )
+        x4 = torch.cat(
+            (
+                F.interpolate(x1, size=x4.shape[2:], mode='bilinear', align_corners=True),
+                F.interpolate(x2, size=x4.shape[2:], mode='bilinear', align_corners=True),
+                F.interpolate(x3, size=x4.shape[2:], mode='bilinear', align_corners=True),
+                x4
+            ),
+            dim=1
+        )
         return (x1, x2, x3, x4), class_preds
 
     def forward_ori(self, x):
