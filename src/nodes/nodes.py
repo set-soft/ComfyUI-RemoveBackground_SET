@@ -45,6 +45,28 @@ TORCH_DTYPE = {
     "float32": torch.float32,
     # "bfloat16": torch.bfloat16,
 }
+WIDTH_OPT = ("INT", {
+                "default": 1024,
+                "min": 0,
+                "max": 16384,
+                "step": 32,
+                "tooltip": "The width of the pre-processing image, does not affect the final output image size"
+                })
+HEIGHT_OPT = ("INT", {
+                "default": 1024,
+                "min": 0,
+                "max": 16384,
+                "step": 32,
+                "tooltip": "The height of the pre-processing image, does not affect the final output image size"
+                })
+UPSCALE_OPT = (["bilinear", "nearest", "nearest-exact", "bicubic"], {
+                "default": "bilinear",
+                "tooltip": "Interpolation method for pre-processing image and post-processing mask"
+                })
+BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, })
+BLUR_SIZE_TWO_OPT = ("INT", {"default": 6, "min": 1, "max": 255, "step": 1, })
+COLOR_OPT = ("INT", {"default": 0, "min": 0, "max": 0xFFFFFF, "step": 1, "display": "color"})
+MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
 
 
 def download_birefnet_model(model_name):
@@ -145,26 +167,10 @@ class GetMaskByBiRefNet:
             "required": {
                 "model": ("BIREFNET",),
                 "images": ("IMAGE",),
-                "width": ("INT",
-                          {
-                              "default": 1024,
-                              "min": 0,
-                              "max": 16384,
-                              "tooltip": "The width of the pre-processing image, does not affect the final output image size"
-                          }),
-                "height": ("INT",
-                           {
-                               "default": 1024,
-                               "min": 0,
-                               "max": 16384,
-                               "tooltip": "The height of the pre-processing image, does not affect the final output image size"
-                           }),
-                "upscale_method": (["bilinear", "nearest", "nearest-exact", "bicubic"],
-                                   {
-                                       "default": "bilinear",
-                                       "tooltip": "Interpolation method for pre-processing image and post-processing mask"
-                                   }),
-                "mask_threshold": ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.004, }),
+                "width": WIDTH_OPT,
+                "height": HEIGHT_OPT,
+                "upscale_method": UPSCALE_OPT,
+                "mask_threshold": MASK_THRESHOLD_OPT,
             }
         }
 
@@ -215,10 +221,10 @@ class BlurFusionForegroundEstimation:
             "required": {
                 "images": ("IMAGE",),
                 "masks": ("MASK",),
-                "blur_size": ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, }),
-                "blur_size_two": ("INT", {"default": 6, "min": 1, "max": 255, "step": 1, }),
+                "blur_size": BLUR_SIZE_OPT,
+                "blur_size_two": BLUR_SIZE_TWO_OPT,
                 "fill_color": ("BOOLEAN", {"default": False}),
-                "color": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFF, "step": 1, "display": "color"}),
+                "color": COLOR_OPT,
             }
         }
 
@@ -268,30 +274,14 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation)
             "required": {
                 "model": ("BIREFNET",),
                 "images": ("IMAGE",),
-                "width": ("INT",
-                          {
-                              "default": 1024,
-                              "min": 0,
-                              "max": 16384,
-                              "tooltip": "The width of the pre-processing image, does not affect the final output image size"
-                          }),
-                "height": ("INT",
-                           {
-                               "default": 1024,
-                               "min": 0,
-                               "max": 16384,
-                               "tooltip": "The height of the pre-processing image, does not affect the final output image size"
-                           }),
-                "upscale_method": (["bilinear", "nearest", "nearest-exact", "bicubic"],
-                                   {
-                                       "default": "bilinear",
-                                       "tooltip": "Interpolation method for pre-processing image and post-processing mask"
-                                   }),
-                "blur_size": ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, }),
-                "blur_size_two": ("INT", {"default": 6, "min": 1, "max": 255, "step": 1, }),
+                "width": WIDTH_OPT,
+                "height": HEIGHT_OPT,
+                "upscale_method": UPSCALE_OPT,
+                "blur_size": BLUR_SIZE_OPT,
+                "blur_size_two": BLUR_SIZE_TWO_OPT,
                 "fill_color": ("BOOLEAN", {"default": False}),
-                "color": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFF, "step": 1, "display": "color"}),
-                "mask_threshold": ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, }),
+                "color": COLOR_OPT,
+                "mask_threshold": MASK_THRESHOLD_OPT,
             }
         }
 
