@@ -8,7 +8,7 @@ from comfy import model_management
 import folder_paths
 from .birefnet.birefnet import BiRefNet
 from .birefnet.birefnet_old import BiRefNet as OldBiRefNet
-from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, check_state_dict
+from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, fix_state_dict
 deviceType = model_management.get_torch_device().type
 
 models_dir_key = "birefnet"
@@ -69,7 +69,7 @@ interpolation_modes_mapping = {
     "bilinear": 2,
     "bicubic": 3,
     "nearest-exact": 0,
-    # "lanczos": 1, #不支持
+    # "lanczos": 1, # Not supported
 }
 
 
@@ -183,7 +183,7 @@ class LoadRembgByBiRefNetModel:
             state_dict = safetensors.torch.load_file(model_path, device=device_type)
         else:
             state_dict = torch.load(model_path, map_location=device_type)
-            state_dict = check_state_dict(state_dict)
+            state_dict = fix_state_dict(state_dict)
 
         biRefNet_model.load_state_dict(state_dict)
         biRefNet_model.to(device_type, dtype=torch_dtype[dtype])
