@@ -28,6 +28,7 @@ class BiRefNetArch(object):
         self.ok = False
         self.bb_ok = False
         self.why = 'Not initialized'
+        self.w = self.h = 1024  # Default size
         fix_state_dict(state_dict)
 
         # Determine the window size for the swin_v1 transformer

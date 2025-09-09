@@ -171,9 +171,10 @@ class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
         if model_full_path is None:
             download_birefnet_model(model_name)
         res = super().load_model_file(model_file_name, device, dtype)
-        res.append(w)
-        res.append(h)
-        return res
+        model, arch = res[0]
+        arch.w = w
+        arch.h = h
+        return ((model, arch), w, h)
 
 
 class GetMaskByBiRefNet:
@@ -335,4 +336,7 @@ class RembgByBiRefNet(RembgByBiRefNetAdvanced):
     DISPLAY_NAME = "Remove background (BiRefNet)"
 
     def rem_bg(self, model, images):
-        return super().rem_bg(model, images)
+        w = model[1].w
+        h = model[1].h
+        logger.debug(f"Using size {w}x{h}")
+        return super().rem_bg(model, images, width=w, height=h)
