@@ -72,6 +72,7 @@ BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, })
 BLUR_SIZE_TWO_OPT = ("INT", {"default": 6, "min": 1, "max": 255, "step": 1, })
 COLOR_OPT = ("INT", {"default": 0, "min": 0, "max": 0xFFFFFF, "step": 1, "display": "color"})
 MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
+DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
 
 
 def download_birefnet_model(model_name):
@@ -102,7 +103,7 @@ class LoadRembgByBiRefNetModel:
                 "device": (["AUTO", "CPU"], )
             },
             "optional": {
-                "dtype": (["float32", "float16"], {"default": "float32"})
+                "dtype": DTYPE_OPS
             }
         }
 
@@ -114,12 +115,13 @@ class LoadRembgByBiRefNetModel:
     UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
     DISPLAY_NAME = "Load BiRefNet model by file"
 
-    def load_model_file(self, model, device, dtype="float32"):
+    def load_model_file(self, model, device, dtype="auto"):
         model_path = folder_paths.get_full_path(MODELS_DIR_KEY, model)
         if device == "AUTO":
             device_type = auto_device_type
         else:
             device_type = "cpu"
+        logger.debug(f"Using {device_type} device")
 
         # Load the state dict
         logger.debug(f"Loading model weights from {model_path}")
@@ -131,11 +133,13 @@ class LoadRembgByBiRefNetModel:
         # Check this is valid for a known model
         arch = BiRefNetArch(state_dict, logger)
         arch.check()
+        dtype = arch.dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
+        logger.debug(f"Using {dtype} data type")
 
         # Create an instance
         biRefNet_model = arch.instantiate_model()
         biRefNet_model.load_state_dict(state_dict)
-        biRefNet_model.to(device_type, dtype=TORCH_DTYPE[dtype])
+        biRefNet_model.to(device_type, dtype=dtype)
         biRefNet_model.eval()
         return [(biRefNet_model, arch)]
 
@@ -149,7 +153,7 @@ class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
                 "device": (["AUTO", "CPU"],)
             },
             "optional": {
-                "dtype": (["float32", "float16"], {"default": "float32"})
+                "dtype": DTYPE_OPS
             }
         }
 

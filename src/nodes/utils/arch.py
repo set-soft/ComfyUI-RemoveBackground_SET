@@ -82,6 +82,7 @@ class BiRefNetArch(object):
         if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
             self.why = 'Missing Input Injection Blocks'
             return
+        self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
         if 'decoder.ipt_blk5.conv1.weight' in state_dict:
             self.version = 2
             self.img_mean = [0.5, 0.5, 0.5]
