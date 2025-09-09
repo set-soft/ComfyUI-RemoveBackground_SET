@@ -1,5 +1,8 @@
-import os
+from .src.nodes import main_logger, __version__
 import folder_paths
+import os
+from seconohe.register_nodes import register_nodes
+from seconohe import JS_PATH
 
 
 models_dir_key = "birefnet"
@@ -17,5 +20,6 @@ else:
 from .src.nodes import birefnetNode  # noqa: E402
 
 
-NODE_CLASS_MAPPINGS = {**birefnetNode.NODE_CLASS_MAPPINGS}
-NODE_DISPLAY_NAME_MAPPINGS = {**birefnetNode.NODE_DISPLAY_NAME_MAPPINGS}
+NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(main_logger, [birefnetNode], version=__version__)
+WEB_DIRECTORY = JS_PATH
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']

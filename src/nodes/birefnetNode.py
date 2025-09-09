@@ -67,7 +67,6 @@ class ImagePreprocessor:
 
 
 class AutoDownloadBiRefNetModel:
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -85,6 +84,8 @@ class AutoDownloadBiRefNetModel:
     FUNCTION = "load_model"
     CATEGORY = "image/BiRefNet"
     DESCRIPTION = "Auto download BiRefNet model from huggingface to models/BiRefNet/{model_name}.safetensors"
+    UNIQUE_NAME = "AutoDownloadBiRefNetModel_SET"
+    DISPLAY_NAME = "Load BiRefNet model by name"
 
     def load_model(self, model_name, device, dtype="float32"):
         model_file_name = f'{model_name}.safetensors'
@@ -112,7 +113,6 @@ class AutoDownloadBiRefNetModel:
 
 
 class LoadRembgByBiRefNetModel:
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -130,6 +130,8 @@ class LoadRembgByBiRefNetModel:
     FUNCTION = "load_model"
     CATEGORY = "rembg/BiRefNet"
     DESCRIPTION = "Load BiRefNet model from folder models/BiRefNet or the path of birefnet configured in the extra YAML file"
+    UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
+    DISPLAY_NAME = "Load BiRefNet model by file"
 
     def load_model(self, model, device, dtype="float32"):
         model_path = folder_paths.get_full_path(MODELS_DIR_KEY, model)
@@ -159,7 +161,6 @@ class LoadRembgByBiRefNetModel:
 
 
 class GetMaskByBiRefNet:
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -193,6 +194,8 @@ class GetMaskByBiRefNet:
     RETURN_NAMES = ("mask",)
     FUNCTION = "get_mask"
     CATEGORY = "rembg/BiRefNet"
+    UNIQUE_NAME = "GetMaskByBiRefNet_SET"
+    DISPLAY_NAME = "Get background mask (BiRefNet)"
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method='bilinear', mask_threshold=0.000):
         model, arch = model
@@ -228,7 +231,6 @@ class GetMaskByBiRefNet:
 
 
 class BlurFusionForegroundEstimation:
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -247,6 +249,8 @@ class BlurFusionForegroundEstimation:
     FUNCTION = "get_foreground"
     CATEGORY = "rembg/BiRefNet"
     DESCRIPTION = "Approximate Fast Foreground Colour Estimation. https://github.com/Photoroom/fast-foreground-estimation"
+    UNIQUE_NAME = "BlurFusionForegroundEstimation_SET"
+    DISPLAY_NAME = "Blur fusion foreground estimation"
 
     def get_foreground(self, images, masks, blur_size=91, blur_size_two=7, fill_color=False, color=None):
         b, h, w, c = images.shape
@@ -280,7 +284,6 @@ class BlurFusionForegroundEstimation:
 
 
 class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation):
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -318,6 +321,8 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation)
     RETURN_NAMES = ("image", "mask",)
     FUNCTION = "rem_bg"
     CATEGORY = "rembg/BiRefNet"
+    UNIQUE_NAME = "RembgByBiRefNetAdvanced_SET"
+    DISPLAY_NAME = "Remove background (BiRefNet) (full)"
 
     def rem_bg(self, model, images, upscale_method='bilinear', width=1024, height=1024, blur_size=91, blur_size_two=7, fill_color=False, color=None, mask_threshold=0.000):
 
@@ -329,7 +334,6 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation)
 
 
 class RembgByBiRefNet(RembgByBiRefNetAdvanced):
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -343,25 +347,8 @@ class RembgByBiRefNet(RembgByBiRefNetAdvanced):
     RETURN_NAMES = ("image", "mask",)
     FUNCTION = "rem_bg"
     CATEGORY = "rembg/BiRefNet"
+    UNIQUE_NAME = "RembgByBiRefNet_SET"
+    DISPLAY_NAME = "Remove background (BiRefNet)"
 
     def rem_bg(self, model, images):
         return super().rem_bg(model, images)
-
-
-NODE_CLASS_MAPPINGS = {
-    "AutoDownloadBiRefNetModel": AutoDownloadBiRefNetModel,
-    "LoadRembgByBiRefNetModel": LoadRembgByBiRefNetModel,
-    "RembgByBiRefNet": RembgByBiRefNet,
-    "RembgByBiRefNetAdvanced": RembgByBiRefNetAdvanced,
-    "GetMaskByBiRefNet": GetMaskByBiRefNet,
-    "BlurFusionForegroundEstimation": BlurFusionForegroundEstimation,
-}
-
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "AutoDownloadBiRefNetModel": "AutoDownloadBiRefNetModel",
-    "LoadRembgByBiRefNetModel": "LoadRembgByBiRefNetModel",
-    "RembgByBiRefNet": "RembgByBiRefNet",
-    "RembgByBiRefNetAdvanced": "RembgByBiRefNetAdvanced",
-    "GetMaskByBiRefNet": "GetMaskByBiRefNet",
-    "BlurFusionForegroundEstimation": "BlurFusionForegroundEstimation",
-}
