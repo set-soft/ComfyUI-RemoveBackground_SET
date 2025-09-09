@@ -10,4 +10,5 @@ __copyright__ = "Copyright © 2025 Salvador E. Tropea / Instituto Nacional de Te
 __license__ = "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
 __author__ = "Salvador E. Tropea"
 NODES_NAME = "BiRefNet-SET"
+MODELS_DIR_KEY = "birefnet"
 main_logger = initialize_logger(NODES_NAME)

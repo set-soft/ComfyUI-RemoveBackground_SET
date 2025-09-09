@@ -6,14 +6,13 @@ from torchvision import transforms
 import comfy
 from comfy import model_management
 import folder_paths
-from . import main_logger
+from . import main_logger, MODELS_DIR_KEY
 from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, fix_state_dict
 from .utils.arch import BiRefNetArch
 
 
 logger = main_logger
 auto_device_type = model_management.get_torch_device().type
-MODELS_DIR_KEY = "birefnet"
 models_path_default = folder_paths.get_folder_paths(MODELS_DIR_KEY)[0]
 USAGE_TO_WEIGHTS_FILE = {
     'General': 'BiRefNet',
