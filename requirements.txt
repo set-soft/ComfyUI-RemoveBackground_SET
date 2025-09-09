@@ -5,3 +5,6 @@ safetensors
 # Black listed by manager to avoid side effects
 # torch
 # torchvision
+
+# Simple tool for nodes
+seconohe
