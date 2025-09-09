@@ -15,22 +15,27 @@ logger = main_logger
 auto_device_type = model_management.get_torch_device().type
 models_path_default = folder_paths.get_folder_paths(MODELS_DIR_KEY)[0]
 USAGE_TO_WEIGHTS_FILE = {
-    'General': 'BiRefNet',
-    'General-HR': 'BiRefNet_HR',
-    'Matting-HR': 'BiRefNet_HR-matting',
-    'General-Lite': 'BiRefNet_lite',
-    'General-Lite-2K': 'BiRefNet_lite-2K',
-    'General-reso_512': 'BiRefNet_512x512',
-    'Portrait': 'BiRefNet-portrait',
-    'Matting': 'BiRefNet-matting',
-    'Matting-Lite': 'BiRefNet_lite-matting',
-    # 'Anime-Lite': 'BiRefNet_lite-Anime',
-    'DIS': 'BiRefNet-DIS5K',
-    'HRSOD': 'BiRefNet-HRSOD',
-    'COD': 'BiRefNet-COD',
-    'DIS-TR_TEs': 'BiRefNet-DIS5K-TR_TEs',
-    'General-legacy': 'BiRefNet-legacy',
-    'General-dynamic': 'BiRefNet_dynamic',
+    'General': ('BiRefNet', 'General', 1024, 1024),                                           # 444 MB
+    'General (HR=2048)': ('BiRefNet_HR', 'General-HR', 2048, 2048),                           # 444 MB (FP16)
+    'General Lite': ('BiRefNet_lite', 'General-Lite', 1024, 1024),                            # 178 MB
+    'General 2K Lite': ('BiRefNet_lite-2K', 'General-Lite-2K', 2560, 1440),                   # 178 MB
+    'General (LR=512)': ('BiRefNet_512x512', 'General-reso_512', 512, 512),                   # 444 MB (FP16)
+    'General legacy': ('BiRefNet-legacy', 'General-legacy', 1024, 1024),                      # 885 MB
+    # dynamic is from 256x256 to 2304x2304
+    'General dynamic res': ('BiRefNet_dynamic', 'General-dynamic', 1024, 1024),               # 444 MB (FP16?)
+    # Portrait
+    'Portrait': ('BiRefNet-portrait', 'Portrait', 1024, 1024),                                # 885 MB
+    # Matting (w/alpha)
+    'Matting': ('BiRefNet-matting', 'Matting', 1024, 1024),                                   # 885 MB
+    'Matting Lite': ('BiRefNet_lite-matting', 'Matting-Lite', 1024, 1024),                    # 89 MB (FP16?)
+    'Matting (HR=2048)': ('BiRefNet_HR-matting', 'Matting-HR', 2048, 2048),                   # 444 MB (FP16)
+    # Dichotomous Image Segmentation (DIS)
+    'Dichotomous Img Seg (DIS)': ('BiRefNet-DIS5K', 'DIS', 1024, 1024),                       # 885 MB
+    'Dichotomous Img Seg (DIS) TR/TEs': ('BiRefNet-DIS5K-TR_TEs', 'DIS-TR_TEs', 1024, 1024),  # 885 MB
+    # High-Resolution Salient Object Detection (HRSOD)
+    'HR Salient Obj. Detect.(HRSOD)': ('BiRefNet-HRSOD', 'HRSOD', 1024, 1024),                # 885 MB
+    # Camouflaged Object Detection (COD)
+    'Camouflaged Obj. Detect.(COD)': ('BiRefNet-COD', 'COD', 1024, 1024),                     # 885 MB
 }
 MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
 INTERPOLATION_MODES_MAPPING = {
@@ -72,8 +77,9 @@ MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step"
 def download_birefnet_model(model_name):
     """ Downloading model from huggingface. """
     models_dir = os.path.join(models_path_default)
-    url = f"https://huggingface.co/ZhengPeng7/{USAGE_TO_WEIGHTS_FILE[model_name]}/resolve/main/model.safetensors"
-    download_file(logger, url, models_dir, f"{model_name}.safetensors")
+    hf_dir, name = USAGE_TO_WEIGHTS_FILE[model_name][:2]
+    url = f"https://huggingface.co/ZhengPeng7/{hf_dir}/resolve/main/model.safetensors"
+    download_file(logger, url, models_dir, f"{name}.safetensors")
 
 
 class ImagePreprocessor:
@@ -147,17 +153,23 @@ class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
             }
         }
 
+    RETURN_TYPES = ("BIREFNET", "INT", "INT",)
+    RETURN_NAMES = ("model", "train_w", "train_h", )
     FUNCTION = "load_model"
     DESCRIPTION = "Auto download BiRefNet model from huggingface to models/BiRefNet/{model_name}.safetensors"
     UNIQUE_NAME = "AutoDownloadBiRefNetModel_SET"
     DISPLAY_NAME = "Load BiRefNet model by name"
 
     def load_model(self, model_name, device, dtype="float32"):
-        model_file_name = f'{model_name}.safetensors'
+        _, fname, w, h = USAGE_TO_WEIGHTS_FILE[model_name]
+        model_file_name = f'{fname}.safetensors'
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
         if model_full_path is None:
             download_birefnet_model(model_name)
-        return super().load_model_file(model_file_name, device, dtype)
+        res = super().load_model_file(model_file_name, device, dtype)
+        res.append(w)
+        res.append(h)
+        return res
 
 
 class GetMaskByBiRefNet:
