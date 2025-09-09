@@ -22,12 +22,12 @@ def patches2image(patches, grid_h=2, grid_w=2, patch_ref=None, transformation='(
 
 
 class BiRefNet(nn.Module):
-    def __init__(self, small=False):
+    def __init__(self, arch):
         super(BiRefNet, self).__init__()
-        self.bb = build_backbone('swin_v1_t' if small else 'swin_v1_l')
+        self.bb = build_backbone(arch.bb)
 
         # BasicDecBlk_x1
-        channels = [1536, 768, 384, 192] if small else [3072, 1536, 768, 384]
+        channels = arch.channels
         self.squeeze_module = nn.Sequential(BasicDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)

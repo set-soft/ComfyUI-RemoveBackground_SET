@@ -8,12 +8,12 @@ from .blocks import OldDecBlk, BasicLatBlk
 
 
 class BiRefNet(nn.Module):
-    def __init__(self):
+    def __init__(self, arch):
         super(BiRefNet, self).__init__()
-        self.bb = build_backbone('swin_v1_l')
+        self.bb = build_backbone(arch.bb)
 
         # BasicDecBlk_x1
-        channels = [3072, 1536, 768, 384]
+        channels = arch.channels
         self.squeeze_module = nn.Sequential(OldDecBlk(sum(channels), channels[0]))
 
         self.decoder = Decoder(channels)

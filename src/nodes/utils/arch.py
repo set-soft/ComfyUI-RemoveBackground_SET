@@ -3,6 +3,8 @@
 # License: GPLv3
 # Project: ComfyUI-BiRefNet-SET
 import math
+from ..birefnet.birefnet import BiRefNet
+from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 
 
 class BiRefNetArch(object):
@@ -51,8 +53,10 @@ class BiRefNetArch(object):
         # Check if this is one of the known back bones
         if self.matches(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12):
             self.bb = 'swin_v1_l'
+            self.channels = [3072, 1536, 768, 384]
         elif self.matches(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7):
             self.bb = 'swin_v1_t'
+            self.channels = [1536, 768, 384, 192]
         else:
             self.why = 'unknown geometry'
             return
@@ -62,9 +66,27 @@ class BiRefNetArch(object):
         if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
             self.why = 'Missing Input Injection Blocks'
             return
-        self.version = 2 if 'decoder.ipt_blk5.conv1.weight' in state_dict else 1
+        if 'decoder.ipt_blk5.conv1.weight' in state_dict:
+            self.version = 2
+            self.img_mean = [0.5, 0.5, 0.5]
+            self.img_std = [1.0, 1.0, 1.0]
+        else:
+            self.version = 1
+            # mean and standard deviation of the entire ImageNet dataset
+            self.img_mean = [0.485, 0.456, 0.406]
+            self.img_std = [0.229, 0.224, 0.225]
+
         self.ok = True
 
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
+
+    def check(self):
+        if not self.bb_ok:
+            raise ValueError(f"Unknown backbone: {self.why}")
+        if not self.ok:
+            raise ValueError(f"Wrong architecture: {self.why}")
+
+    def instantiate_model(self):
+        return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)

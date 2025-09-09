@@ -47,9 +47,6 @@ if __name__ == "__main__":
         show_keys(state_dict)
 
     bb_a = BiRefNetArch(state_dict, main_logger)
-    if not bb_a.bb_ok:
-        raise ValueError(f"Unknown backbone: {bb_a.why}")
-    if not bb_a.ok:
-        raise ValueError(f"Wrong architecture: {bb_a.why}")
+    bb_a.check()
     main_logger.info(f"Back bone type: {bb_a.bb}")
     main_logger.info(f"Model version: {bb_a.version}")
