@@ -1,14 +1,15 @@
 import os
 import safetensors.torch
+from seconohe.downloader import download_file
 import torch
 from torchvision import transforms
-from torch.hub import download_url_to_file
 import comfy
 from comfy import model_management
 import folder_paths
 from . import main_logger
 from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, fix_state_dict
 from .utils.arch import BiRefNetArch
+
 
 logger = main_logger
 deviceType = model_management.get_torch_device().type
@@ -34,36 +35,7 @@ usage_to_weights_file = {
 }
 
 modelNameList = list(usage_to_weights_file.keys())
-
-
-def get_model_path(model_name):
-    return os.path.join(models_path_default, f"{model_name}.safetensors")
-
-
-def download_models(model_root, model_urls):
-    if not os.path.exists(model_root):
-        os.makedirs(model_root, exist_ok=True)
-
-    for local_file, url in model_urls:
-        local_path = os.path.join(model_root, local_file)
-        if not os.path.exists(local_path):
-            local_path = os.path.abspath(os.path.join(model_root, local_file))
-            download_url_to_file(url, dst=local_path)
-
-
-def download_birefnet_model(model_name):
-    """
-    Downloading model from huggingface.
-    """
-    model_root = os.path.join(models_path_default)
-    model_urls = (
-        (f"{model_name}.safetensors",
-         f"https://huggingface.co/ZhengPeng7/{usage_to_weights_file[model_name]}/resolve/main/model.safetensors"),
-    )
-    download_models(model_root, model_urls)
-
-
-interpolation_modes_mapping = {
+INTERPOLATION_MODES_MAPPING = {
     "nearest": 0,
     "bilinear": 2,
     "bicubic": 3,
