@@ -76,8 +76,6 @@ Some models on GitHub:
 - LoadRembgByBiRefNetModel
   - Can select model from `${comfyui_rootpath}/models/BiRefNet` or the path of `birefnet` configured in the extra YAML file
   - You can download latest models from [BiRefNet Releases](https://github.com/ZhengPeng7/BiRefNet/releases) or old models [BiRefNet-DIS_ep580.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-DIS_ep580.pth) and [BiRefNet-ep480.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth)
-  - When param use_weight is True, need download weight model [swin_large_patch4_window12_384_22kto1k.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/swin_large_patch4_window12_384_22kto1k.pth)  
-    model General-Lite, General-Lite-2K and Matting-Lite must use weight model [swin_tiny_patch4_window7_224_22kto1k_finetune.pth](https://drive.google.com/drive/folders/1cmce_emsS8A5ha5XT2c_CZiJzlLM81ms)
 - RembgByBiRefNet
   - Output transparent foreground image and mask
 - RembgByBiRefNetAdvanced

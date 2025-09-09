@@ -146,7 +146,6 @@ class LoadRembgByBiRefNetModel:
                 "device": (["AUTO", "CPU"], )
             },
             "optional": {
-                "use_weight": ("BOOLEAN", {"default": False}),
                 "dtype": (["float32", "float16"], {"default": "float32"})
             }
         }
@@ -157,7 +156,7 @@ class LoadRembgByBiRefNetModel:
     CATEGORY = "rembg/BiRefNet"
     DESCRIPTION = "Load BiRefNet model from folder models/BiRefNet or the path of birefnet configured in the extra YAML file"
 
-    def load_model(self, model, device, use_weight=False, dtype="float32"):
+    def load_model(self, model, device, dtype="float32"):
         model_path = folder_paths.get_full_path(models_dir_key, model)
         if device == "AUTO":
             device_type = deviceType
