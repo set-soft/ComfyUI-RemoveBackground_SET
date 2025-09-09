@@ -65,52 +65,6 @@ class ImagePreprocessor:
         return image
 
 
-class AutoDownloadBiRefNetModel:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model_name": (MODEL_NAME_LIST,),
-                "device": (["AUTO", "CPU"],)
-            },
-            "optional": {
-                "dtype": (["float32", "float16"], {"default": "float32"})
-            }
-        }
-
-    RETURN_TYPES = ("BIREFNET",)
-    RETURN_NAMES = ("model",)
-    FUNCTION = "load_model"
-    CATEGORY = "image/BiRefNet"
-    DESCRIPTION = "Auto download BiRefNet model from huggingface to models/BiRefNet/{model_name}.safetensors"
-    UNIQUE_NAME = "AutoDownloadBiRefNetModel_SET"
-    DISPLAY_NAME = "Load BiRefNet model by name"
-
-    def load_model(self, model_name, device, dtype="float32"):
-        model_file_name = f'{model_name}.safetensors'
-        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
-        if model_full_path is None:
-            download_birefnet_model(model_name)
-            model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
-        if device == "AUTO":
-            device_type = auto_device_type
-        else:
-            device_type = "cpu"
-
-        # Load the state dict and detect the model version and backbone
-        logger.debug(f"Loading model weights from {model_full_path}")
-        state_dict = safetensors.torch.load_file(model_full_path, device=device_type)
-        arch = BiRefNetArch(state_dict, logger)
-        arch.check()
-
-        # Now create the model
-        biRefNet_model = arch.instantiate_model()
-        biRefNet_model.load_state_dict(state_dict)
-        biRefNet_model.to(device_type, dtype=TORCH_DTYPE[dtype])
-        biRefNet_model.eval()
-        return [(biRefNet_model, arch)]
-
-
 class LoadRembgByBiRefNetModel:
     @classmethod
     def INPUT_TYPES(cls):
@@ -126,13 +80,13 @@ class LoadRembgByBiRefNetModel:
 
     RETURN_TYPES = ("BIREFNET",)
     RETURN_NAMES = ("model",)
-    FUNCTION = "load_model"
+    FUNCTION = "load_model_file"
     CATEGORY = "rembg/BiRefNet"
     DESCRIPTION = "Load BiRefNet model from folder models/BiRefNet or the path of birefnet configured in the extra YAML file"
     UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
     DISPLAY_NAME = "Load BiRefNet model by file"
 
-    def load_model(self, model, device, dtype="float32"):
+    def load_model_file(self, model, device, dtype="float32"):
         model_path = folder_paths.get_full_path(MODELS_DIR_KEY, model)
         if device == "AUTO":
             device_type = auto_device_type
@@ -156,6 +110,32 @@ class LoadRembgByBiRefNetModel:
         biRefNet_model.to(device_type, dtype=TORCH_DTYPE[dtype])
         biRefNet_model.eval()
         return [(biRefNet_model, arch)]
+
+
+class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_name": (MODEL_NAME_LIST,),
+                "device": (["AUTO", "CPU"],)
+            },
+            "optional": {
+                "dtype": (["float32", "float16"], {"default": "float32"})
+            }
+        }
+
+    FUNCTION = "load_model"
+    DESCRIPTION = "Auto download BiRefNet model from huggingface to models/BiRefNet/{model_name}.safetensors"
+    UNIQUE_NAME = "AutoDownloadBiRefNetModel_SET"
+    DISPLAY_NAME = "Load BiRefNet model by name"
+
+    def load_model(self, model_name, device, dtype="float32"):
+        model_file_name = f'{model_name}.safetensors'
+        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
+        if model_full_path is None:
+            download_birefnet_model(model_name)
+        return super().load_model_file(model_file_name, device, dtype)
 
 
 class GetMaskByBiRefNet:
