@@ -7,12 +7,28 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 
 
+UNWANTED_PREFIXES = ['module.', '_orig_mod.']
+
+
+# This is needed for old models
+def fix_state_dict(state_dict):
+    """ Remove bogus prefixes from the keys in the state dict """
+    for k, v in list(state_dict.items()):
+        prefix_length = 0
+        for unwanted_prefix in UNWANTED_PREFIXES:
+            if k[prefix_length:].startswith(unwanted_prefix):
+                prefix_length += len(unwanted_prefix)
+        if prefix_length:
+            state_dict[k[prefix_length:]] = state_dict.pop(k)
+
+
 class BiRefNetArch(object):
     def __init__(self, state_dict, logger):
         super().__init__()
         self.ok = False
         self.bb_ok = False
         self.why = 'Not initialized'
+        fix_state_dict(state_dict)
 
         # Determine the window size for the swin_v1 transformer
         tensor = state_dict.get('bb.layers.0.blocks.0.attn.relative_position_bias_table')

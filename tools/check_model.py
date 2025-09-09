@@ -15,7 +15,6 @@ import bootstrap  # noqa: F401
 from src.nodes import main_logger
 from src.nodes.utils.misc import cli_add_verbose, cli_add_version
 from src.nodes.utils.arch import BiRefNetArch
-from src.nodes.util import fix_state_dict
 
 
 def show_keys(state_dict):
@@ -41,7 +40,6 @@ if __name__ == "__main__":
         state_dict = safetensors.torch.load_file(model_path)
     else:
         state_dict = torch.load(model_path, map_location='cpu')
-        state_dict = fix_state_dict(state_dict)
     # Optional print keys
     if args.keys:
         show_keys(state_dict)

@@ -192,15 +192,3 @@ def filter_mask(mask, threshold=4e-3):
     mask_binary = mask > threshold
     filtered_mask = mask * mask_binary
     return filtered_mask
-
-
-# This is needed for old models
-def fix_state_dict(state_dict, unwanted_prefixes=['module.', '_orig_mod.']):
-    """ Remove bogus prefixes from the keys in the state dict """
-    for k, v in list(state_dict.items()):
-        prefix_length = 0
-        for unwanted_prefix in unwanted_prefixes:
-            if k[prefix_length:].startswith(unwanted_prefix):
-                prefix_length += len(unwanted_prefix)
-        state_dict[k[prefix_length:]] = state_dict.pop(k)
-    return state_dict

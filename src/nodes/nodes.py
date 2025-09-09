@@ -7,7 +7,7 @@ import comfy
 from comfy import model_management
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY
-from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, fix_state_dict
+from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui
 from .utils.arch import BiRefNetArch
 
 
@@ -145,7 +145,6 @@ class LoadRembgByBiRefNetModel:
             state_dict = safetensors.torch.load_file(model_path, device=device_type)
         else:
             state_dict = torch.load(model_path, map_location=device_type)
-            state_dict = fix_state_dict(state_dict)
 
         # Check this is valid for a known model
         arch = BiRefNetArch(state_dict, logger)
