@@ -119,7 +119,7 @@ def apply_mask_to_image(image, mask):
     Returns:
         torch.Tensor: Masked image tensor of shape (h, w, c+1) with transparency.
     """
-    # 判断 image 的形状
+    # Check the shape of the image
     if image.dim() == 3:
         pass
     elif image.dim() == 4:
@@ -128,9 +128,9 @@ def apply_mask_to_image(image, mask):
         raise ValueError("Image should be of shape (h, w, c) or (1, h, w, c).")
 
     h, w, c = image.shape
-    # 判断 mask 的形状
+    # Check the shape of the mask
     if mask.dim() == 4:
-        mask = mask.squeeze(0).squeeze(0)  # 去掉前2个维度 (h,w)
+        mask = mask.squeeze(0).squeeze(0)  # Remove the first two dimensions (h,w)
     elif mask.dim() == 3:
         mask = mask.squeeze(0)
     elif mask.dim() == 2:
@@ -140,15 +140,17 @@ def apply_mask_to_image(image, mask):
 
     assert mask.shape == (h, w), "Mask shape does not match image shape."
 
-    # 将 mask 扩展到与 image 相同的通道数
+    # Expand the mask to have the same number of channels as the image
     image_mask = mask.unsqueeze(-1).expand(h, w, c)
 
-    # 应用遮罩，黑色部分是0，相乘后白色1的部分会被保留，其它部分变为了黑色
+    # Apply the mask, the black part is 0, the white 1 part will be retained after multiplication, and the other parts will
+    # become black
     masked_image = image * image_mask
 
-    # 遮罩的黑白当做alpha通道的不透明度，黑色是0表示透明，白色是1表示不透明
+    # The black and white of the mask are used as the opacity of the alpha channel, black is 0 for transparency, and white is 1
+    # for opacity
     alpha = mask
-    # alpha通道拼接到原图像的RGB中
+    # The alpha channel is stitched into the RGB of the original image
     masked_image_with_alpha = torch.cat((masked_image[:, :, :3], alpha.unsqueeze(2)), dim=2)
 
     return masked_image_with_alpha.unsqueeze(0)
@@ -168,19 +170,19 @@ def normalize_mask(mask_tensor):
 
 def add_mask_as_alpha(image, mask):
     """
-    将 (b, h, w) 形状的 mask 添加为 (b, h, w, 3) 形状的 image 的第 4 个通道（alpha 通道）。
+    Add the (b, h, w) shaped mask as the 4th channel (alpha channel) of the (b, h, w, 3) shaped image.
     """
-    # 检查输入形状
+    # Check input shape
     assert image.dim() == 4 and image.size(-1) == 3, "The shape of image should be (b, h, w, 3)."
     assert mask.dim() == 3, "The shape of mask should be (b, h, w)"
     assert image.size(0) == mask.size(0) and image.size(1) == mask.size(1) and image.size(2) == mask.size(2), "The batch, height, and width dimensions of the image and mask must be consistent"
 
-    # 将 mask 扩展为 (b, h, w, 1)
+    # Expand the mask to (b, h, w, 1)
     mask = mask[..., None]
 
-    # 不做点乘，可能会有边缘轮廓线
+    # Without dot multiplication, there may be edge contours
     # image = image * mask
-    # 将 image 和 mask 拼接为 (b, h, w, 4)
+    # Concatenate image and mask into (b, h, w, 4)
     image_with_alpha = torch.cat([image, mask], dim=-1)
 
     return image_with_alpha

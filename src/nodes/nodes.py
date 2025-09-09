@@ -217,13 +217,13 @@ class GetMaskByBiRefNet:
 
         mask_bchw = torch.cat(_mask_bchw, dim=0)
         del _mask_bchw
-        # 遮罩大小需还原为与原图一致
+        # Back to the original size to match the image size
         mask = comfy.utils.common_upscale(mask_bchw, w, h, upscale_method, "disabled")
         # (b, 1, h, w)
         if mask_threshold > 0:
             mask = filter_mask(mask, threshold=mask_threshold)
         # else:
-        #   似乎几乎无影响
+        #   Seems to have no effect
         #     mask = normalize_mask(mask)
 
         return mask.squeeze(1),
@@ -274,7 +274,7 @@ class BlurFusionForegroundEstimation:
             # (b, h, w, 3)=>(b, h, w, 3)
             del background_color, apply_mask
         else:
-            # image的非mask对应部分设为透明 => (b, h, w, 4)
+            # The non-mask corresponding parts of the image are set to transparent
             out_images = add_mask_as_alpha(_image_masked_tensor.cpu(), masks.cpu())
 
         del _image_masked_tensor
