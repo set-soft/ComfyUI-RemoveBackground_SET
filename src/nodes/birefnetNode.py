@@ -7,8 +7,6 @@ import comfy
 from comfy import model_management
 import folder_paths
 from . import main_logger
-from .birefnet.birefnet import BiRefNet
-from .birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui, fix_state_dict
 from .utils.arch import BiRefNetArch
 
