@@ -12,10 +12,10 @@ from .utils.arch import BiRefNetArch
 
 
 logger = main_logger
-deviceType = model_management.get_torch_device().type
-models_dir_key = "birefnet"
-models_path_default = folder_paths.get_folder_paths(models_dir_key)[0]
-usage_to_weights_file = {
+auto_device_type = model_management.get_torch_device().type
+MODELS_DIR_KEY = "birefnet"
+models_path_default = folder_paths.get_folder_paths(MODELS_DIR_KEY)[0]
+USAGE_TO_WEIGHTS_FILE = {
     'General': 'BiRefNet',
     'General-HR': 'BiRefNet_HR',
     'Matting-HR': 'BiRefNet_HR-matting',
@@ -33,7 +33,7 @@ usage_to_weights_file = {
     'General-legacy': 'BiRefNet-legacy',
     'General-dynamic': 'BiRefNet_dynamic',
 }
-modelNameList = list(usage_to_weights_file.keys())
+MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
 INTERPOLATION_MODES_MAPPING = {
     "nearest": 0,
     "bilinear": 2,
@@ -44,14 +44,14 @@ INTERPOLATION_MODES_MAPPING = {
 TORCH_DTYPE = {
     "float16": torch.float16,
     "float32": torch.float32,
-    "bfloat16": torch.bfloat16,
+    # "bfloat16": torch.bfloat16,
 }
 
 
 def download_birefnet_model(model_name):
     """ Downloading model from huggingface. """
     models_dir = os.path.join(models_path_default)
-    url = f"https://huggingface.co/ZhengPeng7/{usage_to_weights_file[model_name]}/resolve/main/model.safetensors"
+    url = f"https://huggingface.co/ZhengPeng7/{USAGE_TO_WEIGHTS_FILE[model_name]}/resolve/main/model.safetensors"
     download_file(logger, url, models_dir, f"{model_name}.safetensors")
 
 
@@ -72,7 +72,7 @@ class AutoDownloadBiRefNetModel:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model_name": (modelNameList,),
+                "model_name": (MODEL_NAME_LIST,),
                 "device": (["AUTO", "CPU"],)
             },
             "optional": {
@@ -88,12 +88,12 @@ class AutoDownloadBiRefNetModel:
 
     def load_model(self, model_name, device, dtype="float32"):
         model_file_name = f'{model_name}.safetensors'
-        model_full_path = folder_paths.get_full_path(models_dir_key, model_file_name)
+        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
         if model_full_path is None:
             download_birefnet_model(model_name)
-            model_full_path = folder_paths.get_full_path(models_dir_key, model_file_name)
+            model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
         if device == "AUTO":
-            device_type = deviceType
+            device_type = auto_device_type
         else:
             device_type = "cpu"
 
@@ -117,7 +117,7 @@ class LoadRembgByBiRefNetModel:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model": (folder_paths.get_filename_list(models_dir_key),),
+                "model": (folder_paths.get_filename_list(MODELS_DIR_KEY),),
                 "device": (["AUTO", "CPU"], )
             },
             "optional": {
@@ -132,9 +132,9 @@ class LoadRembgByBiRefNetModel:
     DESCRIPTION = "Load BiRefNet model from folder models/BiRefNet or the path of birefnet configured in the extra YAML file"
 
     def load_model(self, model, device, dtype="float32"):
-        model_path = folder_paths.get_full_path(models_dir_key, model)
+        model_path = folder_paths.get_full_path(MODELS_DIR_KEY, model)
         if device == "AUTO":
-            device_type = deviceType
+            device_type = auto_device_type
         else:
             device_type = "cpu"
 
