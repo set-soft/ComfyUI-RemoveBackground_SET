@@ -33,7 +33,6 @@ usage_to_weights_file = {
     'General-legacy': 'BiRefNet-legacy',
     'General-dynamic': 'BiRefNet_dynamic',
 }
-
 modelNameList = list(usage_to_weights_file.keys())
 INTERPOLATION_MODES_MAPPING = {
     "nearest": 0,
@@ -42,24 +41,29 @@ INTERPOLATION_MODES_MAPPING = {
     "nearest-exact": 0,
     # "lanczos": 1, # Not supported
 }
+TORCH_DTYPE = {
+    "float16": torch.float16,
+    "float32": torch.float32,
+    "bfloat16": torch.bfloat16,
+}
+
+
+def download_birefnet_model(model_name):
+    """ Downloading model from huggingface. """
+    models_dir = os.path.join(models_path_default)
+    url = f"https://huggingface.co/ZhengPeng7/{usage_to_weights_file[model_name]}/resolve/main/model.safetensors"
+    download_file(logger, url, models_dir, f"{model_name}.safetensors")
 
 
 class ImagePreprocessor:
     def __init__(self, arch, resolution, upscale_method="bilinear") -> None:
-        interpolation = interpolation_modes_mapping.get(upscale_method, 2)
+        interpolation = INTERPOLATION_MODES_MAPPING.get(upscale_method, 2)
         self.transform_image = transforms.Compose([transforms.Resize(resolution, interpolation=interpolation),
                                                    transforms.Normalize(arch.img_mean, arch.img_std)])
 
     def proc(self, image) -> torch.Tensor:
         image = self.transform_image(image)
         return image
-
-
-torch_dtype = {
-    "float16": torch.float16,
-    "float32": torch.float32,
-    "bfloat16": torch.bfloat16,
-}
 
 
 class AutoDownloadBiRefNetModel:
@@ -94,6 +98,7 @@ class AutoDownloadBiRefNetModel:
             device_type = "cpu"
 
         # Load the state dict and detect the model version and backbone
+        logger.debug(f"Loading model weights from {model_full_path}")
         state_dict = safetensors.torch.load_file(model_full_path, device=device_type)
         arch = BiRefNetArch(state_dict, logger)
         arch.check()
@@ -101,7 +106,7 @@ class AutoDownloadBiRefNetModel:
         # Now create the model
         biRefNet_model = arch.instantiate_model()
         biRefNet_model.load_state_dict(state_dict)
-        biRefNet_model.to(device_type, dtype=torch_dtype[dtype])
+        biRefNet_model.to(device_type, dtype=TORCH_DTYPE[dtype])
         biRefNet_model.eval()
         return [(biRefNet_model, arch)]
 
@@ -134,6 +139,7 @@ class LoadRembgByBiRefNetModel:
             device_type = "cpu"
 
         # Load the state dict
+        logger.debug(f"Loading model weights from {model_path}")
         if model_path.endswith(".safetensors"):
             state_dict = safetensors.torch.load_file(model_path, device=device_type)
         else:
@@ -147,7 +153,7 @@ class LoadRembgByBiRefNetModel:
         # Create an instance
         biRefNet_model = arch.instantiate_model()
         biRefNet_model.load_state_dict(state_dict)
-        biRefNet_model.to(device_type, dtype=torch_dtype[dtype])
+        biRefNet_model.to(device_type, dtype=TORCH_DTYPE[dtype])
         biRefNet_model.eval()
         return [(biRefNet_model, arch)]
 
