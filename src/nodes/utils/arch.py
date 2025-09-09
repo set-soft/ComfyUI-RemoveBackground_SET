@@ -1,0 +1,70 @@
+# Copyright (c) 2025 Salvador E. Tropea
+# Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
+# License: GPLv3
+# Project: ComfyUI-BiRefNet-SET
+import math
+
+
+class BiRefNetArch(object):
+    def __init__(self, state_dict, logger):
+        super().__init__()
+        self.ok = False
+        self.bb_ok = False
+        self.why = 'Not initialized'
+
+        # Determine the window size for the swin_v1 transformer
+        tensor = state_dict.get('bb.layers.0.blocks.0.attn.relative_position_bias_table')
+        if tensor is None:
+            self.why = 'No relative position bias table'
+            return
+        window = (math.sqrt(tensor.shape[0]) + 1) / 2
+        if window != int(window):
+            self.why = "Wrong swin_v1 bias table size"
+            return
+        self.window_size = int(window)
+
+        # Find layers (stages), depths and number of heads
+        self.layers = 0
+        self.depths = []
+        self.num_heads = []
+        while f'bb.layers.{self.layers}.blocks.0.attn.relative_position_bias_table' in state_dict:
+            # How many heads?
+            table = state_dict[f'bb.layers.{self.layers}.blocks.0.attn.relative_position_bias_table']
+            self.num_heads.append(table.shape[-1])
+            # Analyze the blocks for this layer
+            blocks = 0
+            while f'bb.layers.{self.layers}.blocks.{blocks}.norm1.weight' in state_dict:
+                blocks += 1
+            self.depths.append(blocks)
+            # One more layer
+            self.layers += 1
+
+        tensor = state_dict.get('bb.patch_embed.proj.weight')
+        if tensor is None:
+            self.why = 'No PatchEmbed found'
+            return
+        self.embed_dim = tensor.shape[0]
+
+        logger.debug(f"Embed dim={self.embed_dim} Layers {self.layers} Depths {self.depths} Num Heads {self.num_heads} "
+                     f"Window size: {self.window_size}")
+
+        # Check if this is one of the known back bones
+        if self.matches(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12):
+            self.bb = 'swin_v1_l'
+        elif self.matches(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7):
+            self.bb = 'swin_v1_t'
+        else:
+            self.why = 'unknown geometry'
+            return
+        self.bb_ok = True
+
+        # Try to figure out which version is this
+        if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
+            self.why = 'Missing Input Injection Blocks'
+            return
+        self.version = 2 if 'decoder.ipt_blk5.conv1.weight' in state_dict else 1
+        self.ok = True
+
+    def matches(self, embed_dim, depths, num_heads, window_size):
+        return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
+                self.window_size == window_size)
