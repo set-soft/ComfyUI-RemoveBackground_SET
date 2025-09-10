@@ -3,7 +3,6 @@ import safetensors.torch
 from seconohe.downloader import download_file
 import torch
 from torchvision import transforms
-import comfy
 from comfy import model_management
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY
@@ -38,13 +37,6 @@ USAGE_TO_WEIGHTS_FILE = {
     'Camouflaged Obj. Detect.(COD)': ('BiRefNet-COD', 'COD', 1024, 1024),                     # 885 MB
 }
 MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
-INTERPOLATION_MODES_MAPPING = {
-    "nearest": 0,
-    "bilinear": 2,
-    "bicubic": 3,
-    "nearest-exact": 0,
-    # "lanczos": 1, # Not supported
-}
 TORCH_DTYPE = {
     "float16": torch.float16,
     "float32": torch.float32,
@@ -64,8 +56,8 @@ HEIGHT_OPT = ("INT", {
                 "step": 32,
                 "tooltip": "The height of the pre-processing image, does not affect the final output image size"
                 })
-UPSCALE_OPT = (["bilinear", "nearest", "nearest-exact", "bicubic"], {
-                "default": "bilinear",
+UPSCALE_OPT = ([mode.value for mode in transforms.InterpolationMode], {
+                "default": transforms.InterpolationMode.BICUBIC.value,
                 "tooltip": "Interpolation method for pre-processing image and post-processing mask"
                 })
 BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, })
@@ -84,8 +76,8 @@ def download_birefnet_model(model_name):
 
 
 class ImagePreprocessor:
-    def __init__(self, arch, resolution, upscale_method="bilinear") -> None:
-        interpolation = INTERPOLATION_MODES_MAPPING.get(upscale_method, 2)
+    def __init__(self, arch, resolution, upscale_method) -> None:
+        interpolation = transforms.InterpolationMode(upscale_method)
         self.transform_image = transforms.Compose([transforms.Resize(resolution, interpolation=interpolation),
                                                    transforms.Normalize(arch.img_mean, arch.img_std)])
 
@@ -220,7 +212,7 @@ class GetMaskByBiRefNet:
         mask_bchw = torch.cat(_mask_bchw, dim=0)
         del _mask_bchw
         # Back to the original size to match the image size
-        mask = comfy.utils.common_upscale(mask_bchw, w, h, upscale_method, "disabled")
+        mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
         # (b, 1, h, w)
         if mask_threshold > 0:
             mask = filter_mask(mask, threshold=mask_threshold)
