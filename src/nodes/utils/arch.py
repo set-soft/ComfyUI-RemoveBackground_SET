@@ -86,8 +86,12 @@ class BiRefNetArch(object):
         self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
         if 'decoder.ipt_blk5.conv1.weight' in state_dict:
             self.version = 2
-            self.img_mean = [0.5, 0.5, 0.5]
-            self.img_std = [1.0, 1.0, 1.0]
+            # The ComfyUI_BiRefNet_ll nodes uses this for new models
+            # self.img_mean = [0.5, 0.5, 0.5]
+            # self.img_std = [1.0, 1.0, 1.0]
+            # But I couldn't find any reference to it in the original code
+            self.img_mean = [0.485, 0.456, 0.406]
+            self.img_std = [0.229, 0.224, 0.225]
         else:
             self.version = 1
             # mean and standard deviation of the entire ImageNet dataset
