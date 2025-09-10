@@ -170,7 +170,49 @@ class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
         return ((model, arch), w, h)
 
 
-class GetMaskByBiRefNet:
+class GetMaskLowByBiRefNet:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model": ("BIREFNET",),
+                "images": ("IMAGE",),
+            }
+        }
+
+    RETURN_TYPES = ("MASK",)
+    RETURN_NAMES = ("mask",)
+    FUNCTION = "get_mask"
+    CATEGORY = "rembg/BiRefNet"
+    UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
+    DISPLAY_NAME = "Get background mask low level (BiRefNet)"
+
+    def get_mask(self, model, images):
+        model, _ = model
+        one_torch = next(model.parameters())
+        model_device_type = one_torch.device.type
+        model_dtype = one_torch.dtype
+
+        b, h, w, c = images.shape
+        if h % 32 or w % 32:
+            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
+        image_bchw = images.permute(0, 3, 1, 2)
+
+        _mask_bchw = []
+        for each_image in image_bchw:
+            with torch.no_grad():
+                each_mask = model(each_image.unsqueeze(0).to(model_device_type, dtype=model_dtype))[-1].sigmoid().cpu().float()
+            _mask_bchw.append(each_mask)
+            del each_mask
+
+        mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
+        del _mask_bchw
+
+        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
+        return mask_bhw,
+
+
+class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -184,18 +226,12 @@ class GetMaskByBiRefNet:
             }
         }
 
-    RETURN_TYPES = ("MASK",)
-    RETURN_NAMES = ("mask",)
-    FUNCTION = "get_mask"
     CATEGORY = "rembg/BiRefNet"
     UNIQUE_NAME = "GetMaskByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask (BiRefNet)"
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000):
-        model, arch = model
-        one_torch = next(model.parameters())
-        model_device_type = one_torch.device.type
-        model_dtype = one_torch.dtype
+        _, arch = model
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
 
@@ -203,15 +239,8 @@ class GetMaskByBiRefNet:
         im_tensor = image_preproc.proc(image_bchw)
         del image_preproc
 
-        _mask_bchw = []
-        for each_image in im_tensor:
-            with torch.no_grad():
-                each_mask = model(each_image.unsqueeze(0).to(model_device_type, dtype=model_dtype))[-1].sigmoid().cpu().float()
-            _mask_bchw.append(each_mask)
-            del each_mask
+        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1))[0].unsqueeze(1)
 
-        mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
-        del _mask_bchw
         # Back to the original size to match the image size
         mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
 
