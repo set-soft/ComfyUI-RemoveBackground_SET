@@ -110,7 +110,8 @@ class Decoder(nn.Module):
         _p4 = F.interpolate(p4, size=x3.shape[2:], mode='bilinear', align_corners=True)
         _p3 = _p4 + self.lateral_block4(x3)
         patches_batch = self.get_patches_batch(x, _p3)
-        _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear', align_corners=True))), 1)
+        _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:], mode='bilinear',
+                                                          align_corners=True))), 1)
 
         p3 = self.decoder_block3(_p3)
         m3 = self.conv_ms_spvn_3(p3)
@@ -133,7 +134,8 @@ class Decoder(nn.Module):
         _p3 = F.interpolate(p3, size=x2.shape[2:], mode='bilinear', align_corners=True)
         _p2 = _p3 + self.lateral_block3(x2)
         patches_batch = self.get_patches_batch(x, _p2)
-        _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear', align_corners=True))), 1)
+        _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear',
+                                                          align_corners=True))), 1)
 
         p2 = self.decoder_block2(_p2)
         m2 = self.conv_ms_spvn_2(p2)
@@ -151,12 +153,14 @@ class Decoder(nn.Module):
         _p2 = F.interpolate(p2, size=x1.shape[2:], mode='bilinear', align_corners=True)
         _p1 = _p2 + self.lateral_block2(x1)
         patches_batch = self.get_patches_batch(x, _p1)
-        _p1 = torch.cat((_p1, self.ipt_blk2(F.interpolate(patches_batch, size=x1.shape[2:], mode='bilinear', align_corners=True))), 1)
+        _p1 = torch.cat((_p1, self.ipt_blk2(F.interpolate(patches_batch, size=x1.shape[2:], mode='bilinear',
+                                                          align_corners=True))), 1)
 
         _p1 = self.decoder_block1(_p1)
         _p1 = F.interpolate(_p1, size=x.shape[2:], mode='bilinear', align_corners=True)
         patches_batch = self.get_patches_batch(x, _p1)
-        _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear', align_corners=True))), 1)
+        _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear',
+                                                          align_corners=True))), 1)
         p1_out = self.conv_out1(_p1)
 
         outs.append(m4)

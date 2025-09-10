@@ -64,8 +64,8 @@ class ASPPDeformable(nn.Module):
 
         self.aspp1 = _ASPPModuleDeformable(in_channels, self.in_channelster, 1, padding=0)
         self.aspp_deforms = nn.ModuleList([
-            _ASPPModuleDeformable(in_channels, self.in_channelster, conv_size, padding=int(conv_size//2)) for conv_size in parallel_block_sizes
-        ])
+            _ASPPModuleDeformable(in_channels, self.in_channelster, conv_size, padding=int(conv_size//2))
+            for conv_size in parallel_block_sizes])
 
         self.global_avg_pool = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)),
                                              nn.Conv2d(in_channels, self.in_channelster, 1, stride=1, bias=False),

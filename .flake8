@@ -1,6 +1,6 @@
 # .flake8
 [flake8]
-max-line-length = 300
+max-line-length = 127
 # extend-ignore = E203, W503
 # Add plugins if you installed them via additional_dependencies:
 # select = C,E,F,W,B,B950  # Example: using flake8-bugbear (B, B950)

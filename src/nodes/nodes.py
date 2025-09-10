@@ -302,11 +302,13 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation)
     UNIQUE_NAME = "RembgByBiRefNetAdvanced_SET"
     DISPLAY_NAME = "Remove background (BiRefNet) (full)"
 
-    def rem_bg(self, model, images, upscale_method='bilinear', width=1024, height=1024, blur_size=91, blur_size_two=7, fill_color=False, color=None, mask_threshold=0.000):
+    def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
+               fill_color=False, color=None, mask_threshold=0.000):
 
         masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold)
 
-        out_images, out_masks = super().get_foreground(images, masks=masks[0], blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color)
+        out_images, out_masks = super().get_foreground(images, masks=masks[0], blur_size=blur_size,
+                                                       blur_size_two=blur_size_two, fill_color=fill_color, color=color)
 
         return out_images, out_masks
 

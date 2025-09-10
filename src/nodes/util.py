@@ -175,7 +175,8 @@ def add_mask_as_alpha(image, mask):
     # Check input shape
     assert image.dim() == 4 and image.size(-1) == 3, "The shape of image should be (b, h, w, 3)."
     assert mask.dim() == 3, "The shape of mask should be (b, h, w)"
-    assert image.size(0) == mask.size(0) and image.size(1) == mask.size(1) and image.size(2) == mask.size(2), "The batch, height, and width dimensions of the image and mask must be consistent"
+    assert image.size(0) == mask.size(0) and image.size(1) == mask.size(1) and image.size(2) == mask.size(2), \
+           "The batch, height, and width dimensions of the image and mask must be consistent"
 
     # Expand the mask to (b, h, w, 1)
     mask = mask[..., None]
