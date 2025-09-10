@@ -56,8 +56,9 @@ HEIGHT_OPT = ("INT", {
                 "step": 32,
                 "tooltip": "The height of the pre-processing image, does not affect the final output image size"
                 })
+DEFAULT_UPSCALE = transforms.InterpolationMode.BICUBIC.value
 UPSCALE_OPT = ([mode.value for mode in transforms.InterpolationMode], {
-                "default": transforms.InterpolationMode.BICUBIC.value,
+                "default": DEFAULT_UPSCALE,
                 "tooltip": "Interpolation method for pre-processing image and post-processing mask"
                 })
 BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, })
@@ -190,7 +191,7 @@ class GetMaskByBiRefNet:
     UNIQUE_NAME = "GetMaskByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask (BiRefNet)"
 
-    def get_mask(self, model, images, width=1024, height=1024, upscale_method='bilinear', mask_threshold=0.000):
+    def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000):
         model, arch = model
         one_torch = next(model.parameters())
         model_device_type = one_torch.device.type
