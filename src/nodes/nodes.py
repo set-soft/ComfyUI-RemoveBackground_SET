@@ -210,18 +210,17 @@ class GetMaskByBiRefNet:
             _mask_bchw.append(each_mask)
             del each_mask
 
-        mask_bchw = torch.cat(_mask_bchw, dim=0)
+        mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
         del _mask_bchw
         # Back to the original size to match the image size
         mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
-        # (b, 1, h, w)
+
+        # Optional thresold for the mask
         if mask_threshold > 0:
             mask = filter_mask(mask, threshold=mask_threshold)
-        # else:
-        #   Seems to have no effect
-        #     mask = normalize_mask(mask)
 
-        return mask.squeeze(1),
+        mask_bhw = mask.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
+        return mask_bhw,
 
 
 class BlurFusionForegroundEstimation:
