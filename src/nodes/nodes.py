@@ -1,13 +1,12 @@
 import os
 import safetensors.torch
 from seconohe.downloader import download_file
-from seconohe.color import color_to_rgb_float
+from seconohe.apply_mask import apply_mask
 import torch
 from torchvision import transforms
 from comfy import model_management
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY
-from .util import filter_mask, add_mask_as_alpha, refine_foreground_comfyui
 from .utils.arch import BiRefNetArch
 
 
@@ -71,6 +70,12 @@ COLOR_OPT = ("STRING", {
                            "Can comma separated RGB values in [0-255] or [0-1.0] range."})
 MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
 DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
+
+
+def filter_mask(mask, threshold=4e-3):
+    mask_binary = mask > threshold
+    filtered_mask = mask * mask_binary
+    return filtered_mask
 
 
 def download_birefnet_model(model_name):
@@ -257,58 +262,7 @@ class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
         return mask_bhw,
 
 
-class BlurFusionForegroundEstimation:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "images": ("IMAGE",),
-                "masks": ("MASK",),
-                "blur_size": BLUR_SIZE_OPT,
-                "blur_size_two": BLUR_SIZE_TWO_OPT,
-                "fill_color": ("BOOLEAN", {"default": False}),
-                "color": COLOR_OPT,
-            }
-        }
-
-    RETURN_TYPES = ("IMAGE", "MASK",)
-    RETURN_NAMES = ("image", "mask",)
-    FUNCTION = "get_foreground"
-    CATEGORY = "rembg/BiRefNet"
-    DESCRIPTION = "Approximate Fast Foreground Colour Estimation. https://github.com/Photoroom/fast-foreground-estimation"
-    UNIQUE_NAME = "BlurFusionForegroundEstimation_SET"
-    DISPLAY_NAME = "Blur fusion foreground estimation"
-
-    def get_foreground(self, images, masks, blur_size=91, blur_size_two=7, fill_color=False, color=None):
-        b, h, w, c = images.shape
-        if b != masks.shape[0]:
-            raise ValueError("images and masks must have the same batch size")
-
-        device = model_management.get_torch_device()
-        images_on_device = images.to(device)
-        masks_on_device = masks.to(device)
-
-        _image_masked_tensor = refine_foreground_comfyui(images_on_device, masks_on_device)
-
-        if fill_color and color is not None:
-            color = color_to_rgb_float(logger, color)
-            # (b, h, w, 3)
-            background_color = torch.tensor(color, device=device, dtype=images.dtype).view(1, 1, 1, 3).expand(b, h, w, 3)
-            # (b, 1, h, w) => (b, h, w, 3)
-            apply_mask = masks_on_device.unsqueeze(3).expand_as(_image_masked_tensor)
-            out_images = _image_masked_tensor * apply_mask + background_color.to(device) * (1 - apply_mask)
-            # (b, h, w, 3)=>(b, h, w, 3)
-            del background_color, apply_mask
-        else:
-            # The non-mask corresponding parts of the image are set to transparent
-            out_images = add_mask_as_alpha(_image_masked_tensor.cpu(), masks.cpu())
-
-        del _image_masked_tensor
-
-        return out_images.cpu(), masks.cpu()
-
-
-class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation):
+class RembgByBiRefNetAdvanced(GetMaskByBiRefNet):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -338,10 +292,10 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet, BlurFusionForegroundEstimation)
 
         masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold)
 
-        out_images, out_masks = super().get_foreground(images, masks=masks[0], blur_size=blur_size,
-                                                       blur_size_two=blur_size_two, fill_color=fill_color, color=color)
+        out_images = apply_mask(logger, images, masks=masks[0], device=model_management.get_torch_device(), blur_size=blur_size,
+                                blur_size_two=blur_size_two, fill_color=fill_color, color=color)
 
-        return out_images, out_masks
+        return out_images, masks[0]
 
 
 class RembgByBiRefNet(RembgByBiRefNetAdvanced):
