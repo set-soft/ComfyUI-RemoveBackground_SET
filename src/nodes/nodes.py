@@ -1,6 +1,7 @@
 import os
 import safetensors.torch
 from seconohe.downloader import download_file
+from seconohe.color import color_to_rgb_float
 import torch
 from torchvision import transforms
 from comfy import model_management
@@ -63,7 +64,11 @@ UPSCALE_OPT = ([mode.value for mode in transforms.InterpolationMode], {
                 })
 BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1, })
 BLUR_SIZE_TWO_OPT = ("INT", {"default": 6, "min": 1, "max": 255, "step": 1, })
-COLOR_OPT = ("INT", {"default": 0, "min": 0, "max": 0xFFFFFF, "step": 1, "display": "color"})
+COLOR_OPT = ("STRING", {
+                "default": "#000000",
+                "tooltip": "Color for fill.\n"
+                           "Can be an hexadecimal (#RRGGBB).\n"
+                           "Can comma separated RGB values in [0-255] or [0-1.0] range."})
 MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
 DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
 
@@ -286,11 +291,9 @@ class BlurFusionForegroundEstimation:
         _image_masked_tensor = refine_foreground_comfyui(images_on_device, masks_on_device)
 
         if fill_color and color is not None:
-            r = torch.full([b, h, w, 1], ((color >> 16) & 0xFF) / 0xFF)
-            g = torch.full([b, h, w, 1], ((color >> 8) & 0xFF) / 0xFF)
-            b = torch.full([b, h, w, 1], (color & 0xFF) / 0xFF)
+            color = color_to_rgb_float(logger, color)
             # (b, h, w, 3)
-            background_color = torch.cat((r, g, b), dim=-1)
+            background_color = torch.tensor(color, device=device, dtype=images.dtype).view(1, 1, 1, 3).expand(b, h, w, 3)
             # (b, 1, h, w) => (b, h, w, 3)
             apply_mask = masks_on_device.unsqueeze(3).expand_as(_image_masked_tensor)
             out_images = _image_masked_tensor * apply_mask + background_color.to(device) * (1 - apply_mask)

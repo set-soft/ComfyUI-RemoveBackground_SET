@@ -7,4 +7,4 @@ safetensors
 # torchvision
 
 # Simple tool for nodes
-seconohe
+seconohe >= 1.0.3
