@@ -2,9 +2,11 @@ import os
 import safetensors.torch
 from seconohe.downloader import download_file
 from seconohe.apply_mask import apply_mask
+# from seconohe.torch import get_pytorch_memory_usage_str
 import torch
 from torchvision import transforms
 from comfy import model_management
+import comfy.utils
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY
 from .utils.arch import BiRefNetArch
@@ -70,6 +72,10 @@ COLOR_OPT = ("STRING", {
                            "Can comma separated RGB values in [0-255] or [0-1.0] range."})
 MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
 DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
+BATCHED_OPS = ("BOOLEAN", {
+                  "default": True,
+                  "tooltip": ("Apply the masks at once.\n"
+                              "Faster, needs more memory")})
 
 
 def filter_mask(mask, threshold=4e-3):
@@ -97,7 +103,7 @@ class ImagePreprocessor:
         return image
 
 
-class LoadRembgByBiRefNetModel:
+class LoadModel:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -147,7 +153,7 @@ class LoadRembgByBiRefNetModel:
         return [(biRefNet_model, arch)]
 
 
-class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
+class AutoDownloadModel(LoadModel):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -180,13 +186,14 @@ class AutoDownloadBiRefNetModel(LoadRembgByBiRefNetModel):
         return ((model, arch), w, h)
 
 
-class GetMaskLowByBiRefNet:
+class GetMaskLow:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "model": ("BIREFNET",),
                 "images": ("IMAGE",),
+                "batched": BATCHED_OPS,
             }
         }
 
@@ -197,10 +204,10 @@ class GetMaskLowByBiRefNet:
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask low level (BiRefNet)"
 
-    def get_mask(self, model, images):
+    def get_mask(self, model, images, batched):
         model, _ = model
         one_torch = next(model.parameters())
-        model_device_type = one_torch.device.type
+        model_device = one_torch.device.type
         model_dtype = one_torch.dtype
 
         b, h, w, c = images.shape
@@ -208,21 +215,25 @@ class GetMaskLowByBiRefNet:
             raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
         image_bchw = images.permute(0, 3, 1, 2)
 
-        _mask_bchw = []
-        for each_image in image_bchw:
-            with torch.no_grad():
-                each_mask = model(each_image.unsqueeze(0).to(model_device_type, dtype=model_dtype))[-1].sigmoid().cpu().float()
-            _mask_bchw.append(each_mask)
-            del each_mask
+        if batched:
+            mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype))[-1].sigmoid().cpu().float()
+        else:
+            progress_bar_ui = comfy.utils.ProgressBar(b)
+            _mask_bchw = []
+            for each_image in image_bchw:
+                with torch.no_grad():
+                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype))[-1].sigmoid().cpu().float()
+                _mask_bchw.append(each_mask)
+                progress_bar_ui.update(1)
 
-        mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
-        del _mask_bchw
+            mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
+            del _mask_bchw
 
         mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
         return mask_bhw,
 
 
-class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
+class GetMask(GetMaskLow):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -233,6 +244,7 @@ class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
                 "height": HEIGHT_OPT,
                 "upscale_method": UPSCALE_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
+                "batched": BATCHED_OPS,
             }
         }
 
@@ -240,7 +252,8 @@ class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
     UNIQUE_NAME = "GetMaskByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask (BiRefNet)"
 
-    def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000):
+    def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
+                 batched=True):
         _, arch = model
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
@@ -249,7 +262,7 @@ class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
         im_tensor = image_preproc.proc(image_bchw)
         del image_preproc
 
-        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1))[0].unsqueeze(1)
+        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched)[0].unsqueeze(1)
 
         # Back to the original size to match the image size
         mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
@@ -262,7 +275,7 @@ class GetMaskByBiRefNet(GetMaskLowByBiRefNet):
         return mask_bhw,
 
 
-class RembgByBiRefNetAdvanced(GetMaskByBiRefNet):
+class Advanced(GetMask):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -277,6 +290,7 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet):
                 "fill_color": ("BOOLEAN", {"default": False}),
                 "color": COLOR_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
+                "batched": BATCHED_OPS,
             }
         }
 
@@ -288,17 +302,19 @@ class RembgByBiRefNetAdvanced(GetMaskByBiRefNet):
     DISPLAY_NAME = "Remove background (BiRefNet) (full)"
 
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
-               fill_color=False, color=None, mask_threshold=0.000):
+               fill_color=False, color=None, mask_threshold=0.000, batched=True):
 
-        masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold)
+        masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched)
 
-        out_images = apply_mask(logger, images, masks=masks[0], device=model_management.get_torch_device(), blur_size=blur_size,
-                                blur_size_two=blur_size_two, fill_color=fill_color, color=color)
+        logger.debug(f"Applying mask/s (batched={batched})")
+        out_images = apply_mask(logger, images, masks=masks[0], device=model_management.get_torch_device(),
+                                blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
+                                batched=batched)
 
         return out_images, masks[0]
 
 
-class RembgByBiRefNet(RembgByBiRefNetAdvanced):
+class BiRefNet(Advanced):
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -319,4 +335,5 @@ class RembgByBiRefNet(RembgByBiRefNetAdvanced):
         w = model[1].w
         h = model[1].h
         logger.debug(f"Using size {w}x{h}")
-        return super().rem_bg(model, images, width=w, height=h)
+        b = images.shape[0]
+        return super().rem_bg(model, images, width=w, height=h, batched=b <= 8)
