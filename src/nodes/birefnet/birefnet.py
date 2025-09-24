@@ -1,3 +1,14 @@
+#
+# Bilateral Reference for High-Resolution Dichotomous Image Segmentation
+#
+# Peng Zheng, Dehong Gao, Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang, Nicu Sebe
+# zhengpeng0108@gmail.com
+# arXiv:2401.03407v7 [cs.CV] 25 Jul 2025
+#
+# https://huggingface.co/ZhengPeng7/BiRefNet
+#
+# License: MIT
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
