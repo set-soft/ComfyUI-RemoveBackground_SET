@@ -621,11 +621,12 @@ def swin_v1_t():
 # def swin_v1_s():
 #     model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
 #     return model
-#
-#
-# def swin_v1_b():
-#     model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
-#     return model
+
+
+# Used by BEN
+def swin_v1_b():
+    model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
+    return model
 
 
 def swin_v1_l():
