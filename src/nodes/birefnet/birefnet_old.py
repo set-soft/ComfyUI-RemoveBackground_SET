@@ -45,7 +45,7 @@ class BiRefNet(nn.Module):
         features = [x, x1, x2, x3, x4]
         features.append(laplacian(torch.mean(x, dim=1).unsqueeze(1), kernel_size=5))
         scaled_preds = self.decoder(features)
-        return scaled_preds
+        return scaled_preds[-1].sigmoid()
 
 
 class Decoder(nn.Module):

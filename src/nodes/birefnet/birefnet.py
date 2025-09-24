@@ -58,7 +58,7 @@ class BiRefNet(nn.Module):
         # ######### Decoder ##########
         features = [x, x1, x2, x3, x4]
         scaled_preds = self.decoder(features)
-        return scaled_preds
+        return scaled_preds[-1].sigmoid()
 
 
 class Decoder(nn.Module):

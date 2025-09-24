@@ -216,13 +216,13 @@ class GetMaskLow:
         image_bchw = images.permute(0, 3, 1, 2)
 
         if batched:
-            mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype))[-1].sigmoid().cpu().float()
+            mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype)).cpu().float()
         else:
             progress_bar_ui = comfy.utils.ProgressBar(b)
             _mask_bchw = []
             for each_image in image_bchw:
                 with torch.no_grad():
-                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype))[-1].sigmoid().cpu().float()
+                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype)).cpu().float()
                 _mask_bchw.append(each_mask)
                 progress_bar_ui.update(1)
 
