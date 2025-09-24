@@ -11,4 +11,5 @@ __license__ = "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licen
 __author__ = "Salvador E. Tropea"
 NODES_NAME = "BiRefNet-SET"
 MODELS_DIR_KEY = "birefnet"
+MODELS_DIR = "RemBG"
 main_logger = initialize_logger(NODES_NAME)

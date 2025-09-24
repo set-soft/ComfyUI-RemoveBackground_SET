@@ -14,7 +14,7 @@ import torch
 import bootstrap  # noqa: F401
 from src.nodes import main_logger
 from src.nodes.utils.misc import cli_add_verbose, cli_add_version
-from src.nodes.utils.arch import BiRefNetArch
+from src.nodes.utils.arch import RemBgArch
 
 
 def show_keys(state_dict):
@@ -40,11 +40,16 @@ if __name__ == "__main__":
         state_dict = safetensors.torch.load_file(model_path)
     else:
         state_dict = torch.load(model_path, map_location='cpu')
+        if 'model_state_dict' in state_dict:
+            # BEN
+            state_dict = state_dict['model_state_dict']
+            # safetensors.torch.save_file(state_dict, "model.safetensors")
     # Optional print keys
     if args.keys:
         show_keys(state_dict)
 
-    bb_a = BiRefNetArch(state_dict, main_logger)
+    bb_a = RemBgArch(state_dict, main_logger)
     bb_a.check()
+    main_logger.info(f"Model type: {bb_a.model_type}")
     main_logger.info(f"Back bone type: {bb_a.bb}")
     main_logger.info(f"Model version: {bb_a.version}")

@@ -3,8 +3,10 @@
 # License: GPLv3
 # Project: ComfyUI-BiRefNet-SET
 import math
+import torch
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
+from ..ben.ben import BEN_Base
 
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
@@ -22,7 +24,7 @@ def fix_state_dict(state_dict):
             state_dict[k[prefix_length:]] = state_dict.pop(k)
 
 
-class BiRefNetArch(object):
+class RemBgArch(object):
     def __init__(self, state_dict, logger):
         super().__init__()
         self.ok = False
@@ -30,12 +32,16 @@ class BiRefNetArch(object):
         self.why = 'Not initialized'
         self.w = self.h = 1024  # Default size
         fix_state_dict(state_dict)
+        bb_name = 'bb'
 
         # Determine the window size for the swin_v1 transformer
-        tensor = state_dict.get('bb.layers.0.blocks.0.attn.relative_position_bias_table')
+        tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
         if tensor is None:
-            self.why = 'No relative position bias table'
-            return
+            bb_name = 'backbone'
+            tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
+            if tensor is None:
+                self.why = 'No relative position bias table'
+                return
         window = (math.sqrt(tensor.shape[0]) + 1) / 2
         if window != int(window):
             self.why = "Wrong swin_v1 bias table size"
@@ -46,19 +52,19 @@ class BiRefNetArch(object):
         self.layers = 0
         self.depths = []
         self.num_heads = []
-        while f'bb.layers.{self.layers}.blocks.0.attn.relative_position_bias_table' in state_dict:
+        while f'{bb_name}.layers.{self.layers}.blocks.0.attn.relative_position_bias_table' in state_dict:
             # How many heads?
-            table = state_dict[f'bb.layers.{self.layers}.blocks.0.attn.relative_position_bias_table']
+            table = state_dict[f'{bb_name}.layers.{self.layers}.blocks.0.attn.relative_position_bias_table']
             self.num_heads.append(table.shape[-1])
             # Analyze the blocks for this layer
             blocks = 0
-            while f'bb.layers.{self.layers}.blocks.{blocks}.norm1.weight' in state_dict:
+            while f'{bb_name}.layers.{self.layers}.blocks.{blocks}.norm1.weight' in state_dict:
                 blocks += 1
             self.depths.append(blocks)
             # One more layer
             self.layers += 1
 
-        tensor = state_dict.get('bb.patch_embed.proj.weight')
+        tensor = state_dict.get(f'{bb_name}.patch_embed.proj.weight')
         if tensor is None:
             self.why = 'No PatchEmbed found'
             return
@@ -74,29 +80,44 @@ class BiRefNetArch(object):
         elif self.matches(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7):
             self.bb = 'swin_v1_t'
             self.channels = [1536, 768, 384, 192]
+        elif self.matches(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12):
+            self.bb = 'swin_v1_b'
+            self.channels = [1024, 512, 256, 128]
         else:
             self.why = 'unknown geometry'
             return
         self.bb_ok = True
 
-        # Try to figure out which version is this
-        if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
-            self.why = 'Missing Input Injection Blocks'
-            return
-        self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
-        if 'decoder.ipt_blk5.conv1.weight' in state_dict:
-            self.version = 2
-            # The ComfyUI_BiRefNet_ll nodes uses this for new models
-            # self.img_mean = [0.5, 0.5, 0.5]
-            # self.img_std = [1.0, 1.0, 1.0]
-            # But I couldn't find any reference to it in the original code
-            self.img_mean = [0.485, 0.456, 0.406]
-            self.img_std = [0.229, 0.224, 0.225]
-        else:
+        # mean and standard deviation of the entire ImageNet dataset
+        self.img_mean = [0.485, 0.456, 0.406]
+        self.img_std = [0.229, 0.224, 0.225]
+
+        if self.bb == 'swin_v1_b':
+            # BEN
+            assert bb_name == 'backbone'
             self.version = 1
-            # mean and standard deviation of the entire ImageNet dataset
-            self.img_mean = [0.485, 0.456, 0.406]
-            self.img_std = [0.229, 0.224, 0.225]
+            self.model_type = 'BEN'
+            if 'output.0.weight' not in state_dict:
+                self.why = 'Missing output layer'
+                return
+            # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
+            self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+        else:
+            # BiRefNet
+            # Try to figure out which version is this
+            if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
+                self.why = 'Missing Input Injection Blocks'
+                return
+            self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
+            if 'decoder.ipt_blk5.conv1.weight' in state_dict:
+                self.version = 2
+                # The ComfyUI_BiRefNet_ll nodes uses this for new models
+                # self.img_mean = [0.5, 0.5, 0.5]
+                # self.img_std = [1.0, 1.0, 1.0]
+                # But I couldn't find any reference to it in the original code
+            else:
+                self.version = 1
+            self.model_type = 'BiRefNet'
 
         self.ok = True
 
@@ -111,4 +132,6 @@ class BiRefNetArch(object):
             raise ValueError(f"Wrong architecture: {self.why}")
 
     def instantiate_model(self):
+        if self.model_type == 'BEN':
+            return BEN_Base()
         return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)

@@ -1,14 +1,14 @@
-from .src.nodes import main_logger, __version__, MODELS_DIR_KEY
+from .src.nodes import main_logger, __version__, MODELS_DIR_KEY, MODELS_DIR
 import folder_paths
 import os
 from seconohe.register_nodes import register_nodes
 from seconohe import JS_PATH
 
 
-models_dir_default = os.path.join(folder_paths.models_dir, "BiRefNet")
+models_dir_default = os.path.join(folder_paths.models_dir, MODELS_DIR)
 if MODELS_DIR_KEY not in folder_paths.folder_names_and_paths:
     folder_paths.folder_names_and_paths[MODELS_DIR_KEY] = (
-        [os.path.join(folder_paths.models_dir, "BiRefNet")], folder_paths.supported_pt_extensions)
+        [os.path.join(folder_paths.models_dir, MODELS_DIR)], folder_paths.supported_pt_extensions)
 else:
     if not os.path.exists(models_dir_default):
         os.makedirs(models_dir_default, exist_ok=True)
