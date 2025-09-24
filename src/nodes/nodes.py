@@ -136,7 +136,7 @@ class LoadModel:
     RETURN_NAMES = ("model",)
     FUNCTION = "load_model_file"
     CATEGORY = CATEGORY_LOAD
-    DESCRIPTION = ("Load BiRefNet model from folder models/"+MODELS_DIR+
+    DESCRIPTION = ("Load BiRefNet model from folder models/" + MODELS_DIR +
                    " or the path of birefnet configured in the extra YAML file")
     UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
     DISPLAY_NAME = "Load BiRefNet/BEN model by file"
