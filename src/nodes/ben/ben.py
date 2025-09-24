@@ -22,6 +22,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
+#from ..swin.swin_v1 import SwinTransformer
 from .backbone import SwinTransformer
 
 
