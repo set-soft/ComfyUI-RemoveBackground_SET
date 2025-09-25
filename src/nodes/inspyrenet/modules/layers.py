@@ -188,7 +188,7 @@ class Conv2d(nn.Module):
 
 
 class SelfAttention(nn.Module):
-    def __init__(self, in_channels, mode='hw', stage_size=None):
+    def __init__(self, in_channels, mode='hw'):
         super(SelfAttention, self).__init__()
 
         self.mode = mode
@@ -199,8 +199,6 @@ class SelfAttention(nn.Module):
 
         self.gamma = Parameter(torch.zeros(1))
         self.softmax = nn.Softmax(dim=-1)
-
-        self.stage_size = stage_size
 
     def forward(self, x):
         batch_size, channel, height, width = x.size()
