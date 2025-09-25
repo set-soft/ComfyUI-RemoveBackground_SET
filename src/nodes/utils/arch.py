@@ -7,6 +7,7 @@ import torch
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
+from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
@@ -87,21 +88,30 @@ class RemBgArch(object):
             self.why = 'unknown geometry'
             return
         self.bb_ok = True
+        logger.debug(f"Model backbone: {self.bb}")
 
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
 
         if self.bb == 'swin_v1_b':
-            # BEN
+            # BEN and InSPyReNet
             assert bb_name == 'backbone'
-            self.version = 1
-            self.model_type = 'BEN'
-            if 'output.0.weight' not in state_dict:
-                self.why = 'Missing output layer'
+
+            if 'output.0.weight' in state_dict:
+                # BEN
+                self.version = 1
+                self.model_type = 'BEN'
+                # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
+                self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+            elif 'context1.branch0.conv.weight' in state_dict:
+                # InSPyReNet
+                self.version = 1
+                self.model_type = 'InSPyReNet'
+                self.dtype = state_dict['context1.branch0.conv.weight'].dtype
+            else:
+                self.why = 'Unknown Swin B variant model'
                 return
-            # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
-            self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
         else:
             # BiRefNet
             # Try to figure out which version is this
@@ -120,6 +130,7 @@ class RemBgArch(object):
             self.model_type = 'BiRefNet'
 
         self.ok = True
+        logger.debug(f"Model type: {self.model_type}")
 
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
@@ -134,4 +145,6 @@ class RemBgArch(object):
     def instantiate_model(self):
         if self.model_type == 'BEN':
             return BEN_Base()
+        if self.model_type == 'InSPyReNet':
+            return InSPyReNet_SwinB(depth=64, pretrained=False, base_size=[1024, 1024], threshold=None)
         return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)

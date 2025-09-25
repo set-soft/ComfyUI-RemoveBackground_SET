@@ -4,10 +4,12 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ze Liu, Yutong Lin, Yixuan Wei
 # --------------------------------------------------------
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
+import numpy as np  # TODO: reemplazar por torch.ceil
 from itertools import repeat
 import collections.abc
 
@@ -72,10 +74,9 @@ def window_reverse(windows, window_size, H, W):
     Returns:
         x: (B, H, W, C)
     """
-    # This code was made more robust (found in BiRefNet)
-    C = int(windows.shape[-1])
-    x = windows.view(-1, H // window_size, W // window_size, window_size, window_size, C)
-    x = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(-1, H, W, C)
+    B = int(windows.shape[0] / (H * W / window_size / window_size))
+    x = windows.view(B, H // window_size, W // window_size, window_size, window_size, -1)
+    x = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(B, H, W, -1)
     return x
 
 
@@ -109,8 +110,7 @@ class WindowAttention(nn.Module):
         # get pair-wise relative position index for each token inside the window
         coords_h = torch.arange(self.window_size[0])
         coords_w = torch.arange(self.window_size[1])
-        # Explicit indexing (found in BiRefNet)
-        coords = torch.stack(torch.meshgrid([coords_h, coords_w], indexing='ij'))  # 2, Wh, Ww
+        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, Wh, Ww
         coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
         relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, Wh*Ww, Wh*Ww
         relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
@@ -121,11 +121,11 @@ class WindowAttention(nn.Module):
         self.register_buffer("relative_position_index", relative_position_index)
 
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
-        self.attn_drop_prob = attn_drop
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
 
+        # trunc_normal_(self.relative_position_bias_table, std=.02)
         self.softmax = nn.Softmax(dim=-1)
 
     def forward(self, x, mask=None):
@@ -140,7 +140,6 @@ class WindowAttention(nn.Module):
         q, k, v = qkv[0], qkv[1], qkv[2]  # make torchscript happy (cannot use tensor as tuple)
 
         q = q * self.scale
-
         attn = (q @ k.transpose(-2, -1))
 
         relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
@@ -379,9 +378,8 @@ class BasicLayer(nn.Module):
         """
 
         # calculate attention mask for SW-MSA
-        # Turn int to torch.tensor for the compatiability with torch.compile in PyTorch 2.5. (BiRefNet)
-        Hp = torch.ceil(torch.tensor(H) / self.window_size).to(torch.int64) * self.window_size
-        Wp = torch.ceil(torch.tensor(W) / self.window_size).to(torch.int64) * self.window_size
+        Hp = int(np.ceil(H / self.window_size)) * self.window_size
+        Wp = int(np.ceil(W / self.window_size)) * self.window_size
         img_mask = torch.zeros((1, Hp, Wp, 1), device=x.device)  # 1 Hp Wp 1
         h_slices = (slice(0, -self.window_size),
                     slice(-self.window_size, -self.shift_size),
@@ -398,7 +396,7 @@ class BasicLayer(nn.Module):
         mask_windows = window_partition(img_mask, self.window_size)  # nW, window_size, window_size, 1
         mask_windows = mask_windows.view(-1, self.window_size * self.window_size)
         attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
-        attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-100.0)).masked_fill(attn_mask == 0, float(0.0)).to(x.dtype)
+        attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-100.0)).masked_fill(attn_mask == 0, float(0.0))
 
         for blk in self.blocks:
             blk.H, blk.W = H, W
@@ -419,20 +417,20 @@ class PatchEmbed(nn.Module):
 
     Args:
         patch_size (int): Patch token size. Default: 4.
-        in_channels (int): Number of input image channels. Default: 3.
+        in_chans (int): Number of input image channels. Default: 3.
         embed_dim (int): Number of linear projection output channels. Default: 96.
         norm_layer (nn.Module, optional): Normalization layer. Default: None
     """
 
-    def __init__(self, patch_size=4, in_channels=3, embed_dim=96, norm_layer=None):
+    def __init__(self, patch_size=4, in_chans=3, embed_dim=96, norm_layer=None):
         super().__init__()
         patch_size = to_2tuple(patch_size)
         self.patch_size = patch_size
 
-        self.in_channels = in_channels
+        self.in_chans = in_chans
         self.embed_dim = embed_dim
 
-        self.proj = nn.Conv2d(in_channels, embed_dim, kernel_size=patch_size, stride=patch_size)
+        self.proj = nn.Conv2d(in_chans, embed_dim, kernel_size=patch_size, stride=patch_size)
         if norm_layer is not None:
             self.norm = norm_layer(embed_dim)
         else:
@@ -464,9 +462,9 @@ class SwinTransformer(nn.Module):
 
     Args:
         pretrain_img_size (int): Input image size for training the pretrained model,
-            used in absolute postion embedding. Default 224.
+            used in absolute position embedding. Default 224.
         patch_size (int | tuple(int)): Patch size. Default: 4.
-        in_channels (int): Number of input image channels. Default: 3.
+        in_chans (int): Number of input image channels. Default: 3.
         embed_dim (int): Number of linear projection output channels. Default: 96.
         depths (tuple[int]): Depths of each Swin Transformer stage.
         num_heads (tuple[int]): Number of attention head of each stage.
@@ -484,13 +482,12 @@ class SwinTransformer(nn.Module):
         frozen_stages (int): Stages to be frozen (stop grad and set eval mode).
             -1 means not freezing any parameters.
         use_checkpoint (bool): Whether to use checkpointing to save memory. Default: False.
-        full_output (bool): Include the initial stem features in the output
     """
 
     def __init__(self,
                  pretrain_img_size=224,
                  patch_size=4,
-                 in_channels=3,
+                 in_chans=3,
                  embed_dim=96,
                  depths=[2, 2, 6, 2],
                  num_heads=[3, 6, 12, 24],
@@ -506,8 +503,7 @@ class SwinTransformer(nn.Module):
                  patch_norm=True,
                  out_indices=(0, 1, 2, 3),
                  frozen_stages=-1,
-                 use_checkpoint=False,
-                 full_output=True):
+                 use_checkpoint=False):
         super().__init__()
 
         self.pretrain_img_size = pretrain_img_size
@@ -517,11 +513,10 @@ class SwinTransformer(nn.Module):
         self.patch_norm = patch_norm
         self.out_indices = out_indices
         self.frozen_stages = frozen_stages
-        self.full_output = full_output
 
         # split image into non-overlapping patches
         self.patch_embed = PatchEmbed(
-            patch_size=patch_size, in_channels=in_channels, embed_dim=embed_dim,
+            patch_size=patch_size, in_chans=in_chans, embed_dim=embed_dim,
             norm_layer=norm_layer if self.patch_norm else None)
 
         # absolute position embedding
@@ -531,6 +526,7 @@ class SwinTransformer(nn.Module):
             patches_resolution = [pretrain_img_size[0] // patch_size[0], pretrain_img_size[1] // patch_size[1]]
 
             self.absolute_pos_embed = nn.Parameter(torch.zeros(1, embed_dim, patches_resolution[0], patches_resolution[1]))
+            # trunc_normal_(self.absolute_pos_embed, std=.02)
 
         self.pos_drop = nn.Dropout(p=drop_rate)
 
@@ -584,6 +580,33 @@ class SwinTransformer(nn.Module):
                 for param in m.parameters():
                     param.requires_grad = False
 
+    def init_weights(self, pretrained=None):
+        """Initialize the weights in backbone.
+
+        Args:
+            pretrained (str, optional): Path to pre-trained weights.
+                Defaults to None.
+        """
+
+        def _init_weights(m):
+            if isinstance(m, nn.Linear):
+                # trunc_normal_(m.weight, std=.02)
+                if isinstance(m, nn.Linear) and m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.LayerNorm):
+                nn.init.constant_(m.bias, 0)
+                nn.init.constant_(m.weight, 1.0)
+
+        if isinstance(pretrained, str):
+            self.apply(_init_weights)
+            # logger = get_root_logger()
+            # load_checkpoint(self, pretrained, strict=False, logger=logger)
+            assert False, "Oops!"
+        elif pretrained is None:
+            self.apply(_init_weights)
+        else:
+            raise TypeError('pretrained must be a str or None')
+
     def forward(self, x):
         """Forward function."""
         x = self.patch_embed(x)
@@ -594,7 +617,7 @@ class SwinTransformer(nn.Module):
             absolute_pos_embed = F.interpolate(self.absolute_pos_embed, size=(Wh, Ww), mode='bicubic')
             x = (x + absolute_pos_embed)  # B Wh*Ww C
 
-        outs = [x.contiguous()] if self.full_output else []
+        outs = [x.contiguous()]
         x = x.flatten(2).transpose(1, 2)
         x = self.pos_drop(x)
         for i in range(self.num_layers):
@@ -610,23 +633,39 @@ class SwinTransformer(nn.Module):
 
         return tuple(outs)
 
+    def train(self, mode=True):
+        """Convert the model into training mode while keep layers freezed."""
+        super(SwinTransformer, self).train(mode)
+        self._freeze_stages()
 
-def swin_v1_t():
-    model = SwinTransformer(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7, full_output=False)
+
+def SwinT(pretrained=True):
+    model = SwinTransformer(embed_dim=96, depths=[2, 2, 6, 2], num_heads=[3, 6, 12, 24], window_size=7)
+    if pretrained is True:
+        model.load_state_dict(torch.load('data/backbone_ckpt/swin_tiny_patch4_window7_224.pth',
+                              map_location='cpu')['model'], strict=False)
     return model
 
 
-# def swin_v1_s():
-#     model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
-#     return model
+def SwinS(pretrained=True):
+    model = SwinTransformer(embed_dim=96, depths=[2, 2, 18, 2], num_heads=[3, 6, 12, 24], window_size=7)
+    if pretrained is True:
+        model.load_state_dict(torch.load('data/backbone_ckpt/swin_small_patch4_window7_224.pth',
+                              map_location='cpu')['model'], strict=False)
+    return model
 
 
-# Used by BEN and InSPyReNet
-def swin_v1_b():
+def SwinB(pretrained=True):
     model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
+    if pretrained is True:
+        model.load_state_dict(torch.load('data/backbone_ckpt/swin_base_patch4_window12_384_22kto1k.pth',
+                              map_location='cpu')['model'], strict=False)
     return model
 
 
-def swin_v1_l():
-    model = SwinTransformer(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12, full_output=False)
+def SwinL(pretrained=True):
+    model = SwinTransformer(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12)
+    if pretrained is True:
+        model.load_state_dict(torch.load('data/backbone_ckpt/swin_large_patch4_window12_384_22kto1k.pth',
+                              map_location='cpu')['model'], strict=False)
     return model
