@@ -1,3 +1,17 @@
+#
+# Revisiting Image Pyramid Structure for High Resolution Salient Object Detection (InSPyReNet)
+#
+# Taehun Kim, Kunhee Kim, Joonyeong Lee, Dongmin Cha, Jiho Lee, Daijin Kim
+# arXiv:2209.09475
+#
+# https://github.com/plemeri/InSPyReNet
+#
+# License: MIT (was Apache 2.0)
+#
+# Note by Salvador E. Tropea (SET):
+# I removed various training options and OpenCV dependency.
+# Also made Transition and ImagePyramid be nn.Module
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
