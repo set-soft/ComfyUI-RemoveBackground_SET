@@ -33,32 +33,11 @@ class InSPyReNet(nn.Module):
         self.res = lambda x, size: F.interpolate(x, size=size, mode='bilinear', align_corners=False)
         self.des = lambda x, size: F.interpolate(x, size=size, mode='nearest')
 
-        self.image_pyramid = ImagePyramid(7, 1)
+        self.image_pyramid = ImagePyramid()  # 7, 1, 1
 
         self.transition0 = Transition(17)
         self.transition1 = Transition(9)
         self.transition2 = Transition(5)
-
-        self.forward = self.forward_inference
-
-    def to(self, device, dtype):
-        # TODO: implement dtype
-        # ImagePyramid and Transition aren't nn.Module, so we need to manually move them to the device
-        self.image_pyramid.to(device)
-        super().to(device)
-        return self
-
-    def cuda(self, idx=None):
-        if idx is None:
-            idx = torch.cuda.current_device()
-
-        self.to(device="cuda:{}".format(idx))
-        return self
-
-    def eval(self):
-        super().train(False)
-        self.forward = self.forward_inference
-        return self
 
     def forward_inspyre(self, x):
         B, _, H, W = x.shape
@@ -92,7 +71,7 @@ class InSPyReNet(nn.Module):
 
         return out
 
-    def forward_inference(self, img, img_lr=None):
+    def forward(self, img, img_lr=None):  # forward_inference
         B, _, H, W = img.shape
 
         if self.threshold is None:

@@ -2,34 +2,50 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-import cv2
-import numpy as np
-
 from kornia.morphology import dilation, erosion
 from torch.nn.parameter import Parameter
 
 
-class ImagePyramid:
-    def __init__(self, ksize=7, sigma=1, channels=1):
-        self.ksize = ksize
-        self.sigma = sigma
-        self.channels = channels
+class ModuleWithConstantKernel(nn.Module):
+    """ An nn.Module that contains a self.kernel buffer that is a constant and won't be loaded from the state_dict.
+        This is needed because the checkpoints doesn't contain these values. """
+    def __init__(self, kernel):
+        super().__init__()
+        self.register_buffer('kernel', kernel)
 
-        k = cv2.getGaussianKernel(ksize, sigma)
-        k = np.outer(k, k)
-        k = torch.tensor(k).float()
-        self.kernel = k.repeat(channels, 1, 1, 1)
+    def _load_from_state_dict(self, state_dict, prefix, local_metadata, strict, missing_keys, unexpected_keys, error_msgs):
+        """ Make `kernel` buffer a constant """
+        kernel_key = prefix + 'kernel'
+        if kernel_key in state_dict:
+            # If the state_dict contains it just discard the value, currently isn't the case
+            del state_dict[kernel_key]
+        super()._load_from_state_dict(state_dict, prefix, local_metadata, strict, missing_keys, unexpected_keys, error_msgs)
+        if kernel_key in missing_keys:
+            # If the key is missing avoid an error, currently this IS the case
+            missing_keys.remove(kernel_key)
 
-    def to(self, device):
-        self.kernel = self.kernel.to(device)
-        return self
 
-    def cuda(self, idx=None):
-        if idx is None:
-            idx = torch.cuda.current_device()
+class ImagePyramid(ModuleWithConstantKernel):
+    def __init__(self):
+        self.ksize = 7
+        self.sigma = 1
+        self.channels = 1
 
-        self.to(device="cuda:{}".format(idx))
-        return self
+        # Original code:
+        # k = cv2.getGaussianKernel(ksize, sigma)
+        # k = np.outer(k, k)
+        # k = torch.tensor(k).float()
+        # self.kernel = k.repeat(channels, 1, 1, 1)
+
+        kernel = torch.tensor([[[[1.9652e-05, 2.3941e-04, 1.0730e-03, 1.7690e-03, 1.0730e-03, 2.3941e-04, 1.9652e-05],
+                                 [2.3941e-04, 2.9166e-03, 1.3071e-02, 2.1551e-02, 1.3071e-02, 2.9166e-03, 2.3941e-04],
+                                 [1.0730e-03, 1.3071e-02, 5.8582e-02, 9.6585e-02, 5.8582e-02, 1.3071e-02, 1.0730e-03],
+                                 [1.7690e-03, 2.1551e-02, 9.6585e-02, 1.5924e-01, 9.6585e-02, 2.1551e-02, 1.7690e-03],
+                                 [1.0730e-03, 1.3071e-02, 5.8582e-02, 9.6585e-02, 5.8582e-02, 1.3071e-02, 1.0730e-03],
+                                 [2.3941e-04, 2.9166e-03, 1.3071e-02, 2.1551e-02, 1.3071e-02, 2.9166e-03, 2.3941e-04],
+                                 [1.9652e-05, 2.3941e-04, 1.0730e-03, 1.7690e-03, 1.0730e-03, 2.3941e-04, 1.9652e-05]]]],
+                              dtype=torch.float32)
+        super().__init__(kernel)
 
     def expand(self, x):
         z = torch.zeros_like(x)
@@ -62,10 +78,8 @@ class ImagePyramid:
         return expanded_x + laplacian_x
 
 
-class Transition(nn.Module):
+class Transition(ModuleWithConstantKernel):
     def __init__(self, k=3):
-        super().__init__()
-
         # Original code:
         # self.kernel = torch.tensor(cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k))).float()
 
@@ -108,13 +122,7 @@ class Transition(nn.Module):
         else:
             raise ValueError(f"Unsupported kernel size: {k}. Only 5, 9, and 17 are supported.")
 
-        self.register_buffer('kernel', kernel)
-
-    def _load_from_state_dict(self, state_dict, prefix, local_metadata, strict,
-                              missing_keys, unexpected_keys, error_msgs):
-        kernel_buffer = self._buffers.pop('kernel')
-        super()._load_from_state_dict(state_dict, prefix, local_metadata, strict, missing_keys, unexpected_keys, error_msgs)
-        self._buffers['kernel'] = kernel_buffer
+        super().__init__(kernel)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x_prob = torch.sigmoid(x)
