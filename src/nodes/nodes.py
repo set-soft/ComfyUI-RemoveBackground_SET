@@ -160,7 +160,7 @@ class LoadModel:
                 state_dict = state_dict['model_state_dict']
 
         # Check this is valid for a known model
-        arch = RemBgArch(state_dict, logger)
+        arch = RemBgArch(state_dict, logger, model)
         arch.check()
         dtype = arch.dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
         logger.debug(f"Using {dtype} data type")

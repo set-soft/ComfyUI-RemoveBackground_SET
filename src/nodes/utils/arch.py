@@ -3,6 +3,7 @@
 # License: GPLv3
 # Project: ComfyUI-BiRefNet-SET
 import math
+import os
 import torch
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
@@ -26,7 +27,7 @@ def fix_state_dict(state_dict):
 
 
 class RemBgArch(object):
-    def __init__(self, state_dict, logger):
+    def __init__(self, state_dict, logger, fname):
         super().__init__()
         self.ok = False
         self.bb_ok = False
@@ -109,6 +110,14 @@ class RemBgArch(object):
                 self.version = 1
                 self.model_type = 'InSPyReNet'
                 self.dtype = state_dict['context1.branch0.conv.weight'].dtype
+                # This information is in the YAML file, but this doesn't map to loading a standalone file
+                lower_case_fname = os.path.basename(fname).lower()
+                if 'fast' not in lower_case_fname:
+                    if 'base' not in lower_case_fname:
+                        logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
+                    self.base_size = [1024, 1024]
+                else:
+                    self.base_size = [384, 384]
             else:
                 self.why = 'Unknown Swin B variant model'
                 return
@@ -146,5 +155,5 @@ class RemBgArch(object):
         if self.model_type == 'BEN':
             return BEN_Base()
         if self.model_type == 'InSPyReNet':
-            return InSPyReNet_SwinB(depth=64, base_size=[1024, 1024])
+            return InSPyReNet_SwinB(depth=64, base_size=self.base_size)
         return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)

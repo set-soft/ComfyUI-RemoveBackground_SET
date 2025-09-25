@@ -48,7 +48,7 @@ if __name__ == "__main__":
     if args.keys:
         show_keys(state_dict)
 
-    bb_a = RemBgArch(state_dict, main_logger)
+    bb_a = RemBgArch(state_dict, main_logger, model_path)
     bb_a.check()
     main_logger.info(f"Model type: {bb_a.model_type}")
     main_logger.info(f"Back bone type: {bb_a.bb}")
