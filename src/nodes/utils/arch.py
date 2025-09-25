@@ -146,5 +146,5 @@ class RemBgArch(object):
         if self.model_type == 'BEN':
             return BEN_Base()
         if self.model_type == 'InSPyReNet':
-            return InSPyReNet_SwinB(depth=64, pretrained=False, base_size=[1024, 1024], threshold=None)
+            return InSPyReNet_SwinB(depth=64, base_size=[1024, 1024])
         return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)

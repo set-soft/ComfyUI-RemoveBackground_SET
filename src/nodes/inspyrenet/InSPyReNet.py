@@ -5,17 +5,16 @@ from .modules.layers import ImagePyramid, Transition
 from .modules.context_module import PAA_e
 from .modules.attention_module import SICA
 from .modules.decoder_module import PAA_d
-from .backbones.SwinTransformer import SwinB
+from ..swin.swin_v1 import swin_v1_b
 
 
 class InSPyReNet(nn.Module):
-    def __init__(self, backbone, in_channels, depth=64, base_size=[384, 384], threshold=512, **kwargs):
+    def __init__(self, backbone, in_channels, depth=64, base_size=[384, 384]):
         super().__init__()
         self.backbone = backbone
         self.in_channels = in_channels
         self.depth = depth
         self.base_size = base_size
-        self.threshold = threshold
 
         self.context1 = PAA_e(self.in_channels[0], self.depth, base_size=self.base_size, stage=0)
         self.context2 = PAA_e(self.in_channels[1], self.depth, base_size=self.base_size, stage=1)
@@ -65,59 +64,19 @@ class InSPyReNet(nn.Module):
         _, p0 = self.attention0(f1, d1.detach(), p1.detach())  # 2
         d0 = self.image_pyramid.reconstruct(d1.detach(), p0)  # 2
 
-        out = dict()
-        out['saliency'] = [d3, d2, d1, d0]
-        out['laplacian'] = [p2, p1, p0]
+        # out = dict()
+        # out['saliency'] = [d3, d2, d1, d0]
+        # out['laplacian'] = [p2, p1, p0]
 
-        return out
+        return d0
 
     def forward(self, img, img_lr=None):  # forward_inference
-        B, _, H, W = img.shape
-
-        if self.threshold is None:
-            out = self.forward_inspyre(img)
-            d3, d2, d1, d0 = out['saliency']
-            p2, p1, p0 = out['laplacian']
-
-        elif (H <= self.threshold or W <= self.threshold):
-            if img_lr is not None:
-                out = self.forward_inspyre(img_lr)
-            else:
-                out = self.forward_inspyre(img)
-            d3, d2, d1, d0 = out['saliency']
-            p2, p1, p0 = out['laplacian']
-
-        else:
-            # LR Saliency Pyramid
-            lr_out = self.forward_inspyre(img_lr)
-            lr_d3, lr_d2, lr_d1, lr_d0 = lr_out['saliency']
-            lr_p2, lr_p1, lr_p0 = lr_out['laplacian']
-
-            # HR Saliency Pyramid
-            hr_out = self.forward_inspyre(img)
-            hr_d3, hr_d2, hr_d1, hr_d0 = hr_out['saliency']
-            hr_p2, hr_p1, hr_p0 = hr_out['laplacian']
-
-            # Pyramid Blending
-            d3 = self.ret(lr_d0, hr_d3)
-
-            t2 = self.ret(self.transition2(d3), hr_p2)
-            p2 = t2 * hr_p2
-            d2 = self.image_pyramid.reconstruct(d3, p2)
-
-            t1 = self.ret(self.transition1(d2), hr_p1)
-            p1 = t1 * hr_p1
-            d1 = self.image_pyramid.reconstruct(d2, p1)
-
-            t0 = self.ret(self.transition0(d1), hr_p0)
-            p0 = t0 * hr_p0
-            d0 = self.image_pyramid.reconstruct(d1, p0)
-
-        pred = torch.sigmoid(d0)
+        pred = torch.sigmoid(self.forward_inspyre(img))
+        # Force the probabilities into a perfect [0, 1] range
         pred = (pred - pred.min()) / (pred.max() - pred.min() + 1e-8)
 
         return pred
 
 
-def InSPyReNet_SwinB(depth, pretrained, base_size, **kwargs):
-    return InSPyReNet(SwinB(pretrained=pretrained), [128, 128, 256, 512, 1024], depth, base_size, **kwargs)
+def InSPyReNet_SwinB(depth, base_size):
+    return InSPyReNet(swin_v1_b(), [128, 128, 256, 512, 1024], depth, base_size)
