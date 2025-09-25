@@ -45,9 +45,6 @@ class InSPyReNet(nn.Module):
         # TODO: implement dtype
         # ImagePyramid and Transition aren't nn.Module, so we need to manually move them to the device
         self.image_pyramid.to(device)
-        self.transition0.to(device)
-        self.transition1.to(device)
-        self.transition2.to(device)
         super().to(device)
         return self
 

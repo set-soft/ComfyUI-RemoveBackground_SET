@@ -62,9 +62,13 @@ class ImagePyramid:
         return expanded_x + laplacian_x
 
 
-class Transition:
+class Transition(nn.Module):
     def __init__(self, k=3):
+        super().__init__()
+
+        # Original code:
         # self.kernel = torch.tensor(cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k))).float()
+
         # Use the pre-computed, 100% accurate kernels from OpenCV
         if k == 5:
             kernel = torch.tensor([[0., 0., 1., 0., 0.],
@@ -103,22 +107,23 @@ class Transition:
 
         else:
             raise ValueError(f"Unsupported kernel size: {k}. Only 5, 9, and 17 are supported.")
-        self.kernel = kernel
 
-    def to(self, device):
-        self.kernel = self.kernel.to(device)
-        return self
+        self.register_buffer('kernel', kernel)
 
-    def cuda(self, idx=0):
-        self.to(device="cuda:{}".format(idx))
-        return self
+    def _load_from_state_dict(self, state_dict, prefix, local_metadata, strict,
+                              missing_keys, unexpected_keys, error_msgs):
+        kernel_buffer = self._buffers.pop('kernel')
+        super()._load_from_state_dict(state_dict, prefix, local_metadata, strict, missing_keys, unexpected_keys, error_msgs)
+        self._buffers['kernel'] = kernel_buffer
 
-    def __call__(self, x):
-        x = torch.sigmoid(x)
-        dx = dilation(x, self.kernel)
-        ex = erosion(x, self.kernel)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x_prob = torch.sigmoid(x)
 
-        return ((dx - ex) > .5).float()
+        dx = dilation(x_prob, self.kernel)
+        ex = erosion(x_prob, self.kernel)
+
+        gradient = dx - ex
+        return torch.where(gradient > 0.5, 1.0, 0.0)
 
 
 class Conv2d(nn.Module):
