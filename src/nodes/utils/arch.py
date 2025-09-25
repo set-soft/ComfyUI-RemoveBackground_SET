@@ -117,7 +117,9 @@ class RemBgArch(object):
                         logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
                     self.base_size = [1024, 1024]
                 else:
+                    self.w = self.h = 384
                     self.base_size = [384, 384]
+                logger.debug(f"Using base size: {self.base_size}")
             else:
                 self.why = 'Unknown Swin B variant model'
                 return
