@@ -10,11 +10,15 @@ import comfy.utils
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY, MODELS_DIR
 from .utils.arch import RemBgArch
+from .utils.inspyrenet_config import parse_inspyrenet_config
 
 
 logger = main_logger
 auto_device_type = model_management.get_torch_device().type
 models_path_default = folder_paths.get_folder_paths(MODELS_DIR_KEY)[0]
+#
+# BiRefNet models
+#
 USAGE_TO_WEIGHTS_FILE = {
     'General': ('BiRefNet', 'General', 1024, 1024),                                           # 444 MB
     'General (HR=2048)': ('BiRefNet_HR', 'General-HR', 2048, 2048),                           # 444 MB (FP16)
@@ -39,10 +43,25 @@ USAGE_TO_WEIGHTS_FILE = {
     'Camouflaged Obj. Detect.(COD)': ('BiRefNet-COD', 'COD', 1024, 1024),                     # 885 MB
 }
 MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
+#
+# BEN models
+#
 USAGE_TO_WEIGHTS_FILE_BEN = {
     'General BEN2': ('BEN2', 'BEN2_Base', 1024, 1024),                                        # 381 MB
 }
 MODEL_NAME_LIST_BEN = list(USAGE_TO_WEIGHTS_FILE_BEN.keys())
+#
+# InSPyReNet models
+#
+USAGE_TO_WEIGHTS_FILE_INSPYRENET = {
+    'Base 1.2.12 (351 MB)': ('1.2.12/ckpt_base.pth', 'InSPyReNet_1_2_12_base.pth', 1024, 1024),  # 351 MiB
+    'Fast 1.2.12 (351 MB)': ('1.2.12/ckpt_fast.pth', 'InSPyReNet_1_2_12_fast.pth', 384, 384),    # 351 MiB
+    'Nightly 1.2.12 (351 MB)': ('1.2.12/ckpt_base_nightly.pth', 'InSPyReNet_1_2_12_base_nightly.pth', 1024, 1024),  # 351 MiB
+}
+MODEL_NAME_LIST_INSPYRENET = list(USAGE_TO_WEIGHTS_FILE_INSPYRENET.keys())
+#
+# Common options and choices
+#
 TORCH_DTYPE = {
     "float16": torch.float16,
     "float32": torch.float32,
@@ -108,6 +127,14 @@ def download_ben_model(model_name):
     download_file(logger, url, models_dir, f"{name}.safetensors")
 
 
+def download_inspyrenet_model(model_name):
+    """ Downloading model from GitHub. """
+    models_dir = os.path.join(models_path_default)
+    gh_release, name = USAGE_TO_WEIGHTS_FILE_INSPYRENET[model_name][:2]
+    url = f"https://github.com/plemeri/transparent-background/releases/download/{gh_release}"
+    download_file(logger, url, models_dir, f"{name}.pth")
+
+
 class ImagePreprocessor:
     def __init__(self, arch, resolution, upscale_method) -> None:
         interpolation = transforms.InterpolationMode(upscale_method)
@@ -139,10 +166,10 @@ class LoadModel:
     DESCRIPTION = ("Load BiRefNet model from folder models/" + MODELS_DIR +
                    " or the path of birefnet configured in the extra YAML file")
     UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
-    DISPLAY_NAME = "Load BiRefNet/BEN model by file"
+    DISPLAY_NAME = "Load RemBG model by file"
 
     def load_model_file(self, model, device, dtype="auto"):
-        model_path = folder_paths.get_full_path(MODELS_DIR_KEY, model)
+        model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
         if device == "AUTO":
             device_type = auto_device_type
         else:
@@ -232,6 +259,64 @@ class AutoDownloadModelBEN(LoadModel):
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
         if model_full_path is None:
             download_ben_model(model_name)
+        res = super().load_model_file(model_file_name, device, dtype)
+        model, arch = res[0]
+        arch.w = w
+        arch.h = h
+        return ((model, arch), w, h)
+
+
+def add_inspyrenet_models():
+    """ Try to add the transparent-background Python module models """
+    # Look for the config and return the models
+    models = parse_inspyrenet_config(logger)
+    added = False
+    for m in models:
+        name = f"{m.name} (from TB config)"
+        if name in USAGE_TO_WEIGHTS_FILE_INSPYRENET:
+            # We already added it
+            continue
+        USAGE_TO_WEIGHTS_FILE_INSPYRENET[name] = (m.url, m.ckpt_name, m.base_size[0], m.base_size[1])
+        added = True
+    if added:
+        global MODEL_NAME_LIST_INSPYRENET
+        MODEL_NAME_LIST_INSPYRENET = list(USAGE_TO_WEIGHTS_FILE_INSPYRENET.keys())
+
+
+class AutoDownloadModelInSPyReNet(LoadModel):
+    @classmethod
+    def INPUT_TYPES(cls):
+        add_inspyrenet_models()
+        return {
+            "required": {
+                "model_name": (MODEL_NAME_LIST_INSPYRENET,),
+                "device": (["AUTO", "CPU"],)
+            },
+            "optional": {
+                "dtype": DTYPE_OPS
+            }
+        }
+
+    RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
+    RETURN_NAMES = ("model", "train_w", "train_h", )
+    FUNCTION = "load_model"
+    DESCRIPTION = "Auto download InSPyReNet model from github to models/"+MODELS_DIR+"/{model_name}.pth"
+    UNIQUE_NAME = "AutoDownloadInSPyReNetModel_SET"
+    DISPLAY_NAME = "Load InSPyReNet model by name"
+
+    def load_model(self, model_name, device, dtype="float32"):
+        url, fname, w, h = USAGE_TO_WEIGHTS_FILE_INSPYRENET[model_name]
+        if os.path.isabs(fname):
+            # A model from the transparent-background config.yaml
+            model_file_name = fname
+            if not os.path.isfile(fname):
+                download_file(logger, url, os.path.dirname(fname), os.path.basename(fname))
+        else:
+            # A model from our known list
+            model_file_name = f'{fname}.pth'
+            model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, model_file_name)
+            if model_full_path is None:
+                download_inspyrenet_model(model_name)
         res = super().load_model_file(model_file_name, device, dtype)
         model, arch = res[0]
         arch.w = w
