@@ -1,18 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers import PreTrainedModel
-from transformers import PretrainedConfig
-
-
-class RMBGConfig(PretrainedConfig):
-    # Just to make the model compatible with the Hugging Face transformers library's AutoModel feature
-    model_type = "SegformerForSemanticSegmentation"
-
-    def __init__(self, in_ch=3, out_ch=1, **kwargs):
-        self.in_ch = in_ch
-        self.out_ch = out_ch
-        super().__init__(**kwargs)
 
 
 class REBNCONV(nn.Module):
@@ -360,13 +348,9 @@ class myrebnconv(nn.Module):
         return self.rl(self.bn(self.conv(x)))
 
 
-class BriaRMBG(PreTrainedModel):
-    config_class = RMBGConfig
-
-    def __init__(self, config: RMBGConfig = RMBGConfig()):
-        super().__init__(config)
-        in_ch = config.in_ch  # 3
-        out_ch = config.out_ch  # 1
+class BriaRMBG(nn.Module):
+    def __init__(self, in_ch=3, out_ch=1):
+        super().__init__()
         self.conv_in = nn.Conv2d(in_ch, 64, 3, stride=2, padding=1)
         self.pool_in = nn.MaxPool2d(2, stride=2, ceil_mode=True)
 

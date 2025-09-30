@@ -9,7 +9,7 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
-from ..bria.bria_rmbg_1_4 import BriaRMBG, RMBGConfig
+from ..bria.bria_rmbg_1_4 import BriaRMBG
 
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
@@ -177,5 +177,5 @@ class RemBgArch(object):
         if self.model_type == 'BiRefNet':
             return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
         if self.model_type == 'U-2-Net':
-            return BriaRMBG(RMBGConfig())
+            return BriaRMBG()
         raise ValueError(f"Unknown model type: {self.model_type}")

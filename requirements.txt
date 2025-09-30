@@ -2,7 +2,6 @@
 einops
 kornia
 safetensors
-transformers
 # Black listed by manager to avoid side effects
 # torch
 # torchvision
