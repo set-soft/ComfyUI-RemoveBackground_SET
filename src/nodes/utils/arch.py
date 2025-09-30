@@ -9,6 +9,7 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
+from ..bria.bria_rmbg_1_4 import BriaRMBG, RMBGConfig
 
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
@@ -34,6 +35,21 @@ class RemBgArch(object):
         self.why = 'Not initialized'
         self.w = self.h = 1024  # Default size
         fix_state_dict(state_dict)
+
+        # Simple U-2-Net
+        if 'stage1.rebnconv1.bn_s1.weight' in state_dict:
+            # WIP, very naive
+            self.bb = 'None'
+            self.img_mean = [0.5, 0.5, 0.5]
+            self.img_std = [1.0, 1.0, 1.0]
+            self.dtype = state_dict['stage1.rebnconv1.bn_s1.weight'].dtype
+            self.version = 1
+            self.model_type = 'U-2-Net'  # U-Square-Net
+            self.ok = True
+            self.bb_ok = True
+            logger.debug(f"Model type: {self.model_type}")
+            return
+
         bb_name = 'bb'
 
         # Determine the window size for the swin_v1 transformer
@@ -158,4 +174,8 @@ class RemBgArch(object):
             return BEN_Base()
         if self.model_type == 'InSPyReNet':
             return InSPyReNet_SwinB(depth=64, base_size=self.base_size)
-        return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
+        if self.model_type == 'BiRefNet':
+            return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
+        if self.model_type == 'U-2-Net':
+            return BriaRMBG(RMBGConfig())
+        raise ValueError(f"Unknown model type: {self.model_type}")
