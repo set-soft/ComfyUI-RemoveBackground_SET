@@ -19,8 +19,8 @@ from src.nodes.utils.arch import RemBgArch
 
 def show_keys(state_dict):
     main_logger.info("\n--- PyTorch Model Keys ---\n\n")
-    for key in state_dict.keys():
-        main_logger.info(key)
+    for key, tensor in state_dict.items():
+        main_logger.info(f"{key} {list(tensor.shape)}")
 
 
 if __name__ == "__main__":
