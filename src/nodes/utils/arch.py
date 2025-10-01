@@ -9,8 +9,7 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
-from ..bria.bria_rmbg_1_4 import BriaRMBG
-
+from ..u2net.u2net import U2NET_full, U2NET_lite, BriaRMBG
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
 
@@ -34,20 +33,40 @@ class RemBgArch(object):
         self.bb_ok = False
         self.why = 'Not initialized'
         self.w = self.h = 1024  # Default size
+        # mean and standard deviation of the entire ImageNet dataset
+        self.img_mean = [0.485, 0.456, 0.406]
+        self.img_std = [0.229, 0.224, 0.225]
+
         fix_state_dict(state_dict)
 
         # Simple U-2-Net
-        if 'stage1.rebnconv1.bn_s1.weight' in state_dict:
-            # WIP, very naive
-            self.bb = 'None'
-            self.img_mean = [0.5, 0.5, 0.5]
-            self.img_std = [1.0, 1.0, 1.0]
-            self.dtype = state_dict['stage1.rebnconv1.bn_s1.weight'].dtype
-            self.version = 1
+        layer = "stage1.rebnconv1.conv_s1.weight"
+        if layer in state_dict:
+            self.bb = 'None'  # No backbone
+            self.bb_ok = True
+
+            if 'outconv.weight' in state_dict:
+                # U2Net: u2net.pth and u2netp.pth
+                # The output is fused
+                self.w = self.h = 320
+                self.version = 1
+            elif 'conv_in.weight' in state_dict:
+                # BRIA RMBG v1.4
+                # Input with higher resolution, no fused output
+                self.img_mean = [0.5, 0.5, 0.5]
+                self.img_std = [1.0, 1.0, 1.0]
+                # self.w = self.h = 1024  # Default size
+                self.version = 2
+            else:
+                self.why = 'Unknown U-2-Net implementation'
+                return
+
+            tensor = state_dict[layer]
+            self.full = tensor.shape[0] == 32
+            self.dtype = tensor.dtype
             self.model_type = 'U-2-Net'  # U-Square-Net
             self.ok = True
-            self.bb_ok = True
-            logger.debug(f"Model type: {self.model_type}")
+            logger.debug(f"Model type: {self.model_type} (Full: {self.full} Variant: {self.version})")
             return
 
         bb_name = 'bb'
@@ -106,10 +125,6 @@ class RemBgArch(object):
             return
         self.bb_ok = True
         logger.debug(f"Model backbone: {self.bb}")
-
-        # mean and standard deviation of the entire ImageNet dataset
-        self.img_mean = [0.485, 0.456, 0.406]
-        self.img_std = [0.229, 0.224, 0.225]
 
         if self.bb == 'swin_v1_b':
             # BEN and InSPyReNet
@@ -177,5 +192,7 @@ class RemBgArch(object):
         if self.model_type == 'BiRefNet':
             return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
         if self.model_type == 'U-2-Net':
-            return BriaRMBG()
+            if self.version == 2:
+                return BriaRMBG()
+            return U2NET_full() if self.full else U2NET_lite()
         raise ValueError(f"Unknown model type: {self.model_type}")

@@ -41,6 +41,9 @@ USAGE_TO_WEIGHTS_FILE = {
     'HR Salient Obj. Detect.(HRSOD)': ('BiRefNet-HRSOD', 'HRSOD', 1024, 1024),                # 885 MB
     # Camouflaged Object Detection (COD)
     'Camouflaged Obj. Detect.(COD)': ('BiRefNet-COD', 'COD', 1024, 1024),                     # 885 MB
+    # This model needs user and password
+    # 'BRIA v2.0 (No Com! 844 MiB)': ('BRIA-RMBG2_0', 'https://huggingface.co/briaai/RMBG-2.0/resolve/main/model.safetensors',
+    #                                 1024, 1024),
 }
 MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
 #
@@ -54,11 +57,20 @@ MODEL_NAME_LIST_BEN = list(USAGE_TO_WEIGHTS_FILE_BEN.keys())
 # InSPyReNet models
 #
 USAGE_TO_WEIGHTS_FILE_INSPYRENET = {
-    'Base 1.2.12 (351 MB)': ('1.2.12/ckpt_base.pth', 'InSPyReNet_1_2_12_base.pth', 1024, 1024),  # 351 MiB
-    'Fast 1.2.12 (351 MB)': ('1.2.12/ckpt_fast.pth', 'InSPyReNet_1_2_12_fast.pth', 384, 384),    # 351 MiB
-    'Nightly 1.2.12 (351 MB)': ('1.2.12/ckpt_base_nightly.pth', 'InSPyReNet_1_2_12_base_nightly.pth', 1024, 1024),  # 351 MiB
+    'Base 1.2.12 (351 MiB)': ('1.2.12/ckpt_base.pth', 'InSPyReNet_1_2_12_base.pth', 1024, 1024),  # 351 MiB
+    'Fast 1.2.12 (351 MiB)': ('1.2.12/ckpt_fast.pth', 'InSPyReNet_1_2_12_fast.pth', 384, 384),    # 351 MiB
+    'Nightly 1.2.12 (351 MiB)': ('1.2.12/ckpt_base_nightly.pth', 'InSPyReNet_1_2_12_base_nightly.pth', 1024, 1024),  # 351 MiB
 }
 MODEL_NAME_LIST_INSPYRENET = list(USAGE_TO_WEIGHTS_FILE_INSPYRENET.keys())
+#
+# U²-Net models
+#
+USAGE_TO_WEIGHTS_FILE_U2NET = {
+    'Base (u2net 169 MiB)': ('https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models', 'u2net.pth', 320, 320),
+    'Small (u2netp 4.5 MiB)': ('https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models', 'u2netp.pth', 320, 320),
+    'BRIA 1.4 (No Com! 169 MiB)': ('https://huggingface.co/briaai/RMBG-1.4/resolve/main', 'BRIA-RMBG1_4.safetensors', 1024, 1024),
+}
+MODEL_NAME_LIST_U2NET = list(USAGE_TO_WEIGHTS_FILE_U2NET.keys())
 #
 # Common options and choices
 #
@@ -115,7 +127,12 @@ def download_birefnet_model(model_name):
     """ Downloading model from huggingface. """
     models_dir = os.path.join(models_path_default)
     hf_dir, name = USAGE_TO_WEIGHTS_FILE[model_name][:2]
-    url = f"https://huggingface.co/ZhengPeng7/{hf_dir}/resolve/main/model.safetensors"
+    if name.startswith('http'):
+        # Special case, from a different repo
+        url = name
+        name = hf_dir
+    else:
+        url = f"https://huggingface.co/ZhengPeng7/{hf_dir}/resolve/main/model.safetensors"
     download_file(logger, url, models_dir, f"{name}.safetensors")
 
 
@@ -322,6 +339,37 @@ class AutoDownloadModelInSPyReNet(LoadModel):
         arch.w = w
         arch.h = h
         return ((model, arch), w, h)
+
+
+class AutoDownloadModelU2Net(LoadModel):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_name": (MODEL_NAME_LIST_U2NET,),
+                "device": (["AUTO", "CPU"],)
+            },
+            "optional": {
+                "dtype": DTYPE_OPS
+            }
+        }
+
+    RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
+    RETURN_NAMES = ("model", "train_w", "train_h", )
+    FUNCTION = "load_model"
+    DESCRIPTION = "Auto download U²-Net model from huggingface to models/"+MODELS_DIR+"/{model_name}.pth"
+    UNIQUE_NAME = "AutoDownloadU2NetModel_SET"
+    DISPLAY_NAME = "Load U²-Net model by name"
+
+    def load_model(self, model_name, device, dtype="float32"):
+        url, fname, w, h = USAGE_TO_WEIGHTS_FILE_U2NET[model_name]
+        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
+        if model_full_path is None:
+            download_file(logger, url, models_path_default, fname)
+        res = super().load_model_file(fname, device, dtype)
+        res.append(w)
+        res.append(h)
+        return res
 
 
 class GetMaskLow:
