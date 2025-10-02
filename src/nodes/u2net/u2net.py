@@ -7,9 +7,15 @@
 #
 # https://github.com/xuebinqin/U-2-Net
 #
+# Highly Accurate Dichotomous Image Segmentation
+# Xuebin Qin, Hang Dai, Xiaobin Hu, Deng-Ping Fan, Ling Shao, Luc Van Gool.
+# https://arxiv.org/pdf/2203.03041
+#
+# https://github.com/xuebinqin/DIS
+#
 # License: Apache 2.0
 #
-# This code was modified to also implement BRIA RMBG 1.4, which is just a variant of U²-Net
+# This code is the refactored U2Net code with support for ISNet variant of U2Net
 # Changes by Salvador E. Tropea, assisted by Gemini Pro 2.5
 #
 import torch
@@ -18,7 +24,7 @@ import torch.nn.functional as F
 
 import math
 
-__all__ = ['U2NET_full', 'U2NET_lite', 'BriaRMBG']
+__all__ = ['U2NET_full', 'U2NET_lite', 'ISNet']
 
 
 def _upsample_like(x, size):
@@ -99,12 +105,12 @@ class U2NET(nn.Module):
         self._make_layers(cfgs)
 
     def forward(self, x):
-        # Keep a reference to the original input for final upsampling in BriaRMBG
+        # Keep a reference to the original input for final upsampling in ISNet
         original_x = x
         maps = []  # storage for maps
 
         if self.version == 2:
-            # For BriaRMBG, apply initial convolution that downsizes the input
+            # For ISNet, apply initial convolution that downsizes the input
             x = self.conv_in(x)
 
         # Calculate the size map based on the actual input to the U-Net stages
@@ -140,7 +146,7 @@ class U2NET(nn.Module):
             # Generate side output saliency map (before sigmoid)
             x = getattr(self, f'side{h}')(x)
 
-            # For BriaRMBG, upsample side outputs to the original image size
+            # For ISNet, upsample side outputs to the original image size
             if self.version == 2:
                 x = _upsample_like(x, original_x.shape[-2:])
             else:
@@ -152,7 +158,7 @@ class U2NET(nn.Module):
             # Fuse the side output saliency maps
             maps.reverse()
 
-            # BriaRMBG returns only the first side output
+            # ISNet returns only the first side output
             if self.version == 2:
                 return torch.sigmoid(maps[0])
 
@@ -232,8 +238,8 @@ def U2NET_lite():
     return U2NET(cfgs=lite, out_ch=1)
 
 
-def BriaRMBG():
-    bria = {
+def ISNet():
+    isnet = {
         # cfgs for building RSUs and sides
         # {stage : [name, (height(L), in_ch, mid_ch, out_ch, dilated), side]}
         'stage1': ['En_1', (7, 64, 32, 64), 64],
@@ -248,4 +254,4 @@ def BriaRMBG():
         'stage2d': ['De_2', (6, 256, 32, 64), 64],
         'stage1d': ['De_1', (7, 128, 16, 64), 64],
     }
-    return U2NET(cfgs=bria, out_ch=1, version=2)
+    return U2NET(cfgs=isnet, out_ch=1, version=2)

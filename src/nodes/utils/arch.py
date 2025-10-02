@@ -9,7 +9,7 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
-from ..u2net.u2net import U2NET_full, U2NET_lite, BriaRMBG
+from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.']
 
@@ -39,7 +39,7 @@ class RemBgArch(object):
 
         fix_state_dict(state_dict)
 
-        # Simple U-2-Net
+        # U-2-Net and IS-Net
         layer = "stage1.rebnconv1.conv_s1.weight"
         if layer in state_dict:
             self.bb = 'None'  # No backbone
@@ -50,13 +50,15 @@ class RemBgArch(object):
                 # The output is fused
                 self.w = self.h = 320
                 self.version = 1
+                self.model_type = 'U-2-Net'  # U-Square-Net
             elif 'conv_in.weight' in state_dict:
-                # BRIA RMBG v1.4
+                # IS-Net isnet.pth and isnet-general-use.pth (i.e. BRIA RMBG v1.4)
                 # Input with higher resolution, no fused output
                 self.img_mean = [0.5, 0.5, 0.5]
                 self.img_std = [1.0, 1.0, 1.0]
                 # self.w = self.h = 1024  # Default size
                 self.version = 2
+                self.model_type = 'IS-Net'  # DIS
             else:
                 self.why = 'Unknown U-2-Net implementation'
                 return
@@ -64,9 +66,8 @@ class RemBgArch(object):
             tensor = state_dict[layer]
             self.full = tensor.shape[0] == 32
             self.dtype = tensor.dtype
-            self.model_type = 'U-2-Net'  # U-Square-Net
             self.ok = True
-            logger.debug(f"Model type: {self.model_type} (Full: {self.full} Variant: {self.version})")
+            logger.debug(f"Model type: {self.model_type} (Full: {self.full})")
             return
 
         bb_name = 'bb'
@@ -192,7 +193,7 @@ class RemBgArch(object):
         if self.model_type == 'BiRefNet':
             return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
         if self.model_type == 'U-2-Net':
-            if self.version == 2:
-                return BriaRMBG()
             return U2NET_full() if self.full else U2NET_lite()
+        if self.model_type == 'IS-Net':
+            return ISNet()
         raise ValueError(f"Unknown model type: {self.model_type}")

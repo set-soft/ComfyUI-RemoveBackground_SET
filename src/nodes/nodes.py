@@ -67,10 +67,23 @@ MODEL_NAME_LIST_INSPYRENET = list(USAGE_TO_WEIGHTS_FILE_INSPYRENET.keys())
 #
 USAGE_TO_WEIGHTS_FILE_U2NET = {
     'Base (u2net 169 MiB)': ('https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models', 'u2net.pth', 320, 320),
-    'Small (u2netp 4.5 MiB)': ('https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models', 'u2netp.pth', 320, 320),
-    'BRIA 1.4 (No Com! 169 MiB)': ('https://huggingface.co/briaai/RMBG-1.4/resolve/main', 'BRIA-RMBG1_4.safetensors', 1024, 1024),
+    'Small (u2netp 4.5 MiB)': ('https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models', 'u2netp.pth',
+                               320, 320),
 }
 MODEL_NAME_LIST_U2NET = list(USAGE_TO_WEIGHTS_FILE_U2NET.keys())
+#
+# IS-Net models
+#
+USAGE_TO_WEIGHTS_FILE_ISNET = {
+    'Base (isnet 169 MiB)': ('https://huggingface.co/Carve/isnet/resolve/main/isnet.pth', 'isnet.pth', 1024, 1024),
+    'DIS5K (isnet-general-use 169 MiB)': ('https://huggingface.co/ClockZinc/IS-NET_pth/resolve/main/isnet-general-use.pth',
+                                          'isnet-general-use.pth', 1024, 1024),
+    'CarveSet (isnet-97-carveset 169 MiB)': ('https://huggingface.co/Carve/isnet/resolve/main/isnet-97-carveset.pth',
+                                             'isnet-97-carveset.pth', 1024, 1024),
+    'BRIA 1.4 (No Com! 169 MiB)': ('https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.safetensors',
+                                   'BRIA-RMBG1_4.safetensors', 1024, 1024),
+}
+MODEL_NAME_LIST_ISNET = list(USAGE_TO_WEIGHTS_FILE_ISNET.keys())
 #
 # Common options and choices
 #
@@ -363,6 +376,37 @@ class AutoDownloadModelU2Net(LoadModel):
 
     def load_model(self, model_name, device, dtype="float32"):
         url, fname, w, h = USAGE_TO_WEIGHTS_FILE_U2NET[model_name]
+        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
+        if model_full_path is None:
+            download_file(logger, url, models_path_default, fname)
+        res = super().load_model_file(fname, device, dtype)
+        res.append(w)
+        res.append(h)
+        return res
+
+
+class AutoDownloadModelISNet(LoadModel):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_name": (MODEL_NAME_LIST_ISNET,),
+                "device": (["AUTO", "CPU"],)
+            },
+            "optional": {
+                "dtype": DTYPE_OPS
+            }
+        }
+
+    RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
+    RETURN_NAMES = ("model", "train_w", "train_h", )
+    FUNCTION = "load_model"
+    DESCRIPTION = "Auto download IS-Net model from huggingface to models/"+MODELS_DIR
+    UNIQUE_NAME = "AutoDownloadISNetModel_SET"
+    DISPLAY_NAME = "Load IS-Net model by name"
+
+    def load_model(self, model_name, device, dtype="float32"):
+        url, fname, w, h = USAGE_TO_WEIGHTS_FILE_ISNET[model_name]
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
         if model_full_path is None:
             download_file(logger, url, models_path_default, fname)
