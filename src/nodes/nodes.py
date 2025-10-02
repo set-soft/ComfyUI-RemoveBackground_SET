@@ -80,6 +80,8 @@ USAGE_TO_WEIGHTS_FILE_ISNET = {
                                           'isnet-general-use.pth', 1024, 1024),
     'CarveSet (isnet-97-carveset 169 MiB)': ('https://huggingface.co/Carve/isnet/resolve/main/isnet-97-carveset.pth',
                                              'isnet-97-carveset.pth', 1024, 1024),
+    'Anime (ISNet_anime-seg 195 MiB)': ('https://huggingface.co/skytnt/anime-seg/resolve/main/model.safetensors',
+                                        'ISNet_anime-seg.safetensors', 640, 640),
     'BRIA 1.4 (No Com! 169 MiB)': ('https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.safetensors',
                                    'BRIA-RMBG1_4.safetensors', 1024, 1024),
 }

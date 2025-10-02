@@ -11,13 +11,19 @@ from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 
-UNWANTED_PREFIXES = ['module.', '_orig_mod.']
+UNWANTED_PREFIXES = ['module.', '_orig_mod.',
+                     # IS-Net anime-seg
+                     'net.']
 
 
 # This is needed for old models
 def fix_state_dict(state_dict):
     """ Remove bogus prefixes from the keys in the state dict """
     for k, v in list(state_dict.items()):
+        # Remove IS-Net "Ground Truth Encoder", not for inference
+        if k.startswith('gt_encoder.'):
+            state_dict.pop(k)
+            continue
         prefix_length = 0
         for unwanted_prefix in UNWANTED_PREFIXES:
             if k[prefix_length:].startswith(unwanted_prefix):
