@@ -41,9 +41,9 @@ USAGE_TO_WEIGHTS_FILE = {
     'HR Salient Obj. Detect.(HRSOD)': ('BiRefNet-HRSOD', 'HRSOD', 1024, 1024),                # 885 MB
     # Camouflaged Object Detection (COD)
     'Camouflaged Obj. Detect.(COD)': ('BiRefNet-COD', 'COD', 1024, 1024),                     # 885 MB
-    # This model needs user and password
-    # 'BRIA v2.0 (No Com! 844 MiB)': ('BRIA-RMBG2_0', 'https://huggingface.co/briaai/RMBG-2.0/resolve/main/model.safetensors',
-    #                                 1024, 1024),
+    'BRIA v2.0 (No Com! 844 MiB)': ('BRIA-RMBG2_0', 'https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors',
+                                    1024, 1024),
+
 }
 MODEL_NAME_LIST = list(USAGE_TO_WEIGHTS_FILE.keys())
 #
@@ -58,6 +58,7 @@ MODEL_NAME_LIST_BEN = list(USAGE_TO_WEIGHTS_FILE_BEN.keys())
 #
 USAGE_TO_WEIGHTS_FILE_INSPYRENET = {
     'Base 1.2.12 (351 MiB)': ('1.2.12/ckpt_base.pth', 'InSPyReNet_1_2_12_base.pth', 1024, 1024),  # 351 MiB
+    # Safetensors? https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors
     'Fast 1.2.12 (351 MiB)': ('1.2.12/ckpt_fast.pth', 'InSPyReNet_1_2_12_fast.pth', 384, 384),    # 351 MiB
     'Nightly 1.2.12 (351 MiB)': ('1.2.12/ckpt_base_nightly.pth', 'InSPyReNet_1_2_12_base_nightly.pth', 1024, 1024),  # 351 MiB
 }
@@ -86,6 +87,18 @@ USAGE_TO_WEIGHTS_FILE_ISNET = {
                                    'BRIA-RMBG1_4.safetensors', 1024, 1024),
 }
 MODEL_NAME_LIST_ISNET = list(USAGE_TO_WEIGHTS_FILE_ISNET.keys())
+#
+# MODNet models
+#
+USAGE_TO_WEIGHTS_FILE_MODNET = {
+    'Photo portrait (26 MiB)': (
+        'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_photographic_portrait_matting.ckpt',
+        'modnet_photographic_portrait_matting.ckpt', 512, 512),
+    'Webcam portrait (26 MiB)': (
+        'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_webcam_portrait_matting.ckpt',
+        'modnet_webcam_portrait_matting.ckpt', 512, 512),
+}
+MODEL_NAME_LIST_MODNET = list(USAGE_TO_WEIGHTS_FILE_MODNET.keys())
 #
 # Common options and choices
 #
@@ -409,6 +422,37 @@ class AutoDownloadModelISNet(LoadModel):
 
     def load_model(self, model_name, device, dtype="float32"):
         url, fname, w, h = USAGE_TO_WEIGHTS_FILE_ISNET[model_name]
+        model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
+        if model_full_path is None:
+            download_file(logger, url, models_path_default, fname)
+        res = super().load_model_file(fname, device, dtype)
+        res.append(w)
+        res.append(h)
+        return res
+
+
+class AutoDownloadModelMODNet(LoadModel):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_name": (MODEL_NAME_LIST_MODNET,),
+                "device": (["AUTO", "CPU"],)
+            },
+            "optional": {
+                "dtype": DTYPE_OPS
+            }
+        }
+
+    RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
+    RETURN_NAMES = ("model", "train_w", "train_h", )
+    FUNCTION = "load_model"
+    DESCRIPTION = "Auto download MODNet model from huggingface to models/"+MODELS_DIR
+    UNIQUE_NAME = "AutoDownloadMODNetModel_SET"
+    DISPLAY_NAME = "Load MODNet model by name"
+
+    def load_model(self, model_name, device, dtype="float32"):
+        url, fname, w, h = USAGE_TO_WEIGHTS_FILE_MODNET[model_name]
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
         if model_full_path is None:
             download_file(logger, url, models_path_default, fname)

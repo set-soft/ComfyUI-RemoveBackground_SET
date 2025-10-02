@@ -10,6 +10,7 @@ from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
+from ..modnet.modnet import MODNet
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
@@ -74,6 +75,26 @@ class RemBgArch(object):
             self.dtype = tensor.dtype
             self.ok = True
             logger.debug(f"Model type: {self.model_type} (Full: {self.full})")
+            return
+
+        # MODNet
+        layer = 'lr_branch.backbone.model.features.0.0.weight'
+        if layer in state_dict:
+            if 'backbone.model.features.0.0.weight' in state_dict:
+                self.bb_ok = True
+                self.bb = 'mobilenetv2'
+                logger.debug(f"Model backbone: {self.bb}")
+            else:
+                self.why = 'No model features'
+                return
+            self.model_type = 'MODNet'
+            self.w = self.h = 512
+            self.img_mean = [0.5, 0.5, 0.5]
+            self.img_std = [0.5, 0.5, 0.5]
+            self.version = 1
+            self.dtype = state_dict[layer].dtype
+            self.ok = True
+            logger.debug(f"Model type: {self.model_type} ({self.bb}) [{self.dtype}]")
             return
 
         bb_name = 'bb'
@@ -202,4 +223,6 @@ class RemBgArch(object):
             return U2NET_full() if self.full else U2NET_lite()
         if self.model_type == 'IS-Net':
             return ISNet()
+        if self.model_type == 'MODNet':
+            return MODNet(backbone_arch=self.bb, backbone_pretrained=False)
         raise ValueError(f"Unknown model type: {self.model_type}")
