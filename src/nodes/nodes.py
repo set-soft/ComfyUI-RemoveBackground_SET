@@ -4,6 +4,7 @@
 # Project: ComfyUI-BiRefNet-SET
 import os
 import safetensors.torch
+from safetensors import safe_open
 from seconohe.downloader import download_file
 from seconohe.apply_mask import apply_mask
 # from seconohe.torch import get_pytorch_memory_usage_str
@@ -252,6 +253,13 @@ class LoadModel:
         # Load the state dict
         logger.debug(f"Loading model weights from {model_path}")
         if model_path.endswith(".safetensors"):
+            # Try to get the metadata
+            with safe_open(model_path, framework="pt", device="cpu") as f:
+                loaded_metadata = f.metadata()
+                if loaded_metadata:
+                    for key, value in loaded_metadata.items():
+                        logger.debug(f"  - {key}: {value}")
+            # Load the weights
             state_dict = safetensors.torch.load_file(model_path, device=device_type)
         else:
             state_dict = torch.load(model_path, map_location=device_type)
