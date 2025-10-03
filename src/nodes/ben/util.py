@@ -80,7 +80,7 @@ class PositionEmbeddingSine:
 
 
 class MCLM(nn.Module):
-    def __init__(self, d_model, num_heads, pool_ratios=[1, 4, 8], act_fun=F.gelu, rename12=False):
+    def __init__(self, d_model, num_heads, pool_ratios=[1, 4, 8], act_fun=F.gelu):
         super().__init__()
         self.attention = nn.ModuleList([
             nn.MultiheadAttention(d_model, num_heads, dropout=0.1),
@@ -90,8 +90,8 @@ class MCLM(nn.Module):
             nn.MultiheadAttention(d_model, num_heads, dropout=0.1)
         ])
 
-        linear1 = nn.Linear(d_model, d_model * 2)
-        linear2 = nn.Linear(d_model * 2, d_model)
+        self.linear1 = nn.Linear(d_model, d_model * 2)
+        self.linear2 = nn.Linear(d_model * 2, d_model)
         self.linear3 = nn.Linear(d_model, d_model * 2)
         self.linear4 = nn.Linear(d_model * 2, d_model)
 
@@ -103,14 +103,6 @@ class MCLM(nn.Module):
         self.activation = act_fun
         self.pool_ratios = pool_ratios
         self.positional_encoding = PositionEmbeddingSine(num_pos_feats=d_model // 2, normalize=True)
-        # MVANet error, they added 2, but then they removed them, but left the wrong number
-        self.rename12 = rename12
-        if rename12:
-            self.linear5 = linear1
-            self.linear6 = linear2
-        else:
-            self.linear1 = linear1
-            self.linear2 = linear2
 
     def forward(self, L, g):
         """
@@ -144,9 +136,7 @@ class MCLM(nn.Module):
 
         g_hw_b_c = g_hw_b_c + self.dropout1(self.attention[0](g_hw_b_c + g_pos, pools + p_poses, pools)[0])
         g_hw_b_c = self.norm1(g_hw_b_c)
-        linear1 = self.linear5 if self.rename12 else self.linear1
-        linear2 = self.linear6 if self.rename12 else self.linear2
-        g_hw_b_c = g_hw_b_c + self.dropout2(linear2(self.dropout(self.activation(linear1(g_hw_b_c)).clone())))
+        g_hw_b_c = g_hw_b_c + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(g_hw_b_c)).clone())))
         g_hw_b_c = self.norm2(g_hw_b_c)
 
         # attention between origin locs (q) & freashed glb (k,v)

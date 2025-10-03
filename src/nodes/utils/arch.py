@@ -19,6 +19,13 @@ UNWANTED_PREFIXES = ['module.', '_orig_mod.',
 # The MCLM/MCRM in the code doesn't match the one really used
 MVANET_MCLM_BUG = re.compile(r'(multifieldcrossatt\.(linear[12]|attention\.[567]))|'
                              r'(dec_blk\d\.(linear[12]|attention\.[4567]))')
+MVANET_RENAME = {
+    # They added 5 and 6, but the 1 and 2 were removed, the 5 is 1 and 6 is 2
+    'multifieldcrossatt.linear5.weight': 'multifieldcrossatt.linear1.weight',
+    'multifieldcrossatt.linear5.bias': 'multifieldcrossatt.linear1.bias',
+    'multifieldcrossatt.linear6.weight': 'multifieldcrossatt.linear2.weight',
+    'multifieldcrossatt.linear6.bias': 'multifieldcrossatt.linear2.bias',
+}
 
 
 # This is needed for old models
@@ -172,15 +179,17 @@ class RemBgArch(object):
                     # self.model_type = 'MVANet'
                     self.mva_variant = True
                     self.dtype = state_dict['conv1.1.weight'].dtype
-                    # Fix known bug in available network
-                    if 'sideout5.0.weight' in state_dict:
-                        # Remove bogus layers
-                        logger.debug('Removing bogus layers ...')
-                        for k, v in list(state_dict.items()):
-                            if MVANET_MCLM_BUG.match(k):
-                                # https://github.com/qianyu-dlut/MVANet/issues/3
-                                logger.debug('- '+k)
-                                state_dict.pop(k)
+                    # Fix known bugs in available network
+                    # Remove bogus layers
+                    logger.debug('Removing bogus layers ...')
+                    for k, v in list(state_dict.items()):
+                        if MVANET_MCLM_BUG.match(k):
+                            logger.debug('- '+k)
+                            del state_dict[k]
+                    # Rename some layers to match BEN numbering
+                    # https://github.com/qianyu-dlut/MVANet/issues/3
+                    for k, v in MVANET_RENAME.items():
+                        state_dict[v] = state_dict.pop(k)
                 else:
                     # Pure BEN
                     self.mva_variant = False

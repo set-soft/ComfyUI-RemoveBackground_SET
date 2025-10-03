@@ -53,7 +53,7 @@ class BEN_Base(nn.Module):
         self.output2 = make_cbr(128, emb_dim, norm_tp, act_lay)
         self.output1 = make_cbr(128, emb_dim, norm_tp, act_lay)
 
-        self.multifieldcrossatt = MCLM(emb_dim, 1, [1, 4, 8], act_fun=act_fun, rename12=mva_variant)
+        self.multifieldcrossatt = MCLM(emb_dim, 1, [1, 4, 8], act_fun=act_fun)
         self.conv1 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
         self.conv2 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
         self.conv3 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
