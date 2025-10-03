@@ -178,22 +178,28 @@ class RemBgArch(object):
                     # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
                     self.ben_variant = False
                     self.dtype = state_dict['conv1.1.weight'].dtype
-                    # Fix known bugs in available network
-                    # Remove bogus layers
-                    logger.debug('Removing bogus layers ...')
-                    for k, v in list(state_dict.items()):
-                        if MVANET_MCLM_BUG.match(k):
-                            logger.debug('- '+k)
-                            del state_dict[k]
-                    # Rename some layers to match BEN numbering
-                    # https://github.com/qianyu-dlut/MVANet/issues/3
-                    for k, v in MVANET_RENAME.items():
-                        state_dict[v] = state_dict.pop(k)
+                    if 'multifieldcrossatt.linear5.weight' in state_dict:
+                        # Fix known bugs in available network
+                        # Remove bogus layers
+                        logger.debug('Removing bogus layers ...')
+                        for k, v in list(state_dict.items()):
+                            if MVANET_MCLM_BUG.match(k):
+                                logger.debug('- '+k)
+                                del state_dict[k]
+                        # Rename some layers to match BEN numbering
+                        # https://github.com/qianyu-dlut/MVANet/issues/3
+                        for k, v in MVANET_RENAME.items():
+                            state_dict[v] = state_dict.pop(k)
                 else:
                     # BEN
                     self.ben_variant = True
                     # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
                     self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+                # Remove sideout layers, only used during training
+                if 'sideout5.0.weight' in state_dict:
+                    for n in range(5):
+                        del state_dict[f"sideout{n+1}.0.weight"]
+                        del state_dict[f"sideout{n+1}.0.bias"]
             elif 'context1.branch0.conv.weight' in state_dict:
                 # InSPyReNet
                 self.version = 1

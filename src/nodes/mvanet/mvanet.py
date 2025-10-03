@@ -267,12 +267,6 @@ class MVANet(nn.Module):
 
         self.backbone = swin_v1_b()
         emb_dim = 128
-        # sideout* layers are for training, should be pruned
-        self.sideout5 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
-        self.sideout4 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
-        self.sideout3 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
-        self.sideout2 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
-        self.sideout1 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
 
         self.output5 = make_cbr(1024, emb_dim, norm_tp, act_lay)
         self.output4 = make_cbr(512, emb_dim, norm_tp, act_lay)
