@@ -281,9 +281,9 @@ class LoadModel:
         return [(model, arch)]
 
 
-class AutoDownloadModel(LoadModel):
+class AutoDownloadBiRefNetModel(LoadModel):
     """ Base class for all the auto-downloaders """
-    model_type = None
+    model_type = 'BiRefNet'
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -325,14 +325,11 @@ class AutoDownloadModel(LoadModel):
         return ((model, arch), w, h)
 
 
-class AutoDownloadBiRefNetModel(AutoDownloadModel):
-    model_type = 'BiRefNet'
-
-
+# BiRefNet is de default
 AutoDownloadBiRefNetModel.fill_description()
 
 
-class AutoDownloadBENModel(AutoDownloadModel):
+class AutoDownloadBENModel(AutoDownloadBiRefNetModel):
     model_type = 'MVANet'
 
 
@@ -342,28 +339,28 @@ AutoDownloadBENModel.fill_description()
 AutoDownloadBENModel.model_type = 'MVANet'
 
 
-class AutoDownloadInSPyReNetModel(AutoDownloadModel):
+class AutoDownloadInSPyReNetModel(AutoDownloadBiRefNetModel):
     model_type = 'InSPyReNet'
 
 
 AutoDownloadInSPyReNetModel.fill_description()
 
 
-class AutoDownloadU2NetModel(AutoDownloadModel):
+class AutoDownloadU2NetModel(AutoDownloadBiRefNetModel):
     model_type = 'U-2-Net'
 
 
 AutoDownloadU2NetModel.fill_description()
 
 
-class AutoDownloadISNetModel(AutoDownloadModel):
+class AutoDownloadISNetModel(AutoDownloadBiRefNetModel):
     model_type = 'IS-Net'
 
 
 AutoDownloadISNetModel.fill_description()
 
 
-class AutoDownloadMODNetModel(AutoDownloadModel):
+class AutoDownloadMODNetModel(AutoDownloadBiRefNetModel):
     model_type = 'MODNet'
 
 
