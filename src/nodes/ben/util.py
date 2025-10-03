@@ -6,12 +6,12 @@ import torch.nn.functional as F
 from einops import rearrange
 
 
-def make_cbr(in_dim, out_dim):
-    return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), nn.InstanceNorm2d(out_dim), nn.GELU())
+def make_cbr(in_dim, out_dim, norm_tp, act_lay):
+    return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), norm_tp(out_dim), act_lay())
 
 
-def make_cbg(in_dim, out_dim):
-    return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), nn.InstanceNorm2d(out_dim), nn.GELU())
+def make_cbg(in_dim, out_dim, norm_tp):
+    return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), norm_tp(out_dim), nn.GELU())
 
 
 def rescale_to(x, scale_factor: float = 2, interpolation='nearest'):

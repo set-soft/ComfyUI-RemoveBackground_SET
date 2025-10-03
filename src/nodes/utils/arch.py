@@ -12,7 +12,6 @@ from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
-from ..mvanet.MVANet import MVANet
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
@@ -164,29 +163,27 @@ class RemBgArch(object):
             assert bb_name == 'backbone'
 
             if 'output.0.weight' in state_dict:
+                # BEN
+                self.model_type = 'BEN'
+                self.version = 1
                 if 'conv1.1.weight' in state_dict:
-                    # MVANet
+                    # MVANet variant
                     # Note: this change is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
-                    self.version = 1
-                    self.model_type = 'MVANet'
+                    # self.model_type = 'MVANet'
+                    self.mva_variant = True
                     self.dtype = state_dict['conv1.1.weight'].dtype
-                    # Ok, this should be temporal
+                    # Fix known bug in available network
                     if 'sideout5.0.weight' in state_dict:
-                        logger.debug('Removing training and bogus layers ...')
-                        # Remove training layers ...
+                        # Remove bogus layers
+                        logger.debug('Removing bogus layers ...')
                         for k, v in list(state_dict.items()):
-                            if k.startswith('sideout'):
-                                logger.debug('- '+k)
-                                state_dict.pop(k)
                             if MVANET_MCLM_BUG.match(k):
-                                # Not even in the training code!
                                 # https://github.com/qianyu-dlut/MVANet/issues/3
                                 logger.debug('- '+k)
                                 state_dict.pop(k)
                 else:
-                    # BEN
-                    self.version = 1
-                    self.model_type = 'BEN'
+                    # Pure BEN
+                    self.mva_variant = False
                     # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
                     self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
             elif 'context1.branch0.conv.weight' in state_dict:
@@ -239,7 +236,7 @@ class RemBgArch(object):
 
     def instantiate_model(self):
         if self.model_type == 'BEN':
-            return BEN_Base()
+            return BEN_Base(mva_variant=self.mva_variant)
         if self.model_type == 'InSPyReNet':
             return InSPyReNet_SwinB(depth=64, base_size=self.base_size)
         if self.model_type == 'BiRefNet':
@@ -250,6 +247,4 @@ class RemBgArch(object):
             return ISNet()
         if self.model_type == 'MODNet':
             return MODNet(backbone_arch=self.bb, backbone_pretrained=False)
-        if self.model_type == 'MVANet':
-            return MVANet()
         raise ValueError(f"Unknown model type: {self.model_type}")

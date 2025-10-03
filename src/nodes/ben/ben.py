@@ -18,14 +18,25 @@
 #
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from .util import make_cbr, make_cbg, rescale_to, resize_as, image2patches, patches2image, MCLM, MCRM
 from ..swin.swin_v1 import swin_v1_b
 
 
 class BEN_Base(nn.Module):
-    def __init__(self):
+    def __init__(self, mva_variant=False):
         super().__init__()
+        if not mva_variant:
+            # BEN
+            act_fun = F.gelu
+            act_lay = nn.GELU
+            norm_tp = nn.InstanceNorm2d
+        else:
+            # MVANet
+            act_fun = F.relu
+            act_lay = nn.PReLU
+            norm_tp = nn.BatchNorm2d
 
         self.backbone = swin_v1_b()
         emb_dim = 128
@@ -36,39 +47,39 @@ class BEN_Base(nn.Module):
         self.sideout2 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
         self.sideout1 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
 
-        self.output5 = make_cbr(1024, emb_dim)
-        self.output4 = make_cbr(512, emb_dim)
-        self.output3 = make_cbr(256, emb_dim)
-        self.output2 = make_cbr(128, emb_dim)
-        self.output1 = make_cbr(128, emb_dim)
+        self.output5 = make_cbr(1024, emb_dim, norm_tp, act_lay)
+        self.output4 = make_cbr(512, emb_dim, norm_tp, act_lay)
+        self.output3 = make_cbr(256, emb_dim, norm_tp, act_lay)
+        self.output2 = make_cbr(128, emb_dim, norm_tp, act_lay)
+        self.output1 = make_cbr(128, emb_dim, norm_tp, act_lay)
 
-        self.multifieldcrossatt = MCLM(emb_dim, 1, [1, 4, 8])
-        self.conv1 = make_cbr(emb_dim, emb_dim)
-        self.conv2 = make_cbr(emb_dim, emb_dim)
-        self.conv3 = make_cbr(emb_dim, emb_dim)
-        self.conv4 = make_cbr(emb_dim, emb_dim)
-        self.dec_blk1 = MCRM(emb_dim, 1, [2, 4, 8])
-        self.dec_blk2 = MCRM(emb_dim, 1, [2, 4, 8])
-        self.dec_blk3 = MCRM(emb_dim, 1, [2, 4, 8])
-        self.dec_blk4 = MCRM(emb_dim, 1, [2, 4, 8])
+        self.multifieldcrossatt = MCLM(emb_dim, 1, [1, 4, 8], act_fun=act_fun, rename12=mva_variant)
+        self.conv1 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
+        self.conv2 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
+        self.conv3 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
+        self.conv4 = make_cbr(emb_dim, emb_dim, norm_tp, act_lay)
+        self.dec_blk1 = MCRM(emb_dim, 1, [2, 4, 8], act_fun=act_fun)
+        self.dec_blk2 = MCRM(emb_dim, 1, [2, 4, 8], act_fun=act_fun)
+        self.dec_blk3 = MCRM(emb_dim, 1, [2, 4, 8], act_fun=act_fun)
+        self.dec_blk4 = MCRM(emb_dim, 1, [2, 4, 8], act_fun=act_fun)
 
         self.insmask_head = nn.Sequential(
             nn.Conv2d(emb_dim, 384, kernel_size=3, padding=1),
-            nn.InstanceNorm2d(384),
-            nn.GELU(),
+            norm_tp(384),
+            act_lay(),
             nn.Conv2d(384, 384, kernel_size=3, padding=1),
-            nn.InstanceNorm2d(384),
-            nn.GELU(),
+            norm_tp(384),
+            act_lay(),
             nn.Conv2d(384, emb_dim, kernel_size=3, padding=1)
         )
 
         self.shallow = nn.Sequential(nn.Conv2d(3, emb_dim, kernel_size=3, padding=1))
-        self.upsample1 = make_cbg(emb_dim, emb_dim)
-        self.upsample2 = make_cbg(emb_dim, emb_dim)
+        self.upsample1 = make_cbg(emb_dim, emb_dim, norm_tp)
+        self.upsample2 = make_cbg(emb_dim, emb_dim, norm_tp)
         self.output = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
 
         for m in self.modules():
-            if isinstance(m, nn.GELU) or isinstance(m, nn.Dropout):
+            if isinstance(m, act_lay) or isinstance(m, nn.Dropout):
                 m.inplace = True
 
     # @torch.inference_mode()
