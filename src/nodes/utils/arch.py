@@ -4,6 +4,7 @@
 # Project: ComfyUI-BiRefNet-SET
 import math
 import os
+import re
 import torch
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
@@ -11,10 +12,14 @@ from ..ben.ben import BEN_Base
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
+from ..mvanet.MVANet import MVANet
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
                      'net.']
+# The MCLM/MCRM in the code doesn't match the one really used
+MVANET_MCLM_BUG = re.compile(r'(multifieldcrossatt\.(linear[12]|attention\.[567]))|'
+                             r'(dec_blk\d\.(linear[12]|attention\.[4567]))')
 
 
 # This is needed for old models
@@ -155,15 +160,35 @@ class RemBgArch(object):
         logger.debug(f"Model backbone: {self.bb}")
 
         if self.bb == 'swin_v1_b':
-            # BEN and InSPyReNet
+            # BEN, InSPyReNet and MVANet
             assert bb_name == 'backbone'
 
             if 'output.0.weight' in state_dict:
-                # BEN
-                self.version = 1
-                self.model_type = 'BEN'
-                # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
-                self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+                if 'conv1.1.weight' in state_dict:
+                    # MVANet
+                    # Note: this change is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
+                    self.version = 1
+                    self.model_type = 'MVANet'
+                    self.dtype = state_dict['conv1.1.weight'].dtype
+                    # Ok, this should be temporal
+                    if 'sideout5.0.weight' in state_dict:
+                        logger.debug('Removing training and bogus layers ...')
+                        # Remove training layers ...
+                        for k, v in list(state_dict.items()):
+                            if k.startswith('sideout'):
+                                logger.debug('- '+k)
+                                state_dict.pop(k)
+                            if MVANET_MCLM_BUG.match(k):
+                                # Not even in the training code!
+                                # https://github.com/qianyu-dlut/MVANet/issues/3
+                                logger.debug('- '+k)
+                                state_dict.pop(k)
+                else:
+                    # BEN
+                    self.version = 1
+                    self.model_type = 'BEN'
+                    # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
+                    self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
             elif 'context1.branch0.conv.weight' in state_dict:
                 # InSPyReNet
                 self.version = 1
@@ -225,4 +250,6 @@ class RemBgArch(object):
             return ISNet()
         if self.model_type == 'MODNet':
             return MODNet(backbone_arch=self.bb, backbone_pretrained=False)
+        if self.model_type == 'MVANet':
+            return MVANet()
         raise ValueError(f"Unknown model type: {self.model_type}")

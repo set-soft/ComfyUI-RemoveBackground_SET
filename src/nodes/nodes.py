@@ -136,6 +136,12 @@ KNOWN_MODELS = {
     'Webcam portrait (26 MiB)': (
         'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_webcam_portrait_matting.ckpt',
         None, 512, 512, 'MODNet'),
+    #
+    # MVANet models
+    #
+    'Base (369 MiB MiB)': (
+        'https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth',
+        None, 1024, 1024, 'MVANet'),
 }
 #
 # Common options and choices
@@ -354,6 +360,13 @@ class AutoDownloadMODNetModel(AutoDownloadModel):
 
 
 AutoDownloadMODNetModel.fill_description()
+
+
+class AutoDownloadMVANetModel(AutoDownloadModel):
+    model_type = 'MVANet'
+
+
+AutoDownloadMVANetModel.fill_description()
 
 
 class GetMaskLow:
