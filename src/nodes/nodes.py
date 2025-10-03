@@ -82,11 +82,20 @@ KNOWN_MODELS = {
     #
     # MVANet/BEN models
     #
+    'General BEN2 F16 (184 MiB)': (
+        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN2_Base_F16.safetensors',
+        None, 1024, 1024, 'MVANet'),
     'General BEN2 (363 MiB)': (
         'https://huggingface.co/PramaLLC/BEN2/resolve/main/model.safetensors',
         'BEN2_Base', 1024, 1024, 'MVANet'),
-    'General BEN (1.05 GiB)': (
+    'General BEN1 F16 (184 MiB)': (
+        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN1_Base_F16.safetensors',
+        None, 1024, 1024, 'MVANet'),
+    'General BEN1 (1.05 GiB)': (
         'https://huggingface.co/PramaLLC/BEN/resolve/main/BEN_Base.pth',
+        None, 1024, 1024, 'MVANet'),
+    'MVANet F16 (184 MiB)': (
+        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/MVANet_80_F16.safetensors',
         None, 1024, 1024, 'MVANet'),
     'MVANet (369 MiB)': (
         'https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth',
