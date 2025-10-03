@@ -8,7 +8,7 @@ import re
 import torch
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
-from ..ben.ben import BEN_Base
+from ..mvanet.mvanet import MVANet
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
@@ -175,8 +175,8 @@ class RemBgArch(object):
                 self.version = 1
                 if 'conv1.1.weight' in state_dict:
                     # MVANet original and messy
-                    # Note: this change is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
-                    self.mva_variant = True
+                    # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
+                    self.ben_variant = False
                     self.dtype = state_dict['conv1.1.weight'].dtype
                     # Fix known bugs in available network
                     # Remove bogus layers
@@ -190,8 +190,8 @@ class RemBgArch(object):
                     for k, v in MVANET_RENAME.items():
                         state_dict[v] = state_dict.pop(k)
                 else:
-                    # Pure BEN
-                    self.mva_variant = False
+                    # BEN
+                    self.ben_variant = True
                     # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
                     self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
             elif 'context1.branch0.conv.weight' in state_dict:
@@ -244,7 +244,7 @@ class RemBgArch(object):
 
     def instantiate_model(self):
         if self.model_type == 'MVANet':
-            return BEN_Base(mva_variant=self.mva_variant)
+            return MVANet(ben_variant=self.ben_variant)
         if self.model_type == 'InSPyReNet':
             return InSPyReNet_SwinB(depth=64, base_size=self.base_size)
         if self.model_type == 'BiRefNet':
