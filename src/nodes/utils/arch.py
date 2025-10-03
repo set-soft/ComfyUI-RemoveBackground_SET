@@ -170,13 +170,12 @@ class RemBgArch(object):
             assert bb_name == 'backbone'
 
             if 'output.0.weight' in state_dict:
-                # BEN
-                self.model_type = 'BEN'
+                # MVANet
+                self.model_type = 'MVANet'
                 self.version = 1
                 if 'conv1.1.weight' in state_dict:
-                    # MVANet variant
+                    # MVANet original and messy
                     # Note: this change is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
-                    # self.model_type = 'MVANet'
                     self.mva_variant = True
                     self.dtype = state_dict['conv1.1.weight'].dtype
                     # Fix known bugs in available network
@@ -244,7 +243,7 @@ class RemBgArch(object):
             raise ValueError(f"Wrong architecture: {self.why}")
 
     def instantiate_model(self):
-        if self.model_type == 'BEN':
+        if self.model_type == 'MVANet':
             return BEN_Base(mva_variant=self.mva_variant)
         if self.model_type == 'InSPyReNet':
             return InSPyReNet_SwinB(depth=64, base_size=self.base_size)

@@ -1,4 +1,12 @@
 #
+# Multi-view Aggregation Network for Dichotomous Image Segmentation
+# Qian Yu, Xiaoqi Zhao, Youwei Pang, Lihe Zhang, Huchuan Lu
+# https://arxiv.org/abs/2404.07445
+#
+# https://github.com/qianyu-dlut/MVANet/
+#
+# License: MIT
+#
 # BEN (Background Erase Network) introduces a novel approach to foreground segmentation through its innovative Confidence
 # Guided Matting (CGM) pipeline. The architecture employs a refiner network that targets and processes pixels where the
 # base model exhibits lower confidence levels, resulting in more precise and reliable matting results.
@@ -12,9 +20,12 @@
 # License: MIT (was Apache 2.0)
 #
 # Note by Salvador E. Tropea (SET):
-# I removed pre/post-processing and other stuff not related to the model.
-# Also moved the SwinTransformer outside, this is the standard Swin v1 code.
-# Additionally I adapted the code to support other devices and data types other than CUDA + FLOAT16
+# - This code was originally released by MVANet and then adapted for BEN.
+#   The fact that BEN/BEN2 became more widespread confused me and make me think the other way around.
+# - I removed pre/post-processing and other stuff not related to the model.
+# - Also moved the SwinTransformer outside, this is the standard Swin v1 code.
+# - Additionally I adapted the code to support other devices and data types other than CUDA + FLOAT16 (BEN)
+# - I removed the training version of the model (MVANet)
 #
 import torch
 import torch.nn as nn

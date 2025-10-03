@@ -79,17 +79,17 @@ KNOWN_MODELS = {
         'https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors',
         'BRIA-RMBG2_0', 1024, 1024, 'BiRefNet'),
     #
-    # BEN models
+    # MVANet/BEN models
     #
     'General BEN2 (363 MiB)': (
         'https://huggingface.co/PramaLLC/BEN2/resolve/main/model.safetensors',
-        'BEN2_Base', 1024, 1024, 'BEN'),
+        'BEN2_Base', 1024, 1024, 'MVANet'),
     'General BEN (1.05 GiB)': (
         'https://huggingface.co/PramaLLC/BEN/resolve/main/BEN_Base.pth',
-        None, 1024, 1024, 'BEN'),
+        None, 1024, 1024, 'MVANet'),
     'MVANet (369 MiB)': (
         'https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth',
-        None, 1024, 1024, 'BEN'),
+        None, 1024, 1024, 'MVANet'),
     #
     # InSPyReNet models
     #
@@ -325,10 +325,13 @@ AutoDownloadBiRefNetModel.fill_description()
 
 
 class AutoDownloadBENModel(AutoDownloadModel):
-    model_type = 'BEN'
+    model_type = 'MVANet'
 
 
+# People knows about BEN
+AutoDownloadBENModel.model_type = 'MVANet/BEN'
 AutoDownloadBENModel.fill_description()
+AutoDownloadBENModel.model_type = 'MVANet'
 
 
 class AutoDownloadInSPyReNetModel(AutoDownloadModel):
