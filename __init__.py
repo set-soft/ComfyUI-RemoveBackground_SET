@@ -17,8 +17,9 @@ else:
 
 # Done here because we need to first register "birefnet"
 from .src.nodes import nodes  # noqa: E402
+from .src.nodes import nodes_dan  # noqa: E402
 
 
-NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(main_logger, [nodes], version=__version__)
+NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(main_logger, [nodes, nodes_dan], version=__version__)
 WEB_DIRECTORY = JS_PATH
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
