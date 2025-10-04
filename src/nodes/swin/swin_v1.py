@@ -621,9 +621,10 @@ def swin_v1_t():
 #     return model
 
 
-# Used by BEN and InSPyReNet
-def swin_v1_b():
-    model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12)
+# Used by MVANet (aka BEN), InSPyReNet and PDFNet
+def swin_v1_b(ape=False, full_output=True):
+    model = SwinTransformer(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12, ape=ape,
+                            full_output=full_output)
     return model
 
 

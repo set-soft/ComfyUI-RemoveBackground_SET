@@ -149,6 +149,15 @@ KNOWN_MODELS = {
     'Webcam portrait (26 MiB)': (
         'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_webcam_portrait_matting.ckpt',
         None, 512, 512, 'MODNet'),
+    #
+    # PDFNet models
+    #
+    'Base (392 MiB)': (
+        'https://huggingface.co/Tennineee/PDFNet/resolve/main/PDFNet_Best.pth',
+        None, 1024, 1024, 'PDFNet'),
+    'General (392 MiB)': (
+        'https://huggingface.co/Tennineee/PDFNet-General/resolve/main/PDF-Generally.pth',
+        None, 1024, 1024, 'PDFNet'),
 }
 #
 # Common options and choices
@@ -190,6 +199,7 @@ BATCHED_OPS = ("BOOLEAN", {
                   "default": True,
                   "tooltip": ("Apply the masks at once.\n"
                               "Faster, needs more memory")})
+DEPTH_OPS = ("IMAGE", {"tooltip": "For models that starts with a depth map"})
 CATEGORY_BASE = "RemBG_SET"
 CATEGORY_BASIC = CATEGORY_BASE+"/Basic"
 CATEGORY_LOAD = CATEGORY_BASE+"/Load"
@@ -376,6 +386,13 @@ class AutoDownloadMODNetModel(AutoDownloadBiRefNetModel):
 AutoDownloadMODNetModel.fill_description()
 
 
+class AutoDownloadPDFNetModel(AutoDownloadBiRefNetModel):
+    model_type = 'PDFNet'
+
+
+AutoDownloadPDFNetModel.fill_description()
+
+
 class GetMaskLow:
     @classmethod
     def INPUT_TYPES(cls):
@@ -384,6 +401,9 @@ class GetMaskLow:
                 "model": ("SET_REMBG",),
                 "images": ("IMAGE",),
                 "batched": BATCHED_OPS,
+            },
+            "optional": {
+                "depths": DEPTH_OPS,
             }
         }
 
@@ -394,8 +414,8 @@ class GetMaskLow:
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask low level"
 
-    def get_mask(self, model, images, batched):
-        model, _ = model
+    def get_mask(self, model, images, batched, depths=None):
+        model, arch = model
         one_torch = next(model.parameters())
         model_device = one_torch.device.type
         model_dtype = one_torch.dtype
@@ -405,19 +425,38 @@ class GetMaskLow:
             raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
         image_bchw = images.permute(0, 3, 1, 2)
 
-        if batched:
-            mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype)).cpu().float()
-        else:
-            progress_bar_ui = comfy.utils.ProgressBar(b)
-            _mask_bchw = []
-            for each_image in image_bchw:
-                with torch.no_grad():
-                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype)).cpu().float()
-                _mask_bchw.append(each_mask)
-                progress_bar_ui.update(1)
+        if arch.needs_map:
+            # PDFNet computes the mask using the image and a depth map
+            if depths is None:
+                raise ValueError(f"For this model ({arch.model_type}) you need to provide a depth map")
+            bm, hm, wm, cm = depths.shape
+            if bm != b:
+                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
+            if hm != h or wm != w:
+                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
+            depth_bchw = depths.permute(0, 3, 1, 2)
 
-            mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
-            del _mask_bchw
+        with torch.no_grad():
+            if batched:
+                if arch.needs_map:
+                    model.depth_map = depth_bchw.to(model_device, dtype=model_dtype)
+                mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype)).cpu().float()
+                if arch.needs_map:
+                    del model.depth_map
+            else:
+                progress_bar_ui = comfy.utils.ProgressBar(b)
+                _mask_bchw = []
+                for n, each_image in enumerate(image_bchw):
+                    if arch.needs_map:
+                        model.depth_map = depth_bchw[n].to(model_device, dtype=model_dtype)
+                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype)).cpu().float()
+                    if arch.needs_map:
+                        del model.depth_map
+                    _mask_bchw.append(each_mask)
+                    progress_bar_ui.update(1)
+
+                mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
+                del _mask_bchw
 
         mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
         return mask_bhw,
@@ -435,6 +474,9 @@ class GetMask(GetMaskLow):
                 "upscale_method": UPSCALE_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
                 "batched": BATCHED_OPS,
+            },
+            "optional": {
+                "depths": DEPTH_OPS,
             }
         }
 
@@ -443,7 +485,7 @@ class GetMask(GetMaskLow):
     DISPLAY_NAME = "Get background mask"
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
-                 batched=True):
+                 batched=True, depths=None):
         _, arch = model
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
@@ -452,7 +494,13 @@ class GetMask(GetMaskLow):
         im_tensor = image_preproc.proc(image_bchw)
         del image_preproc
 
-        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched)[0].unsqueeze(1)
+        if depths is not None and arch.needs_map:
+            depths_scaled = torch.nn.functional.interpolate(depths.permute(0, 3, 1, 2), size=(height, width),
+                                                            mode=upscale_method).permute(0, 2, 3, 1)
+        else:
+            depths_scaled = None
+
+        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched, depths=depths_scaled)[0].unsqueeze(1)
 
         # Back to the original size to match the image size
         mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
@@ -481,6 +529,9 @@ class Advanced(GetMask):
                 "color": COLOR_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
                 "batched": BATCHED_OPS,
+            },
+            "optional": {
+                "depths": DEPTH_OPS,
             }
         }
 
@@ -492,9 +543,9 @@ class Advanced(GetMask):
     DISPLAY_NAME = "Remove background (full)"
 
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
-               fill_color=False, color=None, mask_threshold=0.000, batched=True):
+               fill_color=False, color=None, mask_threshold=0.000, batched=True, depths=None):
 
-        masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched)
+        masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched, depths=depths)
 
         logger.debug(f"Applying mask/s (batched={batched})")
         out_images = apply_mask(logger, images, masks=masks[0], device=model_management.get_torch_device(),
@@ -504,13 +555,16 @@ class Advanced(GetMask):
         return out_images, masks[0]
 
 
-class BiRefNet(Advanced):
+class RemBG(Advanced):
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "model": ("SET_REMBG",),
                 "images": ("IMAGE",),
+            },
+            "optional": {
+                "depths": DEPTH_OPS,
             }
         }
 
@@ -521,9 +575,9 @@ class BiRefNet(Advanced):
     UNIQUE_NAME = "RembgByBiRefNet_SET"
     DISPLAY_NAME = "Remove background"
 
-    def rem_bg(self, model, images):
+    def rem_bg(self, model, images, depths=None):
         w = model[1].w
         h = model[1].h
         logger.debug(f"Using size {w}x{h}")
         b = images.shape[0]
-        return super().rem_bg(model, images, width=w, height=h, batched=b <= 8)
+        return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)

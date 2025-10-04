@@ -12,6 +12,7 @@ from ..mvanet.mvanet import MVANet
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
+from ..pdfnet.PDFNet import build_model as PDFNet
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
@@ -51,6 +52,8 @@ class RemBgArch(object):
         self.bb_ok = False
         self.why = 'Not initialized'
         self.w = self.h = 1024  # Default size
+        self.needs_map = False
+        self.version = 1
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
@@ -67,7 +70,6 @@ class RemBgArch(object):
                 # U2Net: u2net.pth and u2netp.pth
                 # The output is fused
                 self.w = self.h = 320
-                self.version = 1
                 self.model_type = 'U-2-Net'  # U-Square-Net
             elif 'conv_in.weight' in state_dict:
                 # IS-Net isnet.pth and isnet-general-use.pth (i.e. BRIA RMBG v1.4)
@@ -102,7 +104,6 @@ class RemBgArch(object):
             self.w = self.h = 512
             self.img_mean = [0.5, 0.5, 0.5]
             self.img_std = [0.5, 0.5, 0.5]
-            self.version = 1
             self.dtype = state_dict[layer].dtype
             self.ok = True
             logger.debug(f"Model type: {self.model_type} ({self.bb}) [{self.dtype}]")
@@ -116,8 +117,11 @@ class RemBgArch(object):
             bb_name = 'backbone'
             tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
             if tensor is None:
-                self.why = 'No relative position bias table'
-                return
+                bb_name = 'encoder'
+                tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
+                if tensor is None:
+                    self.why = 'No relative position bias table'
+                    return
         window = (math.sqrt(tensor.shape[0]) + 1) / 2
         if window != int(window):
             self.why = "Wrong swin_v1 bias table size"
@@ -166,58 +170,72 @@ class RemBgArch(object):
         logger.debug(f"Model backbone: {self.bb}")
 
         if self.bb == 'swin_v1_b':
-            # BEN, InSPyReNet and MVANet
-            assert bb_name == 'backbone'
-
-            if 'output.0.weight' in state_dict:
-                # MVANet
-                self.model_type = 'MVANet'
-                self.version = 1
-                if 'conv1.1.weight' in state_dict:
-                    # MVANet original and messy
-                    # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
-                    self.ben_variant = False
-                    self.dtype = state_dict['conv1.1.weight'].dtype
-                    if 'multifieldcrossatt.linear5.weight' in state_dict:
-                        # Fix known bugs in available network
-                        # Remove bogus layers
-                        logger.debug('Removing bogus layers ...')
-                        for k, v in list(state_dict.items()):
-                            if MVANET_MCLM_BUG.match(k):
-                                logger.debug('- '+k)
-                                del state_dict[k]
-                        # Rename some layers to match BEN numbering
-                        # https://github.com/qianyu-dlut/MVANet/issues/3
-                        for k, v in MVANET_RENAME.items():
-                            state_dict[v] = state_dict.pop(k)
-                else:
-                    # BEN
-                    self.ben_variant = True
-                    # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
-                    self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
-                # Remove sideout layers, only used during training
-                if 'sideout5.0.weight' in state_dict:
-                    for n in range(5):
-                        del state_dict[f"sideout{n+1}.0.weight"]
-                        del state_dict[f"sideout{n+1}.0.bias"]
-            elif 'context1.branch0.conv.weight' in state_dict:
-                # InSPyReNet
-                self.version = 1
-                self.model_type = 'InSPyReNet'
-                self.dtype = state_dict['context1.branch0.conv.weight'].dtype
-                # This information is in the YAML file, but this doesn't map to loading a standalone file
-                lower_case_fname = os.path.basename(fname).lower()
-                if 'fast' not in lower_case_fname:
-                    if 'base' not in lower_case_fname:
-                        logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
-                    self.base_size = [1024, 1024]
-                else:
-                    self.w = self.h = 384
-                    self.base_size = [384, 384]
-                logger.debug(f"Using base size: {self.base_size}")
+            layer = 'decoder.FSE_mix.0.I_channelswich.0.weight'
+            if layer in state_dict:
+                # PDFNet
+                assert bb_name == 'encoder'
+                # No normalization applied
+                self.img_mean = [0.0, 0.0, 0.0]
+                self.img_std = [1.0, 1.0, 1.0]
+                self.model_type = 'PDFNet'
+                self.needs_map = True
+                self.dtype = state_dict[layer].dtype
+                # Remove training layers we don't use
+                for k, v in list(state_dict.items()):
+                    layer = k.split('.')[0]
+                    if layer in {'IntegrityPriorLoss'}:
+                        del state_dict[k]
             else:
-                self.why = 'Unknown Swin B variant model'
-                return
+                # BEN, InSPyReNet and MVANet
+                assert bb_name == 'backbone'
+
+                if 'output.0.weight' in state_dict:
+                    # MVANet
+                    self.model_type = 'MVANet'
+                    if 'conv1.1.weight' in state_dict:
+                        # MVANet original and messy
+                        # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
+                        self.ben_variant = False
+                        self.dtype = state_dict['conv1.1.weight'].dtype
+                        if 'multifieldcrossatt.linear5.weight' in state_dict:
+                            # Fix known bugs in available network
+                            # Remove bogus layers
+                            logger.debug('Removing bogus layers ...')
+                            for k, v in list(state_dict.items()):
+                                if MVANET_MCLM_BUG.match(k):
+                                    logger.debug('- '+k)
+                                    del state_dict[k]
+                            # Rename some layers to match BEN numbering
+                            # https://github.com/qianyu-dlut/MVANet/issues/3
+                            for k, v in MVANET_RENAME.items():
+                                state_dict[v] = state_dict.pop(k)
+                    else:
+                        # BEN
+                        self.ben_variant = True
+                        # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
+                        self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+                    # Remove sideout layers, only used during training
+                    if 'sideout5.0.weight' in state_dict:
+                        for n in range(5):
+                            del state_dict[f"sideout{n+1}.0.weight"]
+                            del state_dict[f"sideout{n+1}.0.bias"]
+                elif 'context1.branch0.conv.weight' in state_dict:
+                    # InSPyReNet
+                    self.model_type = 'InSPyReNet'
+                    self.dtype = state_dict['context1.branch0.conv.weight'].dtype
+                    # This information is in the YAML file, but this doesn't map to loading a standalone file
+                    lower_case_fname = os.path.basename(fname).lower()
+                    if 'fast' not in lower_case_fname:
+                        if 'base' not in lower_case_fname:
+                            logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
+                        self.base_size = [1024, 1024]
+                    else:
+                        self.w = self.h = 384
+                        self.base_size = [384, 384]
+                    logger.debug(f"Using base size: {self.base_size}")
+                else:
+                    self.why = 'Unknown Swin B variant model'
+                    return
         else:
             # BiRefNet
             # Try to figure out which version is this
@@ -231,8 +249,6 @@ class RemBgArch(object):
                 # self.img_mean = [0.5, 0.5, 0.5]
                 # self.img_std = [1.0, 1.0, 1.0]
                 # But I couldn't find any reference to it in the original code
-            else:
-                self.version = 1
             self.model_type = 'BiRefNet'
 
         self.ok = True
@@ -261,4 +277,6 @@ class RemBgArch(object):
             return ISNet()
         if self.model_type == 'MODNet':
             return MODNet(backbone_arch=self.bb, backbone_pretrained=False)
+        if self.model_type == 'PDFNet':
+            return PDFNet(backbone_arch=self.bb)
         raise ValueError(f"Unknown model type: {self.model_type}")
