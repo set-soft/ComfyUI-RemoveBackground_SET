@@ -7,11 +7,11 @@ import safetensors.torch
 from safetensors import safe_open
 from seconohe.downloader import download_file
 from seconohe.apply_mask import apply_mask
+from seconohe.torch import get_torch_device_options, get_canonical_device
 # from seconohe.torch import get_pytorch_memory_usage_str
 import torch
 from torchvision import transforms
 from comfy import model_management
-import comfy.utils
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY, MODELS_DIR
 from .utils.arch import RemBgArch
@@ -242,10 +242,11 @@ class LoadModel:
     """ Load already downloaded model """
     @classmethod
     def INPUT_TYPES(cls):
+        device_options, _ = get_torch_device_options(with_auto=True)
         return {
             "required": {
                 "model": (folder_paths.get_filename_list(MODELS_DIR_KEY),),
-                "device": (["AUTO", "CPU"], )
+                "device": (device_options, )
             },
             "optional": {
                 "dtype": DTYPE_OPS
@@ -263,11 +264,6 @@ class LoadModel:
 
     def load_model_file(self, model, device, dtype="auto"):
         model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
-        if device == "AUTO":
-            device_type = auto_device_type
-        else:
-            device_type = "cpu"
-        logger.debug(f"Using {device_type} device")
 
         # Load the state dict
         logger.debug(f"Loading model weights from {model_path}")
@@ -279,9 +275,9 @@ class LoadModel:
                     for key, value in loaded_metadata.items():
                         logger.debug(f"  - {key}: {value}")
             # Load the weights
-            state_dict = safetensors.torch.load_file(model_path, device=device_type)
+            state_dict = safetensors.torch.load_file(model_path, device="cpu")
         else:
-            state_dict = torch.load(model_path, map_location=device_type)
+            state_dict = torch.load(model_path, map_location="cpu")
             if 'model_state_dict' in state_dict:
                 # BEN
                 state_dict = state_dict['model_state_dict']
@@ -289,15 +285,14 @@ class LoadModel:
         # Check this is valid for a known model
         arch = RemBgArch(state_dict, logger, model)
         arch.check()
-        dtype = arch.dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
-        logger.debug(f"Using {dtype} data type")
+        target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
+        logger.debug(f"Using {target_device} device")
+        target_dtype = arch.dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
+        logger.debug(f"Using {target_dtype} data type")
 
         # Create an instance
-        model = arch.instantiate_model()
-        model.load_state_dict(state_dict)
-        model.to(device_type, dtype=dtype)
-        model.eval()
-        return [(model, arch)]
+        arch.instantiate_model(state_dict, target_device, target_dtype)
+        return arch,
 
 
 class AutoDownloadBiRefNetModel(LoadModel):
@@ -306,10 +301,11 @@ class AutoDownloadBiRefNetModel(LoadModel):
 
     @classmethod
     def INPUT_TYPES(cls):
+        device_options, _ = get_torch_device_options(with_auto=True)
         return {
             "required": {
                 "model_name": ([k for k, v in KNOWN_MODELS.items() if v[4] == cls.model_type],),
-                "device": (["AUTO", "CPU"],)
+                "device": (device_options,)
             },
             "optional": {
                 "dtype": DTYPE_OPS
@@ -338,10 +334,11 @@ class AutoDownloadBiRefNetModel(LoadModel):
         if model_full_path is None:
             download_file(logger, url, models_path_default, fname)
         res = super().load_model_file(fname, device, dtype)
-        model, arch = res[0]
+        arch = res[0]
+        # Known training sizes have priority over default architecture sizes
         arch.w = w
         arch.h = h
-        return ((model, arch), w, h)
+        return (arch, w, h)
 
 
 # BiRefNet is de default
@@ -415,51 +412,7 @@ class GetMaskLow:
     DISPLAY_NAME = "Get background mask low level"
 
     def get_mask(self, model, images, batched, depths=None):
-        model, arch = model
-        one_torch = next(model.parameters())
-        model_device = one_torch.device.type
-        model_dtype = one_torch.dtype
-
-        b, h, w, c = images.shape
-        if h % 32 or w % 32:
-            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
-        image_bchw = images.permute(0, 3, 1, 2)
-
-        if arch.needs_map:
-            # PDFNet computes the mask using the image and a depth map
-            if depths is None:
-                raise ValueError(f"For this model ({arch.model_type}) you need to provide a depth map")
-            bm, hm, wm, cm = depths.shape
-            if bm != b:
-                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
-            if hm != h or wm != w:
-                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
-            depth_bchw = depths.permute(0, 3, 1, 2)
-
-        with torch.no_grad():
-            if batched:
-                if arch.needs_map:
-                    model.depth_map = depth_bchw.to(model_device, dtype=model_dtype)
-                mask_bchw = model(image_bchw.to(model_device, dtype=model_dtype)).cpu().float()
-                if arch.needs_map:
-                    del model.depth_map
-            else:
-                progress_bar_ui = comfy.utils.ProgressBar(b)
-                _mask_bchw = []
-                for n, each_image in enumerate(image_bchw):
-                    if arch.needs_map:
-                        model.depth_map = depth_bchw[n].to(model_device, dtype=model_dtype)
-                    each_mask = model(each_image.unsqueeze(0).to(model_device, dtype=model_dtype)).cpu().float()
-                    if arch.needs_map:
-                        del model.depth_map
-                    _mask_bchw.append(each_mask)
-                    progress_bar_ui.update(1)
-
-                mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
-                del _mask_bchw
-
-        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-        return mask_bhw,
+        return model.run_inference(images, batched, depths),
 
 
 class GetMask(GetMaskLow):
@@ -486,7 +439,7 @@ class GetMask(GetMaskLow):
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
                  batched=True, depths=None):
-        _, arch = model
+        arch = model
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
 
@@ -576,8 +529,8 @@ class RemBG(Advanced):
     DISPLAY_NAME = "Remove background"
 
     def rem_bg(self, model, images, depths=None):
-        w = model[1].w
-        h = model[1].h
+        w = model.w
+        h = model.h
         logger.debug(f"Using size {w}x{h}")
         b = images.shape[0]
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)

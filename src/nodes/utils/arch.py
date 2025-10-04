@@ -6,6 +6,13 @@ import math
 import os
 import re
 import torch
+from seconohe.torch import model_to_target
+try:
+    import comfy.utils
+    with_comfy = True
+except ImportError:
+    with_comfy = False
+
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..mvanet.mvanet import MVANet
@@ -54,6 +61,7 @@ class RemBgArch(object):
         self.w = self.h = 1024  # Default size
         self.needs_map = False
         self.version = 1
+        self.logger = logger
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
@@ -264,19 +272,75 @@ class RemBgArch(object):
         if not self.ok:
             raise ValueError(f"Wrong architecture: {self.why}")
 
-    def instantiate_model(self):
+    def instantiate_model(self, state_dict, device, dtype):
         if self.model_type == 'MVANet':
-            return MVANet(ben_variant=self.ben_variant)
-        if self.model_type == 'InSPyReNet':
-            return InSPyReNet_SwinB(depth=64, base_size=self.base_size)
-        if self.model_type == 'BiRefNet':
-            return BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
-        if self.model_type == 'U-2-Net':
-            return U2NET_full() if self.full else U2NET_lite()
-        if self.model_type == 'IS-Net':
-            return ISNet()
-        if self.model_type == 'MODNet':
-            return MODNet(backbone_arch=self.bb, backbone_pretrained=False)
-        if self.model_type == 'PDFNet':
-            return PDFNet(backbone_arch=self.bb)
-        raise ValueError(f"Unknown model type: {self.model_type}")
+            model = MVANet(ben_variant=self.ben_variant)
+        elif self.model_type == 'InSPyReNet':
+            model = InSPyReNet_SwinB(depth=64, base_size=self.base_size)
+        elif self.model_type == 'BiRefNet':
+            model = BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
+        elif self.model_type == 'U-2-Net':
+            model = U2NET_full() if self.full else U2NET_lite()
+        elif self.model_type == 'IS-Net':
+            model = ISNet()
+        elif self.model_type == 'MODNet':
+            model = MODNet(backbone_arch=self.bb, backbone_pretrained=False)
+        elif self.model_type == 'PDFNet':
+            model = PDFNet(backbone_arch=self.bb)
+        else:
+            raise ValueError(f"Unknown model type: {self.model_type}")
+
+        self.model = model
+        self.target_device = self.model.target_device = torch.device(device)
+        self.target_dtype = dtype
+        model.load_state_dict(state_dict)
+        model.to(dtype=dtype)
+        model.eval()
+        return model
+
+    def _run_inference(self, image, depth):
+        if self.needs_map:
+            if depth.dim() == 3:
+                depth = depth.unsqueeze(0)
+            return self.model(image.to(self.target_device, dtype=self.target_dtype),
+                              depth.to(self.target_device, dtype=self.target_dtype)).cpu().float()
+        return self.model(image.to(self.target_device, dtype=self.target_dtype)).cpu().float()
+
+    def run_inference(self, images, batched, depths=None):
+        # Check images and make them BCHW
+        b, h, w, c = images.shape
+        if h % 32 or w % 32:
+            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
+        image_bchw = images.permute(0, 3, 1, 2)
+
+        # Check depths and make them BCHW
+        if self.needs_map:
+            # PDFNet computes the mask using the image and a depth map
+            if depths is None:
+                raise ValueError(f"For this model ({self.model_type}) you need to provide a depth map")
+            bm, hm, wm, cm = depths.shape
+            if bm != b:
+                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
+            if hm != h or wm != w:
+                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
+            depth_bchw = depths.permute(0, 3, 1, 2)
+        else:
+            depth_bchw = [None] * b
+
+        with model_to_target(self.logger, self.model):
+            if batched:
+                mask_bchw = self._run_inference(image_bchw, depth_bchw)
+            else:
+                if with_comfy:
+                    progress_bar_ui = comfy.utils.ProgressBar(b)
+                _mask_bchw = []
+                for n, each_image in enumerate(image_bchw):
+                    _mask_bchw.append(self._run_inference(each_image.unsqueeze(0), depth_bchw[n]))
+                    if with_comfy:
+                        progress_bar_ui.update(1)
+
+                mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
+                del _mask_bchw
+
+        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
+        return mask_bhw

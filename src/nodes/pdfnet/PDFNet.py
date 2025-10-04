@@ -390,8 +390,7 @@ class PDFNet_process(nn.Module):
         output = torch.cat(output_list, dim=-2)
         return output
 
-    def forward(self, img):
-        depth = self.depth_map
+    def forward(self, img, depth):
         # Normalize the depth map to [0,1]
         depth = (depth-depth.min())/(depth.max()-depth.min())
 
