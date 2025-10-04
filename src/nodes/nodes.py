@@ -338,6 +338,8 @@ class AutoDownloadBiRefNetModel(LoadModel):
         # Known training sizes have priority over default architecture sizes
         arch.w = w
         arch.h = h
+        if "No Com!" in model_name:
+            logger.warning("This particular model isn't for commercial use!")
         return (arch, w, h)
 
 
