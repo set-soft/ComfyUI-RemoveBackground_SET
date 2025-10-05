@@ -16,6 +16,7 @@ import folder_paths
 from . import main_logger, MODELS_DIR_KEY, MODELS_DIR
 from .utils.arch import RemBgArch
 from .utils.inspyrenet_config import parse_inspyrenet_config
+from .nodes_dan import DownloadAndLoadDepthAnythingV2Model, BASE_MODEL_NAME, DepthAnything_V2
 
 
 logger = main_logger
@@ -414,7 +415,36 @@ class GetMaskLow:
     DISPLAY_NAME = "Get background mask low level"
 
     def get_mask(self, model, images, batched, depths=None):
-        return model.run_inference(images, batched, depths),
+        # Check images and make them BCHW
+        b, h, w, c = images.shape
+        if h % 32 or w % 32:
+            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
+        image_bchw = images.permute(0, 3, 1, 2)
+
+        # Check depths and make them BCHW
+        if model.needs_map:
+            # PDFNet computes the mask using the image and a depth map
+            if depths is None:
+                # raise ValueError(f"For this model ({model.model_type}) you need to provide a depth map")
+                depths = self.create_depth_maps(images)
+            bm, hm, wm, cm = depths.shape
+            if bm != b:
+                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
+            if hm != h or wm != w:
+                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
+            depth_bchw = depths.permute(0, 3, 1, 2)
+        else:
+            depth_bchw = [None] * b
+
+        return model.run_inference(image_bchw, depth_bchw, batched),
+
+    def create_depth_maps(self, images):
+        """ Automatically create depth maps using Depth Anything V2 vitb """
+        # Do we have a model for this?
+        if not hasattr(self, 'dan_model'):
+            # Nope, create it
+            self.dan_model = DownloadAndLoadDepthAnythingV2Model().loadmodel(BASE_MODEL_NAME)[0]
+        return DepthAnything_V2().process(self.dan_model, images)[0]
 
 
 class GetMask(GetMaskLow):

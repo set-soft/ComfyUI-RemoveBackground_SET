@@ -306,27 +306,8 @@ class RemBgArch(object):
                               depth.to(self.target_device, dtype=self.target_dtype)).cpu().float()
         return self.model(image.to(self.target_device, dtype=self.target_dtype)).cpu().float()
 
-    def run_inference(self, images, batched, depths=None):
-        # Check images and make them BCHW
-        b, h, w, c = images.shape
-        if h % 32 or w % 32:
-            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
-        image_bchw = images.permute(0, 3, 1, 2)
-
-        # Check depths and make them BCHW
-        if self.needs_map:
-            # PDFNet computes the mask using the image and a depth map
-            if depths is None:
-                raise ValueError(f"For this model ({self.model_type}) you need to provide a depth map")
-            bm, hm, wm, cm = depths.shape
-            if bm != b:
-                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
-            if hm != h or wm != w:
-                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
-            depth_bchw = depths.permute(0, 3, 1, 2)
-        else:
-            depth_bchw = [None] * b
-
+    def run_inference(self, image_bchw, depth_bchw, batched):
+        b = image_bchw.shape[0]
         with model_to_target(self.logger, self.model):
             if batched:
                 mask_bchw = self._run_inference(image_bchw, depth_bchw)

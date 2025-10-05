@@ -30,6 +30,7 @@ from . import main_logger as logger
 from .depth_anything.dpt_v2 import DepthAnythingV2
 
 BASE_URL = 'https://huggingface.co/Kijai/DepthAnythingV2-safetensors/resolve/main/'
+BASE_MODEL_NAME = 'Base F32 (372 MiB)'
 KNOWN_MODELS = {
     #
     # BiRefNet models
@@ -37,7 +38,7 @@ KNOWN_MODELS = {
     'Small F16 (47 MiB)': 'depth_anything_v2_vits_fp16.safetensors',
     'Small F32 (95 MiB)': 'depth_anything_v2_vits_fp32.safetensors',
     'Base F16 (186 MiB)': 'depth_anything_v2_vitb_fp16.safetensors',
-    'Base F32 (372 MiB)': 'depth_anything_v2_vitb_fp32.safetensors',
+    BASE_MODEL_NAME: 'depth_anything_v2_vitb_fp32.safetensors',
     'Large F16 (640 MiB)': 'depth_anything_v2_vitl_fp16.safetensors',
     'Large F32 (1.3 GiB)': 'depth_anything_v2_vitl_fp32.safetensors',
     'Large Metric Indoor F32 (1.3 GiB)': 'depth_anything_v2_metric_hypersim_vitl_fp32.safetensors',
