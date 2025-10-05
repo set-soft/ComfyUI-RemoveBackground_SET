@@ -324,4 +324,4 @@ class RemBgArch(object):
                 del _mask_bchw
 
         mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-        return mask_bhw
+        return mask_bhw, depth_bchw.permute(0, 2, 3, 1)

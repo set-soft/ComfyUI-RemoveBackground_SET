@@ -239,6 +239,11 @@ class ImagePreprocessor:
         return image
 
 
+def scale_comfy_image(img, size, method):
+    # BHWC -> BCHW -> interpolate -> BHWC
+    return torch.nn.functional.interpolate(img.permute(0, 3, 1, 2), size=size, mode=method).permute(0, 2, 3, 1)
+
+
 class LoadModel:
     """ Load already downloaded model """
     @classmethod
@@ -407,8 +412,8 @@ class GetMaskLow:
             }
         }
 
-    RETURN_TYPES = ("MASK",)
-    RETURN_NAMES = ("mask",)
+    RETURN_TYPES = ("MASK", "IMAGE")
+    RETURN_NAMES = ("masks", "depths")
     FUNCTION = "get_mask"
     CATEGORY = CATEGORY_ADV
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
@@ -434,9 +439,9 @@ class GetMaskLow:
                 raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
             depth_bchw = depths.permute(0, 3, 1, 2)
         else:
-            depth_bchw = [None] * b
+            depth_bchw = torch.zeros((b, 3, 64, 64), dtype=torch.float32, device="cpu")
 
-        return model.run_inference(image_bchw, depth_bchw, batched),
+        return model.run_inference(image_bchw, depth_bchw, batched)
 
     def create_depth_maps(self, images):
         """ Automatically create depth maps using Depth Anything V2 vitb """
@@ -480,22 +485,27 @@ class GetMask(GetMaskLow):
         del image_preproc
 
         if depths is not None and arch.needs_map:
-            depths_scaled = torch.nn.functional.interpolate(depths.permute(0, 3, 1, 2), size=(height, width),
-                                                            mode=upscale_method).permute(0, 2, 3, 1)
+            depths_scaled = scale_comfy_image(depths, (height, width), upscale_method)
         else:
             depths_scaled = None
 
-        mask_bchw = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched, depths=depths_scaled)[0].unsqueeze(1)
+        mask_bhw, depths_bhwc = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched, depths=depths_scaled)
 
         # Back to the original size to match the image size
-        mask = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode=upscale_method)
+        mask_bchw = torch.nn.functional.interpolate(mask_bhw.unsqueeze(1), size=(h, w), mode=upscale_method)
 
         # Optional thresold for the mask
         if mask_threshold > 0:
-            mask = filter_mask(mask, threshold=mask_threshold)
+            mask_bchw = filter_mask(mask_bchw, threshold=mask_threshold)
 
-        mask_bhw = mask.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-        return mask_bhw,
+        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
+
+        # Depths
+        if depths_scaled is None:
+            # We created depth maps, real or empty
+            depths = scale_comfy_image(depths_bhwc, (h, w), upscale_method)
+        # Otherwise just pass the input depths
+        return mask_bhw, depths
 
 
 class Advanced(GetMask):
@@ -520,8 +530,8 @@ class Advanced(GetMask):
             }
         }
 
-    RETURN_TYPES = ("IMAGE", "MASK",)
-    RETURN_NAMES = ("image", "mask",)
+    RETURN_TYPES = ("IMAGE",  "MASK",  "IMAGE")
+    RETURN_NAMES = ("images", "masks", "depths")
     FUNCTION = "rem_bg"
     CATEGORY = CATEGORY_ADV
     UNIQUE_NAME = "RembgByBiRefNetAdvanced_SET"
@@ -530,14 +540,14 @@ class Advanced(GetMask):
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
                fill_color=False, color=None, mask_threshold=0.000, batched=True, depths=None):
 
-        masks = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched, depths=depths)
+        masks, depths = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched, depths=depths)
 
         logger.debug(f"Applying mask/s (batched={batched})")
-        out_images = apply_mask(logger, images, masks=masks[0], device=model_management.get_torch_device(),
-                                blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
-                                batched=batched)
+        out_images = apply_mask(logger, images, masks=masks, device=model_management.get_torch_device(),
+                                        blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
+                                        batched=batched)
 
-        return out_images, masks[0]
+        return out_images, masks, depths
 
 
 class RemBG(Advanced):
@@ -553,8 +563,6 @@ class RemBG(Advanced):
             }
         }
 
-    RETURN_TYPES = ("IMAGE", "MASK",)
-    RETURN_NAMES = ("image", "mask",)
     FUNCTION = "rem_bg"
     CATEGORY = CATEGORY_BASIC
     UNIQUE_NAME = "RembgByBiRefNet_SET"
