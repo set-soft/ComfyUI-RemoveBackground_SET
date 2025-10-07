@@ -229,10 +229,11 @@ def filter_mask(mask, threshold=4e-3):
 
 
 class ImagePreprocessor:
-    def __init__(self, arch, resolution, upscale_method) -> None:
+    def __init__(self, img_mean, img_std, resolution, upscale_method) -> None:
         interpolation = transforms.InterpolationMode(upscale_method)
         self.transform_image = transforms.Compose([transforms.Resize(resolution, interpolation=interpolation),
-                                                   transforms.Normalize(arch.img_mean, arch.img_std)])
+                                                   # output[channel] = (input[channel] - mean[channel]) / std[channel]
+                                                   transforms.Normalize(img_mean, img_std)])
 
     def proc(self, image) -> torch.Tensor:
         image = self.transform_image(image)
@@ -480,7 +481,7 @@ class GetMask(GetMaskLow):
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
 
-        image_preproc = ImagePreprocessor(arch, resolution=(height, width), upscale_method=upscale_method)
+        image_preproc = ImagePreprocessor(arch.img_mean, arch.img_std, resolution=(height, width), upscale_method=upscale_method)
         im_tensor = image_preproc.proc(image_bchw)
         del image_preproc
 
@@ -574,3 +575,79 @@ class RemBG(Advanced):
         logger.debug(f"Using size {w}x{h}")
         b = images.shape[0]
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
+
+
+from .diffdis.diffusers_local.src.diffusers import DDPMScheduler, UNet2DConditionModel_diffdis, AutoencoderKL
+from transformers import CLIPTextModel, CLIPTokenizer
+from .diffdis.diffdis_pipeline import DiffDISPipeline
+
+
+class DiffDIS(object):
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "images": ("IMAGE",),
+            },
+        }
+
+    RETURN_TYPES = ("MASK", "MASK")
+    RETURN_NAMES = ("masks", "edges")
+    FUNCTION = "diff_dis"
+    CATEGORY = CATEGORY_BASIC
+    UNIQUE_NAME = "DiffDIS_SET"
+    DISPLAY_NAME = "DiffDIS"
+
+    def diff_dis(self, images):
+        # The whole sd-turbo repo in models/sd-turbo
+        pretrained_model_path = os.path.join(folder_paths.models_dir, "sd-turbo")
+        # The DiffDIS trained checkpoint in models/diffdis/unet
+        checkpoint_path = os.path.join(folder_paths.models_dir, "diffdis")
+
+        # Build a DiffDIS pipeline
+        vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder='vae')
+        scheduler = DDPMScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
+        text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder='text_encoder')
+        tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder='tokenizer')
+
+        unet = UNet2DConditionModel_diffdis.from_pretrained(
+            checkpoint_path,
+            subfolder="unet",
+            in_channels=8,
+            sample_size=96,
+            low_cpu_mem_usage=True,
+            ignore_mismatched_sizes=False,
+            class_embed_type='projection',
+            projection_class_embeddings_input_dim=4,
+            mid_extra_cross=True,
+            mode='DBIA',
+            use_swci=True)
+        pipe = DiffDISPipeline(unet=unet, vae=vae, scheduler=scheduler, text_encoder=text_encoder, tokenizer=tokenizer)
+        pipe = pipe.to(auto_device_type)
+
+        # Pre-process the images
+        b, h, w, c = images.shape
+        image_bchw = images.permute(0, 3, 1, 2)
+
+        # 1024x1024 and from [0,1] to [-1,1]
+        image_preproc = ImagePreprocessor([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], resolution=(1024, 1024), upscale_method='bilinear')
+        im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
+        del image_preproc
+
+        mask_bchw, edge_bchw = pipe(
+            im_tensor,
+            denosing_steps=1,
+            ensemble_size=1,
+            processing_res=1024,
+            match_input_res=True,
+            batch_size=1,
+            show_progress_bar=True
+        )
+
+        logger.info(mask_bchw.shape)
+        logger.info(edge_bchw.shape)
+
+        mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
+        edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
+
+        return mask_bhw, edge_bhw
