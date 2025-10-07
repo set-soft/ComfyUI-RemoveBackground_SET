@@ -578,7 +578,6 @@ class RemBG(Advanced):
 
 
 from .diffdis.diffusers_local.src.diffusers import DDPMScheduler, UNet2DConditionModel_diffdis, AutoencoderKL
-from transformers import CLIPTextModel, CLIPTokenizer
 from .diffdis.diffdis_pipeline import DiffDISPipeline
 
 
@@ -588,6 +587,7 @@ class DiffDIS(object):
         return {
             "required": {
                 "images": ("IMAGE",),
+                "positive": ("CONDITIONING", {"tooltip": "The conditioning describing the attributes you want to include in the image."}),
             },
         }
 
@@ -598,7 +598,10 @@ class DiffDIS(object):
     UNIQUE_NAME = "DiffDIS_SET"
     DISPLAY_NAME = "DiffDIS"
 
-    def diff_dis(self, images):
+    def diff_dis(self, images, positive):
+        # The model uses just 2 of the 77
+        positive = positive[0][0][:, :2, :].to(auto_device_type)
+
         # The whole sd-turbo repo in models/sd-turbo
         pretrained_model_path = os.path.join(folder_paths.models_dir, "sd-turbo")
         # The DiffDIS trained checkpoint in models/diffdis/unet
@@ -607,8 +610,6 @@ class DiffDIS(object):
         # Build a DiffDIS pipeline
         vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder='vae')
         scheduler = DDPMScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
-        text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder='text_encoder')
-        tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder='tokenizer')
 
         unet = UNet2DConditionModel_diffdis.from_pretrained(
             checkpoint_path,
@@ -622,7 +623,7 @@ class DiffDIS(object):
             mid_extra_cross=True,
             mode='DBIA',
             use_swci=True)
-        pipe = DiffDISPipeline(unet=unet, vae=vae, scheduler=scheduler, text_encoder=text_encoder, tokenizer=tokenizer)
+        pipe = DiffDISPipeline(unet=unet, vae=vae, scheduler=scheduler)
         pipe = pipe.to(auto_device_type)
 
         # Pre-process the images
@@ -636,16 +637,14 @@ class DiffDIS(object):
 
         mask_bchw, edge_bchw = pipe(
             im_tensor,
+            positive,
             denosing_steps=1,
             ensemble_size=1,
             processing_res=1024,
             match_input_res=True,
             batch_size=1,
-            show_progress_bar=True
+            show_progress_bar=True,
         )
-
-        logger.info(mask_bchw.shape)
-        logger.info(edge_bchw.shape)
 
         mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
         edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()

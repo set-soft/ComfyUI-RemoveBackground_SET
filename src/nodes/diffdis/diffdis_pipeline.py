@@ -9,7 +9,6 @@ from diffusers import (
     UNet2DConditionModel,
     AutoencoderKL,
 )
-from transformers import CLIPTextModel, CLIPTokenizer
 # from utils.depth_ensemble import ensemble
 import torch.nn.functional as F
 
@@ -24,8 +23,6 @@ class DiffDISPipeline(DiffusionPipeline):
                  unet: UNet2DConditionModel,
                  vae: AutoencoderKL,
                  scheduler: DDPMScheduler,
-                 text_encoder: CLIPTextModel,
-                 tokenizer: CLIPTokenizer,
                  ):
         super().__init__()
 
@@ -33,14 +30,12 @@ class DiffDISPipeline(DiffusionPipeline):
             unet=unet,
             vae=vae,
             scheduler=scheduler,
-            text_encoder=text_encoder,
-            tokenizer=tokenizer,
         )
-        self.empty_text_embed = None
 
     @torch.no_grad()
     def __call__(self,
                  input_image: torch.Tensor,
+                 positive: torch.Tensor,
                  denosing_steps: int = 10,
                  ensemble_size: int = 10,
                  processing_res: int = 1024,
@@ -49,6 +44,7 @@ class DiffDISPipeline(DiffusionPipeline):
                  show_progress_bar: bool = True,
                  ensemble_kwargs: Dict = None,
                  ) -> torch.Tensor:
+
         # inherit from thea Diffusion Pipeline
         # adjust the input resolution.
         if not match_input_res:
@@ -75,13 +71,12 @@ class DiffDISPipeline(DiffusionPipeline):
 
         for batch in iterable_bar:
             (batched_image,) = batch  # here the image is around [-1,1]
-            print("single_infer")
             mask_pred, edge_pred = self.single_infer(
                 input_rgb=batched_image.squeeze(0),
+                positive=positive,
                 num_inference_steps=denosing_steps,
                 show_pbar=show_progress_bar
             )
-            print("single_infer out")
             mask_pred_ls.append(mask_pred.detach().clone())
             edge_pred_ls.append(edge_pred.detach().clone())
 
@@ -105,25 +100,9 @@ class DiffDISPipeline(DiffusionPipeline):
 
         return mask_pred, edge_pred
 
-    def __encode_empty_text(self):
-        """
-        Encode text embedding for empty prompt
-        """
-
-        prompt = ""
-        text_inputs = self.tokenizer(
-            prompt,
-            padding="do_not_pad",
-            max_length=self.tokenizer.model_max_length,
-            truncation=True,
-            return_tensors="pt",
-        )
-
-        text_input_ids = text_inputs.input_ids.to(self.text_encoder.device)  # [1,2]
-        self.empty_text_embed = self.text_encoder(text_input_ids)[0].to(self.dtype)  # [1,2,1024]
-
     @torch.no_grad()
     def single_infer(self, input_rgb: torch.Tensor,
+                     positive: torch.Tensor,
                      num_inference_steps: int,
                      show_pbar: bool):
 
@@ -147,11 +126,8 @@ class DiffDISPipeline(DiffusionPipeline):
         rgb_resized8_latents = self.encode_RGB(F.interpolate(input_rgb, size=input_rgb.shape[-1]//8, mode='bilinear',
                                                align_corners=False)).to(self.weight_dtype).repeat(2, 1, 1, 1)
 
-        # batched empty text embedding
-        if self.empty_text_embed is None:
-            self.__encode_empty_text()
-
-        batch_empty_text_embed = self.empty_text_embed.repeat((bsz, 1, 1))  # [B, 2, 1024]
+        # batched text embedding
+        batch_empty_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
 
         # batch discriminative embedding
         discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=self.weight_dtype, device='cuda')
