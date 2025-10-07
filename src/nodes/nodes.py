@@ -591,8 +591,8 @@ class DiffDIS(object):
             },
         }
 
-    RETURN_TYPES = ("MASK", "MASK")
-    RETURN_NAMES = ("masks", "edges")
+    RETURN_TYPES = ("MASK", "MASK", "LATENT", "LATENT")
+    RETURN_NAMES = ("masks", "edges", "mask_l", "edge_l")
     FUNCTION = "diff_dis"
     CATEGORY = CATEGORY_BASIC
     UNIQUE_NAME = "DiffDIS_SET"
@@ -635,7 +635,7 @@ class DiffDIS(object):
         im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
         del image_preproc
 
-        mask_bchw, edge_bchw = pipe(
+        mask_bchw, edge_bchw, mask_l, edge_l = pipe(
             im_tensor,
             positive,
             denosing_steps=1,
@@ -643,10 +643,10 @@ class DiffDIS(object):
             processing_res=1024,
             match_input_res=True,
             batch_size=1,
-            show_progress_bar=True,
+            show_progress_bar=False,
         )
 
         mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
         edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
 
-        return mask_bhw, edge_bhw
+        return mask_bhw, edge_bhw, {"samples": mask_l.cpu()}, {"samples": edge_l.cpu()}
