@@ -622,7 +622,6 @@ class DiffDIS(object):
             mode='DBIA',
             use_swci=True)
         pipe = DiffDISPipeline(unet=unet, vae=vae)
-        pipe = pipe.to(auto_device_type)
 
         # Pre-process the images
         b, h, w, c = images.shape
@@ -633,12 +632,13 @@ class DiffDIS(object):
         im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
         del image_preproc
 
-        mask_bchw, edge_bchw = pipe(
-            im_tensor,
-            positive,
-            batch_size=1,
-            show_progress_bar=False,
-        )
+        with torch.no_grad():
+            mask_bchw, edge_bchw = pipe(
+                im_tensor,
+                positive,
+                batch_size=1,
+                show_progress_bar=False,
+            )
 
         mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
         edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()

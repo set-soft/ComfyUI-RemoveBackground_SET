@@ -2,10 +2,7 @@ from typing import Dict
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm.auto import tqdm
-from diffusers import (
-    DiffusionPipeline,
-    UNet2DConditionModel,
-)
+from diffusers import UNet2DConditionModel
 import torch.nn.functional as F
 
 
@@ -13,7 +10,7 @@ def resize(img, size):
     return F.interpolate(img, size=size, mode='bilinear', align_corners=False)
 
 
-class DiffDISPipeline(DiffusionPipeline):
+class DiffDISPipeline(torch.nn.Module):
     # two hyper-parameters
     rgb_latent_scale_factor = 0.18215
     mask_latent_scale_factor = 0.18215
@@ -21,9 +18,9 @@ class DiffDISPipeline(DiffusionPipeline):
 
     def __init__(self, unet: UNet2DConditionModel, vae):
         super().__init__()
-        self.register_modules(unet=unet, vae=vae)
+        self.vae = vae
+        self.unet = unet
 
-    @torch.no_grad()
     def __call__(self,
                  input_image: torch.Tensor,
                  positive: torch.Tensor,
@@ -62,7 +59,6 @@ class DiffDISPipeline(DiffusionPipeline):
 
         return mask_preds, edge_preds
 
-    @torch.no_grad()
     def single_infer(self, input_rgb: torch.Tensor,
                      positive: torch.Tensor,
                      show_pbar: bool):
@@ -74,7 +70,7 @@ class DiffDISPipeline(DiffusionPipeline):
         # Encode image 1:1 1/2 1/4 1/8 size
         rgb_latent = self.encode_RGB(input_rgb).to(wdtype)  # 1/8 Resolution with a channel nums of 4.
         # Latent for the mask and edge
-        mask_edge_latent = torch.randn(rgb_latent.shape, device=device, dtype=self.dtype).repeat(2, 1, 1, 1)
+        mask_edge_latent = torch.randn(rgb_latent.shape, device=device, dtype=wdtype).repeat(2, 1, 1, 1)
         rgb_latent = rgb_latent.repeat(2, 1, 1, 1)
         rgb_resized2_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//2)).to(wdtype).repeat(2, 1, 1, 1)
         rgb_resized4_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//4)).to(wdtype).repeat(2, 1, 1, 1)
