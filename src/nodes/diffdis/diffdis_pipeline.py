@@ -1,4 +1,3 @@
-
 from typing import Dict
 import torch
 from torch.utils.data import DataLoader, TensorDataset
@@ -7,7 +6,6 @@ from diffusers import (
     DiffusionPipeline,
     UNet2DConditionModel,
 )
-# from utils.depth_ensemble import ensemble
 import torch.nn.functional as F
 
 
@@ -25,15 +23,13 @@ class DiffDISPipeline(DiffusionPipeline):
     def __call__(self,
                  input_image: torch.Tensor,
                  positive: torch.Tensor,
-                 ensemble_size: int = 10,
                  batch_size: int = 0,
                  show_progress_bar: bool = True,
-                 ensemble_kwargs: Dict = None,
                  ) -> torch.Tensor:
 
         # inherit from thea Diffusion Pipeline
         rgb_norm = input_image
-        duplicated_rgb = torch.stack([rgb_norm] * ensemble_size)
+        duplicated_rgb = torch.stack(rgb_norm)
         single_rgb_dataset = TensorDataset(duplicated_rgb)
 
         # find the batch size
@@ -65,21 +61,12 @@ class DiffDISPipeline(DiffusionPipeline):
         edge_preds = torch.concat(edge_pred_ls, axis=0)
         torch.cuda.empty_cache()  # clear vram cache for ensembling
 
-        # ----------------- Test-time ensembling -----------------
-        if ensemble_size > 1:
-            assert False
-            # mask_pred, _ = ensemble(mask_preds, **(ensemble_kwargs or {}))
-            # edge_pred, _ = ensemble(edge_preds, **(ensemble_kwargs or {}))
-        else:
-            mask_pred = mask_preds
-            edge_pred = edge_preds
-
         # ----------------- Post processing -----------------
         # scale prediction to [0, 1]
-        mask_pred = (mask_pred - torch.min(mask_pred)) / (torch.max(mask_pred) - torch.min(mask_pred))
-        edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
+        mask_preds = (mask_preds - torch.min(mask_preds)) / (torch.max(mask_preds) - torch.min(mask_preds))
+        edge_preds = (edge_preds - torch.min(edge_preds)) / (torch.max(edge_preds) - torch.min(edge_preds))
 
-        return mask_pred, edge_pred
+        return mask_preds, edge_preds
 
     @torch.no_grad()
     def single_infer(self, input_rgb: torch.Tensor,

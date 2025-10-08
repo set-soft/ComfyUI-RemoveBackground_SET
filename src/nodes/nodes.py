@@ -636,7 +636,6 @@ class DiffDIS(object):
         mask_bchw, edge_bchw = pipe(
             im_tensor,
             positive,
-            ensemble_size=1,
             batch_size=1,
             show_progress_bar=False,
         )
