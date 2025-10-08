@@ -577,7 +577,7 @@ class RemBG(Advanced):
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
 
 
-from .diffdis.diffusers_local.src.diffusers import DDPMScheduler, UNet2DConditionModel_diffdis, AutoencoderKL
+from .diffdis.diffusers_local.src.diffusers import DDPMScheduler, UNet2DConditionModel_diffdis
 from .diffdis.diffdis_pipeline import DiffDISPipeline
 
 
@@ -588,17 +588,18 @@ class DiffDIS(object):
             "required": {
                 "images": ("IMAGE",),
                 "positive": ("CONDITIONING", {"tooltip": "The conditioning describing the attributes you want to include in the image."}),
+                "vae": ("VAE",),
             },
         }
 
-    RETURN_TYPES = ("MASK", "MASK", "LATENT", "LATENT")
-    RETURN_NAMES = ("masks", "edges", "mask_l", "edge_l")
+    RETURN_TYPES = ("MASK", "MASK")
+    RETURN_NAMES = ("masks", "edges")
     FUNCTION = "diff_dis"
     CATEGORY = CATEGORY_BASIC
     UNIQUE_NAME = "DiffDIS_SET"
     DISPLAY_NAME = "DiffDIS"
 
-    def diff_dis(self, images, positive):
+    def diff_dis(self, images, positive, vae):
         # The model uses just 2 of the 77
         positive = positive[0][0][:, :2, :].to(auto_device_type)
 
@@ -608,7 +609,6 @@ class DiffDIS(object):
         checkpoint_path = os.path.join(folder_paths.models_dir, "diffdis")
 
         # Build a DiffDIS pipeline
-        vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder='vae')
         scheduler = DDPMScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
 
         unet = UNet2DConditionModel_diffdis.from_pretrained(
@@ -635,7 +635,7 @@ class DiffDIS(object):
         im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
         del image_preproc
 
-        mask_bchw, edge_bchw, mask_l, edge_l = pipe(
+        mask_bchw, edge_bchw = pipe(
             im_tensor,
             positive,
             denosing_steps=1,
@@ -649,4 +649,4 @@ class DiffDIS(object):
         mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
         edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
 
-        return mask_bhw, edge_bhw, {"samples": mask_l.cpu()}, {"samples": edge_l.cpu()}
+        return mask_bhw, edge_bhw

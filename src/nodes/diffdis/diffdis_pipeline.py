@@ -7,7 +7,6 @@ from diffusers import (
     DiffusionPipeline,
     DDPMScheduler,
     UNet2DConditionModel,
-    AutoencoderKL,
 )
 # from utils.depth_ensemble import ensemble
 import torch.nn.functional as F
@@ -21,7 +20,7 @@ class DiffDISPipeline(DiffusionPipeline):
 
     def __init__(self,
                  unet: UNet2DConditionModel,
-                 vae: AutoencoderKL,
+                 vae,
                  scheduler: DDPMScheduler,
                  ):
         super().__init__()
@@ -63,8 +62,6 @@ class DiffDISPipeline(DiffusionPipeline):
         single_rgb_loader = DataLoader(single_rgb_dataset, batch_size=_bs, shuffle=False)
         mask_pred_ls = []
         edge_pred_ls = []
-        mask_pred_lsl = []
-        edge_pred_lsl = []
 
         if show_progress_bar:
             iterable_bar = tqdm(single_rgb_loader, desc=" " * 2 + "Inference batches", leave=False)
@@ -73,7 +70,7 @@ class DiffDISPipeline(DiffusionPipeline):
 
         for batch in iterable_bar:
             (batched_image,) = batch  # here the image is around [-1,1]
-            mask_pred, edge_pred, mask_l, edge_l = self.single_infer(
+            mask_pred, edge_pred = self.single_infer(
                 input_rgb=batched_image.squeeze(0),
                 positive=positive,
                 num_inference_steps=denosing_steps,
@@ -81,13 +78,9 @@ class DiffDISPipeline(DiffusionPipeline):
             )
             mask_pred_ls.append(mask_pred.detach().clone())
             edge_pred_ls.append(edge_pred.detach().clone())
-            mask_pred_lsl.append(mask_l.unsqueeze(0).detach().clone())
-            edge_pred_lsl.append(edge_l.unsqueeze(0).detach().clone())
 
         mask_preds = torch.concat(mask_pred_ls, axis=0)
         edge_preds = torch.concat(edge_pred_ls, axis=0)
-        mask_predsl = torch.concat(mask_pred_lsl, axis=0)
-        edge_predsl = torch.concat(edge_pred_lsl, axis=0)
         torch.cuda.empty_cache()  # clear vram cache for ensembling
 
         # ----------------- Test-time ensembling -----------------
@@ -104,9 +97,7 @@ class DiffDISPipeline(DiffusionPipeline):
         mask_pred = (mask_pred - torch.min(mask_pred)) / (torch.max(mask_pred) - torch.min(mask_pred))
         edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
 
-        print("mask_ls.shape")
-        print(mask_predsl.shape)
-        return mask_pred, edge_pred, mask_predsl, edge_predsl
+        return mask_pred, edge_pred
 
     @torch.no_grad()
     def single_infer(self, input_rgb: torch.Tensor,
@@ -118,9 +109,11 @@ class DiffDISPipeline(DiffusionPipeline):
         bsz = input_rgb.shape[0]
 
         # set timesteps: inherit from the diffuison pipeline
+        print(f"num_inference_steps: {num_inference_steps}")
         self.scheduler.set_timesteps(num_inference_steps, device=device)  # here the numbers of the steps is only 10.
         self.scheduler.alphas_cumprod = self.scheduler.alphas_cumprod.cuda()
         timesteps = self.scheduler.timesteps  # [T]
+        print(f"timesteps: {timesteps}")
 
         # encode image
         rgb_latent = self.encode_RGB(input_rgb)  # 1/8 Resolution with a channel nums of 4.
@@ -153,7 +146,9 @@ class DiffDISPipeline(DiffusionPipeline):
             iterable = enumerate(timesteps)
 
         self.unet.cuda()
+        print("Inference")
         for i, t in iterable:
+            print(f"t: {t}")
             unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
             noise_pred = self.unet(unet_input, t.repeat(2), encoder_hidden_states=batch_empty_text_embed.repeat(2, 1, 1),
                                    class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
@@ -171,36 +166,22 @@ class DiffDISPipeline(DiffusionPipeline):
         edge = torch.clip(edge, -1.0, 1.0)
         edge = (edge + 1.0) / 2.0
 
-        print("mask_edge_latent shape before ret single_pred")
-        print(mask_edge_latent.shape)
-        mask_edge_latent /= self.mask_latent_scale_factor
-        return mask, edge, mask_edge_latent[0], mask_edge_latent[1]
+        return mask, edge
 
     def encode_RGB(self, rgb_in: torch.Tensor) -> torch.Tensor:
-        # encode
-        self.vae.cuda()
-        h = self.vae.encoder(rgb_in)
-        moments = self.vae.quant_conv(h)
-        mean, logvar = torch.chunk(moments, 2, dim=1)
+        # encode, ComfyUI returns the mean (deterministic)
+        mean = self.vae.encode(rgb_in.movedim(1, -1)).cuda()
         # scale latent
-        rgb_latent = mean * self.rgb_latent_scale_factor
-        self.vae.cpu()
-
-        return rgb_latent
+        return mean * self.rgb_latent_scale_factor
 
     def decode(self, mask_edge_latent: torch.Tensor) -> torch.Tensor:
-        self.vae.cuda()
         # scale latents
         mask_edge_latent = mask_edge_latent / self.mask_latent_scale_factor
         # decode
-        print("Mask shape before self.vae.post_quant_conv")
-        print(mask_edge_latent.shape)
-        z = self.vae.post_quant_conv(mask_edge_latent).to(self.weight_dtype)
-        stacked = self.vae.decoder(z)
+        stacked = self.vae.decode(mask_edge_latent).movedim(-1, 1).cuda()
         # mean of output channels
         mask_stacked, edge_stacked = torch.chunk(stacked, 2, dim=0)
         mask_mean = mask_stacked.mean(dim=1, keepdim=True)
         edge_mean = edge_stacked.mean(dim=1, keepdim=True)
-        self.vae.cpu()
 
         return mask_mean, edge_mean
