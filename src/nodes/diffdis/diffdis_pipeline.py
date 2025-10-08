@@ -27,18 +27,9 @@ class DiffDISPipeline(DiffusionPipeline):
                  show_progress_bar: bool = True,
                  ) -> torch.Tensor:
 
-        # inherit from thea Diffusion Pipeline
-        rgb_norm = input_image
-        duplicated_rgb = torch.stack(rgb_norm)
-        single_rgb_dataset = TensorDataset(duplicated_rgb)
+        single_rgb_dataset = TensorDataset(input_image)
+        single_rgb_loader = DataLoader(single_rgb_dataset, batch_size=batch_size, shuffle=False)
 
-        # find the batch size
-        if batch_size > 0:
-            _bs = batch_size
-        else:
-            _bs = 1
-
-        single_rgb_loader = DataLoader(single_rgb_dataset, batch_size=_bs, shuffle=False)
         mask_pred_ls = []
         edge_pred_ls = []
 
@@ -48,9 +39,8 @@ class DiffDISPipeline(DiffusionPipeline):
             iterable_bar = single_rgb_loader
 
         for batch in iterable_bar:
-            (batched_image,) = batch  # here the image is around [-1,1]
             mask_pred, edge_pred = self.single_infer(
-                input_rgb=batched_image.squeeze(0),
+                input_rgb=batch[0],
                 positive=positive,
                 show_pbar=show_progress_bar
             )
