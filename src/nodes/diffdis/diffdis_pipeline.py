@@ -9,6 +9,10 @@ from diffusers import (
 import torch.nn.functional as F
 
 
+def resize(img, size):
+    return F.interpolate(img, size=size, mode='bilinear', align_corners=False)
+
+
 class DiffDISPipeline(DiffusionPipeline):
     # two hyper-parameters
     rgb_latent_scale_factor = 0.18215
@@ -65,29 +69,26 @@ class DiffDISPipeline(DiffusionPipeline):
 
         device = input_rgb.device
         bsz = input_rgb.shape[0]
+        wdtype = self.weight_dtype
 
-        # encode image
-        rgb_latent = self.encode_RGB(input_rgb)  # 1/8 Resolution with a channel nums of 4.
+        # Encode image 1:1 1/2 1/4 1/8 size
+        rgb_latent = self.encode_RGB(input_rgb).to(wdtype)  # 1/8 Resolution with a channel nums of 4.
+        # Latent for the mask and edge
         mask_edge_latent = torch.randn(rgb_latent.shape, device=device, dtype=self.dtype).repeat(2, 1, 1, 1)
-
-        rgb_latent = rgb_latent.to(self.weight_dtype).repeat(2, 1, 1, 1)
-        rgb_resized2_latents = self.encode_RGB(F.interpolate(input_rgb, size=input_rgb.shape[-1]//2, mode='bilinear',
-                                               align_corners=False)).to(self.weight_dtype).repeat(2, 1, 1, 1)
-        rgb_resized4_latents = self.encode_RGB(F.interpolate(input_rgb, size=input_rgb.shape[-1]//4, mode='bilinear',
-                                               align_corners=False)).to(self.weight_dtype).repeat(2, 1, 1, 1)
-        rgb_resized8_latents = self.encode_RGB(F.interpolate(input_rgb, size=input_rgb.shape[-1]//8, mode='bilinear',
-                                               align_corners=False)).to(self.weight_dtype).repeat(2, 1, 1, 1)
+        rgb_latent = rgb_latent.repeat(2, 1, 1, 1)
+        rgb_resized2_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//2)).to(wdtype).repeat(2, 1, 1, 1)
+        rgb_resized4_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//4)).to(wdtype).repeat(2, 1, 1, 1)
+        rgb_resized8_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//8)).to(wdtype).repeat(2, 1, 1, 1)
 
         # batched text embedding
         batch_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
 
         # batch discriminative embedding
-        discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=self.weight_dtype, device=device)
+        discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=wdtype, device=device)
         BDE = torch.cat([torch.sin(discriminative_label), torch.cos(discriminative_label)], dim=-1).repeat_interleave(bsz, 0)
 
         # The model works in 1 step, no need for scheduler
         self.unet.to(device)
-        print("Inference")
         unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
         t = torch.tensor([999, 999], device=device)
         noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
