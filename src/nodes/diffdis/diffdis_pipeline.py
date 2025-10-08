@@ -82,14 +82,14 @@ class DiffDISPipeline(DiffusionPipeline):
         batch_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
 
         # batch discriminative embedding
-        discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=self.weight_dtype, device='cuda')
+        discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=self.weight_dtype, device=device)
         BDE = torch.cat([torch.sin(discriminative_label), torch.cos(discriminative_label)], dim=-1).repeat_interleave(bsz, 0)
 
         # The model works in 1 step, no need for scheduler
-        self.unet.cuda()
+        self.unet.to(device)
         print("Inference")
         unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
-        t = torch.tensor([999, 999]).cuda()
+        t = torch.tensor([999, 999], device=device)
         noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
                                class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
                                rgb_resized4_latents, rgb_resized8_latents]).sample  # [B, 4, h, w]
