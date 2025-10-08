@@ -26,18 +26,12 @@ class DiffDISPipeline(DiffusionPipeline):
                  input_image: torch.Tensor,
                  positive: torch.Tensor,
                  ensemble_size: int = 10,
-                 processing_res: int = 1024,
-                 match_input_res: bool = True,
                  batch_size: int = 0,
                  show_progress_bar: bool = True,
                  ensemble_kwargs: Dict = None,
                  ) -> torch.Tensor:
 
         # inherit from thea Diffusion Pipeline
-        # adjust the input resolution.
-        if not match_input_res:
-            assert (processing_res is not None), " Value Error: `resize_output_back` is only valid with "
-
         rgb_norm = input_image
         duplicated_rgb = torch.stack([rgb_norm] * ensemble_size)
         single_rgb_dataset = TensorDataset(duplicated_rgb)

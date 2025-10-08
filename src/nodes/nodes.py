@@ -637,8 +637,6 @@ class DiffDIS(object):
             im_tensor,
             positive,
             ensemble_size=1,
-            processing_res=1024,
-            match_input_res=True,
             batch_size=1,
             show_progress_bar=False,
         )
