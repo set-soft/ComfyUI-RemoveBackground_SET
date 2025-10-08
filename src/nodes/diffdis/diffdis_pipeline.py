@@ -5,7 +5,6 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm.auto import tqdm
 from diffusers import (
     DiffusionPipeline,
-    DDPMScheduler,
     UNet2DConditionModel,
 )
 # from utils.depth_ensemble import ensemble
@@ -18,24 +17,14 @@ class DiffDISPipeline(DiffusionPipeline):
     mask_latent_scale_factor = 0.18215
     weight_dtype = torch.float32
 
-    def __init__(self,
-                 unet: UNet2DConditionModel,
-                 vae,
-                 scheduler: DDPMScheduler,
-                 ):
+    def __init__(self, unet: UNet2DConditionModel, vae):
         super().__init__()
-
-        self.register_modules(
-            unet=unet,
-            vae=vae,
-            scheduler=scheduler,
-        )
+        self.register_modules(unet=unet, vae=vae)
 
     @torch.no_grad()
     def __call__(self,
                  input_image: torch.Tensor,
                  positive: torch.Tensor,
-                 denosing_steps: int = 10,
                  ensemble_size: int = 10,
                  processing_res: int = 1024,
                  match_input_res: bool = True,
@@ -73,7 +62,6 @@ class DiffDISPipeline(DiffusionPipeline):
             mask_pred, edge_pred = self.single_infer(
                 input_rgb=batched_image.squeeze(0),
                 positive=positive,
-                num_inference_steps=denosing_steps,
                 show_pbar=show_progress_bar
             )
             mask_pred_ls.append(mask_pred.detach().clone())
@@ -102,18 +90,10 @@ class DiffDISPipeline(DiffusionPipeline):
     @torch.no_grad()
     def single_infer(self, input_rgb: torch.Tensor,
                      positive: torch.Tensor,
-                     num_inference_steps: int,
                      show_pbar: bool):
 
         device = input_rgb.device
         bsz = input_rgb.shape[0]
-
-        # set timesteps: inherit from the diffuison pipeline
-        print(f"num_inference_steps: {num_inference_steps}")
-        self.scheduler.set_timesteps(num_inference_steps, device=device)  # here the numbers of the steps is only 10.
-        self.scheduler.alphas_cumprod = self.scheduler.alphas_cumprod.cuda()
-        timesteps = self.scheduler.timesteps  # [T]
-        print(f"timesteps: {timesteps}")
 
         # encode image
         rgb_latent = self.encode_RGB(input_rgb)  # 1/8 Resolution with a channel nums of 4.
@@ -128,34 +108,23 @@ class DiffDISPipeline(DiffusionPipeline):
                                                align_corners=False)).to(self.weight_dtype).repeat(2, 1, 1, 1)
 
         # batched text embedding
-        batch_empty_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
+        batch_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
 
         # batch discriminative embedding
         discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=self.weight_dtype, device='cuda')
         BDE = torch.cat([torch.sin(discriminative_label), torch.cos(discriminative_label)], dim=-1).repeat_interleave(bsz, 0)
 
-        # denoising loop
-        if show_pbar:
-            iterable = tqdm(
-                enumerate(timesteps),
-                total=len(timesteps),
-                leave=False,
-                desc=" " * 4 + "Diffusion denoising",
-            )
-        else:
-            iterable = enumerate(timesteps)
-
+        # The model works in 1 step, no need for scheduler
         self.unet.cuda()
         print("Inference")
-        for i, t in iterable:
-            print(f"t: {t}")
-            unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
-            noise_pred = self.unet(unet_input, t.repeat(2), encoder_hidden_states=batch_empty_text_embed.repeat(2, 1, 1),
-                                   class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
-                                   rgb_resized4_latents, rgb_resized8_latents]).sample  # [B, 4, h, w]
-
-            # compute x_T -> x_0
-            mask_edge_latent = self.scheduler.step(noise_pred, t, mask_edge_latent).prev_sample
+        unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
+        t = torch.tensor([999, 999]).cuda()
+        noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
+                               class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
+                               rgb_resized4_latents, rgb_resized8_latents]).sample  # [B, 4, h, w]
+        # compute x_T -> x_0
+        # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
+        mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
         self.unet.cpu()
 
         mask, edge = self.decode(mask_edge_latent)

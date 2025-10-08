@@ -577,7 +577,7 @@ class RemBG(Advanced):
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
 
 
-from .diffdis.diffusers_local.src.diffusers import DDPMScheduler, UNet2DConditionModel_diffdis
+from .diffdis.diffusers_local.src.diffusers import UNet2DConditionModel_diffdis
 from .diffdis.diffdis_pipeline import DiffDISPipeline
 
 
@@ -609,8 +609,6 @@ class DiffDIS(object):
         checkpoint_path = os.path.join(folder_paths.models_dir, "diffdis")
 
         # Build a DiffDIS pipeline
-        scheduler = DDPMScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
-
         unet = UNet2DConditionModel_diffdis.from_pretrained(
             checkpoint_path,
             subfolder="unet",
@@ -623,7 +621,7 @@ class DiffDIS(object):
             mid_extra_cross=True,
             mode='DBIA',
             use_swci=True)
-        pipe = DiffDISPipeline(unet=unet, vae=vae, scheduler=scheduler)
+        pipe = DiffDISPipeline(unet=unet, vae=vae)
         pipe = pipe.to(auto_device_type)
 
         # Pre-process the images
@@ -638,7 +636,6 @@ class DiffDIS(object):
         mask_bchw, edge_bchw = pipe(
             im_tensor,
             positive,
-            denosing_steps=1,
             ensemble_size=1,
             processing_res=1024,
             match_input_res=True,
