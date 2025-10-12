@@ -229,44 +229,18 @@ class DiffDIS(nn.Module):
 
 
 class DiffDISPipeline(torch.nn.Module):
-    def __init__(self, unet: UNet2DConditionModel, vae):
+    def __init__(self, unet: UNet2DConditionModel, vae, positive):
         super().__init__()
         self.vae = vae
-        self.unet = unet
+        # Register unet and positive so the to() operations affects them
+        self.add_module('unet', unet)
+        self.register_buffer('positive', positive)
 
-    def __call__(self,
-                 input_image: torch.Tensor,
-                 positive: torch.Tensor,
-                 size: Tuple,
-                 batch_size: int = 1,
-                 show_progress_bar: bool = True,
-                 ) -> torch.Tensor:
-        # This is a wrapper to process batch_size images at a time
-        single_rgb_dataset = TensorDataset(input_image)
-        single_rgb_loader = DataLoader(single_rgb_dataset, batch_size=batch_size, shuffle=False)
+    def load_state_dict(self, state_dict):
+        # Just load the UNet
+        self.unet.load_state_dict(state_dict)
 
-        mask_pred_ls = []
-        edge_pred_ls = []
-
-        if show_progress_bar:
-            iterable_bar = tqdm(single_rgb_loader, desc="Inference batches", leave=False)
-        else:
-            iterable_bar = single_rgb_loader
-
-        for batch in iterable_bar:
-            mask_pred, edge_pred = self.single_infer(input_rgb=batch[0], positive=positive, show_pbar=show_progress_bar)
-            # Scale prediction to [0, 1]
-            mask_pred = (mask_pred - torch.min(mask_pred)) / (torch.max(mask_pred) - torch.min(mask_pred))
-            edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
-            # Back to the original size, move results to CPU
-            mask_pred_ls.append(torch.nn.functional.interpolate(mask_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
-            edge_pred_ls.append(torch.nn.functional.interpolate(edge_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
-
-        torch.cuda.empty_cache()  # clear vram cache for ensembling
-
-        return torch.concat(mask_pred_ls, axis=0), torch.concat(edge_pred_ls, axis=0)
-
-    def single_infer(self, input_rgb: torch.Tensor, positive: torch.Tensor, show_pbar: bool):
+    def __call__(self, input_rgb: torch.Tensor):
         device = input_rgb.device
         bsz = input_rgb.shape[0]
         wdtype = self.unet.conv_in.weight.dtype
@@ -281,26 +255,26 @@ class DiffDISPipeline(torch.nn.Module):
         rgb_rsz8_lats = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//8), device).to(wdtype).repeat(2, 1, 1, 1)
 
         # batched text embedding
-        batch_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
+        batch_text_embed = self.positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
 
         # batch discriminative embedding
         discriminative_label = torch.tensor([[0, 1], [1, 0]], dtype=wdtype, device=device)
         BDE = torch.cat([torch.sin(discriminative_label), torch.cos(discriminative_label)], dim=-1).repeat_interleave(bsz, 0)
 
         # The model works in 1 step, no need for scheduler
-        # self.unet.to(device)
         noise_pred = self.unet(
             torch.cat([rgb_latent, mask_edge_latent], dim=1),  # Input, order is important: [1, IN_CHANNELS, H, W] (8)
             torch.tensor([999, 999], device=device),           # Time steps, just the last one
             encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
             class_labels=BDE,
             rgb_token=[rgb_latent, rgb_rsz2_lats, rgb_rsz4_lats, rgb_rsz8_lats])  # -> [B, OUT_CHANNELS, h, w] (4)
-        # self.unet.cpu()
         # compute x_T -> x_0
         # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
         mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
 
-        return self.decode(mask_edge_latent, device)
+        mask, self.edges = self.decode(mask_edge_latent, device)
+
+        return mask  # Return the mask and keep the edges so they can be retrieved
 
     def encode_RGB(self, rgb_in: torch.Tensor, device: torch.device) -> torch.Tensor:
         # encode, ComfyUI returns the mean (deterministic)
@@ -318,9 +292,11 @@ class DiffDISPipeline(torch.nn.Module):
         mask_mean = mask_stacked.mean(dim=1, keepdim=True)
         mask_mean = torch.clip(mask_mean, -1.0, 1.0)
         mask_mean = (mask_mean + 1.0) / 2.0
+        mask_mean = (mask_mean - torch.min(mask_mean)) / (torch.max(mask_mean) - torch.min(mask_mean))
 
         edge_mean = edge_stacked.mean(dim=1, keepdim=True)
         edge_mean = torch.clip(edge_mean, -1.0, 1.0)
         edge_mean = (edge_mean + 1.0) / 2.0
+        edge_mean = (edge_mean - torch.min(edge_mean)) / (torch.max(edge_mean) - torch.min(edge_mean))
 
         return mask_mean, edge_mean

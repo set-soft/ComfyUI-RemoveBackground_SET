@@ -258,7 +258,13 @@ class LoadModel:
                 "device": (device_options, )
             },
             "optional": {
-                "dtype": DTYPE_OPS
+                "dtype": DTYPE_OPS,
+                "vae": ("VAE", {
+                     "tooltip": "SD Turbo VAE for DiffDIS"
+                }),
+                "positive": ("CONDITIONING", {
+                     "tooltip": "Experimental for DiffDIS"
+                }),
             }
         }
 
@@ -271,7 +277,7 @@ class LoadModel:
     UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
     DISPLAY_NAME = "Load RemBG model by file"
 
-    def load_model_file(self, model, device, dtype="auto"):
+    def load_model_file(self, model, device, dtype="auto", vae=None, positive=None):
         model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
 
         # Load the state dict
@@ -292,7 +298,7 @@ class LoadModel:
                 state_dict = state_dict['model_state_dict']
 
         # Check this is valid for a known model
-        arch = RemBgArch(state_dict, logger, model)
+        arch = RemBgArch(state_dict, logger, model, vae, positive)
         arch.check()
         target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
         logger.debug(f"Using {target_device} device")
@@ -415,8 +421,8 @@ class GetMaskLow:
             }
         }
 
-    RETURN_TYPES = ("MASK", "IMAGE")
-    RETURN_NAMES = ("masks", "depths")
+    RETURN_TYPES = ("MASK", "IMAGE", "MASK")
+    RETURN_NAMES = ("masks", "depths", "edges")
     FUNCTION = "get_mask"
     CATEGORY = CATEGORY_ADV
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
@@ -481,7 +487,7 @@ class GetMask(GetMaskLow):
                  batched=True, depths=None):
         arch = model
         b, h, w, c = images.shape
-        image_bchw = images.permute(0, 3, 1, 2)
+        image_bchw = images.movedim(-1, 1)
 
         image_preproc = ImagePreprocessor(arch.img_mean, arch.img_std, resolution=(height, width),
                                           upscale_method=upscale_method)
@@ -493,7 +499,7 @@ class GetMask(GetMaskLow):
         else:
             depths_scaled = None
 
-        mask_bhw, depths_bhwc = super().get_mask(model, im_tensor.permute(0, 2, 3, 1), batched, depths=depths_scaled)
+        mask_bhw, depths_bhwc, edges_bhw = super().get_mask(model, im_tensor.movedim(1, -1), batched, depths=depths_scaled)
 
         # Back to the original size to match the image size
         mask_bchw = torch.nn.functional.interpolate(mask_bhw.unsqueeze(1), size=(h, w), mode=upscale_method)
@@ -509,7 +515,11 @@ class GetMask(GetMaskLow):
             # We created depth maps, real or empty
             depths = scale_comfy_image(depths_bhwc, (h, w), upscale_method)
         # Otherwise just pass the input depths
-        return mask_bhw, depths
+
+        # Optional edges
+        edges_bhw = torch.nn.functional.interpolate(edges_bhw.unsqueeze(1), size=(h, w), mode=upscale_method).squeeze(1)
+
+        return mask_bhw, depths, edges_bhw
 
 
 class Advanced(GetMask):
@@ -534,8 +544,8 @@ class Advanced(GetMask):
             }
         }
 
-    RETURN_TYPES = ("IMAGE",  "MASK",  "IMAGE")
-    RETURN_NAMES = ("images", "masks", "depths")
+    RETURN_TYPES = ("IMAGE",  "MASK",  "IMAGE",  "MASK")
+    RETURN_NAMES = ("images", "masks", "depths", "edges")
     FUNCTION = "rem_bg"
     CATEGORY = CATEGORY_ADV
     UNIQUE_NAME = "RembgByBiRefNetAdvanced_SET"
@@ -544,14 +554,15 @@ class Advanced(GetMask):
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
                fill_color=False, color=None, mask_threshold=0.000, batched=True, depths=None):
 
-        masks, depths = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched, depths=depths)
+        masks, depths, edges = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched,
+                                                depths=depths)
 
         logger.debug(f"Applying mask/s (batched={batched})")
         out_images = apply_mask(logger, images, masks=masks, device=model_management.get_torch_device(),
                                 blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
                                 batched=batched)
 
-        return out_images, masks, depths
+        return out_images, masks, depths, edges
 
 
 class RemBG(Advanced):
@@ -578,115 +589,3 @@ class RemBG(Advanced):
         logger.debug(f"Using size {w}x{h}")
         b = images.shape[0]
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
-
-
-class LoadDiffDISModel:
-    """ Load the DiffDIS model """
-    @classmethod
-    def INPUT_TYPES(cls):
-        device_options, _ = get_torch_device_options(with_auto=True)
-        return {
-            "required": {
-                "model": (folder_paths.get_filename_list(MODELS_DIR_KEY),),
-                "device": (device_options, )
-            },
-            "optional": {
-                "dtype": DTYPE_OPS
-            }
-        }
-
-    RETURN_TYPES = ("SET_DIFFDIS",)
-    RETURN_NAMES = ("model",)
-    FUNCTION = "load_model_file"
-    CATEGORY = CATEGORY_LOAD
-    DESCRIPTION = ("Load DiffDIS model from folder models/diffusers" +
-                   " or the path of birefnet configured in the extra YAML file")
-    UNIQUE_NAME = "LoadDiffDISModel_SET"
-    DISPLAY_NAME = "Load DiffDIS model by file"
-
-    def load_model_file(self, model, device, dtype="auto"):
-        model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
-
-        # Load the state dict
-        logger.debug(f"Loading model weights from {model_path}")
-        if model_path.endswith(".safetensors"):
-            # Try to get the metadata
-            with safe_open(model_path, framework="pt", device="cpu") as f:
-                loaded_metadata = f.metadata()
-                if loaded_metadata:
-                    for key, value in loaded_metadata.items():
-                        logger.debug(f"  - {key}: {value}")
-            # Load the weights
-            state_dict = safetensors.torch.load_file(model_path, device="cpu")
-        else:
-            state_dict = torch.load(model_path, map_location="cpu")
-
-        # Check this is valid for a known model
-        target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
-        logger.debug(f"Using {target_device} device")
-        target_dtype = state_dict["conv_in.weight"].dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
-        logger.debug(f"Using {target_dtype} data type")
-
-        # Create an instance
-        unet = DiffDISclass()
-        unet.load_state_dict(state_dict)
-        unet.target_device = torch.device(target_device)
-        unet.target_dtype = target_dtype
-        unet.to(dtype=target_dtype)
-        unet.eval()
-        return unet,
-
-
-class DiffDIS(object):
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "images": ("IMAGE",),
-                "vae": ("VAE",),
-                "model": ("SET_DIFFDIS",),
-            },
-            "optional": {
-                "positive": ("CONDITIONING", {
-                     "tooltip": "The conditioning describing the attributes you want to include in the image."
-                }),
-            }
-        }
-
-    RETURN_TYPES = ("MASK", "MASK")
-    RETURN_NAMES = ("masks", "edges")
-    FUNCTION = "diff_dis"
-    CATEGORY = CATEGORY_BASIC
-    UNIQUE_NAME = "DiffDIS_SET"
-    DISPLAY_NAME = "DiffDIS"
-
-    def diff_dis(self, images, vae, model, positive=None):
-        if positive:
-            # The model uses just 2 of the 77
-            positive = positive[0][0][:, :2, :].to(auto_device_type)
-        else:
-            # Not provided, do we have it?
-            if not hasattr(self, 'positive'):
-                # Load a pre-computed copy
-                fname = os.path.join(os.path.dirname(__file__), 'diffdis', 'positive.safetensors')
-                logger.debug(f"Loading empty positive embeddings from `{fname}`")
-                pos_dict = safetensors.torch.load_file(fname, device="cpu")
-                self.positive = pos_dict['positive']
-            positive = self.positive.to(auto_device_type)
-
-        # Build a DiffDIS pipeline
-        pipe = DiffDISPipeline(unet=model, vae=vae)
-
-        # Pre-process the images
-        b, h, w, c = images.shape
-        image_bchw = images.movedim(-1, 1)
-
-        # 1024x1024 and from [0,1] to [-1,1]
-        image_preproc = ImagePreprocessor([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], resolution=(1024, 1024), upscale_method='bilinear')
-        im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
-        del image_preproc
-
-        with model_to_target(logger, model):
-            mask_bhw, edge_bhw = pipe(im_tensor, positive, batch_size=1, show_progress_bar=False, size=(h, w))
-
-        return mask_bhw, edge_bhw

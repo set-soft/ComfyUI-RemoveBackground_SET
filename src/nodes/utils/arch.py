@@ -5,6 +5,7 @@
 import math
 import os
 import re
+import safetensors.torch
 import torch
 from seconohe.torch import model_to_target
 try:
@@ -20,6 +21,7 @@ from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
 from ..pdfnet.PDFNet import build_model as PDFNet
+from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
@@ -53,7 +55,7 @@ def fix_state_dict(state_dict):
 
 
 class RemBgArch(object):
-    def __init__(self, state_dict, logger, fname):
+    def __init__(self, state_dict, logger, fname, vae=None, positive=None):
         super().__init__()
         self.ok = False
         self.bb_ok = False
@@ -62,11 +64,25 @@ class RemBgArch(object):
         self.needs_map = False
         self.version = 1
         self.logger = logger
+        self.vae = vae
+        self.positive = positive
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
 
         fix_state_dict(state_dict)
+
+        # DiffDIS
+        layer = "mid_block.attentions.0.transformer_blocks.0.attn3.to_q.weight"
+        if layer in state_dict:
+            self.bb = 'None'  # No backbone
+            self.bb_ok = True
+            self.img_mean = [0.5, 0.5, 0.5]
+            self.img_std = [0.5, 0.5, 0.5]
+            self.model_type = 'DiffDIS'
+            self.dtype = state_dict[layer].dtype
+            self.ok = True
+            return
 
         # U-2-Net and IS-Net
         layer = "stage1.rebnconv1.conv_s1.weight"
@@ -271,6 +287,19 @@ class RemBgArch(object):
             raise ValueError(f"Unknown backbone: {self.why}")
         if not self.ok:
             raise ValueError(f"Wrong architecture: {self.why}")
+        if self.model_type == 'DiffDIS':
+            # This is a modified SD Turbo diffuser
+            if self.vae is None:
+                raise ValueError("DiffDIS models needs the SD-Turbo VAE")
+            if self.positive is not None:
+                # The model uses just 2 of the 77
+                self.positive = self.positive[0][0][:, :2, :]
+            else:
+                # Load a pre-computed copy
+                fname = os.path.join(os.path.dirname(__file__), '..', 'diffdis', 'positive.safetensors')
+                self.logger.debug(f"Loading empty positive embeddings from `{fname}`")
+                pos_dict = safetensors.torch.load_file(fname, device="cpu")
+                self.positive = pos_dict['positive']
 
     def instantiate_model(self, state_dict, device, dtype):
         if self.model_type == 'MVANet':
@@ -287,6 +316,8 @@ class RemBgArch(object):
             model = MODNet(backbone_arch=self.bb, backbone_pretrained=False)
         elif self.model_type == 'PDFNet':
             model = PDFNet(backbone_arch=self.bb)
+        elif self.model_type == 'DiffDIS':
+            model = DiffDISPipeline(vae=self.vae, unet=DiffDIS(), positive=self.positive)
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
@@ -324,4 +355,11 @@ class RemBgArch(object):
                 del _mask_bchw
 
         mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-        return mask_bhw, depth_bchw.permute(0, 2, 3, 1)
+        del mask_bchw
+
+        if hasattr(self.model, 'edges'):
+            edges_bhw = self.model.edges.squeeze(1).cpu().float()
+        else:
+            edges_bhw = torch.zeros((b, 64, 64), dtype=torch.float32, device="cpu")
+
+        return mask_bhw, depth_bchw.movedim(1, -1), edges_bhw
