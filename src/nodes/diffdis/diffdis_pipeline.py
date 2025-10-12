@@ -18,7 +18,7 @@ IN_CHANNELS = 8
 OUT_CHANNELS = 4
 PROJECTION_CLASS_EMBEDDINGS_INPUT_DIM = 4
 LATENT_SCALE_FACTOR = 0.18215
-RESCALE_MODE = 'bilinear'
+RESCALE_MODE = 'bicubic'  # 'bilinear'
 
 
 def resize(img, size):
@@ -256,9 +256,9 @@ class DiffDISPipeline(torch.nn.Module):
             mask_pred, edge_pred = self.single_infer(input_rgb=batch[0], positive=positive, show_pbar=show_progress_bar)
             # Scale prediction to [0, 1]
             mask_pred = (mask_pred - torch.min(mask_pred)) / (torch.max(mask_pred) - torch.min(mask_pred))
+            edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
             # Back to the original size, move results to CPU
             mask_pred_ls.append(torch.nn.functional.interpolate(mask_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
-            edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
             edge_pred_ls.append(torch.nn.functional.interpolate(edge_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
 
         torch.cuda.empty_cache()  # clear vram cache for ensembling
