@@ -35,6 +35,7 @@ class DiffDIS(nn.Module):
         # in_channels  is 8
         # out_channels is 4
         # projection_class_embeddings_input_dim is 4
+        # resnet groups is 32
 
         # block_out_channels
         boc0 = 320
@@ -80,7 +81,6 @@ class DiffDIS(nn.Module):
             down_block = get_down_block(
                 down_block_type,
                 num_layers=2,
-                transformer_layers_per_block=1,
                 in_channels=input_channel,
                 out_channels=output_channel,
                 temb_channels=time_embed_dim,
@@ -91,17 +91,8 @@ class DiffDIS(nn.Module):
                 cross_attention_dim=1024,
                 num_attention_heads=num_attention_heads[i],
                 downsample_padding=1,
-                dual_cross_attention=False,
                 use_linear_projection=True,
-                only_cross_attention=False,
-                upcast_attention=False,
-                resnet_time_scale_shift="default",
-                attention_type="default",
-                resnet_skip_time_act=False,
-                resnet_out_scale_factor=1.0,
-                cross_attention_norm=None,
                 attention_head_dim=attention_head_dim[i],
-                dropout=0.0,
             )
             self.down_blocks.append(down_block)
 
@@ -113,20 +104,10 @@ class DiffDIS(nn.Module):
             resnet_eps=1e-5,
             resnet_act_fn="silu",
             resnet_groups=32,
-            output_scale_factor=1,
-            transformer_layers_per_block=1,
             num_attention_heads=num_attention_heads[-1],
             cross_attention_dim=1024,
-            dual_cross_attention=False,
             use_linear_projection=True,
-            mid_block_only_cross_attention=False,
-            upcast_attention=False,
-            resnet_time_scale_shift="default",
-            attention_type="default",
-            resnet_skip_time_act=False,
-            cross_attention_norm=None,
             attention_head_dim=attention_head_dim[-1],
-            dropout=0.0,
             mid_extra_cross=True,
             mode='DBIA',
         )
@@ -144,7 +125,6 @@ class DiffDIS(nn.Module):
             up_block = get_up_block(
                 up_block_type,
                 num_layers=3,
-                transformer_layers_per_block=1,
                 in_channels=input_channel,
                 out_channels=output_channel,
                 prev_output_channel=prev_output_channel,
@@ -156,17 +136,8 @@ class DiffDIS(nn.Module):
                 resnet_groups=32,
                 cross_attention_dim=1024,
                 num_attention_heads=reversed_num_attention_heads[i],
-                dual_cross_attention=False,
                 use_linear_projection=True,
-                only_cross_attention=False,
-                upcast_attention=False,
-                resnet_time_scale_shift="default",
-                attention_type="default",
-                resnet_skip_time_act=False,
-                resnet_out_scale_factor=1.0,
-                cross_attention_norm=None,
                 attention_head_dim=attention_head_dim[i],
-                dropout=0.0,
             )
             self.up_blocks.append(up_block)
             prev_output_channel = output_channel
