@@ -82,17 +82,8 @@ class TimestepEmbedding(nn.Module):
         return sample
 
 
-@dataclass
-class UNet2DConditionOutput(BaseOutput):
-    """
-    The output of [`UNet2DConditionModel`].
-
-    Args:
-        sample (`torch.FloatTensor` of shape `(batch_size, num_channels, height, width)`):
-            The hidden states output conditioned on `encoder_hidden_states` input. Output of last layer of model.
-    """
-
-    sample: torch.FloatTensor = None
+def with_cross_att(block):
+    return hasattr(block, "has_cross_attention") and block.has_cross_attention
 
 
 class DiffDIS(nn.Module):
@@ -101,19 +92,11 @@ class DiffDIS(nn.Module):
         sample_size: int = 96,
         in_channels: int = 8,
         out_channels: int = 4,
-        class_embed_type: str = 'projection',
         projection_class_embeddings_input_dim: int = 4,
-        mid_extra_cross: bool = True,
-        mode: str = 'DBIA',
-        use_swci: bool = True,
     ):
         super().__init__()
 
         self.sample_size = sample_size
-        self.mid_extra_cross = mid_extra_cross
-        self.mode = mode
-        self.use_swci = use_swci
-        self.class_embed_type = class_embed_type
 
         # block_out_channels
         boc0 = 320
@@ -122,15 +105,15 @@ class DiffDIS(nn.Module):
         boc3 = boc2
         block_out_channels = [boc0, boc1, boc2, boc3]
 
-        if self.use_swci:
-            self.rgb_proj = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
-                                           zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
-                                           zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
+        # SWCI
+        self.rgb_proj = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
+                                       zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
+                                       zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
 
-            self.rgb_proj1 = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
-                                            zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
-                                            zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
-            self.rgb_conv = nn.ModuleList([make_cbg(4, boc0), make_cbg(4, boc1), make_cbg(4, boc2)])
+        self.rgb_proj1 = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
+                                        zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
+                                        zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
+        self.rgb_conv = nn.ModuleList([make_cbg(4, boc0), make_cbg(4, boc1), make_cbg(4, boc2)])
 
         attention_head_dim = num_attention_heads = [5, 10, 20, 20]
 
@@ -274,62 +257,35 @@ class DiffDIS(nn.Module):
     def forward(
         self,
         sample: torch.FloatTensor,
-        timestep: Union[torch.Tensor, float, int],
-        encoder_hidden_states: torch.Tensor,
-        class_labels: Optional[torch.Tensor] = None,
-        added_cond_kwargs: Optional[Dict[str, torch.Tensor]] = None,
-        down_block_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
-        mid_block_additional_residual: Optional[torch.Tensor] = None,
-        down_intrablock_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
-        rgb_token: Optional[Tuple[torch.Tensor]] = None,
-    ) -> Union[UNet2DConditionOutput, Tuple]:
+        timesteps: torch.FloatTensor,
+        encoder_hidden_states: torch.FloatTensor,
+        class_labels: torch.Tensor,
+        rgb_token: Tuple[torch.Tensor],
+    ) -> torch.Tensor:
         r"""
-        The [`UNet2DConditionModel`] forward method.
+        The [`DiffDIS`] forward method.
 
         Args:
             sample (`torch.FloatTensor`):
                 The noisy input tensor with the following shape `(batch, channel, height, width)`.
-            timestep (`torch.FloatTensor` or `float` or `int`): The number of timesteps to denoise an input.
+            timestep (`torch.FloatTensor`): The timesteps to denoise an input.
             encoder_hidden_states (`torch.FloatTensor`):
                 The encoder hidden states with shape `(batch, sequence_length, feature_dim)`.
-            class_labels (`torch.Tensor`, *optional*, defaults to `None`):
-                Optional class labels for conditioning. Their embeddings will be summed with the timestep embeddings.
-            added_cond_kwargs: (`dict`, *optional*):
-                A kwargs dictionary containing additional embeddings that if specified are added to the embeddings that
-                are passed along to the UNet blocks.
-            down_block_additional_residuals: (`tuple` of `torch.Tensor`, *optional*):
-                A tuple of tensors that if specified are added to the residuals of down unet blocks.
-            mid_block_additional_residual: (`torch.Tensor`, *optional*):
-                A tensor that if specified is added to the residual of the middle unet block.
-            added_cond_kwargs: (`dict`, *optional*):
-                A kwargs dictionary containin additional embeddings that if specified are added to the embeddings that
-                are passed along to the UNet blocks.
-            down_block_additional_residuals (`tuple` of `torch.Tensor`, *optional*):
-                additional residuals to be added to UNet long skip connections from down blocks to up blocks for
-                example from ControlNet side model(s)
-            mid_block_additional_residual (`torch.Tensor`, *optional*):
-                additional residual to be added to UNet mid block output, for example from ControlNet side model
-            down_intrablock_additional_residuals (`tuple` of `torch.Tensor`, *optional*):
-                additional residuals to be added within UNet down blocks, for example from T2I-Adapter side model(s)
+            class_labels (`torch.Tensor`):
+                Class labels for conditioning. Their embeddings will be summed with the timestep embeddings.
 
         Returns:
-            [`~models.unet_2d_condition.UNet2DConditionOutput`] or `tuple`:
-                If `return_dict` is True, an [`~models.unet_2d_condition.UNet2DConditionOutput`] is returned, otherwise
-                a `tuple` is returned where the first element is the sample tensor.
+            The sample tensor.
         """
         # Note: we always use 1024x1024 images, so no upscale needed
 
         # 1. time
-        timesteps = timestep
         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
         timesteps = timesteps.expand(sample.shape[0])
-
-        t_emb = self.time_proj(timesteps)
         # `Timesteps` does not contain any weights and will always return f32 tensors
         # but time_embedding might actually be running in fp16. so we need to cast here.
         # there might be better ways to encapsulate this.
-        t_emb = t_emb.to(dtype=sample.dtype)
-
+        t_emb = self.time_proj(timesteps).to(dtype=sample.dtype)
         emb = self.time_embedding(t_emb)
         class_emb = self.class_embedding(class_labels).to(dtype=sample.dtype)
         emb = emb + class_emb
@@ -340,22 +296,14 @@ class DiffDIS(nn.Module):
         # 3. down
         down_block_res_samples = (sample,)
         for j, downsample_block in enumerate(self.down_blocks):
-            if hasattr(downsample_block, "has_cross_attention") and downsample_block.has_cross_attention:
-                # For t2i-adapter CrossAttnDownBlock2D
-                additional_residuals = {}
-                sample, res_samples = downsample_block(
-                    hidden_states=sample,
-                    temb=emb,
-                    encoder_hidden_states=encoder_hidden_states,
-                    **additional_residuals,
-                )
-            else:
+            if with_cross_att(downsample_block):  # First 3 are CrossAttnDownBlock2D
+                sample, res_samples = downsample_block(hidden_states=sample, temb=emb, encoder_hidden_states=encoder_hidden_states)
+            else:  # The last is DownBlock2D
                 sample, res_samples = downsample_block(hidden_states=sample, temb=emb)
 
             down_block_res_samples += res_samples
 
-            if self.use_swci and j < 3:
-
+            if j < 3:
                 rgb_latents = self.rgb_conv[j](rgb_token[j+1])
                 rgb_latents_zero = self.rgb_proj[j](rgb_latents)
                 rgb_latents_zero1 = self.rgb_proj1[j](rgb_latents)
@@ -365,35 +313,19 @@ class DiffDIS(nn.Module):
                                               down_block_res_samples[-1])
                 down_block_res_samples = tuple(down_block_res_samples)
 
-        # 4. mid
-        if self.mid_block is not None:
-            if hasattr(self.mid_block, "has_cross_attention") and self.mid_block.has_cross_attention:
-                sample = self.mid_block(
-                    sample,
-                    emb,
-                    encoder_hidden_states=encoder_hidden_states,
-                )
-            else:
-                sample = self.mid_block(sample, emb)
+        # 4. mid (UNetMidBlock2DCrossAttn)
+        sample = self.mid_block(sample, emb, encoder_hidden_states=encoder_hidden_states)
 
         # 5. up
         for i, upsample_block in enumerate(self.up_blocks):
             res_samples = down_block_res_samples[-len(upsample_block.resnets):]
             down_block_res_samples = down_block_res_samples[: -len(upsample_block.resnets)]
 
-            if hasattr(upsample_block, "has_cross_attention") and upsample_block.has_cross_attention:
-                sample = upsample_block(
-                    hidden_states=sample,
-                    temb=emb,
-                    res_hidden_states_tuple=res_samples,
-                    encoder_hidden_states=encoder_hidden_states,
-                )
-            else:
-                sample = upsample_block(
-                    hidden_states=sample,
-                    temb=emb,
-                    res_hidden_states_tuple=res_samples,
-                )
+            if with_cross_att(upsample_block):  # 2nd, 3rd and 4th CrossAttnUpBlock2D
+                sample = upsample_block(hidden_states=sample, temb=emb, res_hidden_states_tuple=res_samples,
+                                        encoder_hidden_states=encoder_hidden_states)
+            else:  # 1st is UpBlock2D
+                sample = upsample_block(hidden_states=sample, temb=emb, res_hidden_states_tuple=res_samples)
 
         # 6. post-process
         sample = self.conv_norm_out(sample)
