@@ -8,6 +8,15 @@ import torch.nn.functional as F
 
 from ..diffusers.unet_2d_blocks import get_down_block, get_mid_block, get_up_block
 from ..diffusers.embeddings import Timesteps, TimestepEmbedding
+# Some constants
+RESNET_GROUPS = 32
+RESNET_EPS = 1e-5
+RESNET_ACT_FN = "silu"
+IMG_SIZE = 1024
+# SAMPLE_SIZE = 96
+IN_CHANNELS = 8
+OUT_CHANNELS = 4
+PROJECTION_CLASS_EMBEDDINGS_INPUT_DIM = 4
 
 
 def resize(img, size):
@@ -25,12 +34,6 @@ def with_cross_att(block):
 class DiffDIS(nn.Module):
     def __init__(self):
         super().__init__()
-        # sample_size  is 96
-        # in_channels  is 8
-        # out_channels is 4
-        # projection_class_embeddings_input_dim is 4
-        # resnet groups is 32
-
         # block_out_channels
         boc0 = 320
         boc1 = boc0 * 2
@@ -49,8 +52,8 @@ class DiffDIS(nn.Module):
 
         attention_head_dim = num_attention_heads = [5, 10, 20, 20]
 
-        # input, 8 channels
-        self.conv_in = nn.Conv2d(8, boc0, kernel_size=3, padding=1)
+        # input
+        self.conv_in = nn.Conv2d(IN_CHANNELS, boc0, kernel_size=3, padding=1)
 
         # time
         time_embed_dim = boc0 * 4
@@ -58,7 +61,7 @@ class DiffDIS(nn.Module):
         self.time_embedding = TimestepEmbedding(boc0, time_embed_dim)
 
         # class embedding
-        self.class_embedding = TimestepEmbedding(4, time_embed_dim)
+        self.class_embedding = TimestepEmbedding(PROJECTION_CLASS_EMBEDDINGS_INPUT_DIM, time_embed_dim)
 
         self.down_blocks = nn.ModuleList([])
         self.up_blocks = nn.ModuleList([])
@@ -78,10 +81,10 @@ class DiffDIS(nn.Module):
                 out_channels=output_channel,
                 temb_channels=time_embed_dim,
                 add_downsample=not is_final_block,
-                resnet_eps=1e-5,
-                resnet_act_fn="silu",
-                resnet_groups=32,
-                cross_attention_dim=1024,
+                resnet_eps=RESNET_EPS,
+                resnet_act_fn=RESNET_ACT_FN,
+                resnet_groups=RESNET_GROUPS,
+                cross_attention_dim=IMG_SIZE,
                 num_attention_heads=num_attention_heads[i],
                 downsample_padding=1,
                 use_linear_projection=True,
@@ -94,11 +97,11 @@ class DiffDIS(nn.Module):
             "UNetMidBlock2DCrossAttn",
             temb_channels=time_embed_dim,
             in_channels=block_out_channels[-1],
-            resnet_eps=1e-5,
-            resnet_act_fn="silu",
-            resnet_groups=32,
+            resnet_eps=RESNET_EPS,
+            resnet_act_fn=RESNET_ACT_FN,
+            resnet_groups=RESNET_GROUPS,
             num_attention_heads=num_attention_heads[-1],
-            cross_attention_dim=1024,
+            cross_attention_dim=IMG_SIZE,
             use_linear_projection=True,
             attention_head_dim=attention_head_dim[-1],
             mid_extra_cross=True,
@@ -123,11 +126,11 @@ class DiffDIS(nn.Module):
                 prev_output_channel=prev_output_channel,
                 temb_channels=time_embed_dim,
                 add_upsample=i != len(block_out_channels) - 1,  # add upsample block for all BUT final layer
-                resnet_eps=1e-5,
-                resnet_act_fn="silu",
+                resnet_eps=RESNET_EPS,
+                resnet_act_fn=RESNET_ACT_FN,
                 resolution_idx=i,
-                resnet_groups=32,
-                cross_attention_dim=1024,
+                resnet_groups=RESNET_GROUPS,
+                cross_attention_dim=IMG_SIZE,
                 num_attention_heads=reversed_num_attention_heads[i],
                 use_linear_projection=True,
                 attention_head_dim=attention_head_dim[i],
@@ -136,10 +139,9 @@ class DiffDIS(nn.Module):
             prev_output_channel = output_channel
 
         # out
-        self.conv_norm_out = nn.GroupNorm(num_channels=block_out_channels[0], num_groups=32, eps=1e-5)
+        self.conv_norm_out = nn.GroupNorm(num_channels=block_out_channels[0], num_groups=RESNET_GROUPS, eps=RESNET_EPS)
         self.conv_act = nn.SiLU()
-        # 4 output channels
-        self.conv_out = nn.Conv2d(block_out_channels[0], 4, kernel_size=3, padding=1)
+        self.conv_out = nn.Conv2d(block_out_channels[0], OUT_CHANNELS, kernel_size=3, padding=1)
 
     def forward(
         self,
@@ -298,11 +300,11 @@ class DiffDISPipeline(torch.nn.Module):
 
         # The model works in 1 step, no need for scheduler
         self.unet.to(device)
-        unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W]
+        unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W] IN_CHANNELS
         t = torch.tensor([999, 999], device=device)
         noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
                                class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
-                               rgb_resized4_latents, rgb_resized8_latents])  # [B, 4, h, w]
+                               rgb_resized4_latents, rgb_resized8_latents])  # [B, 4, h, w] OUT_CHANNELS
         # compute x_T -> x_0
         # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
         mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
