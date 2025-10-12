@@ -251,11 +251,7 @@ class DiffDISPipeline(torch.nn.Module):
             iterable_bar = single_rgb_loader
 
         for batch in iterable_bar:
-            mask_pred, edge_pred = self.single_infer(
-                input_rgb=batch[0],
-                positive=positive,
-                show_pbar=show_progress_bar
-            )
+            mask_pred, edge_pred = self.single_infer(input_rgb=batch[0], positive=positive, show_pbar=show_progress_bar)
             mask_pred_ls.append(mask_pred.detach().clone())
             edge_pred_ls.append(edge_pred.detach().clone())
 
@@ -270,10 +266,7 @@ class DiffDISPipeline(torch.nn.Module):
 
         return mask_preds, edge_preds
 
-    def single_infer(self, input_rgb: torch.Tensor,
-                     positive: torch.Tensor,
-                     show_pbar: bool):
-
+    def single_infer(self, input_rgb: torch.Tensor, positive: torch.Tensor, show_pbar: bool):
         device = input_rgb.device
         bsz = input_rgb.shape[0]
         wdtype = self.unet.conv_in.weight.dtype
@@ -296,25 +289,18 @@ class DiffDISPipeline(torch.nn.Module):
 
         # The model works in 1 step, no need for scheduler
         self.unet.to(device)
-        unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W] IN_CHANNELS
-        t = torch.tensor([999, 999], device=device)
-        noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
-                               class_labels=BDE, rgb_token=[rgb_latent, rgb_rsz2_lats,
-                               rgb_rsz4_lats, rgb_rsz8_lats])  # [B, 4, h, w] OUT_CHANNELS
+        noise_pred = self.unet(
+            torch.cat([rgb_latent, mask_edge_latent], dim=1),  # Input, order is important: [1, IN_CHANNELS, H, W] (8)
+            torch.tensor([999, 999], device=device),           # Time steps, just the last one
+            encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
+            class_labels=BDE,
+            rgb_token=[rgb_latent, rgb_rsz2_lats, rgb_rsz4_lats, rgb_rsz8_lats])  # -> [B, OUT_CHANNELS, h, w] (4)
+        self.unet.cpu()
         # compute x_T -> x_0
         # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
         mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
-        self.unet.cpu()
 
-        mask, edge = self.decode(mask_edge_latent, device)
-
-        mask = torch.clip(mask, -1.0, 1.0)
-        mask = (mask + 1.0) / 2.0
-
-        edge = torch.clip(edge, -1.0, 1.0)
-        edge = (edge + 1.0) / 2.0
-
-        return mask, edge
+        return self.decode(mask_edge_latent, device)
 
     def encode_RGB(self, rgb_in: torch.Tensor, device: torch.device) -> torch.Tensor:
         # encode, ComfyUI returns the mean (deterministic)
@@ -330,6 +316,11 @@ class DiffDISPipeline(torch.nn.Module):
         # mean of output channels
         mask_stacked, edge_stacked = torch.chunk(stacked, 2, dim=0)
         mask_mean = mask_stacked.mean(dim=1, keepdim=True)
+        mask_mean = torch.clip(mask_mean, -1.0, 1.0)
+        mask_mean = (mask_mean + 1.0) / 2.0
+
         edge_mean = edge_stacked.mean(dim=1, keepdim=True)
+        edge_mean = torch.clip(edge_mean, -1.0, 1.0)
+        edge_mean = (edge_mean + 1.0) / 2.0
 
         return mask_mean, edge_mean
