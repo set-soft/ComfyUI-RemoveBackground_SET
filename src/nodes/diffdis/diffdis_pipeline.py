@@ -14,12 +14,6 @@ def resize(img, size):
     return F.interpolate(img, size=size, mode='bilinear', align_corners=False)
 
 
-def zero_module(module):
-    for p in module.parameters():
-        nn.init.zeros_(p)
-    return module
-
-
 def make_cbg(in_dim, out_dim):
     return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), nn.BatchNorm2d(out_dim), nn.GELU())
 
@@ -45,13 +39,12 @@ class DiffDIS(nn.Module):
         block_out_channels = [boc0, boc1, boc2, boc3]
 
         # SWCI
-        self.rgb_proj = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
-                                       zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
-                                       zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
-
-        self.rgb_proj1 = nn.ModuleList([zero_module(nn.Conv2d(boc0, boc0, kernel_size=3, padding=1)),
-                                        zero_module(nn.Conv2d(boc1, boc1, kernel_size=3, padding=1)),
-                                        zero_module(nn.Conv2d(boc2, boc2, kernel_size=3, padding=1))])
+        self.rgb_proj = nn.ModuleList([nn.Conv2d(boc0, boc0, kernel_size=3, padding=1),
+                                       nn.Conv2d(boc1, boc1, kernel_size=3, padding=1),
+                                       nn.Conv2d(boc2, boc2, kernel_size=3, padding=1)])
+        self.rgb_proj1 = nn.ModuleList([nn.Conv2d(boc0, boc0, kernel_size=3, padding=1),
+                                        nn.Conv2d(boc1, boc1, kernel_size=3, padding=1),
+                                        nn.Conv2d(boc2, boc2, kernel_size=3, padding=1)])
         self.rgb_conv = nn.ModuleList([make_cbg(4, boc0), make_cbg(4, boc1), make_cbg(4, boc2)])
 
         attention_head_dim = num_attention_heads = [5, 10, 20, 20]
@@ -200,11 +193,11 @@ class DiffDIS(nn.Module):
 
             if j < 3:
                 rgb_latents = self.rgb_conv[j](rgb_token[j+1])
-                rgb_latents_zero = self.rgb_proj[j](rgb_latents)
+                rgb_latents_zero0 = self.rgb_proj[j](rgb_latents)
                 rgb_latents_zero1 = self.rgb_proj1[j](rgb_latents)
 
                 down_block_res_samples = list(down_block_res_samples)
-                down_block_res_samples[-1] = (((down_block_res_samples[-1] * rgb_latents_zero) + rgb_latents_zero1) +
+                down_block_res_samples[-1] = (((down_block_res_samples[-1] * rgb_latents_zero0) + rgb_latents_zero1) +
                                               down_block_res_samples[-1])
                 down_block_res_samples = tuple(down_block_res_samples)
 
