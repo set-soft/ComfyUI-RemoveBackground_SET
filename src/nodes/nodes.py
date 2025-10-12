@@ -18,6 +18,8 @@ from .utils.arch import RemBgArch
 from .utils.inspyrenet_config import parse_inspyrenet_config
 from .nodes_dan import DownloadAndLoadDepthAnythingV2Model, BASE_MODEL_NAME, DepthAnything_V2
 
+from .diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS as DiffDISclass
+
 
 logger = main_logger
 auto_device_type = model_management.get_torch_device().type
@@ -481,7 +483,8 @@ class GetMask(GetMaskLow):
         b, h, w, c = images.shape
         image_bchw = images.permute(0, 3, 1, 2)
 
-        image_preproc = ImagePreprocessor(arch.img_mean, arch.img_std, resolution=(height, width), upscale_method=upscale_method)
+        image_preproc = ImagePreprocessor(arch.img_mean, arch.img_std, resolution=(height, width),
+                                          upscale_method=upscale_method)
         im_tensor = image_preproc.proc(image_bchw)
         del image_preproc
 
@@ -545,8 +548,8 @@ class Advanced(GetMask):
 
         logger.debug(f"Applying mask/s (batched={batched})")
         out_images = apply_mask(logger, images, masks=masks, device=model_management.get_torch_device(),
-                                        blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
-                                        batched=batched)
+                                blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
+                                batched=batched)
 
         return out_images, masks, depths
 
@@ -577,17 +580,15 @@ class RemBG(Advanced):
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
 
 
-from .diffdis.diffusers_local.src.diffusers import UNet2DConditionModel_diffdis
-from .diffdis.diffdis_pipeline import DiffDISPipeline
-
-
 class DiffDIS(object):
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "images": ("IMAGE",),
-                "positive": ("CONDITIONING", {"tooltip": "The conditioning describing the attributes you want to include in the image."}),
+                "positive": ("CONDITIONING", {
+                     "tooltip": "The conditioning describing the attributes you want to include in the image."
+                }),
                 "vae": ("VAE",),
             },
         }
@@ -604,23 +605,18 @@ class DiffDIS(object):
         positive = positive[0][0][:, :2, :].to(auto_device_type)
 
         # The whole sd-turbo repo in models/sd-turbo
-        pretrained_model_path = os.path.join(folder_paths.models_dir, "sd-turbo")
+        # pretrained_model_path = os.path.join(folder_paths.models_dir, "sd-turbo")
         # The DiffDIS trained checkpoint in models/diffdis/unet
         checkpoint_path = os.path.join(folder_paths.models_dir, "diffdis")
 
         # Build a DiffDIS pipeline
-        unet = UNet2DConditionModel_diffdis.from_pretrained(
-            checkpoint_path,
-            subfolder="unet",
-            in_channels=8,
-            sample_size=96,
-            low_cpu_mem_usage=True,
-            ignore_mismatched_sizes=False,
-            class_embed_type='projection',
-            projection_class_embeddings_input_dim=4,
-            mid_extra_cross=True,
-            mode='DBIA',
-            use_swci=True)
+        unet = DiffDISclass()
+        diffdis_unet_fname = os.path.join(checkpoint_path, 'unet', 'diffusion_pytorch_model.safetensors')
+        # Load the weights
+        state_dict = safetensors.torch.load_file(diffdis_unet_fname, device="cpu")
+        unet.load_state_dict(state_dict)
+        unet.eval()
+
         pipe = DiffDISPipeline(unet=unet, vae=vae)
 
         # Pre-process the images
