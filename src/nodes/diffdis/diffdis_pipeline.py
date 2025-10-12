@@ -1,6 +1,4 @@
-from dataclasses import dataclass
-import math
-from typing import Dict, Union, Optional, Any, Tuple
+from typing import Tuple
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
@@ -9,7 +7,7 @@ from diffusers import UNet2DConditionModel
 import torch.nn.functional as F
 
 from ..diffusers.unet_2d_blocks import get_down_block, get_mid_block, get_up_block
-from ..diffusers.modeling_outputs import BaseOutput
+from ..diffusers.embeddings import Timesteps, TimestepEmbedding
 
 
 def resize(img, size):
@@ -26,77 +24,17 @@ def make_cbg(in_dim, out_dim):
     return nn.Sequential(nn.Conv2d(in_dim, out_dim, kernel_size=3, padding=1), nn.BatchNorm2d(out_dim), nn.GELU())
 
 
-def get_timestep_embedding(timesteps: torch.Tensor, embedding_dim: int, max_period: int = 10000):
-    """
-    This matches the implementation in Denoising Diffusion Probabilistic Models: Create sinusoidal timestep embeddings.
-
-    Args
-        timesteps (torch.Tensor):
-            a 1-D Tensor of N indices, one per batch element. These may be fractional.
-        embedding_dim (int):
-            the dimension of the output.
-        max_period (int):
-            Controls the maximum frequency of the embeddings
-    Returns
-        torch.Tensor: an [N x dim] Tensor of positional embeddings.
-    """
-    assert len(timesteps.shape) == 1, "Timesteps should be a 1d-array"
-
-    half_dim = embedding_dim // 2
-    exponent = -math.log(max_period) * torch.arange(start=0, end=half_dim, dtype=torch.float32, device=timesteps.device)
-    exponent = exponent / half_dim
-
-    emb = torch.exp(exponent)
-    emb = timesteps[:, None].float() * emb[None, :]
-
-    # concat sine and cosine embeddings
-    emb = torch.cat([torch.sin(emb), torch.cos(emb)], dim=-1)
-
-    # flip sine and cosine embeddings
-    emb = torch.cat([emb[:, half_dim:], emb[:, :half_dim]], dim=-1)
-
-    return emb
-
-
-class Timesteps(nn.Module):
-    def __init__(self, num_channels: int):
-        super().__init__()
-        self.num_channels = num_channels
-
-    def forward(self, timesteps):
-        t_emb = get_timestep_embedding(timesteps, self.num_channels)
-        return t_emb
-
-
-class TimestepEmbedding(nn.Module):
-    def __init__(self, in_channels: int, time_embed_dim: int):
-        super().__init__()
-        self.linear_1 = nn.Linear(in_channels, time_embed_dim, True)
-        self.act = nn.SiLU()
-        self.linear_2 = nn.Linear(time_embed_dim, time_embed_dim, True)
-
-    def forward(self, sample):
-        sample = self.linear_1(sample)
-        sample = self.act(sample)
-        sample = self.linear_2(sample)
-        return sample
-
-
 def with_cross_att(block):
     return hasattr(block, "has_cross_attention") and block.has_cross_attention
 
 
 class DiffDIS(nn.Module):
-    def __init__(
-        self,
-        sample_size: int = 96,
-        in_channels: int = 8,
-        out_channels: int = 4,
-        projection_class_embeddings_input_dim: int = 4,
-    ):
+    def __init__(self):
         super().__init__()
-
-        self.sample_size = sample_size
+        # sample_size  is 96
+        # in_channels  is 8
+        # out_channels is 4
+        # projection_class_embeddings_input_dim is 4
 
         # block_out_channels
         boc0 = 320
@@ -117,23 +55,19 @@ class DiffDIS(nn.Module):
 
         attention_head_dim = num_attention_heads = [5, 10, 20, 20]
 
-        # input
-        self.conv_in = nn.Conv2d(in_channels, boc0, kernel_size=3, padding=1)
+        # input, 8 channels
+        self.conv_in = nn.Conv2d(8, boc0, kernel_size=3, padding=1)
 
         # time
         time_embed_dim = boc0 * 4
         self.time_proj = Timesteps(boc0)
-        timestep_input_dim = boc0
-        self.time_embedding = TimestepEmbedding(timestep_input_dim, time_embed_dim)
-        self.encoder_hid_proj = None
+        self.time_embedding = TimestepEmbedding(boc0, time_embed_dim)
 
         # class embedding
-        self.class_embedding = TimestepEmbedding(projection_class_embeddings_input_dim, time_embed_dim)
+        self.class_embedding = TimestepEmbedding(4, time_embed_dim)
 
         self.down_blocks = nn.ModuleList([])
         self.up_blocks = nn.ModuleList([])
-
-        blocks_time_embed_dim = time_embed_dim
 
         # down
         output_channel = boc0
@@ -174,7 +108,7 @@ class DiffDIS(nn.Module):
         # mid
         self.mid_block = get_mid_block(
             "UNetMidBlock2DCrossAttn",
-            temb_channels=blocks_time_embed_dim,
+            temb_channels=time_embed_dim,
             in_channels=block_out_channels[-1],
             resnet_eps=1e-5,
             resnet_act_fn="silu",
@@ -197,27 +131,15 @@ class DiffDIS(nn.Module):
             mode='DBIA',
         )
 
-        # count how many layers upsample the images
-        self.num_upsamplers = 0
-
         # up
         reversed_block_out_channels = list(reversed(block_out_channels))
         reversed_num_attention_heads = list(reversed(num_attention_heads))
 
         output_channel = reversed_block_out_channels[0]
         for i, up_block_type in enumerate(("UpBlock2D", "CrossAttnUpBlock2D", "CrossAttnUpBlock2D", "CrossAttnUpBlock2D")):
-            is_final_block = i == len(block_out_channels) - 1
-
             prev_output_channel = output_channel
             output_channel = reversed_block_out_channels[i]
             input_channel = reversed_block_out_channels[min(i + 1, len(block_out_channels) - 1)]
-
-            # add upsample block for all BUT final layer
-            if not is_final_block:
-                add_upsample = True
-                self.num_upsamplers += 1
-            else:
-                add_upsample = False
 
             up_block = get_up_block(
                 up_block_type,
@@ -226,8 +148,8 @@ class DiffDIS(nn.Module):
                 in_channels=input_channel,
                 out_channels=output_channel,
                 prev_output_channel=prev_output_channel,
-                temb_channels=blocks_time_embed_dim,
-                add_upsample=add_upsample,
+                temb_channels=time_embed_dim,
+                add_upsample=i != len(block_out_channels) - 1,  # add upsample block for all BUT final layer
                 resnet_eps=1e-5,
                 resnet_act_fn="silu",
                 resolution_idx=i,
@@ -252,7 +174,8 @@ class DiffDIS(nn.Module):
         # out
         self.conv_norm_out = nn.GroupNorm(num_channels=block_out_channels[0], num_groups=32, eps=1e-5)
         self.conv_act = nn.SiLU()
-        self.conv_out = nn.Conv2d(block_out_channels[0], out_channels, kernel_size=3, padding=1)
+        # 4 output channels
+        self.conv_out = nn.Conv2d(block_out_channels[0], 4, kernel_size=3, padding=1)
 
     def forward(
         self,
@@ -297,7 +220,8 @@ class DiffDIS(nn.Module):
         down_block_res_samples = (sample,)
         for j, downsample_block in enumerate(self.down_blocks):
             if with_cross_att(downsample_block):  # First 3 are CrossAttnDownBlock2D
-                sample, res_samples = downsample_block(hidden_states=sample, temb=emb, encoder_hidden_states=encoder_hidden_states)
+                sample, res_samples = downsample_block(hidden_states=sample, temb=emb,
+                                                       encoder_hidden_states=encoder_hidden_states)
             else:  # The last is DownBlock2D
                 sample, res_samples = downsample_block(hidden_states=sample, temb=emb)
 
