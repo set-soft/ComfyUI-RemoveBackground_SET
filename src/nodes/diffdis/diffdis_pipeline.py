@@ -17,6 +17,7 @@ IMG_SIZE = 1024
 IN_CHANNELS = 8
 OUT_CHANNELS = 4
 PROJECTION_CLASS_EMBEDDINGS_INPUT_DIM = 4
+LATENT_SCALE_FACTOR = 0.18215
 
 
 def resize(img, size):
@@ -226,11 +227,6 @@ class DiffDIS(nn.Module):
 
 
 class DiffDISPipeline(torch.nn.Module):
-    # two hyper-parameters
-    rgb_latent_scale_factor = 0.18215
-    mask_latent_scale_factor = 0.18215
-    weight_dtype = torch.float32
-
     def __init__(self, unet: UNet2DConditionModel, vae):
         super().__init__()
         self.vae = vae
@@ -280,16 +276,16 @@ class DiffDISPipeline(torch.nn.Module):
 
         device = input_rgb.device
         bsz = input_rgb.shape[0]
-        wdtype = self.weight_dtype
+        wdtype = self.unet.conv_in.weight.dtype
 
         # Encode image 1:1 1/2 1/4 1/8 size
-        rgb_latent = self.encode_RGB(input_rgb).to(wdtype)  # 1/8 Resolution with a channel nums of 4.
+        rgb_latent = self.encode_RGB(input_rgb, device).to(wdtype)  # 1/8 Resolution with a channel nums of 4.
         # Latent for the mask and edge
         mask_edge_latent = torch.randn(rgb_latent.shape, device=device, dtype=wdtype).repeat(2, 1, 1, 1)
         rgb_latent = rgb_latent.repeat(2, 1, 1, 1)
-        rgb_resized2_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//2)).to(wdtype).repeat(2, 1, 1, 1)
-        rgb_resized4_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//4)).to(wdtype).repeat(2, 1, 1, 1)
-        rgb_resized8_latents = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//8)).to(wdtype).repeat(2, 1, 1, 1)
+        rgb_rsz2_lats = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//2), device).to(wdtype).repeat(2, 1, 1, 1)
+        rgb_rsz4_lats = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//4), device).to(wdtype).repeat(2, 1, 1, 1)
+        rgb_rsz8_lats = self.encode_RGB(resize(input_rgb, size=input_rgb.shape[-1]//8), device).to(wdtype).repeat(2, 1, 1, 1)
 
         # batched text embedding
         batch_text_embed = positive.repeat((bsz, 1, 1))  # [B, 2, 1024]
@@ -303,14 +299,14 @@ class DiffDISPipeline(torch.nn.Module):
         unet_input = torch.cat([rgb_latent, mask_edge_latent], dim=1)  # this order is important: [1,8,H,W] IN_CHANNELS
         t = torch.tensor([999, 999], device=device)
         noise_pred = self.unet(unet_input, t, encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
-                               class_labels=BDE, rgb_token=[rgb_latent, rgb_resized2_latents,
-                               rgb_resized4_latents, rgb_resized8_latents])  # [B, 4, h, w] OUT_CHANNELS
+                               class_labels=BDE, rgb_token=[rgb_latent, rgb_rsz2_lats,
+                               rgb_rsz4_lats, rgb_rsz8_lats])  # [B, 4, h, w] OUT_CHANNELS
         # compute x_T -> x_0
         # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
         mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
         self.unet.cpu()
 
-        mask, edge = self.decode(mask_edge_latent)
+        mask, edge = self.decode(mask_edge_latent, device)
 
         mask = torch.clip(mask, -1.0, 1.0)
         mask = (mask + 1.0) / 2.0
@@ -320,17 +316,17 @@ class DiffDISPipeline(torch.nn.Module):
 
         return mask, edge
 
-    def encode_RGB(self, rgb_in: torch.Tensor) -> torch.Tensor:
+    def encode_RGB(self, rgb_in: torch.Tensor, device: torch.device) -> torch.Tensor:
         # encode, ComfyUI returns the mean (deterministic)
-        mean = self.vae.encode(rgb_in.movedim(1, -1)).cuda()
+        mean = self.vae.encode(rgb_in.movedim(1, -1)).to(device)
         # scale latent
-        return mean * self.rgb_latent_scale_factor
+        return mean * LATENT_SCALE_FACTOR
 
-    def decode(self, mask_edge_latent: torch.Tensor) -> torch.Tensor:
+    def decode(self, mask_edge_latent: torch.Tensor, device: torch.device) -> torch.Tensor:
         # scale latents
-        mask_edge_latent = mask_edge_latent / self.mask_latent_scale_factor
+        mask_edge_latent = mask_edge_latent / LATENT_SCALE_FACTOR
         # decode
-        stacked = self.vae.decode(mask_edge_latent).movedim(-1, 1).cuda()
+        stacked = self.vae.decode(mask_edge_latent).movedim(-1, 1).to(device)
         # mean of output channels
         mask_stacked, edge_stacked = torch.chunk(stacked, 2, dim=0)
         mask_mean = mask_stacked.mean(dim=1, keepdim=True)
