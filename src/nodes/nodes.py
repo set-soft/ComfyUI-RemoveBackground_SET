@@ -7,7 +7,7 @@ import safetensors.torch
 from safetensors import safe_open
 from seconohe.downloader import download_file
 from seconohe.apply_mask import apply_mask
-from seconohe.torch import get_torch_device_options, get_canonical_device
+from seconohe.torch import get_torch_device_options, get_canonical_device, model_to_target
 # from seconohe.torch import get_pytorch_memory_usage_str
 import torch
 from torchvision import transforms
@@ -580,6 +580,63 @@ class RemBG(Advanced):
         return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
 
 
+class LoadDiffDISModel:
+    """ Load the DiffDIS model """
+    @classmethod
+    def INPUT_TYPES(cls):
+        device_options, _ = get_torch_device_options(with_auto=True)
+        return {
+            "required": {
+                "model": (folder_paths.get_filename_list(MODELS_DIR_KEY),),
+                "device": (device_options, )
+            },
+            "optional": {
+                "dtype": DTYPE_OPS
+            }
+        }
+
+    RETURN_TYPES = ("SET_DIFFDIS",)
+    RETURN_NAMES = ("model",)
+    FUNCTION = "load_model_file"
+    CATEGORY = CATEGORY_LOAD
+    DESCRIPTION = ("Load DiffDIS model from folder models/diffusers" +
+                   " or the path of birefnet configured in the extra YAML file")
+    UNIQUE_NAME = "LoadDiffDISModel_SET"
+    DISPLAY_NAME = "Load DiffDIS model by file"
+
+    def load_model_file(self, model, device, dtype="auto"):
+        model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
+
+        # Load the state dict
+        logger.debug(f"Loading model weights from {model_path}")
+        if model_path.endswith(".safetensors"):
+            # Try to get the metadata
+            with safe_open(model_path, framework="pt", device="cpu") as f:
+                loaded_metadata = f.metadata()
+                if loaded_metadata:
+                    for key, value in loaded_metadata.items():
+                        logger.debug(f"  - {key}: {value}")
+            # Load the weights
+            state_dict = safetensors.torch.load_file(model_path, device="cpu")
+        else:
+            state_dict = torch.load(model_path, map_location="cpu")
+
+        # Check this is valid for a known model
+        target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
+        logger.debug(f"Using {target_device} device")
+        target_dtype = state_dict["conv_in.weight"].dtype if dtype == "AUTO" else TORCH_DTYPE[dtype]
+        logger.debug(f"Using {target_dtype} data type")
+
+        # Create an instance
+        unet = DiffDISclass()
+        unet.load_state_dict(state_dict)
+        unet.target_device = torch.device(target_device)
+        unet.target_dtype = target_dtype
+        unet.to(dtype=target_dtype)
+        unet.eval()
+        return unet,
+
+
 class DiffDIS(object):
     @classmethod
     def INPUT_TYPES(cls):
@@ -590,6 +647,7 @@ class DiffDIS(object):
                      "tooltip": "The conditioning describing the attributes you want to include in the image."
                 }),
                 "vae": ("VAE",),
+                "model": ("SET_DIFFDIS",),
             },
         }
 
@@ -600,35 +658,23 @@ class DiffDIS(object):
     UNIQUE_NAME = "DiffDIS_SET"
     DISPLAY_NAME = "DiffDIS"
 
-    def diff_dis(self, images, positive, vae):
+    def diff_dis(self, images, positive, vae, model):
         # The model uses just 2 of the 77
         positive = positive[0][0][:, :2, :].to(auto_device_type)
 
-        # The whole sd-turbo repo in models/sd-turbo
-        # pretrained_model_path = os.path.join(folder_paths.models_dir, "sd-turbo")
-        # The DiffDIS trained checkpoint in models/diffdis/unet
-        checkpoint_path = os.path.join(folder_paths.models_dir, "diffdis")
-
         # Build a DiffDIS pipeline
-        unet = DiffDISclass()
-        diffdis_unet_fname = os.path.join(checkpoint_path, 'unet', 'diffusion_pytorch_model.safetensors')
-        # Load the weights
-        state_dict = safetensors.torch.load_file(diffdis_unet_fname, device="cpu")
-        unet.load_state_dict(state_dict)
-        unet.eval()
-
-        pipe = DiffDISPipeline(unet=unet, vae=vae)
+        pipe = DiffDISPipeline(unet=model, vae=vae)
 
         # Pre-process the images
         b, h, w, c = images.shape
-        image_bchw = images.permute(0, 3, 1, 2)
+        image_bchw = images.movedim(-1, 1)
 
         # 1024x1024 and from [0,1] to [-1,1]
         image_preproc = ImagePreprocessor([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], resolution=(1024, 1024), upscale_method='bilinear')
         im_tensor = image_preproc.proc(image_bchw).to(auto_device_type)
         del image_preproc
 
-        with torch.no_grad():
+        with model_to_target(logger, model):
             mask_bhw, edge_bhw = pipe(im_tensor, positive, batch_size=1, show_progress_bar=False, size=(h, w))
 
         return mask_bhw, edge_bhw

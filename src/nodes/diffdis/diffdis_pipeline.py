@@ -34,6 +34,7 @@ def with_cross_att(block):
 
 
 class DiffDIS(nn.Module):
+    """ This is the diffuser used by DiffDIS """
     def __init__(self):
         super().__init__()
         # block_out_channels
@@ -287,14 +288,14 @@ class DiffDISPipeline(torch.nn.Module):
         BDE = torch.cat([torch.sin(discriminative_label), torch.cos(discriminative_label)], dim=-1).repeat_interleave(bsz, 0)
 
         # The model works in 1 step, no need for scheduler
-        self.unet.to(device)
+        # self.unet.to(device)
         noise_pred = self.unet(
             torch.cat([rgb_latent, mask_edge_latent], dim=1),  # Input, order is important: [1, IN_CHANNELS, H, W] (8)
             torch.tensor([999, 999], device=device),           # Time steps, just the last one
             encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
             class_labels=BDE,
             rgb_token=[rgb_latent, rgb_rsz2_lats, rgb_rsz4_lats, rgb_rsz8_lats])  # -> [B, OUT_CHANNELS, h, w] (4)
-        self.unet.cpu()
+        # self.unet.cpu()
         # compute x_T -> x_0
         # mask_edge_latent = (mask_edge_latent - 0.9976672442 * noise_pred) * 14.64896838
         mask_edge_latent = (mask_edge_latent - noise_pred) * 14.64896838  # Almost the same
