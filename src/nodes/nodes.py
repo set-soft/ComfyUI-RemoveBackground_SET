@@ -662,6 +662,16 @@ class DiffDIS(object):
         # The model uses just 2 of the 77
         positive = positive[0][0][:, :2, :].to(auto_device_type)
 
+        state_dict = {'positive': positive}
+        metadata = {
+            "desc": f"DiffDIS empty embeddings",
+            "file_t": "safetensors",
+            "name": f"positive",
+            "dtype": 'float32',
+            "project": "https://github.com/set-soft/ComfyUI-RemoveBackground_SET",
+        }
+        safetensors.torch.save_file(state_dict, '/tmp/positive.safetensors', metadata=metadata)
+
         # Build a DiffDIS pipeline
         pipe = DiffDISPipeline(unet=model, vae=vae)
 
