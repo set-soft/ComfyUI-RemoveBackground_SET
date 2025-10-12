@@ -629,14 +629,6 @@ class DiffDIS(object):
         del image_preproc
 
         with torch.no_grad():
-            mask_bchw, edge_bchw = pipe(
-                im_tensor,
-                positive,
-                batch_size=1,
-                show_progress_bar=False,
-            )
-
-        mask_bhw = torch.nn.functional.interpolate(mask_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
-        edge_bhw = torch.nn.functional.interpolate(edge_bchw, size=(h, w), mode='bilinear').squeeze(1).cpu()
+            mask_bhw, edge_bhw = pipe(im_tensor, positive, batch_size=1, show_progress_bar=False, size=(h, w))
 
         return mask_bhw, edge_bhw

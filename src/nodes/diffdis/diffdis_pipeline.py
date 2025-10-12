@@ -18,10 +18,11 @@ IN_CHANNELS = 8
 OUT_CHANNELS = 4
 PROJECTION_CLASS_EMBEDDINGS_INPUT_DIM = 4
 LATENT_SCALE_FACTOR = 0.18215
+RESCALE_MODE = 'bilinear'
 
 
 def resize(img, size):
-    return F.interpolate(img, size=size, mode='bilinear', align_corners=False)
+    return F.interpolate(img, size=size, mode=RESCALE_MODE, align_corners=False)
 
 
 def make_cbg(in_dim, out_dim):
@@ -235,10 +236,11 @@ class DiffDISPipeline(torch.nn.Module):
     def __call__(self,
                  input_image: torch.Tensor,
                  positive: torch.Tensor,
-                 batch_size: int = 0,
+                 size: Tuple,
+                 batch_size: int = 1,
                  show_progress_bar: bool = True,
                  ) -> torch.Tensor:
-
+        # This is a wrapper to process batch_size images at a time
         single_rgb_dataset = TensorDataset(input_image)
         single_rgb_loader = DataLoader(single_rgb_dataset, batch_size=batch_size, shuffle=False)
 
@@ -246,25 +248,22 @@ class DiffDISPipeline(torch.nn.Module):
         edge_pred_ls = []
 
         if show_progress_bar:
-            iterable_bar = tqdm(single_rgb_loader, desc=" " * 2 + "Inference batches", leave=False)
+            iterable_bar = tqdm(single_rgb_loader, desc="Inference batches", leave=False)
         else:
             iterable_bar = single_rgb_loader
 
         for batch in iterable_bar:
             mask_pred, edge_pred = self.single_infer(input_rgb=batch[0], positive=positive, show_pbar=show_progress_bar)
-            mask_pred_ls.append(mask_pred.detach().clone())
-            edge_pred_ls.append(edge_pred.detach().clone())
+            # Scale prediction to [0, 1]
+            mask_pred = (mask_pred - torch.min(mask_pred)) / (torch.max(mask_pred) - torch.min(mask_pred))
+            # Back to the original size, move results to CPU
+            mask_pred_ls.append(torch.nn.functional.interpolate(mask_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
+            edge_pred = (edge_pred - torch.min(edge_pred)) / (torch.max(edge_pred) - torch.min(edge_pred))
+            edge_pred_ls.append(torch.nn.functional.interpolate(edge_pred, size=size, mode=RESCALE_MODE).squeeze(1).cpu())
 
-        mask_preds = torch.concat(mask_pred_ls, axis=0)
-        edge_preds = torch.concat(edge_pred_ls, axis=0)
         torch.cuda.empty_cache()  # clear vram cache for ensembling
 
-        # ----------------- Post processing -----------------
-        # scale prediction to [0, 1]
-        mask_preds = (mask_preds - torch.min(mask_preds)) / (torch.max(mask_preds) - torch.min(mask_preds))
-        edge_preds = (edge_preds - torch.min(edge_preds)) / (torch.max(edge_preds) - torch.min(edge_preds))
-
-        return mask_preds, edge_preds
+        return torch.concat(mask_pred_ls, axis=0), torch.concat(edge_pred_ls, axis=0)
 
     def single_infer(self, input_rgb: torch.Tensor, positive: torch.Tensor, show_pbar: bool):
         device = input_rgb.device
