@@ -643,12 +643,14 @@ class DiffDIS(object):
         return {
             "required": {
                 "images": ("IMAGE",),
-                "positive": ("CONDITIONING", {
-                     "tooltip": "The conditioning describing the attributes you want to include in the image."
-                }),
                 "vae": ("VAE",),
                 "model": ("SET_DIFFDIS",),
             },
+            "optional": {
+                "positive": ("CONDITIONING", {
+                     "tooltip": "The conditioning describing the attributes you want to include in the image."
+                }),
+            }
         }
 
     RETURN_TYPES = ("MASK", "MASK")
@@ -658,19 +660,19 @@ class DiffDIS(object):
     UNIQUE_NAME = "DiffDIS_SET"
     DISPLAY_NAME = "DiffDIS"
 
-    def diff_dis(self, images, positive, vae, model):
-        # The model uses just 2 of the 77
-        positive = positive[0][0][:, :2, :].to(auto_device_type)
-
-        state_dict = {'positive': positive}
-        metadata = {
-            "desc": f"DiffDIS empty embeddings",
-            "file_t": "safetensors",
-            "name": f"positive",
-            "dtype": 'float32',
-            "project": "https://github.com/set-soft/ComfyUI-RemoveBackground_SET",
-        }
-        safetensors.torch.save_file(state_dict, '/tmp/positive.safetensors', metadata=metadata)
+    def diff_dis(self, images, vae, model, positive=None):
+        if positive:
+            # The model uses just 2 of the 77
+            positive = positive[0][0][:, :2, :].to(auto_device_type)
+        else:
+            # Not provided, do we have it?
+            if not hasattr(self, 'positive'):
+                # Load a pre-computed copy
+                fname = os.path.join(os.path.dirname(__file__), 'diffdis', 'positive.safetensors')
+                logger.debug(f"Loading empty positive embeddings from `{fname}`")
+                pos_dict = safetensors.torch.load_file(fname, device="cpu")
+                self.positive = pos_dict['positive']
+            positive = self.positive.to(auto_device_type)
 
         # Build a DiffDIS pipeline
         pipe = DiffDISPipeline(unet=model, vae=vae)
