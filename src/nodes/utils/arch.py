@@ -74,13 +74,17 @@ class RemBgArch(object):
 
         # DiffDIS
         layer = "mid_block.attentions.0.transformer_blocks.0.attn3.to_q.weight"
-        if layer in state_dict:
+        tensor = state_dict.get(layer)
+        if tensor is None:
+            layer = 'unet.'+layer
+            tensor = state_dict.get(layer)
+        if tensor is not None:
             self.bb = 'None'  # No backbone
             self.bb_ok = True
             self.img_mean = [0.5, 0.5, 0.5]
             self.img_std = [0.5, 0.5, 0.5]
             self.model_type = 'DiffDIS'
-            self.dtype = state_dict[layer].dtype
+            self.dtype = tensor.dtype
             self.ok = True
             return
 
@@ -301,7 +305,7 @@ class RemBgArch(object):
                 pos_dict = safetensors.torch.load_file(fname, device="cpu")
                 self.positive = pos_dict['positive']
 
-    def instantiate_model(self, state_dict, device, dtype):
+    def instantiate_model(self, state_dict, device="cpu", dtype=torch.float32):
         if self.model_type == 'MVANet':
             model = MVANet(ben_variant=self.ben_variant)
         elif self.model_type == 'InSPyReNet':

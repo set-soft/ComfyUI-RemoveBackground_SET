@@ -236,6 +236,12 @@ class DiffDISPipeline(torch.nn.Module):
         self.register_buffer('positive', positive)
 
     def load_state_dict(self, state_dict):
+        if 'positive' in state_dict:
+            # This the repacked version
+            unet_state_dict = {k[5:]: v for k, v in state_dict.items() if k.startswith('unet.')}
+            self.unet.load_state_dict(unet_state_dict)
+            self.positive = state_dict['positive']
+            return
         # Just load the UNet
         self.unet.load_state_dict(state_dict)
 
