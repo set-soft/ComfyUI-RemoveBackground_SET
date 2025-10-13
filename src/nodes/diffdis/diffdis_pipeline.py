@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm.auto import tqdm
-from diffusers import UNet2DConditionModel
 import torch.nn.functional as F
 
 from ..diffusers.unet_2d_blocks import get_down_block, get_mid_block, get_up_block
@@ -229,7 +228,7 @@ class DiffDIS(nn.Module):
 
 
 class DiffDISPipeline(torch.nn.Module):
-    def __init__(self, unet: UNet2DConditionModel, vae, positive):
+    def __init__(self, unet, vae, positive):
         super().__init__()
         self.vae = vae
         # Register unet and positive so the to() operations affects them
