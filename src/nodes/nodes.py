@@ -161,6 +161,15 @@ KNOWN_MODELS = {
     'General (392 MiB)': (
         'https://huggingface.co/Tennineee/PDFNet-General/resolve/main/PDF-Generally.pth',
         None, 1024, 1024, 'PDFNet'),
+    #
+    # DiffDIS model
+    #
+    'Base F16 (1.8 GiB)': (
+        'https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F16.safetensors',
+        None, 1024, 1024, 'DiffDIS'),
+    'Base (3.5 GiB)': (
+        'https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F32.safetensors',
+        None, 1024, 1024, 'DiffDIS'),
 }
 #
 # Common options and choices
@@ -203,6 +212,8 @@ BATCHED_OPS = ("BOOLEAN", {
                   "tooltip": ("Apply the masks at once.\n"
                               "Faster, needs more memory")})
 DEPTH_OPS = ("IMAGE", {"tooltip": "For models that starts with a depth map"})
+DIFFDIS_VAE = ("VAE", {"tooltip": "SD Turbo VAE for DiffDIS"})
+POSITIVE = ("CONDITIONING", {"tooltip": "Experimental for DiffDIS"})
 CATEGORY_BASE = "RemBG_SET"
 CATEGORY_BASIC = CATEGORY_BASE+"/Basic"
 CATEGORY_LOAD = CATEGORY_BASE+"/Load"
@@ -259,12 +270,8 @@ class LoadModel:
             },
             "optional": {
                 "dtype": DTYPE_OPS,
-                "vae": ("VAE", {
-                     "tooltip": "SD Turbo VAE for DiffDIS"
-                }),
-                "positive": ("CONDITIONING", {
-                     "tooltip": "Experimental for DiffDIS"
-                }),
+                "vae": DIFFDIS_VAE,
+                "positive": POSITIVE,
             }
         }
 
@@ -317,7 +324,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
     @classmethod
     def INPUT_TYPES(cls):
         device_options, _ = get_torch_device_options(with_auto=True)
-        return {
+        inputs = {
             "required": {
                 "model_name": ([k for k, v in KNOWN_MODELS.items() if v[4] == cls.model_type],),
                 "device": (device_options,)
@@ -326,6 +333,10 @@ class AutoDownloadBiRefNetModel(LoadModel):
                 "dtype": DTYPE_OPS
             }
         }
+        if cls.model_type == 'DiffDIS':
+            inputs["optional"]["vae"] = DIFFDIS_VAE
+            inputs["optional"]["positive"] = POSITIVE
+        return inputs
 
     RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
     RETURN_NAMES = ("model", "train_w", "train_h", )
@@ -337,7 +348,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         cls.UNIQUE_NAME = cls.__name__ + "_SET"
         cls.DISPLAY_NAME = f"Load {cls.model_type} model by name"
 
-    def load_model(self, model_name, device, dtype="float32"):
+    def load_model(self, model_name, device, dtype="float32", vae=None, positive=None):
         url, fname, w, h, _ = KNOWN_MODELS[model_name]
         if fname is None:
             # Use the name in the URL
@@ -348,7 +359,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
         if model_full_path is None:
             download_file(logger, url, models_path_default, fname)
-        res = super().load_model_file(fname, device, dtype)
+        res = super().load_model_file(fname, device, dtype, vae=vae, positive=positive)
         arch = res[0]
         # Known training sizes have priority over default architecture sizes
         arch.w = w
@@ -405,6 +416,13 @@ class AutoDownloadPDFNetModel(AutoDownloadBiRefNetModel):
 
 
 AutoDownloadPDFNetModel.fill_description()
+
+
+class AutoDownloadDiffDISModel(AutoDownloadBiRefNetModel):
+    model_type = 'DiffDIS'
+
+
+AutoDownloadDiffDISModel.fill_description()
 
 
 class GetMaskLow:
