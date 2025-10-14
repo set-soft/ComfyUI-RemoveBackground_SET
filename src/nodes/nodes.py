@@ -338,8 +338,8 @@ class AutoDownloadBiRefNetModel(LoadModel):
             inputs["optional"]["positive"] = POSITIVE
         return inputs
 
-    RETURN_TYPES = ("SET_REMBG", "INT", "INT",)
-    RETURN_NAMES = ("model", "train_w", "train_h", )
+    RETURN_TYPES = ("SET_REMBG", "INT", "INT",     "NORM_PARAMS")
+    RETURN_NAMES = ("model", "train_w", "train_h", "norm_params")
     FUNCTION = "load_model"
 
     @classmethod
@@ -366,7 +366,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         arch.h = h
         if "No Com!" in model_name:
             logger.warning("This particular model isn't for commercial use!")
-        return (arch, w, h)
+        return (arch, w, h, {"mean": arch.img_mean, "std": arch.img_std})
 
 
 # BiRefNet is de default
