@@ -1,7 +1,7 @@
 # Copyright (c) 2025 Salvador E. Tropea
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPL-3.0
-# Project: ComfyUI-BiRefNet-SET
+# Project: ComfyUI-RemoveBackground_SET
 from seconohe.logger import initialize_logger
 
 

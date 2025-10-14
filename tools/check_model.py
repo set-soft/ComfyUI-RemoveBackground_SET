@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Salvador E. Tropea
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPLv3
-# Project: ComfyUI-BiRefNet-SET
+# Project: ComfyUI-RemoveBackground_SET
 #
 # Tool to show PyTorch class i.e:
 # python tool/show_class.py -m source/inference/MDX_Net.py:MDX_Net

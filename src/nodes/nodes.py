@@ -1,7 +1,7 @@
 # Copyright (c) 2025 Salvador E. Tropea
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPLv3
-# Project: ComfyUI-BiRefNet-SET
+# Project: ComfyUI-RemoveBackground_SET
 import os
 import safetensors.torch
 from safetensors import safe_open
