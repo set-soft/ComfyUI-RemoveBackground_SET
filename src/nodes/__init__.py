@@ -13,3 +13,7 @@ NODES_NAME = "RemoveBackground_SET"
 MODELS_DIR_KEY = "rembg"
 MODELS_DIR = "RemBG"
 main_logger = initialize_logger(NODES_NAME)
+
+BATCHED_OPS = ("INT", {
+                  "default": 1, "min": 1, "max": 256, "step": 1,
+                  "tooltip": ("How many images to process at once")})

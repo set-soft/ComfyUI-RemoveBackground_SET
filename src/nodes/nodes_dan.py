@@ -10,6 +10,9 @@
 from contextlib import nullcontext
 import os
 from seconohe.downloader import download_file
+from seconohe.bti import BatchedTensorIterator
+from seconohe.torch import model_to_target
+from seconohe.logger import get_debug_level
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -22,15 +25,17 @@ except ImportError:
 
 # ComfyUI imports
 import comfy.model_management as mm
-from comfy.utils import ProgressBar, load_torch_file
+from comfy.utils import load_torch_file
 import folder_paths
 
 # Local imports
-from . import main_logger as logger
+from . import main_logger as logger, BATCHED_OPS
 from .depth_anything.dpt_v2 import DepthAnythingV2
+
 
 BASE_URL = 'https://huggingface.co/Kijai/DepthAnythingV2-safetensors/resolve/main/'
 BASE_MODEL_NAME = 'Base F32 (372 MiB)'
+IMAGE_MOD = 14
 KNOWN_MODELS = {
     #
     # BiRefNet models
@@ -127,60 +132,66 @@ class DepthAnything_V2:
         return {"required": {
             "da_model": ("DAMODEL", ),
             "images": ("IMAGE", ),
+            "batch_size": BATCHED_OPS,
             },
         }
 
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("image",)
+    RETURN_TYPES = ("MASK",)
+    RETURN_NAMES = ("depths",)
     FUNCTION = "process"
     CATEGORY = "DepthAnythingV2"
     DESCRIPTION = "Create a depth map of the image\nSee: https://depth-anything-v2.github.io"
     UNIQUE_NAME = "DepthAnything_V2_SET"
     DISPLAY_NAME = "Depth Anything V2"
 
-    def process(self, da_model, images):
-        device = mm.get_torch_device()
-        offload_device = mm.unet_offload_device()
-        model = da_model['model']
-        dtype = da_model['dtype']
+    def process(self, da_model, images, batch_size):
+        depths_bchw = self.process_low(da_model, images, batch_size, out_dtype=images.dtype,
+                                       model_device=mm.get_torch_device())
+        return (depths_bchw.squeeze(1),)  # BHW
 
+    def process_low(self, da_model, images, batch_size, out_dtype, model_device):
+        model = da_model['model']
+        is_metric = da_model['is_metric']
+        model.target_dtype = da_model['dtype']
+        model.target_device = model_device
         B, H, W, C = images.shape
 
-        # images = images.to(device)
-        images = images.permute(0, 3, 1, 2)
-
+        # The model expects image sizes multiples than 14 (patch height)
         orig_H, orig_W = H, W
-        if W % 14 != 0:
-            W = W - (W % 14)
-        if H % 14 != 0:
-            H = H - (H % 14)
-        if orig_H % 14 != 0 or orig_W % 14 != 0:
-            images = F.interpolate(images, size=(H, W), mode="bilinear")
+        if orig_H % IMAGE_MOD != 0 or orig_W % IMAGE_MOD != 0:
+            needs_resize = True
+            W = W - (W % IMAGE_MOD)
+            H = H - (H % IMAGE_MOD)
+        else:
+            needs_resize = False
+
+        debug_level = get_debug_level(logger)
+        if debug_level >= 1:
+            logger.debug(f"Starting Depth Anything V2 inference: {model.__class__.__name__}")
+            if debug_level >= 2:
+                logger.debug(f"- Model: {model.target_device}/{model.target_dtype} is_metric {is_metric}")
+                logger.debug(f"- Input: {images.shape} {images.device}/{images.dtype} needs_resize: {needs_resize} ({W}x{H})")
+                logger.debug(f"- Output: cpu/{out_dtype}")
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        normalized_images = normalize(images)
-        pbar = ProgressBar(B)
-        out = []
-        model.to(device)
-        autocast_condition = (dtype != torch.float32) and not mm.is_device_mps(device)
-        with torch.autocast(mm.get_autocast_device(device), dtype=dtype) if autocast_condition else nullcontext():
-            for img in normalized_images:
-                depth = model(img.unsqueeze(0).to(device))
-                depth = (depth - depth.min()) / (depth.max() - depth.min())
-                out.append(depth.cpu())
-                pbar.update(1)
-            model.to(offload_device)
-            depth_out = torch.cat(out, dim=0)
-            depth_out = depth_out.unsqueeze(-1).repeat(1, 1, 1, 3).cpu().float()
-
-        final_H = (orig_H // 2) * 2
-        final_W = (orig_W // 2) * 2
-
-        if depth_out.shape[1] != final_H or depth_out.shape[2] != final_W:
-            depth_out = F.interpolate(depth_out.permute(0, 3, 1, 2), size=(final_H, final_W),
-                                      mode="bilinear").permute(0, 2, 3, 1)
-        depth_out = (depth_out - depth_out.min()) / (depth_out.max() - depth_out.min())
-        depth_out = torch.clamp(depth_out, 0, 1)
-        if da_model['is_metric']:
-            depth_out = 1 - depth_out
-        return (depth_out,)
+        batched_iterator = BatchedTensorIterator(tensor=images.movedim(-1, 1), sub_batch_size=batch_size,
+                                                 device=model.target_device, dtype=model.target_dtype)
+        with model_to_target(logger, model):
+            out = []
+            for batch_range in batched_iterator:
+                images_bchw = batched_iterator.get_batch(batch_range)
+                # Pre-process
+                if needs_resize:
+                    images_bchw = F.interpolate(images_bchw, size=(H, W), mode="bilinear")
+                # Inference
+                depth_bchw = model(normalize(images_bchw))
+                del images_bchw
+                # Post-process
+                if needs_resize:
+                    depth_bchw = F.interpolate(depth_bchw, size=(orig_H, orig_W), mode="bilinear")
+                depth_bchw = (depth_bchw - depth_bchw.min()) / (depth_bchw.max() - depth_bchw.min())  # Force [0,1]
+                if is_metric:
+                    depth_bchw = 1 - depth_bchw
+                out.append(depth_bchw.to(device="cpu", dtype=out_dtype))
+                del depth_bchw
+        return torch.cat(out, dim=0)
