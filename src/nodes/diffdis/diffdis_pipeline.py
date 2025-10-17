@@ -232,6 +232,7 @@ class DiffDISPipeline(torch.nn.Module):
         # Register unet and positive so the to() operations affects them
         self.add_module('unet', unet)
         self.register_buffer('positive', positive)
+        self.edges = None
 
     def load_state_dict(self, state_dict):
         if 'positive' in state_dict:
