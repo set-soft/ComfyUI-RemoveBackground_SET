@@ -499,7 +499,8 @@ class Advanced(GetMask):
                                    keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc)
 
     def apply_mask(self, images_bchw, masks_bchw, batch_range):
-        background = None if self.background_iterator is None else self.background_iterator.get_aux_batch(self.background, batch_range)
+        background = (None if self.background_iterator is None else
+                      self.background_iterator.get_aux_batch(self.background, batch_range))
         out_images = apply_mask(logger, images_bchw.movedim(1, -1), masks=masks_bchw.squeeze(1),
                                 device=model_management.get_torch_device(),
                                 blur_size=self.blur_size, blur_size_two=self.blur_size_two, fill_color=self.fill_color,
@@ -533,6 +534,5 @@ class RemBGSimple(Advanced):
         w = model.w
         h = model.h
         logger.debug(f"Using size {w}x{h}")
-        b = images.shape[0]
         return super().rem_bg(model, images, width=w, height=h, batch_size=batch_size, depths=depths, background=background,
                               keep_misc=False)[:1]
