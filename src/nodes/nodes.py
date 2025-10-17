@@ -7,18 +7,15 @@ import safetensors.torch
 from safetensors import safe_open
 from seconohe.downloader import download_file
 from seconohe.apply_mask import apply_mask
-from seconohe.torch import get_torch_device_options, get_canonical_device, model_to_target
+from seconohe.torch import get_torch_device_options, get_canonical_device
+from seconohe.bti import BatchedTensorIterator
 # from seconohe.torch import get_pytorch_memory_usage_str
 import torch
-from torchvision import transforms
 from comfy import model_management
 import folder_paths
-from . import main_logger, MODELS_DIR_KEY, MODELS_DIR
+from . import main_logger, MODELS_DIR_KEY, MODELS_DIR, BATCHED_OPS, DEFAULT_UPSCALE
 from .utils.arch import RemBgArch
 from .utils.inspyrenet_config import parse_inspyrenet_config
-from .nodes_dan import DownloadAndLoadDepthAnythingV2Model, BASE_MODEL_NAME, DepthAnything_V2
-
-from .diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS as DiffDISclass
 
 
 logger = main_logger
@@ -193,8 +190,7 @@ HEIGHT_OPT = ("INT", {
                 "step": 32,
                 "tooltip": "The height of the pre-processing image, does not affect the final output image size"
                 })
-DEFAULT_UPSCALE = transforms.InterpolationMode.BICUBIC.value
-UPSCALE_OPT = ([mode.value for mode in transforms.InterpolationMode], {
+UPSCALE_OPT = (["area", "bicubic", "nearest-exact", "bilinear", "lanczos"], {
                 "default": DEFAULT_UPSCALE,
                 "tooltip": "Interpolation method for pre-processing image and post-processing mask"
                 })
@@ -207,11 +203,7 @@ COLOR_OPT = ("STRING", {
                            "Can comma separated RGB values in [0-255] or [0-1.0] range."})
 MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001, })
 DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
-BATCHED_OPS = ("BOOLEAN", {
-                  "default": True,
-                  "tooltip": ("Apply the masks at once.\n"
-                              "Faster, needs more memory")})
-DEPTH_OPS = ("IMAGE", {"tooltip": "For models that starts with a depth map"})
+DEPTH_OPS = ("MASK", {"tooltip": "For models that starts with a depth map"})
 DIFFDIS_VAE = ("VAE", {"tooltip": "SD Turbo VAE for DiffDIS"})
 POSITIVE = ("CONDITIONING", {"tooltip": "Experimental for DiffDIS"})
 CATEGORY_BASE = "RemBG_SET"
@@ -233,29 +225,6 @@ def add_inspyrenet_models():
 
 
 add_inspyrenet_models()
-
-
-def filter_mask(mask, threshold=4e-3):
-    mask_binary = mask > threshold
-    filtered_mask = mask * mask_binary
-    return filtered_mask
-
-
-class ImagePreprocessor:
-    def __init__(self, img_mean, img_std, resolution, upscale_method) -> None:
-        interpolation = transforms.InterpolationMode(upscale_method)
-        self.transform_image = transforms.Compose([transforms.Resize(resolution, interpolation=interpolation),
-                                                   # output[channel] = (input[channel] - mean[channel]) / std[channel]
-                                                   transforms.Normalize(img_mean, img_std)])
-
-    def proc(self, image) -> torch.Tensor:
-        image = self.transform_image(image)
-        return image
-
-
-def scale_comfy_image(img, size, method):
-    # BHWC -> BCHW -> interpolate -> BHWC
-    return torch.nn.functional.interpolate(img.permute(0, 3, 1, 2), size=size, mode=method).permute(0, 2, 3, 1)
 
 
 class LoadModel:
@@ -432,51 +401,22 @@ class GetMaskLow:
             "required": {
                 "model": ("SET_REMBG",),
                 "images": ("IMAGE",),
-                "batched": BATCHED_OPS,
+                "batch_size": BATCHED_OPS,
             },
             "optional": {
                 "depths": DEPTH_OPS,
             }
         }
 
-    RETURN_TYPES = ("MASK", "IMAGE", "MASK")
+    RETURN_TYPES = ("MASK", "MASK", "MASK")
     RETURN_NAMES = ("masks", "depths", "edges")
     FUNCTION = "get_mask"
     CATEGORY = CATEGORY_ADV
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask low level"
 
-    def get_mask(self, model, images, batched, depths=None):
-        # Check images and make them BCHW
-        b, h, w, c = images.shape
-        if h % 32 or w % 32:
-            raise ValueError(f"Image size must be a multiple of 32 (not {w}x{h})")
-        image_bchw = images.permute(0, 3, 1, 2)
-
-        # Check depths and make them BCHW
-        if model.needs_map:
-            # PDFNet computes the mask using the image and a depth map
-            if depths is None:
-                # raise ValueError(f"For this model ({model.model_type}) you need to provide a depth map")
-                depths = self.create_depth_maps(images)
-            bm, hm, wm, cm = depths.shape
-            if bm != b:
-                raise ValueError(f"Found {b} images and {bm} depths, provide the same amount")
-            if hm != h or wm != w:
-                raise ValueError(f"Images using {w}x{h} and depths using {wm}x{hm}, must be of the same size")
-            depth_bchw = depths.permute(0, 3, 1, 2)
-        else:
-            depth_bchw = torch.zeros((b, 3, 64, 64), dtype=torch.float32, device="cpu")
-
-        return model.run_inference(image_bchw, depth_bchw, batched)
-
-    def create_depth_maps(self, images):
-        """ Automatically create depth maps using Depth Anything V2 vitb """
-        # Do we have a model for this?
-        if not hasattr(self, 'dan_model'):
-            # Nope, create it
-            self.dan_model = DownloadAndLoadDepthAnythingV2Model().loadmodel(BASE_MODEL_NAME)[0]
-        return DepthAnything_V2().process(self.dan_model, images)[0]
+    def get_mask(self, model, images, batch_size, depths=None):
+        return model.run_inference(images, depths, batch_size, keep_depths=True, keep_edges=True, keep_masks=True)[1:]
 
 
 class GetMask(GetMaskLow):
@@ -490,7 +430,7 @@ class GetMask(GetMaskLow):
                 "height": HEIGHT_OPT,
                 "upscale_method": UPSCALE_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
-                "batched": BATCHED_OPS,
+                "batch_size": BATCHED_OPS,
             },
             "optional": {
                 "depths": DEPTH_OPS,
@@ -502,42 +442,11 @@ class GetMask(GetMaskLow):
     DISPLAY_NAME = "Get background mask"
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
-                 batched=True, depths=None):
-        arch = model
-        b, h, w, c = images.shape
-        image_bchw = images.movedim(-1, 1)
-
-        image_preproc = ImagePreprocessor(arch.img_mean, arch.img_std, resolution=(height, width),
-                                          upscale_method=upscale_method)
-        im_tensor = image_preproc.proc(image_bchw)
-        del image_preproc
-
-        if depths is not None and arch.needs_map:
-            depths_scaled = scale_comfy_image(depths, (height, width), upscale_method)
-        else:
-            depths_scaled = None
-
-        mask_bhw, depths_bhwc, edges_bhw = super().get_mask(model, im_tensor.movedim(1, -1), batched, depths=depths_scaled)
-
-        # Back to the original size to match the image size
-        mask_bchw = torch.nn.functional.interpolate(mask_bhw.unsqueeze(1), size=(h, w), mode=upscale_method)
-
-        # Optional thresold for the mask
-        if mask_threshold > 0:
-            mask_bchw = filter_mask(mask_bchw, threshold=mask_threshold)
-
-        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-
-        # Depths
-        if depths_scaled is None:
-            # We created depth maps, real or empty
-            depths = scale_comfy_image(depths_bhwc, (h, w), upscale_method)
-        # Otherwise just pass the input depths
-
-        # Optional edges
-        edges_bhw = torch.nn.functional.interpolate(edges_bhw.unsqueeze(1), size=(h, w), mode=upscale_method).squeeze(1)
-
-        return mask_bhw, depths, edges_bhw
+                 batch_size=1, depths=None):
+        return model.run_inference(images, depths, batch_size,
+                                   model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
+                                   mask_threshold=mask_threshold,
+                                   keep_depths=True, keep_edges=True, keep_masks=True)[1:]
 
 
 class Advanced(GetMask):
@@ -555,14 +464,15 @@ class Advanced(GetMask):
                 "fill_color": ("BOOLEAN", {"default": False}),
                 "color": COLOR_OPT,
                 "mask_threshold": MASK_THRESHOLD_OPT,
-                "batched": BATCHED_OPS,
+                "batch_size": BATCHED_OPS,
             },
             "optional": {
                 "depths": DEPTH_OPS,
+                "background": ("IMAGE", {"tooltip": "Image to use as background"}),
             }
         }
 
-    RETURN_TYPES = ("IMAGE",  "MASK",  "IMAGE",  "MASK")
+    RETURN_TYPES = ("IMAGE",  "MASK",  "MASK",  "MASK")
     RETURN_NAMES = ("images", "masks", "depths", "edges")
     FUNCTION = "rem_bg"
     CATEGORY = CATEGORY_ADV
@@ -570,17 +480,30 @@ class Advanced(GetMask):
     DISPLAY_NAME = "Remove background (full)"
 
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
-               fill_color=False, color=None, mask_threshold=0.000, batched=True, depths=None):
+               fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None):
+        self.blur_size = blur_size
+        self.blur_size_two = blur_size_two
+        self.fill_color = fill_color
+        self.color = color
+        if background is not None:
+            self.background_iterator = BatchedTensorIterator(tensor=background, sub_batch_size=batch_size,
+                                                             device=model.target_device, dtype=model.target_dtype)
+        else:
+            self.background_iterator = None
+        self.background = background
+        return model.run_inference(images, depths, batch_size,
+                                   model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
+                                   mask_threshold=mask_threshold,
+                                   image_compose=self.apply_mask,
+                                   keep_depths=True, keep_edges=True, keep_masks=True)
 
-        masks, depths, edges = super().get_mask(model, images, width, height, upscale_method, mask_threshold, batched,
-                                                depths=depths)
-
-        logger.debug(f"Applying mask/s (batched={batched})")
-        out_images = apply_mask(logger, images, masks=masks, device=model_management.get_torch_device(),
-                                blur_size=blur_size, blur_size_two=blur_size_two, fill_color=fill_color, color=color,
-                                batched=batched)
-
-        return out_images, masks, depths, edges
+    def apply_mask(self, images_bchw, masks_bchw, batch_range):
+        background = None if self.background_iterator is None else self.background_iterator.get_aux_batch(self.background, batch_range)
+        out_images = apply_mask(logger, images_bchw.movedim(1, -1), masks=masks_bchw.squeeze(1),
+                                device=model_management.get_torch_device(),
+                                blur_size=self.blur_size, blur_size_two=self.blur_size_two, fill_color=self.fill_color,
+                                color=self.color, batched=True, background=background)
+        return out_images.movedim(-1, 1)
 
 
 class RemBG(Advanced):

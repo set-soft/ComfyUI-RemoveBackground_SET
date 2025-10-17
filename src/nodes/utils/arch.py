@@ -2,17 +2,17 @@
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPLv3
 # Project: ComfyUI-RemoveBackground_SET
+from contextlib import nullcontext
 import math
 import os
 import re
 import safetensors.torch
 import torch
+from torchvision import transforms
+from seconohe.bti import BatchedTensorIterator
 from seconohe.torch import model_to_target
-try:
-    import comfy.utils
-    with_comfy = True
-except ImportError:
-    with_comfy = False
+from seconohe.logger import get_debug_level
+from comfy.utils import common_upscale
 
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
@@ -22,6 +22,8 @@ from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
 from ..pdfnet.PDFNet import build_model as PDFNet
 from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
+from ..nodes_dan import DownloadAndLoadDepthAnythingV2Model, BASE_MODEL_NAME, DepthAnything_V2
+from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
                      # IS-Net anime-seg
@@ -54,6 +56,31 @@ def fix_state_dict(state_dict):
             state_dict[k[prefix_length:]] = state_dict.pop(k)
 
 
+class ImagePreprocessor:
+    def __init__(self, img_mean, img_std, resolution, upscale_method) -> None:
+        interpolation = transforms.InterpolationMode(upscale_method)
+        self.transform_image = transforms.Compose([transforms.Resize(resolution, interpolation=interpolation),
+                                                   # output[channel] = (input[channel] - mean[channel]) / std[channel]
+                                                   transforms.Normalize(img_mean, img_std)])
+
+    def proc(self, image) -> torch.Tensor:
+        image = self.transform_image(image)
+        return image
+
+
+def scale_image(img, w, h, method):
+    if method == 'lanczos' and img.shape[1] == 1:
+        # Lanczos is only implemented for RGB, not masks/depths
+        method = 'bicubic'
+    return common_upscale(img, w, h, method, "disabled")
+
+
+def filter_mask(mask, threshold=4e-3):
+    mask_binary = mask > threshold
+    filtered_mask = mask * mask_binary
+    return filtered_mask
+
+
 class RemBgArch(object):
     def __init__(self, state_dict, logger, fname, vae=None, positive=None):
         super().__init__()
@@ -66,6 +93,7 @@ class RemBgArch(object):
         self.logger = logger
         self.vae = vae
         self.positive = positive
+        self.da_model = None
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
@@ -333,37 +361,226 @@ class RemBgArch(object):
         model.eval()
         return model
 
-    def _run_inference(self, image, depth):
-        if self.needs_map:
-            if depth.dim() == 3:
-                depth = depth.unsqueeze(0)
-            return self.model(image.to(self.target_device, dtype=self.target_dtype),
-                              depth.to(self.target_device, dtype=self.target_dtype)).cpu().float()
-        return self.model(image.to(self.target_device, dtype=self.target_dtype)).cpu().float()
+    def show_inference_info(self, image, depths):
+        # Some debug information about what we are doing
+        logger = self.logger
+        debug_level = get_debug_level(logger)
+        if debug_level >= 1:
+            logger.debug(f"Starting Remove Background inference: {self.model.__class__.__name__}")
+            if debug_level >= 2:
+                logger.debug(f"- Model: {self.model.target_device}/{self.target_dtype} with_edges {self.with_edges}")
+                logger.debug(f"- Input: {image.shape} {image.device}/{image.dtype} "
+                             f"iterations: {len(self.batched_iterator)}")
+                if depths is None:
+                    logger.debug("- Depths: None")
+                else:
+                    logger.debug(f"- Depths: {depths.shape} {depths.device}/{depths.dtype}")
+                logger.debug(f"- Output: cpu/{self.out_dtype}")
 
-    def run_inference(self, image_bchw, depth_bchw, batched):
-        b = image_bchw.shape[0]
-        with model_to_target(self.logger, self.model):
-            if batched:
-                mask_bchw = self._run_inference(image_bchw, depth_bchw)
-            else:
-                if with_comfy:
-                    progress_bar_ui = comfy.utils.ProgressBar(b)
-                _mask_bchw = []
-                for n, each_image in enumerate(image_bchw):
-                    _mask_bchw.append(self._run_inference(each_image.unsqueeze(0), depth_bchw[n]))
-                    if with_comfy:
-                        progress_bar_ui.update(1)
-
-                mask_bchw = torch.cat(_mask_bchw, dim=0)  # (b, 1, h, w)
-                del _mask_bchw
-
-        mask_bhw = mask_bchw.squeeze(1)  # Discard the channels, which is 1 and we get (b, h, w)
-        del mask_bchw
-
-        if hasattr(self.model, 'edges'):
-            edges_bhw = self.model.edges.squeeze(1).cpu().float()
+    def init_depths(self, depths_bhw, batch_size, keep_depths):
+        self.keep_depths = keep_depths
+        if not self.needs_map:
+            self.depths_bhw = depths_bhw
+            self.depths_bchw = None
+            self.create_depths = False
+            return
+        self.create_depths = depths_bhw is None
+        if self.create_depths:
+            if self.da_model is None:
+                self.da_model = DownloadAndLoadDepthAnythingV2Model().loadmodel(BASE_MODEL_NAME)[0]
+                self.da_node = DepthAnything_V2()
+                # Make the model work in the same device and with the same dtype as the main model
+                model = self.da_model['model']
+                model.target_dtype = self.target_dtype
+                model.target_device = self.target_device
+            if keep_depths:
+                self.depths_bhw_list = []
         else:
-            edges_bhw = torch.zeros((b, 64, 64), dtype=torch.float32, device="cpu")
+            b = depths_bhw.shape[0]
+            if b != self.img_b:
+                raise ValueError(f"Found {self.img_b} images and {b} depths, provide the same amount")
+            h, w = depths_bhw.shape[-2:]
+            if self.img_h != h or self.img_w != w:
+                raise ValueError(f"Images using {self.img_w}x{self.img_h} and depths using {w}x{h}, must be of the same size")
+            self.depths_bchw = depths_bhw.unsqueeze(1)
+            self.depths_bhw = depths_bhw
 
-        return mask_bhw, depth_bchw.movedim(1, -1), edges_bhw
+    def scale_to_model(self, img_bchw):
+        if not self.needs_scale:
+            return img_bchw
+        return scale_image(img_bchw, self.model_w, self.model_h, self.scale_method)
+
+    def scale_to_source(self, img_bchw):
+        if not self.needs_scale:
+            return img_bchw
+        return scale_image(img_bchw, self.img_w, self.img_h, self.scale_method)
+
+    def get_depths(self, batch_range, images_bchw):
+        if not self.needs_map:
+            return None
+        if not self.create_depths:
+            return self.scale_to_model(self.batched_iterator.get_aux_batch(self.depths_bchw, batch_range))
+        # Needed and not provided
+        depths_bchw = self.da_node.process_low(self.da_model, images_bchw, images_bchw.shape[0], out_dtype=self.target_dtype,
+                                               out_device=self.target_device)
+        self.collect_depths(depths_bchw)
+        return depths_bchw
+
+    def collect_depths(self, depths_bchw):
+        if not self.keep_depths:
+            return
+        # Keep a copy to return
+        self.depths_bhw_list.append(self.scale_to_source(depths_bchw).squeeze(1).to(device="cpu", dtype=self.out_dtype))
+
+    def get_all_depths(self):
+        if not self.keep_depths:
+            return None
+        if not self.needs_map or not self.create_depths:
+            depths_bhw = self.depths_bhw
+            del self.depths_bhw
+            del self.depths_bchw
+            if depths_bhw is None:
+                # We want depths, but we don't have it, create small dummies
+                return torch.zeros((self.img_b, 64, 64), dtype=self.out_dtype, device="cpu")
+            return depths_bhw
+        # The ones we created and collected
+        depths_bhw = torch.cat(self.depths_bhw_list, dim=0)
+        del self.depths_bhw_list
+        return depths_bhw
+
+    def get_depths_context(self):
+        return model_to_target(self.logger, self.da_model['model']) if self.create_depths else nullcontext()
+
+    def init_masks(self, keep_masks, mask_threshold):
+        self.keep_masks = keep_masks
+        self.mask_threshold = mask_threshold
+        if keep_masks:
+            self.masks_bhw_list = []
+
+    def collect_masks(self, masks_bchw):
+        if not self.keep_masks:
+            return None
+        # Keep a copy to return
+        masks_bchw_scaled = self.scale_to_source(masks_bchw)
+        self.masks_bhw_list.append(masks_bchw_scaled.squeeze(1).to(device="cpu", dtype=self.out_dtype))
+        return masks_bchw_scaled if self.gen_outs else None
+
+    def get_masks(self):
+        if not self.keep_masks:
+            return None
+        masks_bhw = torch.cat(self.masks_bhw_list, dim=0)
+        del self.masks_bhw_list
+        return masks_bhw
+
+    def init_edges(self, keep_edges):
+        self.keep_edges = keep_edges
+        self.with_edges = hasattr(self.model, 'edges')
+        if keep_edges and self.with_edges:
+            self.edges_bhw_list = []
+
+    def collect_edges(self):
+        if not self.with_edges:
+            return
+        if self.keep_edges:
+            self.edges_bhw_list.append(self.scale_to_source(self.model.edges).to(device="cpu", dtype=self.out_dtype))
+        del self.model.edges
+
+    def get_edges(self):
+        if not self.keep_edges:
+            return None
+        if self.with_edges:
+            # We have them
+            edges_bhw = torch.cat(self.edges_bhw_list, dim=0)
+            del self.edges_bhw_list
+            return edges_bhw
+        # We want edges, but we don't have it, create small dummies
+        return torch.zeros((self.img_b, 64, 64), dtype=self.out_dtype, device="cpu")
+
+    def init_images(self, images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method):
+        b, h, w, c = images_bhwc.shape
+        self.img_b = b
+        self.img_w = w
+        self.img_h = h
+        self.img_c = c
+        self.out_dtype = images_bhwc.dtype
+        # Optional image scale
+        self.model_w = model_w or w
+        self.model_h = model_h or h
+        self.scale_method = scale_method
+        self.needs_scale = preproc_img
+        # TODO: more elaborate check depending on the model
+        img_w = self.model_w if preproc_img else w
+        img_h = self.model_h if preproc_img else h
+        if img_h % 32 or img_w % 32:
+            raise ValueError(f"Image size must be a multiple of 32 (not {img_w}x{img_h})")
+        if preproc_img:
+            self.image_preproc = ImagePreprocessor(self.img_mean, self.img_std, resolution=(self.model_h, self.model_w),
+                                                   upscale_method=scale_method)
+        self.batched_iterator = BatchedTensorIterator(tensor=images_bhwc.movedim(-1, 1), sub_batch_size=batch_size,
+                                                      device=self.target_device, dtype=self.target_dtype)
+
+    def get_images(self, batch_range):
+        images_bchw_pre = images_bchw = self.batched_iterator.get_batch(batch_range)
+        if self.needs_scale:
+            images_bchw = self.image_preproc.proc(images_bchw_pre)
+        if not self.gen_outs:
+            # We won't need them, so we can release the reference
+            images_bchw_pre = None
+        return images_bchw, images_bchw_pre
+
+    def init_outs(self, image_compose):
+        self.gen_outs = image_compose is not None
+        if self.gen_outs:
+            self.outs_bhwc_list = []
+
+    def collect_outs(self, image_bchw):
+        if not self.gen_outs:
+            return
+        self.outs_bhwc_list.append(self.scale_to_source(image_bchw).movedim(1, -1).to(device="cpu", dtype=self.out_dtype))
+
+    def get_outs(self):
+        if not self.gen_outs:
+            return None
+        outs_bhwc = torch.cat(self.outs_bhwc_list, dim=0)
+        del self.outs_bhwc_list
+        return outs_bhwc
+
+    def run_single_inference(self, batch_range):
+        images_bchw, images_bchw_pre = self.get_images(batch_range)
+        if self.needs_map:
+            masks_bchw = self.model(images_bchw, self.get_depths(batch_range, images_bchw))
+        else:
+            masks_bchw = self.model(images_bchw)
+        # Optional threshold
+        if self.mask_threshold > 0:
+            masks_bchw = filter_mask(masks_bchw, threshold=self.mask_threshold)
+        masks_bchw_scaled = self.collect_masks(masks_bchw)  # Keep the scaled copy if needed
+        self.collect_edges()
+        # The first two are only used to compose an output image, otherwise they are None
+        return images_bchw_pre, masks_bchw_scaled, masks_bchw
+
+    def run_inference(self, images_bhwc, depths_bhw, batch_size,
+                      model_w=0, model_h=0, scale_method=DEFAULT_UPSCALE, preproc_img=False,  # Optional scale to model
+                      mask_threshold=0.000,  # Optional mask threshold
+                      image_compose=None,    # Optional image composition function
+                      keep_depths=True, keep_edges=True, keep_masks=True):
+        self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method)
+        self.init_depths(depths_bhw, batch_size, keep_depths)
+        self.init_masks(keep_masks, mask_threshold)
+        self.init_edges(keep_edges)
+        self.init_outs(image_compose)
+
+        self.show_inference_info(images_bhwc, depths_bhw)
+
+        with model_to_target(self.logger, self.model):
+            with self.get_depths_context():
+                for batch_range in self.batched_iterator:
+                    images_bchw, masks_bchw_scaled, masks_bchw = self.run_single_inference(batch_range)
+                    if image_compose is not None:
+                        # Here both, image and mask, are on the model device and with its dtype
+                        self.collect_outs(image_compose(images_bchw, masks_bchw_scaled, batch_range))
+                        del images_bchw
+                        del masks_bchw_scaled
+                    del masks_bchw
+
+        return self.get_outs(), self.get_masks(), self.get_all_depths(), self.get_edges()

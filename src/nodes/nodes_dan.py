@@ -172,7 +172,8 @@ class DepthAnything_V2:
             logger.debug(f"Starting Depth Anything V2 inference: {model.__class__.__name__}")
             if debug_level >= 2:
                 logger.debug(f"- Model: {model.target_device}/{model.target_dtype} is_metric {is_metric}")
-                logger.debug(f"- Input: {images_bchw.shape} {images_bchw.device}/{images_bchw.dtype} needs_resize: {needs_resize} ({W}x{H})")
+                logger.debug(f"- Input: {images_bchw.shape} {images_bchw.device}/{images_bchw.dtype} "
+                             f"needs_resize: {needs_resize} ({W}x{H})")
                 logger.debug(f"- Output: cpu/{out_dtype}")
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
