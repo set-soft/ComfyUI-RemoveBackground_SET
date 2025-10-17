@@ -459,7 +459,8 @@ class RemBgArch(object):
 
     def collect_masks(self, masks_bchw):
         if not self.keep_masks:
-            return None
+            # Not collecting them, but they are needed to compute the output images
+            return self.scale_to_source(masks_bchw) if self.gen_outs else None
         # Keep a copy to return
         masks_bchw_scaled = self.scale_to_source(masks_bchw)
         self.masks_bhw_list.append(masks_bchw_scaled.squeeze(1).to(device="cpu", dtype=self.out_dtype))
