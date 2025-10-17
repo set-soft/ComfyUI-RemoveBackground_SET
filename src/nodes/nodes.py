@@ -480,7 +480,8 @@ class Advanced(GetMask):
     DISPLAY_NAME = "Remove background (full)"
 
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
-               fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None):
+               fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None,
+               keep_misc=True):
         self.blur_size = blur_size
         self.blur_size_two = blur_size_two
         self.fill_color = fill_color
@@ -495,7 +496,7 @@ class Advanced(GetMask):
                                    model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
                                    mask_threshold=mask_threshold,
                                    image_compose=self.apply_mask,
-                                   keep_depths=True, keep_edges=True, keep_masks=True)
+                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc)
 
     def apply_mask(self, images_bchw, masks_bchw, batch_range):
         background = None if self.background_iterator is None else self.background_iterator.get_aux_batch(self.background, batch_range)
@@ -513,20 +514,25 @@ class RemBG(Advanced):
             "required": {
                 "model": ("SET_REMBG",),
                 "images": ("IMAGE",),
+                "batch_size": BATCHED_OPS,
             },
             "optional": {
                 "depths": DEPTH_OPS,
+                "background": ("IMAGE", {"tooltip": "Image to use as background"}),
             }
         }
 
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("images",)
     FUNCTION = "rem_bg"
     CATEGORY = CATEGORY_BASIC
     UNIQUE_NAME = "RembgByBiRefNet_SET"
     DISPLAY_NAME = "Remove background"
 
-    def rem_bg(self, model, images, depths=None):
+    def rem_bg(self, model, images, batch_size, depths=None, background=None):
         w = model.w
         h = model.h
         logger.debug(f"Using size {w}x{h}")
         b = images.shape[0]
-        return super().rem_bg(model, images, width=w, height=h, batched=b <= 8, depths=depths)
+        return super().rem_bg(model, images, width=w, height=h, batch_size=batch_size, depths=depths, background=background,
+                              keep_misc=False)[:1]
