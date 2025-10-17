@@ -31,11 +31,11 @@ def make_crs(in_dim, out_dim):
 
 
 def rescale_to(src, size):  # _upscale_
-    return F.upsample(src, size=size, mode='bilinear', align_corners=True)
+    return F.interpolate(src, size=size, mode='bilinear', align_corners=True)
 
 
 def resize_as(src, tar):  # _upscale_like
-    return F.upsample(src, size=tar.shape[2:], mode='bilinear', align_corners=True)
+    return F.interpolate(src, size=tar.shape[2:], mode='bilinear', align_corners=True)
 
 
 class PDF_depth_decoder(nn.Module):
