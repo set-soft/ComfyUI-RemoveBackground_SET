@@ -268,7 +268,7 @@ class DiffDISPipeline(torch.nn.Module):
         # The model works in 1 step, no need for scheduler
         noise_pred = self.unet(
             torch.cat([rgb_latent, mask_edge_latent], dim=1),  # Input, order is important: [1, IN_CHANNELS, H, W] (8)
-            torch.tensor([999, 999], device=device),           # Time steps, just the last one
+            torch.tensor([999], device=device),                # Time steps, just the last one
             encoder_hidden_states=batch_text_embed.repeat(2, 1, 1),
             class_labels=BDE,
             rgb_token=[rgb_latent, rgb_rsz2_lats, rgb_rsz4_lats, rgb_rsz8_lats])  # -> [B, OUT_CHANNELS, h, w] (4)
