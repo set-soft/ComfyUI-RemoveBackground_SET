@@ -1,8 +1,6 @@
 from typing import Tuple
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
-from tqdm.auto import tqdm
 import torch.nn.functional as F
 
 from ..diffusers.unet_2d_blocks import get_down_block, get_mid_block, get_up_block
