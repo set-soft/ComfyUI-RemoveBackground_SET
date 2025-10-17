@@ -14,7 +14,7 @@ import torch
 import bootstrap  # noqa: F401
 from src.nodes import main_logger
 from src.nodes.utils.misc import cli_add_verbose, cli_add_version
-from src.nodes.utils.arch import RemBgArch
+from src.nodes.utils.arch import RemBg
 
 
 def show_keys(state_dict):
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     if args.keys:
         show_keys(state_dict)
 
-    bb_a = RemBgArch(state_dict, main_logger, model_path, vae=False)
+    bb_a = RemBg(state_dict, main_logger, model_path, vae=False)
     bb_a.check()
     main_logger.info(f"Model type: {bb_a.model_type} ({bb_a.dtype})")
     main_logger.info(f"Back bone type: {bb_a.bb}")

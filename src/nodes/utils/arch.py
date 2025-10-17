@@ -81,7 +81,7 @@ def filter_mask(mask, threshold=4e-3):
     return filtered_mask
 
 
-class RemBgArch(object):
+class RemBg(object):
     def __init__(self, state_dict, logger, fname, vae=None, positive=None):
         super().__init__()
         self.ok = False

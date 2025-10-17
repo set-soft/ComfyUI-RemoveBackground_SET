@@ -14,7 +14,7 @@ import torch
 from comfy import model_management
 import folder_paths
 from . import main_logger, MODELS_DIR_KEY, MODELS_DIR, BATCHED_OPS, DEFAULT_UPSCALE
-from .utils.arch import RemBgArch
+from .utils.arch import RemBg
 from .utils.inspyrenet_config import parse_inspyrenet_config
 
 
@@ -274,7 +274,7 @@ class LoadModel:
                 state_dict = state_dict['model_state_dict']
 
         # Check this is valid for a known model
-        arch = RemBgArch(state_dict, logger, model, vae, positive)
+        arch = RemBg(state_dict, logger, model, vae, positive)
         arch.check()
         target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
         logger.debug(f"Using {target_device} device")
@@ -507,7 +507,7 @@ class Advanced(GetMask):
         return out_images.movedim(-1, 1)
 
 
-class RemBG(Advanced):
+class RemBGSimple(Advanced):
     @classmethod
     def INPUT_TYPES(cls):
         return {
