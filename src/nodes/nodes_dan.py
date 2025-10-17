@@ -145,16 +145,18 @@ class DepthAnything_V2:
     DISPLAY_NAME = "Depth Anything V2"
 
     def process(self, da_model, images, batch_size):
-        depths_bchw = self.process_low(da_model, images, batch_size, out_dtype=images.dtype,
-                                       model_device=mm.get_torch_device())
+        model = da_model['model']
+        model.target_dtype = da_model['dtype']
+        model.target_device = mm.get_torch_device()
+        with model_to_target(logger, model):
+            depths_bchw = self.process_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype,
+                                           out_device="cpu")
         return (depths_bchw.squeeze(1),)  # BHW
 
-    def process_low(self, da_model, images, batch_size, out_dtype, model_device):
+    def process_low(self, da_model, images_bchw, batch_size, out_dtype, out_device):
         model = da_model['model']
         is_metric = da_model['is_metric']
-        model.target_dtype = da_model['dtype']
-        model.target_device = model_device
-        B, H, W, C = images.shape
+        B, C, H, W = images_bchw.shape
 
         # The model expects image sizes multiples than 14 (patch height)
         orig_H, orig_W = H, W
@@ -170,28 +172,28 @@ class DepthAnything_V2:
             logger.debug(f"Starting Depth Anything V2 inference: {model.__class__.__name__}")
             if debug_level >= 2:
                 logger.debug(f"- Model: {model.target_device}/{model.target_dtype} is_metric {is_metric}")
-                logger.debug(f"- Input: {images.shape} {images.device}/{images.dtype} needs_resize: {needs_resize} ({W}x{H})")
+                logger.debug(f"- Input: {images_bchw.shape} {images_bchw.device}/{images_bchw.dtype} needs_resize: {needs_resize} ({W}x{H})")
                 logger.debug(f"- Output: cpu/{out_dtype}")
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        batched_iterator = BatchedTensorIterator(tensor=images.movedim(-1, 1), sub_batch_size=batch_size,
+        batched_iterator = BatchedTensorIterator(tensor=images_bchw, sub_batch_size=batch_size,
                                                  device=model.target_device, dtype=model.target_dtype)
-        with model_to_target(logger, model):
-            out = []
-            for batch_range in batched_iterator:
-                images_bchw = batched_iterator.get_batch(batch_range)
-                # Pre-process
-                if needs_resize:
-                    images_bchw = F.interpolate(images_bchw, size=(H, W), mode="bilinear")
-                # Inference
-                depth_bchw = model(normalize(images_bchw))
-                del images_bchw
-                # Post-process
-                if needs_resize:
-                    depth_bchw = F.interpolate(depth_bchw, size=(orig_H, orig_W), mode="bilinear")
-                depth_bchw = (depth_bchw - depth_bchw.min()) / (depth_bchw.max() - depth_bchw.min())  # Force [0,1]
-                if is_metric:
-                    depth_bchw = 1 - depth_bchw
-                out.append(depth_bchw.to(device="cpu", dtype=out_dtype))
-                del depth_bchw
+        out = []
+        for batch_range in batched_iterator:
+            images_bchw = batched_iterator.get_batch(batch_range)
+            # Pre-process
+            if needs_resize:
+                images_bchw = F.interpolate(images_bchw, size=(H, W), mode="bilinear")
+            # Inference
+            depth_bchw = model(normalize(images_bchw))
+            del images_bchw
+            # Post-process
+            if needs_resize:
+                depth_bchw = F.interpolate(depth_bchw, size=(orig_H, orig_W), mode="bilinear")
+            depth_bchw = (depth_bchw - depth_bchw.min()) / (depth_bchw.max() - depth_bchw.min())  # Force [0,1]
+            if is_metric:
+                depth_bchw = 1 - depth_bchw
+            out.append(depth_bchw.to(device=out_device, dtype=out_dtype))
+            del depth_bchw
+
         return torch.cat(out, dim=0)
