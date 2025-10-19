@@ -497,13 +497,13 @@ class RemBg(object):
         # We want edges, but we don't have it, create small dummies
         return torch.zeros((self.img_b, 64, 64), dtype=self.out_dtype, device="cpu")
 
-    def init_images(self, images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method):
+    def init_images(self, images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method, out_dtype):
         b, h, w, c = images_bhwc.shape
         self.img_b = b
         self.img_w = w
         self.img_h = h
         self.img_c = c
-        self.out_dtype = images_bhwc.dtype
+        self.out_dtype = images_bhwc.dtype if out_dtype is None else out_dtype
         # Optional image scale
         self.model_w = model_w or w
         self.model_h = model_h or h
@@ -564,8 +564,8 @@ class RemBg(object):
                       model_w=0, model_h=0, scale_method=DEFAULT_UPSCALE, preproc_img=False,  # Optional scale to model
                       mask_threshold=0.000,  # Optional mask threshold
                       image_compose=None,    # Optional image composition function
-                      keep_depths=True, keep_edges=True, keep_masks=True):
-        self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method)
+                      keep_depths=True, keep_edges=True, keep_masks=True, out_dtype=None):
+        self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method, out_dtype)
         self.init_depths(depths_bhw, batch_size, keep_depths)
         self.init_masks(keep_masks, mask_threshold)
         self.init_edges(keep_edges)

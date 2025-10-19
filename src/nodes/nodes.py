@@ -469,6 +469,7 @@ class Advanced(GetMask):
             "optional": {
                 "depths": DEPTH_OPS,
                 "background": ("IMAGE", {"tooltip": "Image to use as background"}),
+                "out_dtype": DTYPE_OPS,
             }
         }
 
@@ -481,7 +482,7 @@ class Advanced(GetMask):
 
     def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
                fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None,
-               keep_misc=True):
+               keep_misc=True, out_dtype=None):
         self.blur_size = blur_size
         self.blur_size_two = blur_size_two
         self.fill_color = fill_color
@@ -492,11 +493,12 @@ class Advanced(GetMask):
         else:
             self.background_iterator = None
         self.background = background
+        out_dtype = None if out_dtype is None or out_dtype == "AUTO" else TORCH_DTYPE[out_dtype]
         return model.run_inference(images, depths, batch_size,
                                    model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
                                    mask_threshold=mask_threshold,
                                    image_compose=self.apply_mask,
-                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc)
+                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc, out_dtype=out_dtype)
 
     def apply_mask(self, images_bchw, masks_bchw, batch_range):
         background = (None if self.background_iterator is None else
@@ -520,6 +522,7 @@ class RemBGSimple(Advanced):
             "optional": {
                 "depths": DEPTH_OPS,
                 "background": ("IMAGE", {"tooltip": "Image to use as background"}),
+                "out_dtype": DTYPE_OPS,
             }
         }
 
@@ -530,9 +533,9 @@ class RemBGSimple(Advanced):
     UNIQUE_NAME = "RembgByBiRefNet_SET"
     DISPLAY_NAME = "Remove background"
 
-    def rem_bg(self, model, images, batch_size, depths=None, background=None):
+    def rem_bg(self, model, images, batch_size, depths=None, background=None, out_dtype=None):
         w = model.w
         h = model.h
         logger.debug(f"Using size {w}x{h}")
         return super().rem_bg(model, images, width=w, height=h, batch_size=batch_size, depths=depths, background=background,
-                              keep_misc=False)[:1]
+                              keep_misc=False, out_dtype=out_dtype)[:1]
