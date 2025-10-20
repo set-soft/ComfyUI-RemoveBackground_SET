@@ -413,7 +413,7 @@ class RemBg(object):
     def scale_to_source(self, img_bchw):
         if not self.needs_scale:
             return img_bchw
-        return scale_image(img_bchw, self.img_w, self.img_h, self.scale_method)
+        return scale_image(img_bchw, self.img_w, self.img_h, self.scale_method).clamp(0, 1)
 
     def get_depths(self, batch_range, images_bchw):
         if not self.needs_map:
