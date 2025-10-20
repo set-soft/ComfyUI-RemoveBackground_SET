@@ -1,3 +1,15 @@
+#
+# MODNet: Trimap-Free Portrait Matting in Real Time
+#
+# Zhanghan Ke, Jiayu Sun, Kaican Li, Qiong Yan, Rynson W.H. Lau
+# https://arxiv.org/pdf/2011.11961
+#
+# https://github.com/ZHKKKe/MODNet
+#
+# License: Apache v2
+#
+# Code adapted by Salvador E. Tropea
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

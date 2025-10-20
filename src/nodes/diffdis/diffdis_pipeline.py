@@ -1,3 +1,15 @@
+#
+# High Precision Dichotomous Image Segmentation via Probing Diffusion Capacity
+#
+# Qian Yu, Peng-Tao Jiang, Hao Zhang, Jinwei Chen, Bo Li, Lihe Zhang, Huchuan Lu
+# https://arxiv.org/pdf/2410.10105
+#
+# https://github.com/qianyu-dlut/DiffDIS
+#
+# License: MIT
+#
+# Code adapted by Salvador E. Tropea
+#
 from typing import Tuple
 import torch
 import torch.nn as nn
