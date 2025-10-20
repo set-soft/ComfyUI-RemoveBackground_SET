@@ -212,6 +212,10 @@ CATEGORY_LOAD = CATEGORY_BASE+"/Load"
 CATEGORY_ADV = CATEGORY_BASE+"/Advanced"
 
 
+def dtype_str_to_torch(dtype: str) -> torch.dtype:
+    return None if dtype is None or dtype == "AUTO" else TORCH_DTYPE[dtype]
+
+
 def add_inspyrenet_models():
     """ Try to add the transparent-background Python module models """
     # Look for the config and return the models
@@ -405,6 +409,7 @@ class GetMaskLow:
             },
             "optional": {
                 "depths": DEPTH_OPS,
+                "out_dtype": DTYPE_OPS,
             }
         }
 
@@ -415,8 +420,9 @@ class GetMaskLow:
     UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
     DISPLAY_NAME = "Get background mask low level"
 
-    def get_mask(self, model, images, batch_size, depths=None):
-        return model.run_inference(images, depths, batch_size, keep_depths=True, keep_edges=True, keep_masks=True)[1:]
+    def get_mask(self, model, images, batch_size, depths=None, out_dtype=None):
+        return model.run_inference(images, depths, batch_size, keep_depths=True, keep_edges=True, keep_masks=True,
+                                   out_dtype=dtype_str_to_torch(out_dtype))[1:]
 
 
 class GetMask(GetMaskLow):
@@ -434,6 +440,7 @@ class GetMask(GetMaskLow):
             },
             "optional": {
                 "depths": DEPTH_OPS,
+                "out_dtype": DTYPE_OPS,
             }
         }
 
@@ -442,11 +449,12 @@ class GetMask(GetMaskLow):
     DISPLAY_NAME = "Get background mask"
 
     def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
-                 batch_size=1, depths=None):
+                 batch_size=1, depths=None, out_dtype=None):
         return model.run_inference(images, depths, batch_size,
                                    model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
                                    mask_threshold=mask_threshold,
-                                   keep_depths=True, keep_edges=True, keep_masks=True)[1:]
+                                   keep_depths=True, keep_edges=True, keep_masks=True,
+                                   out_dtype=dtype_str_to_torch(out_dtype))[1:]
 
 
 class Advanced(GetMask):
@@ -493,12 +501,12 @@ class Advanced(GetMask):
         else:
             self.background_iterator = None
         self.background = background
-        out_dtype = None if out_dtype is None or out_dtype == "AUTO" else TORCH_DTYPE[out_dtype]
         return model.run_inference(images, depths, batch_size,
                                    model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
                                    mask_threshold=mask_threshold,
                                    image_compose=self.apply_mask,
-                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc, out_dtype=out_dtype)
+                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc,
+                                   out_dtype=dtype_str_to_torch(out_dtype))
 
     def apply_mask(self, images_bchw, masks_bchw, batch_range):
         background = (None if self.background_iterator is None else
