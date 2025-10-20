@@ -1,93 +1,97 @@
-[中文文档](README_CN.md)
+# ComfyUI Remove Background nodes (SET)
 
-Support the use of new and old versions of BiRefNet models
+This repository provides a set of custom nodes for ComfyUI focused on background removal and or replacement.
 
-## Preview
-![save api extended](doc/base.png)
-![save api extended](doc/video.gif)
+![Remove Background](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/main/doc/Banner.jpg)
 
-## Install
+## &#x2699;&#xFE0F; Main features
 
-- Manual
-```shell
-    cd custom_nodes
-    git clone https://github.com/lldacing/ComfyUI_BiRefNet_ll.git
-    cd ComfyUI_BiRefNet_ll
-    pip install -r requirements.txt
-    # restart ComfyUI
-```
-- Via ComfyUI Manager
-    
+&#x2705; No bizarre extra dependencies, we use the same modules as ComfyUI
 
-## Models
-
-### The available newest models are:
-
-- General: A pre-trained model for general use cases.
-- General-HR: A pre-trained model for general use cases which shows great performance on higher resolution images (2048x2048).
-- General-Lite: A light pre-trained model for general use cases.
-- General-Lite-2K: A light pre-trained model for general use cases in high resolution (2560x1440).
-- General-dynamic: A pre-trained model for dynamic resolution, trained with images in range from 256x256 to 2304x2304.
-- General-reso_512: A pre-trained model for faster and more accurate lower resolution, trained with images in 512x512.
-- General-legacy: A pre-trained model for general use trained on DIS5K-TR,DIS-TEs, DUTS-TR_TE,HRSOD-TR_TE,UHRSD-TR_TE, HRS10K-TR_TE (w/o portrait seg data).
-- Portrait: A pre-trained model for human portraits.
-- Matting: A pre-trained model for general trimap-free matting use.
-- Matting-HR: A pre-trained model for general matting use which shows great matting performance on higher resolution images (2048x2048).
-- Matting-Lite: A light pre-trained model for general trimap-free matting use.
-- DIS: A pre-trained model for dichotomous image segmentation (DIS).
-- HRSOD: A pre-trained model for high-resolution salient object detection (HRSOD).
-- COD: A pre-trained model for concealed object detection (COD).
-- DIS-TR_TEs: A pre-trained model with massive dataset.
-
-Model files go here (when use AutoDownloadBiRefNetModel automatically downloaded if the folder is not present during first run): `${comfyui_rootpath}/models/BiRefNet`.  
-
-If necessary, they can be downloaded from:
-- [General](https://huggingface.co/ZhengPeng7/BiRefNet/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General.safetensors`
-- [General-HR](https://huggingface.co/ZhengPeng7/BiRefNet_HR/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-HR.safetensors`
-- [General-Lite](https://huggingface.co/ZhengPeng7/BiRefNet_T/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-Lite.safetensors`
-- [General-Lite-2K](https://huggingface.co/ZhengPeng7/BiRefNet_lite-2K/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-Lite-2K.safetensors`
-- [General-dynamic](https://huggingface.co/ZhengPeng7/BiRefNet_dynamic/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-dynamic.safetensors`
-- [General-legacy](https://huggingface.co/ZhengPeng7/BiRefNet-legacy/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-legacy.safetensors`
-- [General-reso_512](https://huggingface.co/ZhengPeng7/BiRefNet_512x512/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `General-reso_512.safetensors`
-- [Portrait](https://huggingface.co/ZhengPeng7/BiRefNet-portrait/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `Portrait.safetensors`
-- [Matting](https://huggingface.co/ZhengPeng7/BiRefNet-matting/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `Matting.safetensors`
-- [Matting-HR](https://huggingface.co/ZhengPeng7/BiRefNet_HR-matting/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `Matting-HR.safetensors`
-- [Matting-Lite](https://huggingface.co/ZhengPeng7/BiRefNet_lite-matting/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `Matting-Lite.safetensors`
-- [DIS](https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `DIS.safetensors`
-- [HRSOD](https://huggingface.co/ZhengPeng7/BiRefNet-HRSOD/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `HRSOD.safetensors`
-- [COD](https://huggingface.co/ZhengPeng7/BiRefNet-COD/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `COD.safetensors`
-- [DIS-TR_TEs](https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K-TR_TEs/resolve/main/model.safetensors) ➔ `model.safetensors` must be renamed `DIS-TR_TEs.safetensors`
-
-Some models on GitHub: 
-[BiRefNet Releases](https://github.com/ZhengPeng7/BiRefNet/releases)
-
-### Old models:
-- [BiRefNet-DIS_ep580.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-DIS_ep580.pth)
-- [BiRefNet-ep480.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth)
-
-## Weight Models (Optional)
-- [swin_large_patch4_window12_384_22kto1k.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/swin_large_patch4_window12_384_22kto1k.pth)(not General-Lite, General-Lite-2K and Matting-Lite model)
-- [swin_tiny_patch4_window7_224_22kto1k_finetune.pth](https://drive.google.com/drive/folders/1cmce_emsS8A5ha5XT2c_CZiJzlLM81ms)(just General-Lite, General-Lite-2K and Matting-Lite model)
+&#x2705; Warnings and errors visible in the browser, configurable debug information in the console
 
 
-## Nodes
-- AutoDownloadBiRefNetModel
-  - Automatically download the model into `${comfyui_rootpath}/models/BiRefNet`, do not support weight model
-- LoadRembgByBiRefNetModel
-  - Can select model from `${comfyui_rootpath}/models/BiRefNet` or the path of `birefnet` configured in the extra YAML file
-  - You can download latest models from [BiRefNet Releases](https://github.com/ZhengPeng7/BiRefNet/releases) or old models [BiRefNet-DIS_ep580.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-DIS_ep580.pth) and [BiRefNet-ep480.pth](https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth)
-- RembgByBiRefNet
-  - Output transparent foreground image and mask
-- RembgByBiRefNetAdvanced
-  - Output foreground image and mask, provide some fine-tuning parameters
-- GetMaskByBiRefNet
-  - Only output mask
-- BlurFusionForegroundEstimation
-  - Use the [fast-foreground-estimation method](https://github.com/Photoroom/fast-foreground-estimation) to estimate the foreground image
+## &#x0001F4DC; Table of Contents
 
-## Thanks
+- &#x0001F680; [Installation](#-installation)
+- &#x0001F4E6; [Dependencies](#-dependencies)
+- &#x0001F5BC;&#xFE0F; [Examples](#&#xFE0F;-examples)
+- &#x2728; [Nodes](#-extra-nodes)
+- &#x0001F4DD; [Usage Notes](#-usage-notes)
+- &#x0001F4DC; [Project History](#-project-history)
+- &#x2696;&#xFE0F; [License](#&#xFE0F;-license)
+- &#x0001F64F; [Attributions](#-attributions)
 
-[ZhengPeng7/BiRefNet](https://github.com/zhengpeng7/birefnet)
+## &#x2728; Nodes
 
-[dimitribarbot/sd-webui-birefnet](https://github.com/dimitribarbot/sd-webui-birefnet)
+The nodes are documented [here](docs/nodes_img.md). Use the above ToC to access them by category.
 
+## &#x0001F680; Installation
+
+You can install the nodes from the ComfyUI nodes manager, the name is *Remove Background (SET)* (remove-background), or just do it manually:
+
+1.  Clone this repository into your `ComfyUI/custom_nodes/` directory:
+    ```bash
+    cd ComfyUI/custom_nodes/
+    git clone https://github.com/set-soft/ComfyUI-RemoveBackground_SET ComfyUI-RemoveBackground_SET
+    ```
+2.  Install dependencies: `pip install -r ComfyUI/custom_nodes/ComfyUI-RemoveBackground_SET/requirements.txt`
+3.  Restart ComfyUI.
+
+The nodes should then appear under the "RemBG_SET" category in the "Add Node" menu.
+
+
+## &#x0001F4E6; Dependencies
+
+- SeCoNoHe (seconohe): This is just some functionality I wrote shared by my nodes, only depends on ComfyUI.
+- PyTorch: Installed by ComfyUI
+- einops: Installed by ComfyUI
+- kornia: Installed by ComfyUI
+- safetensors: Installed by ComfyUI
+- Requests (optional): Usually an indirect ComfyUI dependency. If installed it will be used for downloads, it should be more robust than then built-in `urllib`, used as fallback.
+- Colorama (optional): Might help to get colored log messages on some terminals. We use ANSI escape sequences when it isn't installed.
+
+
+## &#x0001F5BC;&#xFE0F; Examples
+
+Once installed the examples are available in the ComfyUI workflow templates, in the *remove-background* section (or ComfyUI-RemoveBackground_SET).
+
+
+
+## &#x0001F4DD; Usage Notes
+
+- **Logging:** &#x0001F50A; The nodes use Python's `logging` module. Debug messages can be helpful for understanding the transformations being applied.
+  You can control log verbosity through ComfyUI's startup arguments (e.g., `--preview-method auto --verbose DEBUG` for more detailed ComfyUI logs
+  which might also affect custom node loggers if they are configured to inherit levels). The logger name used is "RemoveBackground_SET".
+  You can force debugging level for these nodes defining the `REMOVEBACKGROUND_SET_NODES_DEBUG` environment variable to `1` or `2`.
+
+
+## &#x0001F4DC; Project History
+
+- 1.0.0 2025-10-??: Initial release
+
+
+## &#x2696;&#xFE0F; License
+
+[GPL-3.0](LICENSE)
+
+## &#x0001F64F; Attributions
+
+- Good part of the initial code and this README was generated using Gemini 2.5 Pro.
+- I took various ideas from [ComfyUI_BiRefNet_ll](https://github.com/lldacing/ComfyUI_BiRefNet_ll)
+- These nodes contains the inference code for the models:
+  - [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet): Peng Zheng, Dehong Gao, Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang, Nicu Sebe
+  - [Depth Anything](https://github.com/DepthAnything/Depth-Anything-V2): Lihe Yang, Bingyi Kang, Zilong Huang, Zhen Zhao, Xiaogang Xu, Jiashi Feng, Hengshuang Zhao (HKU/TikTok)
+  - [DiffDIS](https://github.com/qianyu-dlut/DiffDIS): Qian Yu, Peng-Tao Jiang, Hao Zhang, Jinwei Chen, Bo Li, Lihe Zhang, Huchuan Lu
+  - [Diffusers](https://huggingface.co/docs/diffusers/index): The HuggingFace Team
+  - [DINO](https://github.com/facebookresearch/dinov2): Meta AI Research
+  - [InSPyReNet](https://github.com/plemeri/InSPyReNet): Taehun Kim, Kunhee Kim, Joonyeong Lee, Dongmin Cha, Jiho Lee, Daijin Kim
+  - [MODNet](https://github.com/ZHKKKe/MODNet): Zhanghan Ke, Jiayu Sun, Kaican Li, Qiong Yan, Rynson W.H. Lau
+  - [MVANet](https://github.com/qianyu-dlut/MVANet/): Qian Yu, Xiaoqi Zhao, Youwei Pang, Lihe Zhang, Huchuan Lu
+    - [BEN](https://huggingface.co/PramaLLC/BEN2): Maxwell Meyer and Jack Spruyt
+  - [PDFNet](https://github.com/Tennine2077/PDFNet): Xianjie Liu, Keren Fu, Qijun Zhao
+  - [Swin](https://github.com/microsoft/Swin-Transformer): Ze Liu, Yutong Lin, Yixuan Wei
+  - [U-2-Net](https://github.com/xuebinqin/U-2-Net): Xuebin Qin, Zichen Zhang, Chenyang Huang, Masood Dehghan, Osmar R. Zaiane and Martin Jagersand
+    - [IS-Net](https://github.com/xuebinqin/DIS): Xuebin Qin, Hang Dai, Xiaobin Hu, Deng-Ping Fan, Ling Shao, Luc Van Gool
+- Code for Depth Anything v2 by [Kijai](https://github.com/kijai) (Jukka Sepp�nen)
+- All working together by Salvador E. Tropea
