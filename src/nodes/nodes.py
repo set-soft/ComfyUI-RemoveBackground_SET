@@ -340,7 +340,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         arch.h = h
         arch.sub_type = re.sub(r'\s?\((No Com! )?[\d\.]+ [MG]iB\)', "", model_name)
         if "No Com!" in model_name:
-            logger.warning("This particular model isn't for commercial use!")
+            logger.warning(f"`{arch.get_name()}` model isn't for commercial use!")
         return (arch, w, h, {"mean": arch.img_mean, "std": arch.img_std})
 
 
