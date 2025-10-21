@@ -4,6 +4,7 @@
 #
 # Adapted by Salvador E. Tropea
 # Why?
+# - Can automagically used when no depth maps are provided for the PDFNet model
 # - Don't like the silent downloader (no progress and cryptic names)
 # - Extra dependencies we can avoid, IDK why for "accelerate" if the code explicitly makes it optional
 #
@@ -29,7 +30,7 @@ from comfy.utils import load_torch_file
 import folder_paths
 
 # Local imports
-from . import main_logger as logger, BATCHED_OPS
+from . import main_logger as logger, BATCHED_OPS, CATEGORY_LOAD, CATEGORY_ADV
 from .depth_anything.dpt_v2 import DepthAnythingV2
 
 
@@ -62,7 +63,7 @@ class DownloadAndLoadDepthAnythingV2Model:
     RETURN_TYPES = ("DAMODEL",)
     RETURN_NAMES = ("da_v2_model",)
     FUNCTION = "loadmodel"
-    CATEGORY = "DepthAnythingV2"
+    CATEGORY = CATEGORY_LOAD
     DESCRIPTION = ("Models autodownload to `ComfyUI/models/depthanything` from\n"
                    "https://huggingface.co/Kijai/DepthAnythingV2-safetensors/tree/main\n\n"
                    "F16 reduces quality by a LOT, not recommended.")
@@ -129,17 +130,18 @@ class DownloadAndLoadDepthAnythingV2Model:
 class DepthAnything_V2:
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": {
-            "da_model": ("DAMODEL", ),
-            "images": ("IMAGE", ),
-            "batch_size": BATCHED_OPS,
+        return {
+            "required": {
+                "da_model": ("DAMODEL", ),
+                "images": ("IMAGE", ),
+                "batch_size": BATCHED_OPS,
             },
         }
 
-    RETURN_TYPES = ("MASK",)
-    RETURN_NAMES = ("depths",)
+    RETURN_TYPES = ("MASK", "IMAGE")
+    RETURN_NAMES = ("depths", "depth_imgs")
     FUNCTION = "process"
-    CATEGORY = "DepthAnythingV2"
+    CATEGORY = CATEGORY_ADV
     DESCRIPTION = "Create a depth map of the image\nSee: https://depth-anything-v2.github.io"
     UNIQUE_NAME = "DepthAnything_V2_SET"
     DISPLAY_NAME = "Depth Anything V2"
@@ -151,7 +153,9 @@ class DepthAnything_V2:
         with model_to_target(logger, model):
             depths_bchw = self.process_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype,
                                            out_device="cpu")
-        return (depths_bchw.squeeze(1),)  # BHW
+        masks = depths_bchw.squeeze(1)  # BHW
+        # Returns the computed masks and a view that is an image, but no extra memory is used
+        return (masks, masks.unsqueeze(-1).expand(-1, -1, -1, 3))
 
     def process_low(self, da_model, images_bchw, batch_size, out_dtype, out_device):
         model = da_model['model']

@@ -14,7 +14,8 @@ from seconohe.bti import BatchedTensorIterator
 import torch
 from comfy import model_management
 import folder_paths
-from . import main_logger, MODELS_DIR_KEY, MODELS_DIR, BATCHED_OPS, DEFAULT_UPSCALE
+from . import (main_logger, MODELS_DIR_KEY, MODELS_DIR, BATCHED_OPS, DEFAULT_UPSCALE, CATEGORY_BASIC, CATEGORY_LOAD,
+               CATEGORY_ADV)
 from .utils.arch import RemBg
 from .utils.inspyrenet_config import parse_inspyrenet_config
 
@@ -207,10 +208,6 @@ DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
 DEPTH_OPS = ("MASK", {"tooltip": "For models that starts with a depth map"})
 DIFFDIS_VAE = ("VAE", {"tooltip": "SD Turbo VAE for DiffDIS"})
 POSITIVE = ("CONDITIONING", {"tooltip": "Experimental for DiffDIS"})
-CATEGORY_BASE = "RemBG_SET"
-CATEGORY_BASIC = CATEGORY_BASE+"/Basic"
-CATEGORY_LOAD = CATEGORY_BASE+"/Load"
-CATEGORY_ADV = CATEGORY_BASE+"/Advanced"
 
 
 def dtype_str_to_torch(dtype: str) -> torch.dtype:

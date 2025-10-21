@@ -18,3 +18,7 @@ BATCHED_OPS = ("INT", {
                   "default": 1, "min": 1, "max": 256, "step": 1,
                   "tooltip": ("How many images to process at once")})
 DEFAULT_UPSCALE = "bicubic"
+CATEGORY_BASE = "RemBG_SET"
+CATEGORY_BASIC = CATEGORY_BASE+"/Basic"
+CATEGORY_LOAD = CATEGORY_BASE+"/Load"
+CATEGORY_ADV = CATEGORY_BASE+"/Advanced"
