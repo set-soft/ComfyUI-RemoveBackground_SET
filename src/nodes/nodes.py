@@ -3,6 +3,7 @@
 # License: GPLv3
 # Project: ComfyUI-RemoveBackground_SET
 import os
+import re
 import safetensors.torch
 from safetensors import safe_open
 from seconohe.downloader import download_file
@@ -337,6 +338,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         # Known training sizes have priority over default architecture sizes
         arch.w = w
         arch.h = h
+        arch.sub_type = re.sub(r'\s?\((No Com! )?[\d\.]+ [MG]iB\)', "", model_name)
         if "No Com!" in model_name:
             logger.warning("This particular model isn't for commercial use!")
         return (arch, w, h, {"mean": arch.img_mean, "std": arch.img_std})

@@ -94,6 +94,7 @@ class RemBg(object):
         self.vae = vae
         self.positive = positive
         self.da_model = None
+        self.sub_type = None
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
@@ -333,6 +334,12 @@ class RemBg(object):
                 pos_dict = safetensors.torch.load_file(fname, device="cpu")
                 self.positive = pos_dict['positive']
 
+    def get_name(self):
+        name = self.model_type
+        if self.sub_type:
+            name += " "+self.sub_type
+        return name
+
     def instantiate_model(self, state_dict, device="cpu", dtype=torch.float32):
         if self.model_type == 'MVANet':
             model = MVANet(ben_variant=self.ben_variant)
@@ -565,7 +572,7 @@ class RemBg(object):
                       mask_threshold=0.000,  # Optional mask threshold
                       image_compose=None,    # Optional image composition function
                       keep_depths=True, keep_edges=True, keep_masks=True, out_dtype=None):
-        profiler = TorchProfile(self.logger, 2, f"profile for {self.model_type} ({self.target_dtype})", self.target_device)
+        profiler = TorchProfile(self.logger, 2, f"profile for `{self.get_name()}` ({self.target_dtype})", self.target_device)
 
         self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method, out_dtype)
         self.init_depths(depths_bhw, batch_size, keep_depths)
