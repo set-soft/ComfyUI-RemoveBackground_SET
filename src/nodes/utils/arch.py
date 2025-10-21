@@ -10,7 +10,7 @@ import safetensors.torch
 import torch
 from torchvision import transforms
 from seconohe.bti import BatchedTensorIterator
-from seconohe.torch import model_to_target
+from seconohe.torch import model_to_target, TorchProfile
 from seconohe.logger import get_debug_level
 from comfy.utils import common_upscale
 
@@ -565,6 +565,8 @@ class RemBg(object):
                       mask_threshold=0.000,  # Optional mask threshold
                       image_compose=None,    # Optional image composition function
                       keep_depths=True, keep_edges=True, keep_masks=True, out_dtype=None):
+        profiler = TorchProfile(self.logger, 2, f"profile for {self.model_type} ({self.target_dtype})", self.target_device)
+
         self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method, out_dtype)
         self.init_depths(depths_bhw, batch_size, keep_depths)
         self.init_masks(keep_masks, mask_threshold)
@@ -583,5 +585,8 @@ class RemBg(object):
                         del images_bchw
                         del masks_bchw_scaled
                     del masks_bchw
+        outs, masks, depths, edges = (self.get_outs(), self.get_masks(), self.get_all_depths(), self.get_edges())
 
-        return self.get_outs(), self.get_masks(), self.get_all_depths(), self.get_edges()
+        profiler.end()
+
+        return outs, masks, depths, edges
