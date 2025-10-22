@@ -269,8 +269,8 @@ These examples show how to have more control over the process.
 Examples for video processing, using ComfyUI video nodes and advanced [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) nodes.
 
 - [05_Video](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video.json): Simple video workflow to replace the background of a video using a still image. Uses the Comfy-Core nodes.
-- [05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.json): Video workflow to replace the background of a video using another video. Uses the [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) which allows resize, skip frames, limit frames, etc.
-  ![05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.jpg)
+- [05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.json): Video workflow to replace the background of a video using another video. Uses the [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) which allows resize, skip frames, limit frames, etc.<br>
+  [![05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.jpg)](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Video_Advanced.jpg)
 
 ### Model specific
 
@@ -284,12 +284,11 @@ Examples related to particular models. PDFNet uses a depth map and DiffDIS is a 
 
 Example workflows showing how to compare the models.
 
-- [07_PDFNet_vs_BiRefNet](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.json): Example to compare two models, in this case PDFNet vs BiRefNet
+- [07_PDFNet_vs_BiRefNet](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.json): Example to compare two models, in this case PDFNet vs BiRefNet<br>
   ![07_PDFNet_vs_BiRefNet](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.jpg)
-- [09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.json): Compares 10 models and generates an images showing the output from the 10 models. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to compose the final image.
-   - ![09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.jpg)
-   - [Click here for a detailed image](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara.jpg)
-   - [![Output](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara_out_small.jpg)](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara_out.jpg)
+- [09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.json): Compares 10 models and generates an images showing the output from the 10 models. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to compose the final image.<br>
+  [![09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.jpg)](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara.jpg)<br>
+  [![Output](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara_out_small.jpg)](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara_out.jpg)
 
 
 ## &#x0001F4DD; Usage Notes
