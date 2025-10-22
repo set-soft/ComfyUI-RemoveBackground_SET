@@ -288,6 +288,7 @@ Example workflows showing how to compare the models.
   ![07_PDFNet_vs_BiRefNet](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.jpg)
 - [09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.json): Compares 10 models and generates an images showing the output from the 10 models. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to compose the final image.
   ![09_Compare_Models](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.jpg)
+  [Click here for a detailed image](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Compara.jpg)
 
 
 ## &#x0001F4DD; Usage Notes
