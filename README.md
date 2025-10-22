@@ -286,6 +286,85 @@ Example workflows showing how to compare the models.
 
 ## &#x0001F4DD; Usage Notes
 
+### Informal explanation of the terms
+
+I don't pretend to define them strictly, just to give you an idea of their meaning
+
+- DIS stands for Dichotomous Image Segmentation, is a technical term used for tasks where you separate an image in two different things, in particular the foreground and background.
+  There are some specialized DIS tasks like COD and HRSOD
+  - SOD (Salient Object Detection) a term also used for this task, we want to separate the object in the foreground, the one that is "salient"
+  - HRSOD (High Resolution SOD) used when we want to get a highly detailed separation, preserving high detail of the boundary
+  - COD (Camouflage Object Detection) as its name implies here the object is camouflaged, making the task harder
+  - Matte: this term is used when we want to separate translucent objects, getting a mask that shows how much of the background is blended with the foreground
+  - Portrait: refers to human portraits, used for the task to separate a human from the background
+
+### Why so many models?
+
+Each model has its own strengths, one might excel for an image and miserably fail for another.
+
+There are many things that determines how well a model works:
+
+- Its architecture, how it tackles the task. This is the most technical issue, how to do it well, fast and using fewer resources
+- Its size, how many parameters are used. Bigger implementations of the same architecture might perform better, at the cost of time and resources
+- Its training, the dataset used and the mechanism used to guide the model
+
+BiRefNet is a good example where you can see one architecture trained using:
+
+- Different sizes, *Lite* models uses less parameters
+- Different datasets, you'll find models trained for General DIS, COD, HRSOD and Matte tasks using specific datasets
+
+You'll also find a version of this model trained by a company with a curated dataset, and perhaps some twist in the strategy: BRIA v2.0
+
+
+### Notes about the architectures
+
+Some random notes you might find interesting:
+
+- Models using the Swin Transformer as *backbone*.
+   - BiRefNet Lite uses the Tiny size
+   - MVANet/BEN, InSPyReNet and PDFNet uses the Base size
+   - BiRefNet Full uses the Large size
+- BEN and BEN2 models uses the same architecture, the difference is in the training
+   - Both are basically [MVANet](https://github.com/qianyu-dlut/MVANet/) with a few changes in activation functions and similar details
+- BRIA v1.4 is a U-2-Net model, small changes, trained with a proprietary dataset. Not for commercial use.
+- BRIA v2.0 is a BiRefNet model, again trained with a proprietary dataset and not for commercial use.
+- PDFNet uses a cleaver strategy: leverage the Depth Anything V2 power (using DINO v2 backbone and training) to assist the task. The cost is twice the time of similar models.
+- DiffDIS uses a completely different approach. This is the fast SD Turbo (1-4 steps diffusion model) repurposed for the DIS task.
+  It processes two latents, one for the mask and the other for the edges. The image is generated in one step, but the cost in time and resources is huge when compared with the other models.
+- MODNet was designed for fast separation, is by far the fastest. The cost is that it isn't a general model. The available trained model is for portraits.
+- IS-Net is an evolution of U-2-Net
+  - These models uses a nested UNet (an UNet in each stage of the bigger UNet)
+  - No Swin Transformer (or ResNet) backbone
+  - Even when they are older than the current generation that uses Swin as backbone, it can deliver very good results with less resources
+
+
+### Resources comparison
+
+This is not a formal benchmark, is just the result of a few tests using an RTX3060 with 12 GiB of VRAM on a system with 32 GiB of RAM.
+
+| Model | Time (ms) | Memory (MiB) | Image Size |
+|:---|---:|---:|---:|
+| MODNet Photo portrait | 60 | 175 | 512 |
+| U-2-Net Base | 147 | 371 | 320 |
+| IS-Net Base | 196 | 776 | 1024 |
+| IS-Net BRIA v1.4 | 200 | 776 | 1024 |
+| MVANet General BEN2 F16 | 421 | 1605 | 1024 |
+| BiRefNet General F16 | 516 | 1592 | 1024 |
+| InSPyReNet Base 1.2.12 | 661 | 2910 | 1024 |
+| BiRefNet BRIA v2.0 | 1029 | 3181 | 1024 |
+| PDFNet Base | 1684 | 3551 | 1024 |
+| DiffDIS Base F16 | 3109 | 6102 | 1024 |
+| DiffDIS Base F32 | 5249 | 5674 | 1024 |
+
+Note that `BRIA v2` and `BiRefNet General F16` are the same architecture, but one is working on 32 bits and the other on 16 bits. The impact in speed and memory is very important.
+The 16 bits weights runs twice faster using half the memory.
+
+In the DiffDIS this difference is not maintained and, for some reason, the 16 bits weights needs more memory, not sure why.
+
+Also note that IS-Net models are much faster and needs much less memory than the rest, even when using a 1024x1024 image size.
+
+### Debug
+
 - **Logging:** &#x0001F50A; The nodes use Python's `logging` module. Debug messages can be helpful for understanding the transformations being applied.
   You can control log verbosity through ComfyUI's startup arguments (e.g., `--preview-method auto --verbose DEBUG` for more detailed ComfyUI logs
   which might also affect custom node loggers if they are configured to inherit levels). The logger name used is "RemoveBackground_SET".
