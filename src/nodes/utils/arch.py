@@ -530,6 +530,7 @@ class RemBg(object):
     def get_images(self, batch_range):
         images_bchw_pre = images_bchw = self.batched_iterator.get_batch(batch_range)
         if self.needs_scale:
+            self.logger.debug(f"Scaling the input image from {images_bchw_pre.shape} to {self.model_w}x{self.model_h}")
             images_bchw = self.image_preproc.proc(images_bchw_pre)
         if not self.gen_outs:
             # We won't need them, so we can release the reference
