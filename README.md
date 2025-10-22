@@ -20,6 +20,11 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 - &#x0001F680; [Installation](#-installation)
 - &#x0001F4E6; [Dependencies](#-dependencies)
 - &#x0001F5BC;&#xFE0F; [Examples](#&#xFE0F;-examples)
+   - [Simple](#simple) (01_Simple, 01_Change_Background)
+   - [More advanced](#more-advanced) (02_Full_example, 03_Web_page_examples, 04_Advanced)
+   - [Video](#video) (05_Video, 05_Video_Advanced)
+   - [Model specific](#model-specific) (01_PDFNet_simple, 06_PDFNet_external_map, 01_Simple_DiffDIS)
+   - [Comparison](#comparison) (07_PDFNet_vs_BiRefNet, 09_Compare_Models)
 - &#x2728; [Nodes](#-nodes)
    - [Loaders](#loaders)
       - [Load RemBG model by file](#load-rembg-model-by-file)
@@ -236,6 +241,44 @@ The nodes should then appear under the "RemBG_SET" category in the "Add Node" me
 
 Once installed the examples are available in the ComfyUI workflow templates, in the *remove-background* section (or ComfyUI-RemoveBackground_SET).
 
+### Simple
+
+These examples shows how to remove the background, obtaining an image with transparency, or replacing it with an image.
+Note that RGBA images, the ones with transparency, aren't supported by all nodes.
+The correct way to handle them is to have the image and a mask, but using RGBA is what most background removal tools do.
+
+- [01_Simple](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/01_Simple.json): Basic use to get an RGBA image
+- [01_Change_Background](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/01_Change_Background.json): Basic example showing how to replace the background of an image
+
+### More advanced
+
+These examples show how to have more control over the process.
+
+- [02_Full_example](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/02_Full_example.json): Shows how to use the full node to get an RGBA image. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to download the example image.
+- [03_Web_page_examples](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/03_Web_page_examples.json): Allows comparing the result with the original image. Downloads the BiRefNet exmamples. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to download the example images and [rgthree-comfy](https://github.com/rgthree/rgthree-comfy) to compare the images.
+- [04_Advanced](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/04_Advanced.json): Shows how to do custom pre and post processing, including filling with a color, background image replacement and object highlight. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) and [rgthree-comfy](https://github.com/rgthree/rgthree-comfy) to compare the images.
+
+### Video
+
+Examples for video processing, using ComfyUI video nodes and advanced [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) nodes.
+
+- [05_Video](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/05_Video.json): Simple video workflow to replace the background of a video using a still image. Uses the Comfy-Core nodes.
+- [![05_Video_Advanced](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.jpg)](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.json): Video workflow to replace the background of a video using another video. Uses the [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) which allows resize, skip frames, limit frames, etc.
+
+### Model specific
+
+Examples related to particular models. PDFNet uses a depth map and DiffDIS is a diffusion model repurposed for DIS.
+
+- [01_PDFNet_simple](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/01_PDFNet_simple.json): Shows how to use the PDFNet model and the automatically computed maps.
+- [06_PDFNet_external_map](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/06_PDFNet_external_map.json): Shows how to use the PDFNet model and the externally computed maps.
+- [01_Simple_DiffDIS](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/01_Simple_DiffDIS.json): Basic use to get an RGBA image using DiffDIS model
+
+### Comparison
+
+Example workflows showing how to compare the models.
+
+- [![07_PDFNet_vs_BiRefNet](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.jpg)](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/07_PDFNet_vs_BiRefNet.json): Example to compare two models, in this case PDFNet vs BiRefNet
+- [![09_Compare_Models](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.jpg)](https://raw.githubusercontent.com/set-soft/RemoveBackground_SET/refs/heads/main/example_workflows/09_Compare_Models.json): Compares 10 models and generates an images showing the output from the 10 models. Needs [Image Misc](https://github.com/set-soft/ComfyUI-ImageMisc) to compose the final image.
 
 
 ## &#x0001F4DD; Usage Notes
