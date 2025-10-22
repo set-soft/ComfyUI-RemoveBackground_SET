@@ -274,6 +274,18 @@ Examples for video processing, using ComfyUI video nodes and advanced [ComfyUI-V
 - [05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.json): Video workflow to replace the background of a video using another video. Uses the [ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) which allows resize, skip frames, limit frames, etc.<br>
   [![05_Video_Advanced](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/example_workflows/05_Video_Advanced.jpg)](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/refs/heads/main/doc/Video_Advanced.jpg)
 
+Foreground input video:
+
+https://github.com/user-attachments/assets/fdf51438-5904-4ee9-986c-4ba0b40c1654
+
+Background input video:
+
+https://github.com/user-attachments/assets/6cabb7bf-7556-4990-a22c-44487747ab4c
+
+Output using InSPyReNet Base model:
+
+https://github.com/user-attachments/assets/e08411ae-d5d9-4596-9383-c76540b02dda
+
 ### Model specific
 
 Examples related to particular models. PDFNet uses a depth map and DiffDIS is a diffusion model repurposed for DIS.
@@ -407,5 +419,5 @@ Also note that IS-Net models are much faster and needs much less memory than the
   - [Swin](https://github.com/microsoft/Swin-Transformer): Ze Liu, Yutong Lin, Yixuan Wei
   - [U-2-Net](https://github.com/xuebinqin/U-2-Net): Xuebin Qin, Zichen Zhang, Chenyang Huang, Masood Dehghan, Osmar R. Zaiane and Martin Jagersand
     - [IS-Net](https://github.com/xuebinqin/DIS): Xuebin Qin, Hang Dai, Xiaobin Hu, Deng-Ping Fan, Ling Shao, Luc Van Gool
-- Code for Depth Anything v2 by [Kijai](https://github.com/kijai) (Jukka Sepp‰nen)
+- Code for Depth Anything v2 by [Kijai](https://github.com/kijai) (Jukka Sepp√§nen)
 - All working together by Salvador E. Tropea
