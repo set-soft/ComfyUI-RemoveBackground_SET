@@ -394,7 +394,7 @@ Also note that IS-Net models are much faster and needs much less memory than the
 
 ## &#x0001F4DC; Project History
 
-- 1.0.0 2025-10-??: Initial release
+- 1.0.0 2025-10-23: Initial release
 
 
 ## &#x2696;&#xFE0F; License
