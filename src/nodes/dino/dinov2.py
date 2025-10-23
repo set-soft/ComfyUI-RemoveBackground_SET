@@ -25,9 +25,10 @@ from .dinov2_layers.patch_embed import PatchEmbed
 from .dinov2_layers.swiglu_ffn import SwiGLUFFNFused
 from .dinov2_layers.attention import MemEffAttention
 from .dinov2_layers.block import NestedTensorBlock as Block
+from .. import NODES_NAME
 
 
-logger = logging.getLogger("dinov2")
+logger = logging.getLogger(NODES_NAME+".dinov2")
 
 
 def named_apply(fn: Callable, module: nn.Module, name="", depth_first=True, include_root=False) -> nn.Module:
@@ -126,13 +127,13 @@ class DinoVisionTransformer(nn.Module):
             dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]  # stochastic depth decay rule
 
         if ffn_layer == "mlp":
-            logger.info("using MLP layer as FFN")
+            logger.debug("DINO: using MLP layer as FFN")
             ffn_layer = Mlp
         elif ffn_layer == "swiglufused" or ffn_layer == "swiglu":
-            logger.info("using SwiGLU layer as FFN")
+            logger.debug("DINO: using SwiGLU layer as FFN")
             ffn_layer = SwiGLUFFNFused
         elif ffn_layer == "identity":
-            logger.info("using Identity layer as FFN")
+            logger.debug("DINO: using Identity layer as FFN")
 
             def f(*args, **kwargs):
                 return nn.Identity()
