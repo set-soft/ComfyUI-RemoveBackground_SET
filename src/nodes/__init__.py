@@ -11,7 +11,7 @@ __license__ = "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licen
 __author__ = "Salvador E. Tropea"
 NODES_NAME = "RemoveBackground_SET"
 MODELS_DIR_KEY = "rembg"
-MODELS_DIR = "RemBG"
+MODELS_DIR = "rembg"  # Using RemBG works, but ComfyUI will use the lowercase version when we ask
 main_logger = initialize_logger(NODES_NAME)
 
 BATCHED_OPS = ("INT", {

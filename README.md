@@ -51,7 +51,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 
 ### Loaders
 
-The loaders are used to load a background removal model. We have a general loader that will look for models in the `ComfyUI/models/RemBG` folder.
+The loaders are used to load a background removal model. We have a general loader that will look for models in the `ComfyUI/models/rembg` folder.
 You can reconfigure this path using the `rembg` key in the `extra_model_paths.yaml` file of ComfyUI.
 
 In addition we have automatic downloaders for each supported model family.
@@ -60,10 +60,10 @@ In addition we have automatic downloaders for each supported model family.
    - **Display Name:** `Load RemBG model by file`
    - **Internal Name:** `LoadRembgByBiRefNetModel_SET`
    - **Category:** `RemBG_SET/Load`
-   - **Description:** Loads a model from the `ComfyUI/models/RemBG` folder, you can connect its output to any of the processing nodes
+   - **Description:** Loads a model from the `ComfyUI/models/rembg` folder, you can connect its output to any of the processing nodes
    - **Purpose:** Used for models that you already downloaded, or perhaps you trained.
    - **Inputs:**
-     - `model` (`FILENAME`): The name of the model in the `ComfyUI/models/RemBG` folder, use `R` to refresh the list
+     - `model` (`FILENAME`): The name of the model in the `ComfyUI/models/rembg` folder, use `R` to refresh the list
      - `device` (`DEVICE`): The device where the model will be executed. Using `AUTO` you'll use the default ComfyUI target (i.e. your GPU)
      - `dtype` (`DTYPE_OPS`): Used to select the data type using during inference. `AUTO` means we will use the same data type as the model weights loaded from disk. Most of the models performs quite well on 16 bits floating point. You can force 16 bits to save VRAM, or even force to convert 16 bits values to 32 bits.
      - `vae` (`VAE`, optional): Only needed for DiffDIS, you have to connect a "Load VAE" node here. The model needs the SD Turbo VAE, please look in the examples.
