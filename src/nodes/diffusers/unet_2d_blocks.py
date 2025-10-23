@@ -357,7 +357,7 @@ class UNetMidBlock2DCrossAttn_mecross(nn.Module):
         if cross_attention_kwargs is not None:
             if cross_attention_kwargs.get("scale", None) is not None:
                 logger.warning(
-                    "Passing `scale` to `cross_attention_kwargs` is depcrecated. `scale` will be ignored."
+                    "Passing `scale` to `cross_attention_kwargs` is deprecated. `scale` will be ignored."
                 )
 
         hidden_states = self.resnets[0](hidden_states, temb)
@@ -498,7 +498,7 @@ class UNetMidBlock2DCrossAttn(nn.Module):
     ) -> torch.FloatTensor:
         if cross_attention_kwargs is not None:
             if cross_attention_kwargs.get("scale", None) is not None:
-                logger.warning("Passing `scale` to `cross_attention_kwargs` is depcrecated. `scale` will be ignored.")
+                logger.warning("Passing `scale` to `cross_attention_kwargs` is deprecated. `scale` will be ignored.")
 
         hidden_states = self.resnets[0](hidden_states, temb)
         for attn, resnet in zip(self.attentions, self.resnets[1:]):
@@ -636,7 +636,7 @@ class CrossAttnDownBlock2D(nn.Module):
     ) -> Tuple[torch.FloatTensor, Tuple[torch.FloatTensor, ...]]:
         if cross_attention_kwargs is not None:
             if cross_attention_kwargs.get("scale", None) is not None:
-                logger.warning("Passing `scale` to `cross_attention_kwargs` is depcrecated. `scale` will be ignored.")
+                logger.warning("Passing `scale` to `cross_attention_kwargs` is deprecated. `scale` will be ignored.")
 
         output_states = ()
 
@@ -996,7 +996,7 @@ class CrossAttnUpBlock2D(nn.Module):
     ) -> torch.FloatTensor:
         if cross_attention_kwargs is not None:
             if cross_attention_kwargs.get("scale", None) is not None:
-                logger.warning("Passing `scale` to `cross_attention_kwargs` is depcrecated. `scale` will be ignored.")
+                logger.warning("Passing `scale` to `cross_attention_kwargs` is deprecated. `scale` will be ignored.")
 
         is_freeu_enabled = (
             getattr(self, "s1", None)

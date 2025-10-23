@@ -302,7 +302,7 @@ class Transformer2DModel_mecross(nn.Module):
         if cross_attention_kwargs is not None:
             if cross_attention_kwargs.get("scale", None) is not None:
                 logger.warning(
-                    "Passing `scale` to `cross_attention_kwargs` is depcrecated. `scale` will be ignored."
+                    "Passing `scale` to `cross_attention_kwargs` is deprecated. `scale` will be ignored."
                 )
 
         if attention_mask is not None and attention_mask.ndim == 2:

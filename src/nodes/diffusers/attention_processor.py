@@ -195,7 +195,7 @@ class Attention(nn.Module):
                 dim_head, elementwise_affine=False, bias=False, eps=eps
             )
         elif qk_norm == "layer_norm_across_heads":
-            # Lumina applys qk norm across all heads
+            # Lumina applies qk norm across all heads
             self.norm_q = nn.LayerNorm(dim_head * heads, eps=eps)
             self.norm_k = nn.LayerNorm(dim_head * kv_heads, eps=eps)
         elif qk_norm == "rms_norm":
@@ -1253,7 +1253,7 @@ class Attention_(nn.Module):
         # If doesn't apply LoRA do `add_k_proj` or `add_v_proj`
         is_lora_activated.pop("add_k_proj", None)
         is_lora_activated.pop("add_v_proj", None)
-        # 2. else it is not posssible that only some layers have LoRA activated
+        # 2. else it is not possible that only some layers have LoRA activated
         if not all(is_lora_activated.values()):
             raise ValueError(
                 f"Make sure that either all layers or no layers have LoRA activated, but have {is_lora_activated}"
@@ -2000,7 +2000,7 @@ class Attention_mecross(nn.Module):
         # If doesn't apply LoRA do `add_k_proj` or `add_v_proj`
         is_lora_activated.pop("add_k_proj", None)
         is_lora_activated.pop("add_v_proj", None)
-        # 2. else it is not posssible that only some layers have LoRA activated
+        # 2. else it is not possible that only some layers have LoRA activated
         if not all(is_lora_activated.values()):
             raise ValueError(
                 f"Make sure that either all layers or no layers have LoRA activated, but have {is_lora_activated}"

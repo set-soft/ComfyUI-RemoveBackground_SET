@@ -379,7 +379,7 @@ class BasicLayer(nn.Module):
         """
 
         # calculate attention mask for SW-MSA
-        # Turn int to torch.tensor for the compatiability with torch.compile in PyTorch 2.5. (BiRefNet)
+        # Turn int to torch.tensor for the compatibility with torch.compile in PyTorch 2.5. (BiRefNet)
         Hp = torch.ceil(torch.tensor(H) / self.window_size).to(torch.int64) * self.window_size
         Wp = torch.ceil(torch.tensor(W) / self.window_size).to(torch.int64) * self.window_size
         img_mask = torch.zeros((1, Hp, Wp, 1), device=x.device)  # 1 Hp Wp 1
@@ -464,7 +464,7 @@ class SwinTransformer(nn.Module):
 
     Args:
         pretrain_img_size (int): Input image size for training the pretrained model,
-            used in absolute postion embedding. Default 224.
+            used in absolute position embedding. Default 224.
         patch_size (int | tuple(int)): Patch size. Default: 4.
         in_channels (int): Number of input image channels. Default: 3.
         embed_dim (int): Number of linear projection output channels. Default: 96.
