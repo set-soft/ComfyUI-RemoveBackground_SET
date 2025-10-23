@@ -34,4 +34,3 @@ Banner = "https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SE
 
 [tool.setuptools.dynamic]
 version = {attr = "nodes.__version__"}
-
