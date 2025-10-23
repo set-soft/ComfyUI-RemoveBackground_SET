@@ -8,14 +8,10 @@
 #   https://github.com/facebookresearch/dino/blob/master/vision_transformer.py
 #   https://github.com/rwightman/pytorch-image-models/tree/master/timm/models/vision_transformer.py
 
-import logging
-
 from torch import Tensor
 from torch import nn
 import comfy.ops
 ops = comfy.ops.manual_cast
-
-logger = logging.getLogger("dinov2")
 
 
 try:
@@ -23,7 +19,6 @@ try:
 
     XFORMERS_AVAILABLE = True
 except ImportError:
-    logger.warning("xFormers not available")
     XFORMERS_AVAILABLE = False
 
 
