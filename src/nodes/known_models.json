@@ -1,0 +1,571 @@
+{
+    #
+    # BiRefNet models
+    #
+    "BiRefNet General": {
+        "name": "General",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet/resolve/main/model.safetensors",
+        "file_name": "General",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "424 MiB",
+        "ops_name": "General (424 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        # Needs confirmation
+        "dataset": "DIS5K-TR, DIS-TEs, DUTS-TR_TE, HRSOD-TR_TE, UHRSD-TR_TE, HRS10K-TR_TE, TR-P3M-10k, TE-P3M-500-NP, TE-P3M-500-P, TR-humans"
+    },
+    "BiRefNet General (HR=2048)": {
+        "name": "General (HR=2048)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_HR/resolve/main/model.safetensors",
+        "file_name": "General-HR",
+        "train_w": 2048,
+        "train_h": 2048,
+        "model_t": "BiRefNet",
+        "size": "424 MiB",
+        "ops_name": "General (HR=2048) (424 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        # Needs confirmation
+        "dataset": "AIM-500, DIS-TR, DIS-TEs, HIM2K, PPM-100, TE-HRS10K, TE-Human-2k, TE-P3M-500-P, TR-AM-2k, TR-HRSOD, TR-UHRSD, Distinctions-646_BG-20k, Human-2k_BG-20k, TE-AM-2k, TE-HRSOD, TE-P3M-500-NP, TE-UHRSD, TR-HRS10K, TR-P3M-10k, TR-humans",
+    },
+    "BiRefNet General Lite": {
+        "name": "General Lite",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_lite/resolve/main/model.safetensors",
+        "file_name": "General-Lite",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "170 MiB",
+        "ops_name": "General Lite (170 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        # Needs confirmation
+        "dataset": "DIS5K-TR, DIS-TEs, DUTS-TR_TE, HRSOD-TR_TE, UHRSD-TR_TE, HRS10K-TR_TE, TR-P3M-10k, TE-P3M-500-NP, TE-P3M-500-P, TR-humans"
+    },
+    "BiRefNet General 2K Lite": {
+        "name": "General 2K Lite",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_lite-2K/resolve/main/model.safetensors",
+        "file_name": "General-Lite-2K",
+        "train_w": 2560,
+        "train_h": 1440,
+        "model_t": "BiRefNet",
+        "size": "170 MiB",
+        "ops_name": "General 2K Lite (170 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    "BiRefNet General (LR=512)": {
+        "name": "General (LR=512)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_512x512/resolve/main/model.safetensors",
+        "file_name": "General-reso_512",
+        "train_w": 512,
+        "train_h": 512,
+        "model_t": "BiRefNet",
+        "size": "424 MiB",
+        "ops_name": "General (LR=512) (424 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors"
+    },
+    "BiRefNet General legacy": {
+        "name": "General legacy",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-legacy/resolve/main/model.safetensors",
+        "file_name": "General-legacy",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "General legacy (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    # dynamic is from 256x256 to 2304x2304
+    "BiRefNet General dynamic res": {
+        "name": "General dynamic res",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_dynamic/resolve/main/model.safetensors",
+        "file_name": "General-dynamic",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "424 MiB",
+        "ops_name": "General dynamic res (424 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors"
+    },
+    "BiRefNet Portrait": {
+        "name": "Portrait",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-portrait/resolve/main/model.safetensors",
+        "file_name": "Portrait",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "Portrait (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        # Needs confirmation
+        "dataset": "P3M-10k, TR-humans"
+    },
+    # Matting (w/alpha)
+    "BiRefNet Matting": {
+        "name": "Matting",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-matting/resolve/main/model.safetensors",
+        "file_name": "Matting",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "Matting (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        # Needs confirmation
+        "dataset": "P3M-10k (except TE-P3M-500-NP), TR-humans, AM-2k, AIM-500, Human-2k (synthesized with BG-20k), Distinctions-646 (synthesized with BG-20k), HIM2K, PPM-100"
+    },
+    "BiRefNet Matting Lite": {
+        "name": "Matting Lite",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_lite-matting/resolve/main/model.safetensors",
+        "file_name": "Matting-Lite",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "85 MiB",
+        "ops_name": "Matting Lite (85 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors"
+    },
+    "BiRefNet Matting (HR=2048)": {
+        "name": "Matting (HR=2048)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet_HR-matting/resolve/main/model.safetensors",
+        "file_name": "Matting-HR",
+        "train_w": 2048,
+        "train_h": 2048,
+        "model_t": "BiRefNet",
+        "size": "424 MiB",
+        "ops_name": "Matting (HR=2048) (424 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors"
+    },
+    # Dichotomous Image Segmentation (DIS)
+    "BiRefNet Dichotomous Img Seg (DIS)": {
+        "name": "Dichotomous Img Seg (DIS)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K/resolve/main/model.safetensors",
+        "file_name": "DIS",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "Dichotomous Img Seg (DIS) (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "DIS5K-TR"
+    },
+    "BiRefNet Dichotomous Img Seg (DIS) TR/TEs": {
+        "name": "Dichotomous Img Seg (DIS) TR/TEs",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K-TR_TEs/resolve/main/model.safetensors",
+        "file_name": "DIS-TR_TEs",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "Dichotomous Img Seg (DIS) TR/TEs (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    # High-Resolution Salient Object Detection (HRSOD)
+    "BiRefNet HR Salient Obj. Detect.(HRSOD)": {
+        "name": "HR Salient Obj. Detect.(HRSOD)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-HRSOD/resolve/main/model.safetensors",
+        "file_name": "HRSOD",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "HR Salient Obj. Detect.(HRSOD) (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    # Camouflaged Object Detection (COD)
+    "BiRefNet Camouflaged Obj. Detect.(COD)": {
+        "name": "Camouflaged Obj. Detect.(COD)",
+        "url": "https://huggingface.co/ZhengPeng7/BiRefNet-COD/resolve/main/model.safetensors",
+        "file_name": "COD",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "Camouflaged Obj. Detect.(COD) (844 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "COD10K-TR, CAMO-TR"
+    },
+    "BiRefNet BRIA v2.0": {
+        "name": "BRIA v2.0",
+        "url": "https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors",
+        "file_name": "BRIA-RMBG2_0",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BiRefNet",
+        "size": "844 MiB",
+        "ops_name": "BRIA v2.0 (No Com! 844 MiB)",
+        "no_commercial": true,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    #
+    # MVANet/BEN models
+    #
+    "MVANet General BEN2 F16": {
+        "name": "General BEN2 F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN2_Base_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "184 MiB",
+        "ops_name": "General BEN2 F16 (184 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DIS5K, 22K proprietary"
+    },
+    "MVANet General BEN2": {
+        "name": "General BEN2",
+        "url": "https://huggingface.co/PramaLLC/BEN2/resolve/main/model.safetensors",
+        "file_name": "BEN2_Base",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "363 MiB",
+        "ops_name": "General BEN2 (363 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "DIS5K, 22K proprietary"
+    },
+    "MVANet General BEN1 F16": {
+        "name": "General BEN1 F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN1_Base_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "184 MiB",
+        "ops_name": "General BEN1 F16 (184 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DIS5K, 22K proprietary"
+    },
+    "MVANet General BEN1": {
+        "name": "General BEN1",
+        "url": "https://huggingface.co/PramaLLC/BEN/resolve/main/BEN_Base.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "1.05 GiB",
+        "ops_name": "General BEN1 (1.05 GiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS5K, 22K proprietary"
+    },
+    "MVANet MVANet F16": {
+        "name": "MVANet F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/MVANet_80_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "184 MiB",
+        "ops_name": "MVANet F16 (184 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DIS5K"
+    },
+    "MVANet MVANet": {
+        "name": "MVANet",
+        "url": "https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "369 MiB",
+        "ops_name": "MVANet (369 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS5K"
+    },
+    "MVANet Finegrain F16": {
+        "name": "Finegrain F16",
+        "url": "https://huggingface.co/finegrain/finegrain-box-segmenter/resolve/main/model.safetensors",
+        "file_name": "Finegrain_F16",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "MVANet",
+        "size": "184 MiB",
+        "ops_name": "Finegrain F16 (184 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors"
+    },
+    #
+    # InSPyReNet models
+    #
+    "InSPyReNet Base 1.2.12": {
+        "name": "Base 1.2.12",
+        "url": "https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_base.pth",
+        "file_name": "InSPyReNet_1_2_12_base",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "InSPyReNet",
+        "size": "351 MiB",
+        "ops_name": "Base 1.2.12 (351 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS-TR, HRSOD-TR, UHRSD-TR, DIS-TR, DUTS-TE, DUT-OMRON, ECSSD,HKU-IS, PASCAL-S, DAVIS-S, HRSOD-TE,UHRSD-TE, FSS-1000, MSRA-10K, DIS-VD, DIS-TE1, DIS-TE2, DIS-TE3, DIS-TE4"
+    },
+    # Safetensors? https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors
+    "InSPyReNet Fast 1.2.12": {
+        "name": "Fast 1.2.12",
+        "url": "https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_fast.pth",
+        "file_name": "InSPyReNet_1_2_12_fast",
+        "train_w": 384,
+        "train_h": 384,
+        "model_t": "InSPyReNet",
+        "size": "351 MiB",
+        "ops_name": "Fast 1.2.12 (351 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS-TR, HRSOD-TR, UHRSD-TR, DIS-TR, DUTS-TE, DUT-OMRON, ECSSD,HKU-IS, PASCAL-S, DAVIS-S, HRSOD-TE,UHRSD-TE, FSS-1000, MSRA-10K, DIS-VD, DIS-TE1, DIS-TE2, DIS-TE3, DIS-TE4"
+    },
+    "InSPyReNet Nightly 1.2.12": {
+        "name": "Nightly 1.2.12",
+        "url": "https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_base_nightly.pth",
+        "file_name": "InSPyReNet_1_2_12_base_nightly.pth",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "InSPyReNet",
+        "size": "351 MiB",
+        "ops_name": "Nightly 1.2.12 (351 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS-TR, HRSOD-TR, UHRSD-TR, DIS-TR, DUTS-TE, DUT-OMRON, ECSSD,HKU-IS, PASCAL-S, DAVIS-S, HRSOD-TE,UHRSD-TE, FSS-1000, MSRA-10K, DIS-VD, DIS-TE1, DIS-TE2, DIS-TE3, DIS-TE4"
+    },
+    #
+    # U²-Net models
+    #
+    "U-2-Net Base (u2net)": {
+        "name": "Base (u2net)",
+        "url": "https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models/u2net.pth",
+        "file_name": null,
+        "train_w": 320,
+        "train_h": 320,
+        "model_t": "U-2-Net",
+        "size": "169 MiB",
+        "ops_name": "Base (u2net 169 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS-TR"
+    },
+    "U-2-Net Small (u2netp)": {
+        "name": "Small (u2netp)",
+        "url": "https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models/u2netp.pth",
+        "file_name": null,
+        "train_w": 320,
+        "train_h": 320,
+        "model_t": "U-2-Net",
+        "size": "4.5 MiB",
+        "ops_name": "Small (u2netp 4.5 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS-TR"
+    },
+    #
+    # IS-Net models
+    #
+    "IS-Net Base (isnet)": {
+        "name": "Base (isnet)",
+        "url": "https://huggingface.co/Carve/isnet/resolve/main/isnet.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "IS-Net",
+        "size": "169 MiB",
+        "ops_name": "Base (isnet 169 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS v1.0"
+    },
+    "IS-Net DIS5K (isnet-general-use)": {
+        "name": "DIS5K (isnet-general-use)",
+        "url": "https://huggingface.co/ClockZinc/IS-NET_pth/resolve/main/isnet-general-use.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "IS-Net",
+        "size": "169 MiB",
+        "ops_name": "DIS5K (isnet-general-use 169 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS5K"
+    },
+    "IS-Net CarveSet (isnet-97-carveset)": {
+        "name": "CarveSet (isnet-97-carveset)",
+        "url": "https://huggingface.co/Carve/isnet/resolve/main/isnet-97-carveset.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "IS-Net",
+        "size": "169 MiB",
+        "ops_name": "CarveSet (isnet-97-carveset 169 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "CarveSet"
+    },
+    "IS-Net Anime (ISNet_anime-seg)": {
+        "name": "Anime (ISNet_anime-seg)",
+        "url": "https://huggingface.co/skytnt/anime-seg/resolve/main/model.safetensors",
+        "file_name": "ISNet_anime-seg.safetensors",
+        "train_w": 640,
+        "train_h": 640,
+        "model_t": "IS-Net",
+        "size": "195 MiB",
+        "ops_name": "Anime (ISNet_anime-seg 195 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    "IS-Net BRIA v1.4": {
+        "name": "BRIA v1.4",
+        "url": "https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.safetensors",
+        "file_name": "BRIA-RMBG1_4.safetensors",
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "IS-Net",
+        "size": "169 MiB",
+        "ops_name": "BRIA v1.4 (No Com! 169 MiB)",
+        "no_commercial": true,
+        "dtype": "float32",
+        "file_t": "safetensors"
+    },
+    #
+    # MODNet models
+    #
+    "MODNet Photo portrait": {
+        "name": "Photo portrait",
+        "url": "https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_photographic_portrait_matting.ckpt",
+        "file_name": null,
+        "train_w": 512,
+        "train_h": 512,
+        "model_t": "MODNet",
+        "size": "26 MiB",
+        "ops_name": "Photo portrait (26 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "Adobe Matting Dataset"
+    },
+    "MODNet Webcam portrait": {
+        "name": "Webcam portrait",
+        "url": "https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_webcam_portrait_matting.ckpt",
+        "file_name": null,
+        "train_w": 512,
+        "train_h": 512,
+        "model_t": "MODNet",
+        "size": "26 MiB",
+        "ops_name": "Webcam portrait (26 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "Adobe Matting Dataset"
+    },
+    #
+    # PDFNet models
+    #
+    "PDFNet Base": {
+        "name": "Base",
+        "url": "https://huggingface.co/Tennineee/PDFNet/resolve/main/PDFNet_Best.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "PDFNet",
+        "size": "392 MiB",
+        "ops_name": "Base (392 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS-TR"
+    },
+    "PDFNet General": {
+        "name": "General",
+        "url": "https://huggingface.co/Tennineee/PDFNet-General/resolve/main/PDF-Generally.pth",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "PDFNet",
+        "size": "392 MiB",
+        "ops_name": "General (392 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DIS5K, many HRSDO"
+    },
+    #
+    # DiffDIS model
+    #
+    "DiffDIS Base F16": {
+        "name": "Base F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "DiffDIS",
+        "size": "1.8 GiB",
+        "ops_name": "Base F16 (1.8 GiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DIS5K"
+    },
+    "DiffDIS Base": {
+        "name": "Base",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F32.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "DiffDIS",
+        "size": "3.5 GiB",
+        "ops_name": "Base (3.5 GiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "DIS5K"
+    }
+}

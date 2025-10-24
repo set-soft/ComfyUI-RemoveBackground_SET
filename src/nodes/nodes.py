@@ -2,8 +2,8 @@
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPLv3
 # Project: ComfyUI-RemoveBackground_SET
+import json
 import os
-import re
 import safetensors.torch
 from safetensors import safe_open
 from seconohe.downloader import download_file
@@ -23,156 +23,6 @@ from .utils.inspyrenet_config import parse_inspyrenet_config
 logger = main_logger
 auto_device_type = model_management.get_torch_device().type
 models_path_default = folder_paths.get_folder_paths(MODELS_DIR_KEY)[0]
-KNOWN_MODELS = {
-    #
-    # BiRefNet models
-    #
-    'General (424 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet/resolve/main/model.safetensors',
-        'General', 1024, 1024, 'BiRefNet'),
-    'General (HR=2048) (424 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet_HR/resolve/main/model.safetensors',
-        'General-HR', 2048, 2048, 'BiRefNet'),
-    'General Lite (170 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet_lite/resolve/main/model.safetensors',
-        'General-Lite', 1024, 1024, 'BiRefNet'),
-    'General 2K Lite (170 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet_lite-2K/resolve/main/model.safetensors',
-        'General-Lite-2K', 2560, 1440, 'BiRefNet'),
-    'General (LR=512) (424 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet_512x512/resolve/main/model.safetensors',
-        'General-reso_512', 512, 512, 'BiRefNet'),
-    'General legacy (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-legacy/resolve/main/model.safetensors',
-        'General-legacy', 1024, 1024, 'BiRefNet'),
-    # dynamic is from 256x256 to 2304x2304
-    'General dynamic res (424 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet_dynamic/resolve/main/model.safetensors',
-        'General-dynamic', 1024, 1024, 'BiRefNet'),
-    # Portrait
-    'Portrait (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-portrait/resolve/main/model.safetensors',
-        'Portrait', 1024, 1024, 'BiRefNet'),
-    # Matting (w/alpha)
-    'Matting (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-matting/resolve/main/model.safetensors',
-        'Matting', 1024, 1024, 'BiRefNet'),
-    'Matting Lite (85 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet_lite-matting/resolve/main/model.safetensors',
-        'Matting-Lite', 1024, 1024, 'BiRefNet'),
-    'Matting (HR=2048) (424 MiB)': (  # FP16
-        'https://huggingface.co/ZhengPeng7/BiRefNet_HR-matting/resolve/main/model.safetensors',
-        'Matting-HR', 2048, 2048, 'BiRefNet'),
-    # Dichotomous Image Segmentation (DIS)
-    'Dichotomous Img Seg (DIS) (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K/resolve/main/model.safetensors',
-        'DIS', 1024, 1024, 'BiRefNet'),
-    'Dichotomous Img Seg (DIS) TR/TEs (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-DIS5K-TR_TEs/resolve/main/model.safetensors',
-        'DIS-TR_TEs', 1024, 1024, 'BiRefNet'),
-    # High-Resolution Salient Object Detection (HRSOD)
-    'HR Salient Obj. Detect.(HRSOD) (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-HRSOD/resolve/main/model.safetensors',
-        'HRSOD', 1024, 1024, 'BiRefNet'),
-    # Camouflaged Object Detection (COD)
-    'Camouflaged Obj. Detect.(COD) (844 MiB)': (
-        'https://huggingface.co/ZhengPeng7/BiRefNet-COD/resolve/main/model.safetensors',
-        'COD', 1024, 1024, 'BiRefNet'),
-    'BRIA v2.0 (No Com! 844 MiB)': (
-        'https://huggingface.co/1038lab/RMBG-2.0/resolve/main/model.safetensors',
-        'BRIA-RMBG2_0', 1024, 1024, 'BiRefNet'),
-    #
-    # MVANet/BEN models
-    #
-    'General BEN2 F16 (184 MiB)': (
-        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN2_Base_F16.safetensors',
-        None, 1024, 1024, 'MVANet'),
-    'General BEN2 (363 MiB)': (
-        'https://huggingface.co/PramaLLC/BEN2/resolve/main/model.safetensors',
-        'BEN2_Base', 1024, 1024, 'MVANet'),
-    'General BEN1 F16 (184 MiB)': (
-        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/BEN1_Base_F16.safetensors',
-        None, 1024, 1024, 'MVANet'),
-    'General BEN1 (1.05 GiB)': (
-        'https://huggingface.co/PramaLLC/BEN/resolve/main/BEN_Base.pth',
-        None, 1024, 1024, 'MVANet'),
-    'MVANet F16 (184 MiB)': (
-        'https://huggingface.co/set-soft/RemBG/resolve/main/MVANet/MVANet_80_F16.safetensors',
-        None, 1024, 1024, 'MVANet'),
-    'MVANet (369 MiB)': (
-        'https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth',
-        None, 1024, 1024, 'MVANet'),
-    'Finegrain F16 (184 MiB)': (
-        'https://huggingface.co/finegrain/finegrain-box-segmenter/resolve/main/model.safetensors',
-        'Finegrain_F16', 1024, 1024, 'MVANet'),
-    #
-    # InSPyReNet models
-    #
-    'Base 1.2.12 (351 MiB)': (
-        'https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_base.pth',
-        'InSPyReNet_1_2_12_base', 1024, 1024, 'InSPyReNet'),
-    # Safetensors? https://huggingface.co/1038lab/inspyrenet/resolve/main/inspyrenet.safetensors
-    'Fast 1.2.12 (351 MiB)': (
-        'https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_fast.pth',
-        'InSPyReNet_1_2_12_fast', 384, 384, 'InSPyReNet'),
-    'Nightly 1.2.12 (351 MiB)': (
-        'https://github.com/plemeri/transparent-background/releases/download/1.2.12/ckpt_base_nightly.pth',
-        'InSPyReNet_1_2_12_base_nightly.pth', 1024, 1024, 'InSPyReNet'),
-    #
-    # U²-Net models
-    #
-    'Base (u2net 169 MiB)': (
-        'https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models/u2net.pth',
-        None, 320, 320, 'U-2-Net'),
-    'Small (u2netp 4.5 MiB)': (
-        'https://huggingface.co/netradrishti/u2net-saliency/resolve/main/models/u2netp.pth',
-        None, 320, 320, 'U-2-Net'),
-    #
-    # IS-Net models
-    #
-    'Base (isnet 169 MiB)': (
-        'https://huggingface.co/Carve/isnet/resolve/main/isnet.pth',
-        None, 1024, 1024, 'IS-Net'),
-    'DIS5K (isnet-general-use 169 MiB)': (
-        'https://huggingface.co/ClockZinc/IS-NET_pth/resolve/main/isnet-general-use.pth',
-        None, 1024, 1024, 'IS-Net'),
-    'CarveSet (isnet-97-carveset 169 MiB)': (
-        'https://huggingface.co/Carve/isnet/resolve/main/isnet-97-carveset.pth',
-        None, 1024, 1024, 'IS-Net'),
-    'Anime (ISNet_anime-seg 195 MiB)': (
-        'https://huggingface.co/skytnt/anime-seg/resolve/main/model.safetensors',
-        'ISNet_anime-seg.safetensors', 640, 640, 'IS-Net'),
-    'BRIA v1.4 (No Com! 169 MiB)': (
-        'https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.safetensors',
-        'BRIA-RMBG1_4.safetensors', 1024, 1024, 'IS-Net'),
-    #
-    # MODNet models
-    #
-    'Photo portrait (26 MiB)': (
-        'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_photographic_portrait_matting.ckpt',
-        None, 512, 512, 'MODNet'),
-    'Webcam portrait (26 MiB)': (
-        'https://huggingface.co/DavG25/modnet-pretrained-models/resolve/main/models/modnet_webcam_portrait_matting.ckpt',
-        None, 512, 512, 'MODNet'),
-    #
-    # PDFNet models
-    #
-    'Base (392 MiB)': (
-        'https://huggingface.co/Tennineee/PDFNet/resolve/main/PDFNet_Best.pth',
-        None, 1024, 1024, 'PDFNet'),
-    'General (392 MiB)': (
-        'https://huggingface.co/Tennineee/PDFNet-General/resolve/main/PDF-Generally.pth',
-        None, 1024, 1024, 'PDFNet'),
-    #
-    # DiffDIS model
-    #
-    'Base F16 (1.8 GiB)': (
-        'https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F16.safetensors',
-        None, 1024, 1024, 'DiffDIS'),
-    'Base (3.5 GiB)': (
-        'https://huggingface.co/set-soft/RemBG/resolve/main/DiffDIS/DiffDIS_F32.safetensors',
-        None, 1024, 1024, 'DiffDIS'),
-}
 #
 # Common options and choices
 #
@@ -217,16 +67,70 @@ def dtype_str_to_torch(dtype: str) -> torch.dtype:
     return None if dtype is None or dtype == "AUTO" else TORCH_DTYPE[dtype]
 
 
+class ModelInfo:
+    """
+    A simple class to hold model information.
+    Attributes are dynamically created from the keys of the input dictionary.
+    """
+    def __init__(self, data: dict):
+        self.no_commercial = False
+        # Iterate through the dictionary and set attributes on the instance
+        for key, value in data.items():
+            setattr(self, key, value)
+
+    def __repr__(self) -> str:
+        """Provides a developer-friendly representation of the object."""
+        # self.__dict__ holds all the attributes of the instance
+        attributes = ', '.join(f"{k}={v!r}" for k, v in self.__dict__.items())
+        return f"ModelInfo({attributes})"
+
+
+class KnownModelsLoader:
+    """
+    Loads model information from a JSON file and populates a dictionary
+    with ModelInfo objects.
+    """
+    def __init__(self, filename="known_models.json"):
+        # The dictionary to store model names -> ModelInfo objects
+        self.models = {}
+
+        # --- Safely locate the JSON file ---
+        # __file__ is the path to the current script
+        # os.path.dirname gets the directory of that script
+        # os.path.join creates a platform-independent path to the file
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, filename)
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Could not find {filename} in the script directory: {script_dir}")
+
+        # --- Load and process the file ---
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+
+        # Iterate through the top-level dictionary from the JSON
+        for model_name, model_data in data.items():
+            # Create a ModelInfo instance and store it
+            self.models[model_name] = ModelInfo(model_data)
+
+
+KNOWN_MODELS = KnownModelsLoader().models
+
+
 def add_inspyrenet_models():
     """ Try to add the transparent-background Python module models """
     # Look for the config and return the models
     models = parse_inspyrenet_config(logger)
+    model_t = 'InSPyReNet'
     for m in models:
-        name = f"{m.name} (from TB config)"
+        ops_name = f"{m.name} (from TB config)"
+        name = f"{model_t} {ops_name}"
         if name in KNOWN_MODELS:
             # We already added it
             continue
-        KNOWN_MODELS[name] = (m.url, m.ckpt_name, m.base_size[0], m.base_size[1], 'InSPyReNet')
+        KNOWN_MODELS[name] = ModelInfo({'url': m.url, 'file_name': m.ckpt_name, 'train_w': m.base_size[0],
+                                        'train_h': m.base_size[1], 'model_t': model_t, 'ops_name': ops_name,
+                                        'name': m.name, 'file_t': 'pytorch', 'dtype': 'float32'})
 
 
 add_inspyrenet_models()
@@ -298,9 +202,10 @@ class AutoDownloadBiRefNetModel(LoadModel):
     @classmethod
     def INPUT_TYPES(cls):
         device_options, _ = get_torch_device_options(with_auto=True)
+        cls.known_models = {v.ops_name: v for k, v in KNOWN_MODELS.items() if v.model_t == cls.model_type}
         inputs = {
             "required": {
-                "model_name": ([k for k, v in KNOWN_MODELS.items() if v[4] == cls.model_type],),
+                "model_name": (list(cls.known_models.keys()),),
                 "device": (device_options,)
             },
             "optional": {
@@ -323,25 +228,25 @@ class AutoDownloadBiRefNetModel(LoadModel):
         cls.DISPLAY_NAME = f"Load {cls.model_type} model by name"
 
     def load_model(self, model_name, device, dtype="float32", vae=None, positive=None):
-        url, fname, w, h, _ = KNOWN_MODELS[model_name]
-        if fname is None:
+        m = self.known_models[model_name]
+        if m.file_name is None:
             # Use the name in the URL
-            fname = os.path.basename(url)
+            fname = os.path.basename(m.url)
         else:
             # Use the extension from the URL
-            fname += os.path.splitext(url)[1]
+            fname = m.file_name + os.path.splitext(m.url)[1]
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
         if model_full_path is None:
-            download_file(logger, url, models_path_default, fname)
+            download_file(logger, m.url, models_path_default, fname)
         res = super().load_model_file(fname, device, dtype, vae=vae, positive=positive)
         arch = res[0]
         # Known training sizes have priority over default architecture sizes
-        arch.w = w
-        arch.h = h
-        arch.sub_type = re.sub(r'\s?\([^\(]*?[\d\.]+ [MG]iB\)', "", model_name)
-        if "No Com!" in model_name:
+        arch.w = m.train_w
+        arch.h = m.train_h
+        arch.sub_type = m.name
+        if m.no_commercial:
             logger.warning(f"`{arch.get_name()}` model isn't for commercial use!")
-        return (arch, w, h, {"mean": arch.img_mean, "std": arch.img_std})
+        return (arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std})
 
 
 # BiRefNet is de default
