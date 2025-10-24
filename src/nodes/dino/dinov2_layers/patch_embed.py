@@ -12,11 +12,7 @@ from typing import Callable, Optional, Tuple, Union
 
 from torch import Tensor
 import torch.nn as nn
-try:
-    import comfy.ops
-    Conv2d = comfy.ops.manual_cast.Conv2d
-except ImportError:
-    Conv2d = nn.Conv2d
+from seconohe.ops import Conv2d
 
 
 def make_2tuple(x):

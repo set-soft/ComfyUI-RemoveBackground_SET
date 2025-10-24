@@ -11,11 +11,7 @@
 
 from torch import Tensor
 from torch import nn
-try:
-    import comfy.ops
-    Linear = comfy.ops.manual_cast.Linear
-except ImportError:
-    Linear = nn.Linear
+from seconohe.ops import Linear
 
 try:
     from xformers.ops import memory_efficient_attention, unbind

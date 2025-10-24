@@ -13,17 +13,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from seconohe.ops import Conv2d, Linear
 
 from ..dino.dinov2 import DINOv2
 from .blocks import FeatureFusionBlock, _make_scratch
-
-try:
-    import comfy.ops
-    Conv2d = comfy.ops.manual_cast.Conv2d
-    Linear = comfy.ops.manual_cast.Linear
-except ImportError:
-    Conv2d = nn.Conv2d
-    Linear = nn.Linear
 
 
 def _make_fusion_block(features, use_bn, size=None):

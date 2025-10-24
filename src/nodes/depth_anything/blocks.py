@@ -1,9 +1,5 @@
 import torch.nn as nn
-try:
-    import comfy.ops
-    Conv2d = comfy.ops.manual_cast.Conv2d
-except ImportError:
-    Conv2d = nn.Conv2d
+from seconohe.ops import Conv2d
 
 
 def _make_scratch(in_shape, out_shape, groups=1, expand=False):
