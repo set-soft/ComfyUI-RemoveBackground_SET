@@ -27,6 +27,7 @@ except ImportError:
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..mvanet.mvanet import MVANet
+from ..mvanet.finegrain_names import finegrain_convert
 from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
@@ -48,6 +49,8 @@ MVANET_RENAME = {
     'multifieldcrossatt.linear6.weight': 'multifieldcrossatt.linear2.weight',
     'multifieldcrossatt.linear6.bias': 'multifieldcrossatt.linear2.bias',
 }
+FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1.Residual_1.WindowAttention.WindowSDPA.'
+                      'rpb.relative_position_bias_table')
 
 
 # This is needed for old models
@@ -178,14 +181,17 @@ class RemBg(object):
 
         bb_name = 'bb'
 
+        if FINEGRAIN_SWIN_KEY in state_dict:
+            state_dict = finegrain_convert(state_dict)
         # Determine the window size for the swin_v1 transformer
-        tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
+        layer0_b0 = '.layers.0.blocks.0.attn.relative_position_bias_table'
+        tensor = state_dict.get(bb_name+layer0_b0)
         if tensor is None:
             bb_name = 'backbone'
-            tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
+            tensor = state_dict.get(bb_name+layer0_b0)
             if tensor is None:
                 bb_name = 'encoder'
-                tensor = state_dict.get(bb_name+'.layers.0.blocks.0.attn.relative_position_bias_table')
+                tensor = state_dict.get(bb_name+layer0_b0)
                 if tensor is None:
                     self.why = 'No relative position bias table'
                     return
