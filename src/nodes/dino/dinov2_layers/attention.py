@@ -6,13 +6,16 @@
 
 # References:
 #   https://github.com/facebookresearch/dino/blob/master/vision_transformer.py
+#   https://github.com/facebookresearch/dinov2/blob/main/dinov2/models/vision_transformer.py
 #   https://github.com/rwightman/pytorch-image-models/tree/master/timm/models/vision_transformer.py
 
 from torch import Tensor
 from torch import nn
-import comfy.ops
-ops = comfy.ops.manual_cast
-
+try:
+    import comfy.ops
+    Linear = comfy.ops.manual_cast.Linear
+except ImportError:
+    Linear = nn.Linear
 
 try:
     from xformers.ops import memory_efficient_attention, unbind
@@ -37,9 +40,9 @@ class Attention(nn.Module):
         head_dim = dim // num_heads
         self.scale = head_dim**-0.5
 
-        self.qkv = ops.Linear(dim, dim * 3, bias=qkv_bias)
+        self.qkv = Linear(dim, dim * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)
-        self.proj = ops.Linear(dim, dim, bias=proj_bias)
+        self.proj = Linear(dim, dim, bias=proj_bias)
         self.proj_drop = nn.Dropout(proj_drop)
 
     def forward(self, x: Tensor) -> Tensor:

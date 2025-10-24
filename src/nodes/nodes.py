@@ -102,6 +102,9 @@ KNOWN_MODELS = {
     'MVANet (369 MiB)': (
         'https://huggingface.co/creative-graphic-design/MVANet-checkpoints/resolve/main/Model_80.pth',
         None, 1024, 1024, 'MVANet'),
+    'Finegrain F16 (184 MiB)': (
+        'https://huggingface.co/finegrain/finegrain-box-segmenter/resolve/main/model.safetensors',
+        'Finegrain_F16', 1024, 1024, 'MVANet'),
     #
     # InSPyReNet models
     #

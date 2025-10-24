@@ -12,8 +12,11 @@ from typing import Callable, Optional, Tuple, Union
 
 from torch import Tensor
 import torch.nn as nn
-import comfy.ops
-ops = comfy.ops.manual_cast
+try:
+    import comfy.ops
+    Conv2d = comfy.ops.manual_cast.Conv2d
+except ImportError:
+    Conv2d = nn.Conv2d
 
 
 def make_2tuple(x):
@@ -65,7 +68,7 @@ class PatchEmbed(nn.Module):
 
         self.flatten_embedding = flatten_embedding
 
-        self.proj = ops.Conv2d(in_chans, embed_dim, kernel_size=patch_HW, stride=patch_HW)
+        self.proj = Conv2d(in_chans, embed_dim, kernel_size=patch_HW, stride=patch_HW)
         self.norm = norm_layer(embed_dim) if norm_layer else nn.Identity()
 
     def forward(self, x: Tensor) -> Tensor:

@@ -25,9 +25,23 @@ except ImportError:
     pass
 
 # ComfyUI imports
-import comfy.model_management as mm
-from comfy.utils import load_torch_file
-import folder_paths
+try:
+    from comfy.model_management import get_torch_device
+    from comfy.utils import load_torch_file
+    from folder_paths import models_dir
+except ImportError:
+    from seconohe.torch import get_torch_device_options
+    import safetensors
+
+    models_dir = './'
+
+    def get_torch_device():
+        _, default = get_torch_device_options()
+        return torch.device(default)
+
+    def load_torch_file(model_path):
+        return safetensors.torch.load_file(model_path, device="cpu")
+
 
 # Local imports
 from . import main_logger as logger, BATCHED_OPS, CATEGORY_LOAD, CATEGORY_ADV
@@ -71,7 +85,7 @@ class DownloadAndLoadDepthAnythingV2Model:
     DISPLAY_NAME = "Load Depth Anything by name"
 
     def loadmodel(self, model):
-        device = mm.get_torch_device()
+        device = get_torch_device()
         fname = KNOWN_MODELS[model]
         dtype = torch.float16 if "fp16" in fname else torch.float32
         model_configs = {
@@ -85,7 +99,7 @@ class DownloadAndLoadDepthAnythingV2Model:
         }
         if not hasattr(self, 'model') or self.model is None or custom_config != self.current_config:
             self.current_config = custom_config
-            download_path = os.path.join(folder_paths.models_dir, "depthanything")
+            download_path = os.path.join(models_dir, "depthanything")
             model_path = os.path.join(download_path, fname)
 
             if not os.path.exists(model_path):
@@ -149,7 +163,7 @@ class DepthAnything_V2:
     def process(self, da_model, images, batch_size):
         model = da_model['model']
         model.target_dtype = da_model['dtype']
-        model.target_device = mm.get_torch_device()
+        model.target_device = get_torch_device()
         with model_to_target(logger, model):
             depths_bchw = self.process_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype,
                                            out_device="cpu")

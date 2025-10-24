@@ -12,7 +12,17 @@ from torchvision import transforms
 from seconohe.bti import BatchedTensorIterator
 from seconohe.torch import model_to_target, TorchProfile
 from seconohe.logger import get_debug_level
-from comfy.utils import common_upscale
+try:
+    from comfy.utils import common_upscale
+    WITH_CONFY = True
+except ImportError:
+    WITH_CONFY = False
+    import torch.nn.functional as F
+
+    def common_upscale(img, w, h, method, crop):
+        assert crop == "disabled"
+        F.interpolate(img, size=(h, w), mode=method)
+
 
 from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
