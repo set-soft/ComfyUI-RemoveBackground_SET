@@ -211,12 +211,13 @@ class SelfAttention(nn.Module):
 
         view = (batch_size, -1, axis)
 
-        projected_query = self.query_conv(x).view(*view).permute(0, 2, 1)
-        projected_key = self.key_conv(x).view(*view)
+        # When using Res2Net the tensor is not contiguous, so we reshape instead of just view
+        projected_query = self.query_conv(x).reshape(*view).permute(0, 2, 1)
+        projected_key = self.key_conv(x).reshape(*view)
 
         attention_map = torch.bmm(projected_query, projected_key)
         attention = self.softmax(attention_map)
-        projected_value = self.value_conv(x).view(*view)
+        projected_value = self.value_conv(x).reshape(*view)
 
         out = torch.bmm(projected_value, attention.permute(0, 2, 1))
         out = out.view(batch_size, channel, height, width)

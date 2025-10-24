@@ -20,6 +20,7 @@ from .modules.context_module import PAA_e
 from .modules.attention_module import SICA
 from .modules.decoder_module import PAA_d
 from ..swin.swin_v1 import swin_v1_b
+from ..res2net.Res2Net_v1b import res2net50_v1b_26w_4s
 
 
 class InSPyReNet(nn.Module):
@@ -90,6 +91,10 @@ class InSPyReNet(nn.Module):
         pred = (pred - pred.min()) / (pred.max() - pred.min() + 1e-8)
 
         return pred
+
+
+def InSPyReNet_Res2Net50(depth, base_size):
+    return InSPyReNet(res2net50_v1b_26w_4s(), [64, 256, 512, 1024, 2048], depth, base_size)
 
 
 def InSPyReNet_SwinB(depth, base_size):

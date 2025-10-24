@@ -28,7 +28,7 @@ from ..birefnet.birefnet import BiRefNet
 from ..birefnet.birefnet_old import BiRefNet as OldBiRefNet
 from ..mvanet.mvanet import MVANet
 from ..mvanet.finegrain_names import finegrain_convert
-from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB
+from ..inspyrenet.InSPyReNet import InSPyReNet_SwinB, InSPyReNet_Res2Net50
 from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
 from ..pdfnet.PDFNet import build_model as PDFNet
@@ -111,6 +111,7 @@ class RemBg(object):
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
+        lower_case_fname = os.path.basename(fname).lower()
 
         fix_state_dict(state_dict)
 
@@ -179,26 +180,157 @@ class RemBg(object):
             logger.debug(f"Model type: {self.model_type} ({self.bb}) [{self.dtype}]")
             return
 
-        bb_name = 'bb'
+        #
+        # Models with Swin/Res2Net as backbone
+        #
+        bb_name = self.is_res2net(['backbone'], state_dict)
+        if bb_name is None:
+            return
 
-        if FINEGRAIN_SWIN_KEY in state_dict:
-            state_dict = finegrain_convert(state_dict)
-        # Determine the window size for the swin_v1 transformer
-        layer0_b0 = '.layers.0.blocks.0.attn.relative_position_bias_table'
-        tensor = state_dict.get(bb_name+layer0_b0)
-        if tensor is None:
-            bb_name = 'backbone'
-            tensor = state_dict.get(bb_name+layer0_b0)
-            if tensor is None:
-                bb_name = 'encoder'
-                tensor = state_dict.get(bb_name+layer0_b0)
-                if tensor is None:
-                    self.why = 'No relative position bias table'
+        if not bb_name:
+            # Try Swin Transformer
+            # Finegrain version of MVANet has a heavy rename
+            if FINEGRAIN_SWIN_KEY in state_dict:
+                state_dict = finegrain_convert(state_dict)
+
+            bb_name = self.is_swin(['bb', 'backbone', 'encoder'], state_dict)
+            if bb_name is None:
+                return
+            if not bb_name:
+                self.why = "Unknown backbone"
+                return
+
+        logger.debug(f"Model backbone: {self.bb}")
+
+        if self.bb == 'res2net50_v1b_26w_4s':
+            if not self.is_inspyrenet(state_dict, lower_case_fname):
+                self.why = 'Unknown Res2Net variant model'
+                return
+        elif self.bb == 'swin_v1_b':
+            if not self.is_pdfnet(state_dict):
+                # BEN, InSPyReNet and MVANet?
+                if not self.is_mvanet(state_dict) and not self.is_inspyrenet(state_dict, lower_case_fname):
+                    # Don't know about it
+                    self.why = 'Unknown Swin B variant model'
                     return
+                assert self.bb_prefix == 'backbone'
+        else:  # swin_v1_l or swin_v1_t
+            if not self.is_birefnet(state_dict):
+                # Don't know about it
+                self.why = 'Unknown Swin variant model'
+                return
+
+        self.ok = True
+        logger.debug(f"Model type: {self.model_type}")
+
+    def matches(self, embed_dim, depths, num_heads, window_size):
+        return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
+                self.window_size == window_size)
+
+    # InSPyReNet
+    def is_inspyrenet(self, state_dict, lower_case_fname):
+        """ Check this is a InSPyReNet model """
+        if 'context1.branch0.conv.weight' not in state_dict:
+            return False
+        self.model_type = 'InSPyReNet'
+        self.dtype = state_dict['context1.branch0.conv.weight'].dtype
+        # This information is in the YAML file, but this doesn't map to loading a standalone file
+        if self.bb == 'res2net50_v1b_26w_4s' or 'fast' in lower_case_fname:
+            self.w = self.h = 384
+            self.base_size = [384, 384]
+        else:
+            if 'base' not in lower_case_fname:
+                self.logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
+            self.base_size = [1024, 1024]
+        self.logger.debug(f"Using base size: {self.base_size}")
+        return True
+
+    # PDFNet
+    def is_pdfnet(self, state_dict):
+        tensor = state_dict.get('decoder.FSE_mix.0.I_channelswich.0.weight')
+        if tensor is None:
+            return False
+        assert self.bb_prefix == 'encoder'
+        # No normalization applied
+        self.img_mean = [0.0, 0.0, 0.0]
+        self.img_std = [1.0, 1.0, 1.0]
+        self.model_type = 'PDFNet'
+        self.needs_map = True
+        self.dtype = tensor.dtype
+        # Remove training layers we don't use
+        for k, v in list(state_dict.items()):
+            layer = k.split('.')[0]
+            if layer in {'IntegrityPriorLoss'}:
+                del state_dict[k]
+        return True
+
+    # MVANet/BEN
+    def is_mvanet(self, state_dict):
+        """ Check if this is an MVANet model, includes BEN """
+        if 'output.0.weight' not in state_dict:
+            return False
+        # MVANet
+        self.model_type = 'MVANet'
+        if 'conv1.1.weight' in state_dict:
+            # MVANet original and messy
+            # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
+            self.ben_variant = False
+            self.dtype = state_dict['conv1.1.weight'].dtype
+            if 'multifieldcrossatt.linear5.weight' in state_dict:
+                # Fix known bugs in available network
+                # Remove bogus layers
+                self.logger.debug('Removing bogus layers ...')
+                for k, v in list(state_dict.items()):
+                    if MVANET_MCLM_BUG.match(k):
+                        self.logger.debug('- '+k)
+                        del state_dict[k]
+                # Rename some layers to match BEN numbering
+                # https://github.com/qianyu-dlut/MVANet/issues/3
+                for k, v in MVANET_RENAME.items():
+                    state_dict[v] = state_dict.pop(k)
+        else:
+            # BEN
+            self.ben_variant = True
+            # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
+            self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
+        # Remove sideout layers, only used during training
+        if 'sideout5.0.weight' in state_dict:
+            for n in range(5):
+                del state_dict[f"sideout{n+1}.0.weight"]
+                del state_dict[f"sideout{n+1}.0.bias"]
+        return True
+
+    # BiRefNet
+    def is_birefnet(self, state_dict):
+        """ Check if this is a BiRefNet model """
+        # Try to figure out which version is this
+        if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
+            return False
+        self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
+        if 'decoder.ipt_blk5.conv1.weight' in state_dict:
+            self.version = 2
+            # The ComfyUI_BiRefNet_ll nodes uses this for new models
+            # self.img_mean = [0.5, 0.5, 0.5]
+            # self.img_std = [1.0, 1.0, 1.0]
+            # But I couldn't find any reference to it in the original code
+        self.model_type = 'BiRefNet'
+        return True
+
+    def is_swin(self, names, state_dict):
+        """ Do we have a Swin Transformer backbone? """
+        for n in names:
+            tensor = state_dict.get(n+'.layers.0.blocks.0.attn.relative_position_bias_table')
+            if tensor is not None:
+                break
+        else:
+            return False
+
+        self.bb_prefix = bb_name = n
+        # Determine the window size for the swin_v1 transformer
         window = (math.sqrt(tensor.shape[0]) + 1) / 2
         if window != int(window):
             self.why = "Wrong swin_v1 bias table size"
-            return
+            return None
         self.window_size = int(window)
 
         # Find layers (stages), depths and number of heads
@@ -220,11 +352,11 @@ class RemBg(object):
         tensor = state_dict.get(f'{bb_name}.patch_embed.proj.weight')
         if tensor is None:
             self.why = 'No PatchEmbed found'
-            return
+            return None
         self.embed_dim = tensor.shape[0]
 
-        logger.debug(f"Embed dim={self.embed_dim} Layers {self.layers} Depths {self.depths} Num Heads {self.num_heads} "
-                     f"Window size: {self.window_size}")
+        self.logger.debug(f"Embed dim={self.embed_dim} Layers {self.layers} Depths {self.depths} Num Heads {self.num_heads} "
+                          f"Window size: {self.window_size}")
 
         # Check if this is one of the known back bones
         if self.matches(embed_dim=192, depths=[2, 2, 18, 2], num_heads=[6, 12, 24, 48], window_size=12):
@@ -238,98 +370,52 @@ class RemBg(object):
             self.channels = [1024, 512, 256, 128]
         else:
             self.why = 'unknown geometry'
-            return
+            return None
         self.bb_ok = True
-        logger.debug(f"Model backbone: {self.bb}")
+        return True
 
-        if self.bb == 'swin_v1_b':
-            layer = 'decoder.FSE_mix.0.I_channelswich.0.weight'
-            if layer in state_dict:
-                # PDFNet
-                assert bb_name == 'encoder'
-                # No normalization applied
-                self.img_mean = [0.0, 0.0, 0.0]
-                self.img_std = [1.0, 1.0, 1.0]
-                self.model_type = 'PDFNet'
-                self.needs_map = True
-                self.dtype = state_dict[layer].dtype
-                # Remove training layers we don't use
-                for k, v in list(state_dict.items()):
-                    layer = k.split('.')[0]
-                    if layer in {'IntegrityPriorLoss'}:
-                        del state_dict[k]
-            else:
-                # BEN, InSPyReNet and MVANet
-                assert bb_name == 'backbone'
-
-                if 'output.0.weight' in state_dict:
-                    # MVANet
-                    self.model_type = 'MVANet'
-                    if 'conv1.1.weight' in state_dict:
-                        # MVANet original and messy
-                        # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
-                        self.ben_variant = False
-                        self.dtype = state_dict['conv1.1.weight'].dtype
-                        if 'multifieldcrossatt.linear5.weight' in state_dict:
-                            # Fix known bugs in available network
-                            # Remove bogus layers
-                            logger.debug('Removing bogus layers ...')
-                            for k, v in list(state_dict.items()):
-                                if MVANET_MCLM_BUG.match(k):
-                                    logger.debug('- '+k)
-                                    del state_dict[k]
-                            # Rename some layers to match BEN numbering
-                            # https://github.com/qianyu-dlut/MVANet/issues/3
-                            for k, v in MVANET_RENAME.items():
-                                state_dict[v] = state_dict.pop(k)
-                    else:
-                        # BEN
-                        self.ben_variant = True
-                        # The code from HuggingFace uses: @torch.autocast(device_type="cuda",dtype=torch.float16)
-                        self.dtype = torch.float16  # state_dict['output.0.weight'].dtype
-                    # Remove sideout layers, only used during training
-                    if 'sideout5.0.weight' in state_dict:
-                        for n in range(5):
-                            del state_dict[f"sideout{n+1}.0.weight"]
-                            del state_dict[f"sideout{n+1}.0.bias"]
-                elif 'context1.branch0.conv.weight' in state_dict:
-                    # InSPyReNet
-                    self.model_type = 'InSPyReNet'
-                    self.dtype = state_dict['context1.branch0.conv.weight'].dtype
-                    # This information is in the YAML file, but this doesn't map to loading a standalone file
-                    lower_case_fname = os.path.basename(fname).lower()
-                    if 'fast' not in lower_case_fname:
-                        if 'base' not in lower_case_fname:
-                            logger.warning("Assuming a `base` InSPyReNet model, if `fast` please add it to the file name")
-                        self.base_size = [1024, 1024]
-                    else:
-                        self.w = self.h = 384
-                        self.base_size = [384, 384]
-                    logger.debug(f"Using base size: {self.base_size}")
-                else:
-                    self.why = 'Unknown Swin B variant model'
-                    return
+    def is_res2net(self, names, state_dict):
+        for n in names:
+            tensor = state_dict.get(n+".layer1.0.bns.0.weight")
+            if tensor is not None:
+                base_width = tensor.shape[0]
+                break
         else:
-            # BiRefNet
-            # Try to figure out which version is this
-            if 'decoder.ipt_blk1.conv1.weight' not in state_dict:
-                self.why = 'Missing Input Injection Blocks'
-                return
-            self.dtype = state_dict['decoder.ipt_blk1.conv1.weight'].dtype
-            if 'decoder.ipt_blk5.conv1.weight' in state_dict:
-                self.version = 2
-                # The ComfyUI_BiRefNet_ll nodes uses this for new models
-                # self.img_mean = [0.5, 0.5, 0.5]
-                # self.img_std = [1.0, 1.0, 1.0]
-                # But I couldn't find any reference to it in the original code
-            self.model_type = 'BiRefNet'
+            return False
 
-        self.ok = True
-        logger.debug(f"Model type: {self.model_type}")
+        self.bb_prefix = n
+        self.base_width = base_width
+        self.layers = 0
+        self.layer_blocks = []
+        while f'{n}.layer{self.layers+1}.0.conv1.weight' in state_dict:
+            # Analyze the blocks for this layer
+            blocks = 0
+            while f'{n}.layer{self.layers+1}.{blocks}.conv1.weight' in state_dict:
+                blocks += 1
+            self.layer_blocks.append(blocks)
+            # One more layer
+            self.layers += 1
+        if not self.layers:
+            return False
 
-    def matches(self, embed_dim, depths, num_heads, window_size):
-        return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
-                self.window_size == window_size)
+        tensor = state_dict.get("backbone.layer1.0.bn1.weight")
+        if tensor is None:
+            return False
+        self.scale = tensor.shape[0] // base_width
+
+        self.logger.debug(f"Res2Net: Base width: {base_width} Layers: {self.layer_blocks} Scale: {self.scale}")
+
+        if self.matches_r2n(base_width=26, layers=[3, 4, 6, 3], scale=4):
+            self.bb = 'res2net50_v1b_26w_4s'
+        else:
+            self.why = 'unknown geometry'
+            return None
+
+        self.bb_ok = True
+        return True
+
+    def matches_r2n(self, base_width, layers, scale):
+        return self.base_width == base_width and layers == self.layer_blocks and self.scale == scale
 
     def check(self):
         if not self.bb_ok:
@@ -360,7 +446,10 @@ class RemBg(object):
         if self.model_type == 'MVANet':
             model = MVANet(ben_variant=self.ben_variant)
         elif self.model_type == 'InSPyReNet':
-            model = InSPyReNet_SwinB(depth=64, base_size=self.base_size)
+            if self.bb == 'swin_v1_b':
+                model = InSPyReNet_SwinB(depth=64, base_size=self.base_size)
+            else:  # 'res2net50_v1b_26w_4s'
+                model = InSPyReNet_Res2Net50(depth=64, base_size=self.base_size)
         elif self.model_type == 'BiRefNet':
             model = BiRefNet(self) if self.version == 2 else OldBiRefNet(self)
         elif self.model_type == 'U-2-Net':
