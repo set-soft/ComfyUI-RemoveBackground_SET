@@ -1,1634 +1,1633 @@
-Analyzing: models/ckpt_base.pth
+Analyzing: models/InSPyReNet_1_2_12_base.pth
 
 --- PyTorch Model Keys ---
 
 
-backbone.patch_embed.proj.weight
-backbone.patch_embed.proj.bias
-backbone.patch_embed.norm.weight
-backbone.patch_embed.norm.bias
-backbone.layers.0.blocks.0.norm1.weight
-backbone.layers.0.blocks.0.norm1.bias
-backbone.layers.0.blocks.0.attn.relative_position_bias_table
-backbone.layers.0.blocks.0.attn.relative_position_index
-backbone.layers.0.blocks.0.attn.qkv.weight
-backbone.layers.0.blocks.0.attn.qkv.bias
-backbone.layers.0.blocks.0.attn.proj.weight
-backbone.layers.0.blocks.0.attn.proj.bias
-backbone.layers.0.blocks.0.norm2.weight
-backbone.layers.0.blocks.0.norm2.bias
-backbone.layers.0.blocks.0.mlp.fc1.weight
-backbone.layers.0.blocks.0.mlp.fc1.bias
-backbone.layers.0.blocks.0.mlp.fc2.weight
-backbone.layers.0.blocks.0.mlp.fc2.bias
-backbone.layers.0.blocks.1.norm1.weight
-backbone.layers.0.blocks.1.norm1.bias
-backbone.layers.0.blocks.1.attn.relative_position_bias_table
-backbone.layers.0.blocks.1.attn.relative_position_index
-backbone.layers.0.blocks.1.attn.qkv.weight
-backbone.layers.0.blocks.1.attn.qkv.bias
-backbone.layers.0.blocks.1.attn.proj.weight
-backbone.layers.0.blocks.1.attn.proj.bias
-backbone.layers.0.blocks.1.norm2.weight
-backbone.layers.0.blocks.1.norm2.bias
-backbone.layers.0.blocks.1.mlp.fc1.weight
-backbone.layers.0.blocks.1.mlp.fc1.bias
-backbone.layers.0.blocks.1.mlp.fc2.weight
-backbone.layers.0.blocks.1.mlp.fc2.bias
-backbone.layers.0.downsample.reduction.weight
-backbone.layers.0.downsample.norm.weight
-backbone.layers.0.downsample.norm.bias
-backbone.layers.1.blocks.0.norm1.weight
-backbone.layers.1.blocks.0.norm1.bias
-backbone.layers.1.blocks.0.attn.relative_position_bias_table
-backbone.layers.1.blocks.0.attn.relative_position_index
-backbone.layers.1.blocks.0.attn.qkv.weight
-backbone.layers.1.blocks.0.attn.qkv.bias
-backbone.layers.1.blocks.0.attn.proj.weight
-backbone.layers.1.blocks.0.attn.proj.bias
-backbone.layers.1.blocks.0.norm2.weight
-backbone.layers.1.blocks.0.norm2.bias
-backbone.layers.1.blocks.0.mlp.fc1.weight
-backbone.layers.1.blocks.0.mlp.fc1.bias
-backbone.layers.1.blocks.0.mlp.fc2.weight
-backbone.layers.1.blocks.0.mlp.fc2.bias
-backbone.layers.1.blocks.1.norm1.weight
-backbone.layers.1.blocks.1.norm1.bias
-backbone.layers.1.blocks.1.attn.relative_position_bias_table
-backbone.layers.1.blocks.1.attn.relative_position_index
-backbone.layers.1.blocks.1.attn.qkv.weight
-backbone.layers.1.blocks.1.attn.qkv.bias
-backbone.layers.1.blocks.1.attn.proj.weight
-backbone.layers.1.blocks.1.attn.proj.bias
-backbone.layers.1.blocks.1.norm2.weight
-backbone.layers.1.blocks.1.norm2.bias
-backbone.layers.1.blocks.1.mlp.fc1.weight
-backbone.layers.1.blocks.1.mlp.fc1.bias
-backbone.layers.1.blocks.1.mlp.fc2.weight
-backbone.layers.1.blocks.1.mlp.fc2.bias
-backbone.layers.1.downsample.reduction.weight
-backbone.layers.1.downsample.norm.weight
-backbone.layers.1.downsample.norm.bias
-backbone.layers.2.blocks.0.norm1.weight
-backbone.layers.2.blocks.0.norm1.bias
-backbone.layers.2.blocks.0.attn.relative_position_bias_table
-backbone.layers.2.blocks.0.attn.relative_position_index
-backbone.layers.2.blocks.0.attn.qkv.weight
-backbone.layers.2.blocks.0.attn.qkv.bias
-backbone.layers.2.blocks.0.attn.proj.weight
-backbone.layers.2.blocks.0.attn.proj.bias
-backbone.layers.2.blocks.0.norm2.weight
-backbone.layers.2.blocks.0.norm2.bias
-backbone.layers.2.blocks.0.mlp.fc1.weight
-backbone.layers.2.blocks.0.mlp.fc1.bias
-backbone.layers.2.blocks.0.mlp.fc2.weight
-backbone.layers.2.blocks.0.mlp.fc2.bias
-backbone.layers.2.blocks.1.norm1.weight
-backbone.layers.2.blocks.1.norm1.bias
-backbone.layers.2.blocks.1.attn.relative_position_bias_table
-backbone.layers.2.blocks.1.attn.relative_position_index
-backbone.layers.2.blocks.1.attn.qkv.weight
-backbone.layers.2.blocks.1.attn.qkv.bias
-backbone.layers.2.blocks.1.attn.proj.weight
-backbone.layers.2.blocks.1.attn.proj.bias
-backbone.layers.2.blocks.1.norm2.weight
-backbone.layers.2.blocks.1.norm2.bias
-backbone.layers.2.blocks.1.mlp.fc1.weight
-backbone.layers.2.blocks.1.mlp.fc1.bias
-backbone.layers.2.blocks.1.mlp.fc2.weight
-backbone.layers.2.blocks.1.mlp.fc2.bias
-backbone.layers.2.blocks.2.norm1.weight
-backbone.layers.2.blocks.2.norm1.bias
-backbone.layers.2.blocks.2.attn.relative_position_bias_table
-backbone.layers.2.blocks.2.attn.relative_position_index
-backbone.layers.2.blocks.2.attn.qkv.weight
-backbone.layers.2.blocks.2.attn.qkv.bias
-backbone.layers.2.blocks.2.attn.proj.weight
-backbone.layers.2.blocks.2.attn.proj.bias
-backbone.layers.2.blocks.2.norm2.weight
-backbone.layers.2.blocks.2.norm2.bias
-backbone.layers.2.blocks.2.mlp.fc1.weight
-backbone.layers.2.blocks.2.mlp.fc1.bias
-backbone.layers.2.blocks.2.mlp.fc2.weight
-backbone.layers.2.blocks.2.mlp.fc2.bias
-backbone.layers.2.blocks.3.norm1.weight
-backbone.layers.2.blocks.3.norm1.bias
-backbone.layers.2.blocks.3.attn.relative_position_bias_table
-backbone.layers.2.blocks.3.attn.relative_position_index
-backbone.layers.2.blocks.3.attn.qkv.weight
-backbone.layers.2.blocks.3.attn.qkv.bias
-backbone.layers.2.blocks.3.attn.proj.weight
-backbone.layers.2.blocks.3.attn.proj.bias
-backbone.layers.2.blocks.3.norm2.weight
-backbone.layers.2.blocks.3.norm2.bias
-backbone.layers.2.blocks.3.mlp.fc1.weight
-backbone.layers.2.blocks.3.mlp.fc1.bias
-backbone.layers.2.blocks.3.mlp.fc2.weight
-backbone.layers.2.blocks.3.mlp.fc2.bias
-backbone.layers.2.blocks.4.norm1.weight
-backbone.layers.2.blocks.4.norm1.bias
-backbone.layers.2.blocks.4.attn.relative_position_bias_table
-backbone.layers.2.blocks.4.attn.relative_position_index
-backbone.layers.2.blocks.4.attn.qkv.weight
-backbone.layers.2.blocks.4.attn.qkv.bias
-backbone.layers.2.blocks.4.attn.proj.weight
-backbone.layers.2.blocks.4.attn.proj.bias
-backbone.layers.2.blocks.4.norm2.weight
-backbone.layers.2.blocks.4.norm2.bias
-backbone.layers.2.blocks.4.mlp.fc1.weight
-backbone.layers.2.blocks.4.mlp.fc1.bias
-backbone.layers.2.blocks.4.mlp.fc2.weight
-backbone.layers.2.blocks.4.mlp.fc2.bias
-backbone.layers.2.blocks.5.norm1.weight
-backbone.layers.2.blocks.5.norm1.bias
-backbone.layers.2.blocks.5.attn.relative_position_bias_table
-backbone.layers.2.blocks.5.attn.relative_position_index
-backbone.layers.2.blocks.5.attn.qkv.weight
-backbone.layers.2.blocks.5.attn.qkv.bias
-backbone.layers.2.blocks.5.attn.proj.weight
-backbone.layers.2.blocks.5.attn.proj.bias
-backbone.layers.2.blocks.5.norm2.weight
-backbone.layers.2.blocks.5.norm2.bias
-backbone.layers.2.blocks.5.mlp.fc1.weight
-backbone.layers.2.blocks.5.mlp.fc1.bias
-backbone.layers.2.blocks.5.mlp.fc2.weight
-backbone.layers.2.blocks.5.mlp.fc2.bias
-backbone.layers.2.blocks.6.norm1.weight
-backbone.layers.2.blocks.6.norm1.bias
-backbone.layers.2.blocks.6.attn.relative_position_bias_table
-backbone.layers.2.blocks.6.attn.relative_position_index
-backbone.layers.2.blocks.6.attn.qkv.weight
-backbone.layers.2.blocks.6.attn.qkv.bias
-backbone.layers.2.blocks.6.attn.proj.weight
-backbone.layers.2.blocks.6.attn.proj.bias
-backbone.layers.2.blocks.6.norm2.weight
-backbone.layers.2.blocks.6.norm2.bias
-backbone.layers.2.blocks.6.mlp.fc1.weight
-backbone.layers.2.blocks.6.mlp.fc1.bias
-backbone.layers.2.blocks.6.mlp.fc2.weight
-backbone.layers.2.blocks.6.mlp.fc2.bias
-backbone.layers.2.blocks.7.norm1.weight
-backbone.layers.2.blocks.7.norm1.bias
-backbone.layers.2.blocks.7.attn.relative_position_bias_table
-backbone.layers.2.blocks.7.attn.relative_position_index
-backbone.layers.2.blocks.7.attn.qkv.weight
-backbone.layers.2.blocks.7.attn.qkv.bias
-backbone.layers.2.blocks.7.attn.proj.weight
-backbone.layers.2.blocks.7.attn.proj.bias
-backbone.layers.2.blocks.7.norm2.weight
-backbone.layers.2.blocks.7.norm2.bias
-backbone.layers.2.blocks.7.mlp.fc1.weight
-backbone.layers.2.blocks.7.mlp.fc1.bias
-backbone.layers.2.blocks.7.mlp.fc2.weight
-backbone.layers.2.blocks.7.mlp.fc2.bias
-backbone.layers.2.blocks.8.norm1.weight
-backbone.layers.2.blocks.8.norm1.bias
-backbone.layers.2.blocks.8.attn.relative_position_bias_table
-backbone.layers.2.blocks.8.attn.relative_position_index
-backbone.layers.2.blocks.8.attn.qkv.weight
-backbone.layers.2.blocks.8.attn.qkv.bias
-backbone.layers.2.blocks.8.attn.proj.weight
-backbone.layers.2.blocks.8.attn.proj.bias
-backbone.layers.2.blocks.8.norm2.weight
-backbone.layers.2.blocks.8.norm2.bias
-backbone.layers.2.blocks.8.mlp.fc1.weight
-backbone.layers.2.blocks.8.mlp.fc1.bias
-backbone.layers.2.blocks.8.mlp.fc2.weight
-backbone.layers.2.blocks.8.mlp.fc2.bias
-backbone.layers.2.blocks.9.norm1.weight
-backbone.layers.2.blocks.9.norm1.bias
-backbone.layers.2.blocks.9.attn.relative_position_bias_table
-backbone.layers.2.blocks.9.attn.relative_position_index
-backbone.layers.2.blocks.9.attn.qkv.weight
-backbone.layers.2.blocks.9.attn.qkv.bias
-backbone.layers.2.blocks.9.attn.proj.weight
-backbone.layers.2.blocks.9.attn.proj.bias
-backbone.layers.2.blocks.9.norm2.weight
-backbone.layers.2.blocks.9.norm2.bias
-backbone.layers.2.blocks.9.mlp.fc1.weight
-backbone.layers.2.blocks.9.mlp.fc1.bias
-backbone.layers.2.blocks.9.mlp.fc2.weight
-backbone.layers.2.blocks.9.mlp.fc2.bias
-backbone.layers.2.blocks.10.norm1.weight
-backbone.layers.2.blocks.10.norm1.bias
-backbone.layers.2.blocks.10.attn.relative_position_bias_table
-backbone.layers.2.blocks.10.attn.relative_position_index
-backbone.layers.2.blocks.10.attn.qkv.weight
-backbone.layers.2.blocks.10.attn.qkv.bias
-backbone.layers.2.blocks.10.attn.proj.weight
-backbone.layers.2.blocks.10.attn.proj.bias
-backbone.layers.2.blocks.10.norm2.weight
-backbone.layers.2.blocks.10.norm2.bias
-backbone.layers.2.blocks.10.mlp.fc1.weight
-backbone.layers.2.blocks.10.mlp.fc1.bias
-backbone.layers.2.blocks.10.mlp.fc2.weight
-backbone.layers.2.blocks.10.mlp.fc2.bias
-backbone.layers.2.blocks.11.norm1.weight
-backbone.layers.2.blocks.11.norm1.bias
-backbone.layers.2.blocks.11.attn.relative_position_bias_table
-backbone.layers.2.blocks.11.attn.relative_position_index
-backbone.layers.2.blocks.11.attn.qkv.weight
-backbone.layers.2.blocks.11.attn.qkv.bias
-backbone.layers.2.blocks.11.attn.proj.weight
-backbone.layers.2.blocks.11.attn.proj.bias
-backbone.layers.2.blocks.11.norm2.weight
-backbone.layers.2.blocks.11.norm2.bias
-backbone.layers.2.blocks.11.mlp.fc1.weight
-backbone.layers.2.blocks.11.mlp.fc1.bias
-backbone.layers.2.blocks.11.mlp.fc2.weight
-backbone.layers.2.blocks.11.mlp.fc2.bias
-backbone.layers.2.blocks.12.norm1.weight
-backbone.layers.2.blocks.12.norm1.bias
-backbone.layers.2.blocks.12.attn.relative_position_bias_table
-backbone.layers.2.blocks.12.attn.relative_position_index
-backbone.layers.2.blocks.12.attn.qkv.weight
-backbone.layers.2.blocks.12.attn.qkv.bias
-backbone.layers.2.blocks.12.attn.proj.weight
-backbone.layers.2.blocks.12.attn.proj.bias
-backbone.layers.2.blocks.12.norm2.weight
-backbone.layers.2.blocks.12.norm2.bias
-backbone.layers.2.blocks.12.mlp.fc1.weight
-backbone.layers.2.blocks.12.mlp.fc1.bias
-backbone.layers.2.blocks.12.mlp.fc2.weight
-backbone.layers.2.blocks.12.mlp.fc2.bias
-backbone.layers.2.blocks.13.norm1.weight
-backbone.layers.2.blocks.13.norm1.bias
-backbone.layers.2.blocks.13.attn.relative_position_bias_table
-backbone.layers.2.blocks.13.attn.relative_position_index
-backbone.layers.2.blocks.13.attn.qkv.weight
-backbone.layers.2.blocks.13.attn.qkv.bias
-backbone.layers.2.blocks.13.attn.proj.weight
-backbone.layers.2.blocks.13.attn.proj.bias
-backbone.layers.2.blocks.13.norm2.weight
-backbone.layers.2.blocks.13.norm2.bias
-backbone.layers.2.blocks.13.mlp.fc1.weight
-backbone.layers.2.blocks.13.mlp.fc1.bias
-backbone.layers.2.blocks.13.mlp.fc2.weight
-backbone.layers.2.blocks.13.mlp.fc2.bias
-backbone.layers.2.blocks.14.norm1.weight
-backbone.layers.2.blocks.14.norm1.bias
-backbone.layers.2.blocks.14.attn.relative_position_bias_table
-backbone.layers.2.blocks.14.attn.relative_position_index
-backbone.layers.2.blocks.14.attn.qkv.weight
-backbone.layers.2.blocks.14.attn.qkv.bias
-backbone.layers.2.blocks.14.attn.proj.weight
-backbone.layers.2.blocks.14.attn.proj.bias
-backbone.layers.2.blocks.14.norm2.weight
-backbone.layers.2.blocks.14.norm2.bias
-backbone.layers.2.blocks.14.mlp.fc1.weight
-backbone.layers.2.blocks.14.mlp.fc1.bias
-backbone.layers.2.blocks.14.mlp.fc2.weight
-backbone.layers.2.blocks.14.mlp.fc2.bias
-backbone.layers.2.blocks.15.norm1.weight
-backbone.layers.2.blocks.15.norm1.bias
-backbone.layers.2.blocks.15.attn.relative_position_bias_table
-backbone.layers.2.blocks.15.attn.relative_position_index
-backbone.layers.2.blocks.15.attn.qkv.weight
-backbone.layers.2.blocks.15.attn.qkv.bias
-backbone.layers.2.blocks.15.attn.proj.weight
-backbone.layers.2.blocks.15.attn.proj.bias
-backbone.layers.2.blocks.15.norm2.weight
-backbone.layers.2.blocks.15.norm2.bias
-backbone.layers.2.blocks.15.mlp.fc1.weight
-backbone.layers.2.blocks.15.mlp.fc1.bias
-backbone.layers.2.blocks.15.mlp.fc2.weight
-backbone.layers.2.blocks.15.mlp.fc2.bias
-backbone.layers.2.blocks.16.norm1.weight
-backbone.layers.2.blocks.16.norm1.bias
-backbone.layers.2.blocks.16.attn.relative_position_bias_table
-backbone.layers.2.blocks.16.attn.relative_position_index
-backbone.layers.2.blocks.16.attn.qkv.weight
-backbone.layers.2.blocks.16.attn.qkv.bias
-backbone.layers.2.blocks.16.attn.proj.weight
-backbone.layers.2.blocks.16.attn.proj.bias
-backbone.layers.2.blocks.16.norm2.weight
-backbone.layers.2.blocks.16.norm2.bias
-backbone.layers.2.blocks.16.mlp.fc1.weight
-backbone.layers.2.blocks.16.mlp.fc1.bias
-backbone.layers.2.blocks.16.mlp.fc2.weight
-backbone.layers.2.blocks.16.mlp.fc2.bias
-backbone.layers.2.blocks.17.norm1.weight
-backbone.layers.2.blocks.17.norm1.bias
-backbone.layers.2.blocks.17.attn.relative_position_bias_table
-backbone.layers.2.blocks.17.attn.relative_position_index
-backbone.layers.2.blocks.17.attn.qkv.weight
-backbone.layers.2.blocks.17.attn.qkv.bias
-backbone.layers.2.blocks.17.attn.proj.weight
-backbone.layers.2.blocks.17.attn.proj.bias
-backbone.layers.2.blocks.17.norm2.weight
-backbone.layers.2.blocks.17.norm2.bias
-backbone.layers.2.blocks.17.mlp.fc1.weight
-backbone.layers.2.blocks.17.mlp.fc1.bias
-backbone.layers.2.blocks.17.mlp.fc2.weight
-backbone.layers.2.blocks.17.mlp.fc2.bias
-backbone.layers.2.downsample.reduction.weight
-backbone.layers.2.downsample.norm.weight
-backbone.layers.2.downsample.norm.bias
-backbone.layers.3.blocks.0.norm1.weight
-backbone.layers.3.blocks.0.norm1.bias
-backbone.layers.3.blocks.0.attn.relative_position_bias_table
-backbone.layers.3.blocks.0.attn.relative_position_index
-backbone.layers.3.blocks.0.attn.qkv.weight
-backbone.layers.3.blocks.0.attn.qkv.bias
-backbone.layers.3.blocks.0.attn.proj.weight
-backbone.layers.3.blocks.0.attn.proj.bias
-backbone.layers.3.blocks.0.norm2.weight
-backbone.layers.3.blocks.0.norm2.bias
-backbone.layers.3.blocks.0.mlp.fc1.weight
-backbone.layers.3.blocks.0.mlp.fc1.bias
-backbone.layers.3.blocks.0.mlp.fc2.weight
-backbone.layers.3.blocks.0.mlp.fc2.bias
-backbone.layers.3.blocks.1.norm1.weight
-backbone.layers.3.blocks.1.norm1.bias
-backbone.layers.3.blocks.1.attn.relative_position_bias_table
-backbone.layers.3.blocks.1.attn.relative_position_index
-backbone.layers.3.blocks.1.attn.qkv.weight
-backbone.layers.3.blocks.1.attn.qkv.bias
-backbone.layers.3.blocks.1.attn.proj.weight
-backbone.layers.3.blocks.1.attn.proj.bias
-backbone.layers.3.blocks.1.norm2.weight
-backbone.layers.3.blocks.1.norm2.bias
-backbone.layers.3.blocks.1.mlp.fc1.weight
-backbone.layers.3.blocks.1.mlp.fc1.bias
-backbone.layers.3.blocks.1.mlp.fc2.weight
-backbone.layers.3.blocks.1.mlp.fc2.bias
-backbone.norm0.weight
-backbone.norm0.bias
-backbone.norm1.weight
-backbone.norm1.bias
-backbone.norm2.weight
-backbone.norm2.bias
-backbone.norm3.weight
-backbone.norm3.bias
-context1.branch0.conv.weight
-context1.branch0.bn.weight
-context1.branch0.bn.bias
-context1.branch0.bn.running_mean
-context1.branch0.bn.running_var
-context1.branch0.bn.num_batches_tracked
-context1.branch1.conv0.conv.weight
-context1.branch1.conv0.bn.weight
-context1.branch1.conv0.bn.bias
-context1.branch1.conv0.bn.running_mean
-context1.branch1.conv0.bn.running_var
-context1.branch1.conv0.bn.num_batches_tracked
-context1.branch1.conv1.conv.weight
-context1.branch1.conv1.bn.weight
-context1.branch1.conv1.bn.bias
-context1.branch1.conv1.bn.running_mean
-context1.branch1.conv1.bn.running_var
-context1.branch1.conv1.bn.num_batches_tracked
-context1.branch1.conv2.conv.weight
-context1.branch1.conv2.bn.weight
-context1.branch1.conv2.bn.bias
-context1.branch1.conv2.bn.running_mean
-context1.branch1.conv2.bn.running_var
-context1.branch1.conv2.bn.num_batches_tracked
-context1.branch1.conv3.conv.weight
-context1.branch1.conv3.bn.weight
-context1.branch1.conv3.bn.bias
-context1.branch1.conv3.bn.running_mean
-context1.branch1.conv3.bn.running_var
-context1.branch1.conv3.bn.num_batches_tracked
-context1.branch1.Hattn.gamma
-context1.branch1.Hattn.query_conv.conv.weight
-context1.branch1.Hattn.query_conv.bn.weight
-context1.branch1.Hattn.query_conv.bn.bias
-context1.branch1.Hattn.query_conv.bn.running_mean
-context1.branch1.Hattn.query_conv.bn.running_var
-context1.branch1.Hattn.query_conv.bn.num_batches_tracked
-context1.branch1.Hattn.key_conv.conv.weight
-context1.branch1.Hattn.key_conv.bn.weight
-context1.branch1.Hattn.key_conv.bn.bias
-context1.branch1.Hattn.key_conv.bn.running_mean
-context1.branch1.Hattn.key_conv.bn.running_var
-context1.branch1.Hattn.key_conv.bn.num_batches_tracked
-context1.branch1.Hattn.value_conv.conv.weight
-context1.branch1.Hattn.value_conv.bn.weight
-context1.branch1.Hattn.value_conv.bn.bias
-context1.branch1.Hattn.value_conv.bn.running_mean
-context1.branch1.Hattn.value_conv.bn.running_var
-context1.branch1.Hattn.value_conv.bn.num_batches_tracked
-context1.branch1.Wattn.gamma
-context1.branch1.Wattn.query_conv.conv.weight
-context1.branch1.Wattn.query_conv.bn.weight
-context1.branch1.Wattn.query_conv.bn.bias
-context1.branch1.Wattn.query_conv.bn.running_mean
-context1.branch1.Wattn.query_conv.bn.running_var
-context1.branch1.Wattn.query_conv.bn.num_batches_tracked
-context1.branch1.Wattn.key_conv.conv.weight
-context1.branch1.Wattn.key_conv.bn.weight
-context1.branch1.Wattn.key_conv.bn.bias
-context1.branch1.Wattn.key_conv.bn.running_mean
-context1.branch1.Wattn.key_conv.bn.running_var
-context1.branch1.Wattn.key_conv.bn.num_batches_tracked
-context1.branch1.Wattn.value_conv.conv.weight
-context1.branch1.Wattn.value_conv.bn.weight
-context1.branch1.Wattn.value_conv.bn.bias
-context1.branch1.Wattn.value_conv.bn.running_mean
-context1.branch1.Wattn.value_conv.bn.running_var
-context1.branch1.Wattn.value_conv.bn.num_batches_tracked
-context1.branch2.conv0.conv.weight
-context1.branch2.conv0.bn.weight
-context1.branch2.conv0.bn.bias
-context1.branch2.conv0.bn.running_mean
-context1.branch2.conv0.bn.running_var
-context1.branch2.conv0.bn.num_batches_tracked
-context1.branch2.conv1.conv.weight
-context1.branch2.conv1.bn.weight
-context1.branch2.conv1.bn.bias
-context1.branch2.conv1.bn.running_mean
-context1.branch2.conv1.bn.running_var
-context1.branch2.conv1.bn.num_batches_tracked
-context1.branch2.conv2.conv.weight
-context1.branch2.conv2.bn.weight
-context1.branch2.conv2.bn.bias
-context1.branch2.conv2.bn.running_mean
-context1.branch2.conv2.bn.running_var
-context1.branch2.conv2.bn.num_batches_tracked
-context1.branch2.conv3.conv.weight
-context1.branch2.conv3.bn.weight
-context1.branch2.conv3.bn.bias
-context1.branch2.conv3.bn.running_mean
-context1.branch2.conv3.bn.running_var
-context1.branch2.conv3.bn.num_batches_tracked
-context1.branch2.Hattn.gamma
-context1.branch2.Hattn.query_conv.conv.weight
-context1.branch2.Hattn.query_conv.bn.weight
-context1.branch2.Hattn.query_conv.bn.bias
-context1.branch2.Hattn.query_conv.bn.running_mean
-context1.branch2.Hattn.query_conv.bn.running_var
-context1.branch2.Hattn.query_conv.bn.num_batches_tracked
-context1.branch2.Hattn.key_conv.conv.weight
-context1.branch2.Hattn.key_conv.bn.weight
-context1.branch2.Hattn.key_conv.bn.bias
-context1.branch2.Hattn.key_conv.bn.running_mean
-context1.branch2.Hattn.key_conv.bn.running_var
-context1.branch2.Hattn.key_conv.bn.num_batches_tracked
-context1.branch2.Hattn.value_conv.conv.weight
-context1.branch2.Hattn.value_conv.bn.weight
-context1.branch2.Hattn.value_conv.bn.bias
-context1.branch2.Hattn.value_conv.bn.running_mean
-context1.branch2.Hattn.value_conv.bn.running_var
-context1.branch2.Hattn.value_conv.bn.num_batches_tracked
-context1.branch2.Wattn.gamma
-context1.branch2.Wattn.query_conv.conv.weight
-context1.branch2.Wattn.query_conv.bn.weight
-context1.branch2.Wattn.query_conv.bn.bias
-context1.branch2.Wattn.query_conv.bn.running_mean
-context1.branch2.Wattn.query_conv.bn.running_var
-context1.branch2.Wattn.query_conv.bn.num_batches_tracked
-context1.branch2.Wattn.key_conv.conv.weight
-context1.branch2.Wattn.key_conv.bn.weight
-context1.branch2.Wattn.key_conv.bn.bias
-context1.branch2.Wattn.key_conv.bn.running_mean
-context1.branch2.Wattn.key_conv.bn.running_var
-context1.branch2.Wattn.key_conv.bn.num_batches_tracked
-context1.branch2.Wattn.value_conv.conv.weight
-context1.branch2.Wattn.value_conv.bn.weight
-context1.branch2.Wattn.value_conv.bn.bias
-context1.branch2.Wattn.value_conv.bn.running_mean
-context1.branch2.Wattn.value_conv.bn.running_var
-context1.branch2.Wattn.value_conv.bn.num_batches_tracked
-context1.branch3.conv0.conv.weight
-context1.branch3.conv0.bn.weight
-context1.branch3.conv0.bn.bias
-context1.branch3.conv0.bn.running_mean
-context1.branch3.conv0.bn.running_var
-context1.branch3.conv0.bn.num_batches_tracked
-context1.branch3.conv1.conv.weight
-context1.branch3.conv1.bn.weight
-context1.branch3.conv1.bn.bias
-context1.branch3.conv1.bn.running_mean
-context1.branch3.conv1.bn.running_var
-context1.branch3.conv1.bn.num_batches_tracked
-context1.branch3.conv2.conv.weight
-context1.branch3.conv2.bn.weight
-context1.branch3.conv2.bn.bias
-context1.branch3.conv2.bn.running_mean
-context1.branch3.conv2.bn.running_var
-context1.branch3.conv2.bn.num_batches_tracked
-context1.branch3.conv3.conv.weight
-context1.branch3.conv3.bn.weight
-context1.branch3.conv3.bn.bias
-context1.branch3.conv3.bn.running_mean
-context1.branch3.conv3.bn.running_var
-context1.branch3.conv3.bn.num_batches_tracked
-context1.branch3.Hattn.gamma
-context1.branch3.Hattn.query_conv.conv.weight
-context1.branch3.Hattn.query_conv.bn.weight
-context1.branch3.Hattn.query_conv.bn.bias
-context1.branch3.Hattn.query_conv.bn.running_mean
-context1.branch3.Hattn.query_conv.bn.running_var
-context1.branch3.Hattn.query_conv.bn.num_batches_tracked
-context1.branch3.Hattn.key_conv.conv.weight
-context1.branch3.Hattn.key_conv.bn.weight
-context1.branch3.Hattn.key_conv.bn.bias
-context1.branch3.Hattn.key_conv.bn.running_mean
-context1.branch3.Hattn.key_conv.bn.running_var
-context1.branch3.Hattn.key_conv.bn.num_batches_tracked
-context1.branch3.Hattn.value_conv.conv.weight
-context1.branch3.Hattn.value_conv.bn.weight
-context1.branch3.Hattn.value_conv.bn.bias
-context1.branch3.Hattn.value_conv.bn.running_mean
-context1.branch3.Hattn.value_conv.bn.running_var
-context1.branch3.Hattn.value_conv.bn.num_batches_tracked
-context1.branch3.Wattn.gamma
-context1.branch3.Wattn.query_conv.conv.weight
-context1.branch3.Wattn.query_conv.bn.weight
-context1.branch3.Wattn.query_conv.bn.bias
-context1.branch3.Wattn.query_conv.bn.running_mean
-context1.branch3.Wattn.query_conv.bn.running_var
-context1.branch3.Wattn.query_conv.bn.num_batches_tracked
-context1.branch3.Wattn.key_conv.conv.weight
-context1.branch3.Wattn.key_conv.bn.weight
-context1.branch3.Wattn.key_conv.bn.bias
-context1.branch3.Wattn.key_conv.bn.running_mean
-context1.branch3.Wattn.key_conv.bn.running_var
-context1.branch3.Wattn.key_conv.bn.num_batches_tracked
-context1.branch3.Wattn.value_conv.conv.weight
-context1.branch3.Wattn.value_conv.bn.weight
-context1.branch3.Wattn.value_conv.bn.bias
-context1.branch3.Wattn.value_conv.bn.running_mean
-context1.branch3.Wattn.value_conv.bn.running_var
-context1.branch3.Wattn.value_conv.bn.num_batches_tracked
-context1.conv_cat.conv.weight
-context1.conv_cat.bn.weight
-context1.conv_cat.bn.bias
-context1.conv_cat.bn.running_mean
-context1.conv_cat.bn.running_var
-context1.conv_cat.bn.num_batches_tracked
-context1.conv_res.conv.weight
-context1.conv_res.bn.weight
-context1.conv_res.bn.bias
-context1.conv_res.bn.running_mean
-context1.conv_res.bn.running_var
-context1.conv_res.bn.num_batches_tracked
-context2.branch0.conv.weight
-context2.branch0.bn.weight
-context2.branch0.bn.bias
-context2.branch0.bn.running_mean
-context2.branch0.bn.running_var
-context2.branch0.bn.num_batches_tracked
-context2.branch1.conv0.conv.weight
-context2.branch1.conv0.bn.weight
-context2.branch1.conv0.bn.bias
-context2.branch1.conv0.bn.running_mean
-context2.branch1.conv0.bn.running_var
-context2.branch1.conv0.bn.num_batches_tracked
-context2.branch1.conv1.conv.weight
-context2.branch1.conv1.bn.weight
-context2.branch1.conv1.bn.bias
-context2.branch1.conv1.bn.running_mean
-context2.branch1.conv1.bn.running_var
-context2.branch1.conv1.bn.num_batches_tracked
-context2.branch1.conv2.conv.weight
-context2.branch1.conv2.bn.weight
-context2.branch1.conv2.bn.bias
-context2.branch1.conv2.bn.running_mean
-context2.branch1.conv2.bn.running_var
-context2.branch1.conv2.bn.num_batches_tracked
-context2.branch1.conv3.conv.weight
-context2.branch1.conv3.bn.weight
-context2.branch1.conv3.bn.bias
-context2.branch1.conv3.bn.running_mean
-context2.branch1.conv3.bn.running_var
-context2.branch1.conv3.bn.num_batches_tracked
-context2.branch1.Hattn.gamma
-context2.branch1.Hattn.query_conv.conv.weight
-context2.branch1.Hattn.query_conv.bn.weight
-context2.branch1.Hattn.query_conv.bn.bias
-context2.branch1.Hattn.query_conv.bn.running_mean
-context2.branch1.Hattn.query_conv.bn.running_var
-context2.branch1.Hattn.query_conv.bn.num_batches_tracked
-context2.branch1.Hattn.key_conv.conv.weight
-context2.branch1.Hattn.key_conv.bn.weight
-context2.branch1.Hattn.key_conv.bn.bias
-context2.branch1.Hattn.key_conv.bn.running_mean
-context2.branch1.Hattn.key_conv.bn.running_var
-context2.branch1.Hattn.key_conv.bn.num_batches_tracked
-context2.branch1.Hattn.value_conv.conv.weight
-context2.branch1.Hattn.value_conv.bn.weight
-context2.branch1.Hattn.value_conv.bn.bias
-context2.branch1.Hattn.value_conv.bn.running_mean
-context2.branch1.Hattn.value_conv.bn.running_var
-context2.branch1.Hattn.value_conv.bn.num_batches_tracked
-context2.branch1.Wattn.gamma
-context2.branch1.Wattn.query_conv.conv.weight
-context2.branch1.Wattn.query_conv.bn.weight
-context2.branch1.Wattn.query_conv.bn.bias
-context2.branch1.Wattn.query_conv.bn.running_mean
-context2.branch1.Wattn.query_conv.bn.running_var
-context2.branch1.Wattn.query_conv.bn.num_batches_tracked
-context2.branch1.Wattn.key_conv.conv.weight
-context2.branch1.Wattn.key_conv.bn.weight
-context2.branch1.Wattn.key_conv.bn.bias
-context2.branch1.Wattn.key_conv.bn.running_mean
-context2.branch1.Wattn.key_conv.bn.running_var
-context2.branch1.Wattn.key_conv.bn.num_batches_tracked
-context2.branch1.Wattn.value_conv.conv.weight
-context2.branch1.Wattn.value_conv.bn.weight
-context2.branch1.Wattn.value_conv.bn.bias
-context2.branch1.Wattn.value_conv.bn.running_mean
-context2.branch1.Wattn.value_conv.bn.running_var
-context2.branch1.Wattn.value_conv.bn.num_batches_tracked
-context2.branch2.conv0.conv.weight
-context2.branch2.conv0.bn.weight
-context2.branch2.conv0.bn.bias
-context2.branch2.conv0.bn.running_mean
-context2.branch2.conv0.bn.running_var
-context2.branch2.conv0.bn.num_batches_tracked
-context2.branch2.conv1.conv.weight
-context2.branch2.conv1.bn.weight
-context2.branch2.conv1.bn.bias
-context2.branch2.conv1.bn.running_mean
-context2.branch2.conv1.bn.running_var
-context2.branch2.conv1.bn.num_batches_tracked
-context2.branch2.conv2.conv.weight
-context2.branch2.conv2.bn.weight
-context2.branch2.conv2.bn.bias
-context2.branch2.conv2.bn.running_mean
-context2.branch2.conv2.bn.running_var
-context2.branch2.conv2.bn.num_batches_tracked
-context2.branch2.conv3.conv.weight
-context2.branch2.conv3.bn.weight
-context2.branch2.conv3.bn.bias
-context2.branch2.conv3.bn.running_mean
-context2.branch2.conv3.bn.running_var
-context2.branch2.conv3.bn.num_batches_tracked
-context2.branch2.Hattn.gamma
-context2.branch2.Hattn.query_conv.conv.weight
-context2.branch2.Hattn.query_conv.bn.weight
-context2.branch2.Hattn.query_conv.bn.bias
-context2.branch2.Hattn.query_conv.bn.running_mean
-context2.branch2.Hattn.query_conv.bn.running_var
-context2.branch2.Hattn.query_conv.bn.num_batches_tracked
-context2.branch2.Hattn.key_conv.conv.weight
-context2.branch2.Hattn.key_conv.bn.weight
-context2.branch2.Hattn.key_conv.bn.bias
-context2.branch2.Hattn.key_conv.bn.running_mean
-context2.branch2.Hattn.key_conv.bn.running_var
-context2.branch2.Hattn.key_conv.bn.num_batches_tracked
-context2.branch2.Hattn.value_conv.conv.weight
-context2.branch2.Hattn.value_conv.bn.weight
-context2.branch2.Hattn.value_conv.bn.bias
-context2.branch2.Hattn.value_conv.bn.running_mean
-context2.branch2.Hattn.value_conv.bn.running_var
-context2.branch2.Hattn.value_conv.bn.num_batches_tracked
-context2.branch2.Wattn.gamma
-context2.branch2.Wattn.query_conv.conv.weight
-context2.branch2.Wattn.query_conv.bn.weight
-context2.branch2.Wattn.query_conv.bn.bias
-context2.branch2.Wattn.query_conv.bn.running_mean
-context2.branch2.Wattn.query_conv.bn.running_var
-context2.branch2.Wattn.query_conv.bn.num_batches_tracked
-context2.branch2.Wattn.key_conv.conv.weight
-context2.branch2.Wattn.key_conv.bn.weight
-context2.branch2.Wattn.key_conv.bn.bias
-context2.branch2.Wattn.key_conv.bn.running_mean
-context2.branch2.Wattn.key_conv.bn.running_var
-context2.branch2.Wattn.key_conv.bn.num_batches_tracked
-context2.branch2.Wattn.value_conv.conv.weight
-context2.branch2.Wattn.value_conv.bn.weight
-context2.branch2.Wattn.value_conv.bn.bias
-context2.branch2.Wattn.value_conv.bn.running_mean
-context2.branch2.Wattn.value_conv.bn.running_var
-context2.branch2.Wattn.value_conv.bn.num_batches_tracked
-context2.branch3.conv0.conv.weight
-context2.branch3.conv0.bn.weight
-context2.branch3.conv0.bn.bias
-context2.branch3.conv0.bn.running_mean
-context2.branch3.conv0.bn.running_var
-context2.branch3.conv0.bn.num_batches_tracked
-context2.branch3.conv1.conv.weight
-context2.branch3.conv1.bn.weight
-context2.branch3.conv1.bn.bias
-context2.branch3.conv1.bn.running_mean
-context2.branch3.conv1.bn.running_var
-context2.branch3.conv1.bn.num_batches_tracked
-context2.branch3.conv2.conv.weight
-context2.branch3.conv2.bn.weight
-context2.branch3.conv2.bn.bias
-context2.branch3.conv2.bn.running_mean
-context2.branch3.conv2.bn.running_var
-context2.branch3.conv2.bn.num_batches_tracked
-context2.branch3.conv3.conv.weight
-context2.branch3.conv3.bn.weight
-context2.branch3.conv3.bn.bias
-context2.branch3.conv3.bn.running_mean
-context2.branch3.conv3.bn.running_var
-context2.branch3.conv3.bn.num_batches_tracked
-context2.branch3.Hattn.gamma
-context2.branch3.Hattn.query_conv.conv.weight
-context2.branch3.Hattn.query_conv.bn.weight
-context2.branch3.Hattn.query_conv.bn.bias
-context2.branch3.Hattn.query_conv.bn.running_mean
-context2.branch3.Hattn.query_conv.bn.running_var
-context2.branch3.Hattn.query_conv.bn.num_batches_tracked
-context2.branch3.Hattn.key_conv.conv.weight
-context2.branch3.Hattn.key_conv.bn.weight
-context2.branch3.Hattn.key_conv.bn.bias
-context2.branch3.Hattn.key_conv.bn.running_mean
-context2.branch3.Hattn.key_conv.bn.running_var
-context2.branch3.Hattn.key_conv.bn.num_batches_tracked
-context2.branch3.Hattn.value_conv.conv.weight
-context2.branch3.Hattn.value_conv.bn.weight
-context2.branch3.Hattn.value_conv.bn.bias
-context2.branch3.Hattn.value_conv.bn.running_mean
-context2.branch3.Hattn.value_conv.bn.running_var
-context2.branch3.Hattn.value_conv.bn.num_batches_tracked
-context2.branch3.Wattn.gamma
-context2.branch3.Wattn.query_conv.conv.weight
-context2.branch3.Wattn.query_conv.bn.weight
-context2.branch3.Wattn.query_conv.bn.bias
-context2.branch3.Wattn.query_conv.bn.running_mean
-context2.branch3.Wattn.query_conv.bn.running_var
-context2.branch3.Wattn.query_conv.bn.num_batches_tracked
-context2.branch3.Wattn.key_conv.conv.weight
-context2.branch3.Wattn.key_conv.bn.weight
-context2.branch3.Wattn.key_conv.bn.bias
-context2.branch3.Wattn.key_conv.bn.running_mean
-context2.branch3.Wattn.key_conv.bn.running_var
-context2.branch3.Wattn.key_conv.bn.num_batches_tracked
-context2.branch3.Wattn.value_conv.conv.weight
-context2.branch3.Wattn.value_conv.bn.weight
-context2.branch3.Wattn.value_conv.bn.bias
-context2.branch3.Wattn.value_conv.bn.running_mean
-context2.branch3.Wattn.value_conv.bn.running_var
-context2.branch3.Wattn.value_conv.bn.num_batches_tracked
-context2.conv_cat.conv.weight
-context2.conv_cat.bn.weight
-context2.conv_cat.bn.bias
-context2.conv_cat.bn.running_mean
-context2.conv_cat.bn.running_var
-context2.conv_cat.bn.num_batches_tracked
-context2.conv_res.conv.weight
-context2.conv_res.bn.weight
-context2.conv_res.bn.bias
-context2.conv_res.bn.running_mean
-context2.conv_res.bn.running_var
-context2.conv_res.bn.num_batches_tracked
-context3.branch0.conv.weight
-context3.branch0.bn.weight
-context3.branch0.bn.bias
-context3.branch0.bn.running_mean
-context3.branch0.bn.running_var
-context3.branch0.bn.num_batches_tracked
-context3.branch1.conv0.conv.weight
-context3.branch1.conv0.bn.weight
-context3.branch1.conv0.bn.bias
-context3.branch1.conv0.bn.running_mean
-context3.branch1.conv0.bn.running_var
-context3.branch1.conv0.bn.num_batches_tracked
-context3.branch1.conv1.conv.weight
-context3.branch1.conv1.bn.weight
-context3.branch1.conv1.bn.bias
-context3.branch1.conv1.bn.running_mean
-context3.branch1.conv1.bn.running_var
-context3.branch1.conv1.bn.num_batches_tracked
-context3.branch1.conv2.conv.weight
-context3.branch1.conv2.bn.weight
-context3.branch1.conv2.bn.bias
-context3.branch1.conv2.bn.running_mean
-context3.branch1.conv2.bn.running_var
-context3.branch1.conv2.bn.num_batches_tracked
-context3.branch1.conv3.conv.weight
-context3.branch1.conv3.bn.weight
-context3.branch1.conv3.bn.bias
-context3.branch1.conv3.bn.running_mean
-context3.branch1.conv3.bn.running_var
-context3.branch1.conv3.bn.num_batches_tracked
-context3.branch1.Hattn.gamma
-context3.branch1.Hattn.query_conv.conv.weight
-context3.branch1.Hattn.query_conv.bn.weight
-context3.branch1.Hattn.query_conv.bn.bias
-context3.branch1.Hattn.query_conv.bn.running_mean
-context3.branch1.Hattn.query_conv.bn.running_var
-context3.branch1.Hattn.query_conv.bn.num_batches_tracked
-context3.branch1.Hattn.key_conv.conv.weight
-context3.branch1.Hattn.key_conv.bn.weight
-context3.branch1.Hattn.key_conv.bn.bias
-context3.branch1.Hattn.key_conv.bn.running_mean
-context3.branch1.Hattn.key_conv.bn.running_var
-context3.branch1.Hattn.key_conv.bn.num_batches_tracked
-context3.branch1.Hattn.value_conv.conv.weight
-context3.branch1.Hattn.value_conv.bn.weight
-context3.branch1.Hattn.value_conv.bn.bias
-context3.branch1.Hattn.value_conv.bn.running_mean
-context3.branch1.Hattn.value_conv.bn.running_var
-context3.branch1.Hattn.value_conv.bn.num_batches_tracked
-context3.branch1.Wattn.gamma
-context3.branch1.Wattn.query_conv.conv.weight
-context3.branch1.Wattn.query_conv.bn.weight
-context3.branch1.Wattn.query_conv.bn.bias
-context3.branch1.Wattn.query_conv.bn.running_mean
-context3.branch1.Wattn.query_conv.bn.running_var
-context3.branch1.Wattn.query_conv.bn.num_batches_tracked
-context3.branch1.Wattn.key_conv.conv.weight
-context3.branch1.Wattn.key_conv.bn.weight
-context3.branch1.Wattn.key_conv.bn.bias
-context3.branch1.Wattn.key_conv.bn.running_mean
-context3.branch1.Wattn.key_conv.bn.running_var
-context3.branch1.Wattn.key_conv.bn.num_batches_tracked
-context3.branch1.Wattn.value_conv.conv.weight
-context3.branch1.Wattn.value_conv.bn.weight
-context3.branch1.Wattn.value_conv.bn.bias
-context3.branch1.Wattn.value_conv.bn.running_mean
-context3.branch1.Wattn.value_conv.bn.running_var
-context3.branch1.Wattn.value_conv.bn.num_batches_tracked
-context3.branch2.conv0.conv.weight
-context3.branch2.conv0.bn.weight
-context3.branch2.conv0.bn.bias
-context3.branch2.conv0.bn.running_mean
-context3.branch2.conv0.bn.running_var
-context3.branch2.conv0.bn.num_batches_tracked
-context3.branch2.conv1.conv.weight
-context3.branch2.conv1.bn.weight
-context3.branch2.conv1.bn.bias
-context3.branch2.conv1.bn.running_mean
-context3.branch2.conv1.bn.running_var
-context3.branch2.conv1.bn.num_batches_tracked
-context3.branch2.conv2.conv.weight
-context3.branch2.conv2.bn.weight
-context3.branch2.conv2.bn.bias
-context3.branch2.conv2.bn.running_mean
-context3.branch2.conv2.bn.running_var
-context3.branch2.conv2.bn.num_batches_tracked
-context3.branch2.conv3.conv.weight
-context3.branch2.conv3.bn.weight
-context3.branch2.conv3.bn.bias
-context3.branch2.conv3.bn.running_mean
-context3.branch2.conv3.bn.running_var
-context3.branch2.conv3.bn.num_batches_tracked
-context3.branch2.Hattn.gamma
-context3.branch2.Hattn.query_conv.conv.weight
-context3.branch2.Hattn.query_conv.bn.weight
-context3.branch2.Hattn.query_conv.bn.bias
-context3.branch2.Hattn.query_conv.bn.running_mean
-context3.branch2.Hattn.query_conv.bn.running_var
-context3.branch2.Hattn.query_conv.bn.num_batches_tracked
-context3.branch2.Hattn.key_conv.conv.weight
-context3.branch2.Hattn.key_conv.bn.weight
-context3.branch2.Hattn.key_conv.bn.bias
-context3.branch2.Hattn.key_conv.bn.running_mean
-context3.branch2.Hattn.key_conv.bn.running_var
-context3.branch2.Hattn.key_conv.bn.num_batches_tracked
-context3.branch2.Hattn.value_conv.conv.weight
-context3.branch2.Hattn.value_conv.bn.weight
-context3.branch2.Hattn.value_conv.bn.bias
-context3.branch2.Hattn.value_conv.bn.running_mean
-context3.branch2.Hattn.value_conv.bn.running_var
-context3.branch2.Hattn.value_conv.bn.num_batches_tracked
-context3.branch2.Wattn.gamma
-context3.branch2.Wattn.query_conv.conv.weight
-context3.branch2.Wattn.query_conv.bn.weight
-context3.branch2.Wattn.query_conv.bn.bias
-context3.branch2.Wattn.query_conv.bn.running_mean
-context3.branch2.Wattn.query_conv.bn.running_var
-context3.branch2.Wattn.query_conv.bn.num_batches_tracked
-context3.branch2.Wattn.key_conv.conv.weight
-context3.branch2.Wattn.key_conv.bn.weight
-context3.branch2.Wattn.key_conv.bn.bias
-context3.branch2.Wattn.key_conv.bn.running_mean
-context3.branch2.Wattn.key_conv.bn.running_var
-context3.branch2.Wattn.key_conv.bn.num_batches_tracked
-context3.branch2.Wattn.value_conv.conv.weight
-context3.branch2.Wattn.value_conv.bn.weight
-context3.branch2.Wattn.value_conv.bn.bias
-context3.branch2.Wattn.value_conv.bn.running_mean
-context3.branch2.Wattn.value_conv.bn.running_var
-context3.branch2.Wattn.value_conv.bn.num_batches_tracked
-context3.branch3.conv0.conv.weight
-context3.branch3.conv0.bn.weight
-context3.branch3.conv0.bn.bias
-context3.branch3.conv0.bn.running_mean
-context3.branch3.conv0.bn.running_var
-context3.branch3.conv0.bn.num_batches_tracked
-context3.branch3.conv1.conv.weight
-context3.branch3.conv1.bn.weight
-context3.branch3.conv1.bn.bias
-context3.branch3.conv1.bn.running_mean
-context3.branch3.conv1.bn.running_var
-context3.branch3.conv1.bn.num_batches_tracked
-context3.branch3.conv2.conv.weight
-context3.branch3.conv2.bn.weight
-context3.branch3.conv2.bn.bias
-context3.branch3.conv2.bn.running_mean
-context3.branch3.conv2.bn.running_var
-context3.branch3.conv2.bn.num_batches_tracked
-context3.branch3.conv3.conv.weight
-context3.branch3.conv3.bn.weight
-context3.branch3.conv3.bn.bias
-context3.branch3.conv3.bn.running_mean
-context3.branch3.conv3.bn.running_var
-context3.branch3.conv3.bn.num_batches_tracked
-context3.branch3.Hattn.gamma
-context3.branch3.Hattn.query_conv.conv.weight
-context3.branch3.Hattn.query_conv.bn.weight
-context3.branch3.Hattn.query_conv.bn.bias
-context3.branch3.Hattn.query_conv.bn.running_mean
-context3.branch3.Hattn.query_conv.bn.running_var
-context3.branch3.Hattn.query_conv.bn.num_batches_tracked
-context3.branch3.Hattn.key_conv.conv.weight
-context3.branch3.Hattn.key_conv.bn.weight
-context3.branch3.Hattn.key_conv.bn.bias
-context3.branch3.Hattn.key_conv.bn.running_mean
-context3.branch3.Hattn.key_conv.bn.running_var
-context3.branch3.Hattn.key_conv.bn.num_batches_tracked
-context3.branch3.Hattn.value_conv.conv.weight
-context3.branch3.Hattn.value_conv.bn.weight
-context3.branch3.Hattn.value_conv.bn.bias
-context3.branch3.Hattn.value_conv.bn.running_mean
-context3.branch3.Hattn.value_conv.bn.running_var
-context3.branch3.Hattn.value_conv.bn.num_batches_tracked
-context3.branch3.Wattn.gamma
-context3.branch3.Wattn.query_conv.conv.weight
-context3.branch3.Wattn.query_conv.bn.weight
-context3.branch3.Wattn.query_conv.bn.bias
-context3.branch3.Wattn.query_conv.bn.running_mean
-context3.branch3.Wattn.query_conv.bn.running_var
-context3.branch3.Wattn.query_conv.bn.num_batches_tracked
-context3.branch3.Wattn.key_conv.conv.weight
-context3.branch3.Wattn.key_conv.bn.weight
-context3.branch3.Wattn.key_conv.bn.bias
-context3.branch3.Wattn.key_conv.bn.running_mean
-context3.branch3.Wattn.key_conv.bn.running_var
-context3.branch3.Wattn.key_conv.bn.num_batches_tracked
-context3.branch3.Wattn.value_conv.conv.weight
-context3.branch3.Wattn.value_conv.bn.weight
-context3.branch3.Wattn.value_conv.bn.bias
-context3.branch3.Wattn.value_conv.bn.running_mean
-context3.branch3.Wattn.value_conv.bn.running_var
-context3.branch3.Wattn.value_conv.bn.num_batches_tracked
-context3.conv_cat.conv.weight
-context3.conv_cat.bn.weight
-context3.conv_cat.bn.bias
-context3.conv_cat.bn.running_mean
-context3.conv_cat.bn.running_var
-context3.conv_cat.bn.num_batches_tracked
-context3.conv_res.conv.weight
-context3.conv_res.bn.weight
-context3.conv_res.bn.bias
-context3.conv_res.bn.running_mean
-context3.conv_res.bn.running_var
-context3.conv_res.bn.num_batches_tracked
-context4.branch0.conv.weight
-context4.branch0.bn.weight
-context4.branch0.bn.bias
-context4.branch0.bn.running_mean
-context4.branch0.bn.running_var
-context4.branch0.bn.num_batches_tracked
-context4.branch1.conv0.conv.weight
-context4.branch1.conv0.bn.weight
-context4.branch1.conv0.bn.bias
-context4.branch1.conv0.bn.running_mean
-context4.branch1.conv0.bn.running_var
-context4.branch1.conv0.bn.num_batches_tracked
-context4.branch1.conv1.conv.weight
-context4.branch1.conv1.bn.weight
-context4.branch1.conv1.bn.bias
-context4.branch1.conv1.bn.running_mean
-context4.branch1.conv1.bn.running_var
-context4.branch1.conv1.bn.num_batches_tracked
-context4.branch1.conv2.conv.weight
-context4.branch1.conv2.bn.weight
-context4.branch1.conv2.bn.bias
-context4.branch1.conv2.bn.running_mean
-context4.branch1.conv2.bn.running_var
-context4.branch1.conv2.bn.num_batches_tracked
-context4.branch1.conv3.conv.weight
-context4.branch1.conv3.bn.weight
-context4.branch1.conv3.bn.bias
-context4.branch1.conv3.bn.running_mean
-context4.branch1.conv3.bn.running_var
-context4.branch1.conv3.bn.num_batches_tracked
-context4.branch1.Hattn.gamma
-context4.branch1.Hattn.query_conv.conv.weight
-context4.branch1.Hattn.query_conv.bn.weight
-context4.branch1.Hattn.query_conv.bn.bias
-context4.branch1.Hattn.query_conv.bn.running_mean
-context4.branch1.Hattn.query_conv.bn.running_var
-context4.branch1.Hattn.query_conv.bn.num_batches_tracked
-context4.branch1.Hattn.key_conv.conv.weight
-context4.branch1.Hattn.key_conv.bn.weight
-context4.branch1.Hattn.key_conv.bn.bias
-context4.branch1.Hattn.key_conv.bn.running_mean
-context4.branch1.Hattn.key_conv.bn.running_var
-context4.branch1.Hattn.key_conv.bn.num_batches_tracked
-context4.branch1.Hattn.value_conv.conv.weight
-context4.branch1.Hattn.value_conv.bn.weight
-context4.branch1.Hattn.value_conv.bn.bias
-context4.branch1.Hattn.value_conv.bn.running_mean
-context4.branch1.Hattn.value_conv.bn.running_var
-context4.branch1.Hattn.value_conv.bn.num_batches_tracked
-context4.branch1.Wattn.gamma
-context4.branch1.Wattn.query_conv.conv.weight
-context4.branch1.Wattn.query_conv.bn.weight
-context4.branch1.Wattn.query_conv.bn.bias
-context4.branch1.Wattn.query_conv.bn.running_mean
-context4.branch1.Wattn.query_conv.bn.running_var
-context4.branch1.Wattn.query_conv.bn.num_batches_tracked
-context4.branch1.Wattn.key_conv.conv.weight
-context4.branch1.Wattn.key_conv.bn.weight
-context4.branch1.Wattn.key_conv.bn.bias
-context4.branch1.Wattn.key_conv.bn.running_mean
-context4.branch1.Wattn.key_conv.bn.running_var
-context4.branch1.Wattn.key_conv.bn.num_batches_tracked
-context4.branch1.Wattn.value_conv.conv.weight
-context4.branch1.Wattn.value_conv.bn.weight
-context4.branch1.Wattn.value_conv.bn.bias
-context4.branch1.Wattn.value_conv.bn.running_mean
-context4.branch1.Wattn.value_conv.bn.running_var
-context4.branch1.Wattn.value_conv.bn.num_batches_tracked
-context4.branch2.conv0.conv.weight
-context4.branch2.conv0.bn.weight
-context4.branch2.conv0.bn.bias
-context4.branch2.conv0.bn.running_mean
-context4.branch2.conv0.bn.running_var
-context4.branch2.conv0.bn.num_batches_tracked
-context4.branch2.conv1.conv.weight
-context4.branch2.conv1.bn.weight
-context4.branch2.conv1.bn.bias
-context4.branch2.conv1.bn.running_mean
-context4.branch2.conv1.bn.running_var
-context4.branch2.conv1.bn.num_batches_tracked
-context4.branch2.conv2.conv.weight
-context4.branch2.conv2.bn.weight
-context4.branch2.conv2.bn.bias
-context4.branch2.conv2.bn.running_mean
-context4.branch2.conv2.bn.running_var
-context4.branch2.conv2.bn.num_batches_tracked
-context4.branch2.conv3.conv.weight
-context4.branch2.conv3.bn.weight
-context4.branch2.conv3.bn.bias
-context4.branch2.conv3.bn.running_mean
-context4.branch2.conv3.bn.running_var
-context4.branch2.conv3.bn.num_batches_tracked
-context4.branch2.Hattn.gamma
-context4.branch2.Hattn.query_conv.conv.weight
-context4.branch2.Hattn.query_conv.bn.weight
-context4.branch2.Hattn.query_conv.bn.bias
-context4.branch2.Hattn.query_conv.bn.running_mean
-context4.branch2.Hattn.query_conv.bn.running_var
-context4.branch2.Hattn.query_conv.bn.num_batches_tracked
-context4.branch2.Hattn.key_conv.conv.weight
-context4.branch2.Hattn.key_conv.bn.weight
-context4.branch2.Hattn.key_conv.bn.bias
-context4.branch2.Hattn.key_conv.bn.running_mean
-context4.branch2.Hattn.key_conv.bn.running_var
-context4.branch2.Hattn.key_conv.bn.num_batches_tracked
-context4.branch2.Hattn.value_conv.conv.weight
-context4.branch2.Hattn.value_conv.bn.weight
-context4.branch2.Hattn.value_conv.bn.bias
-context4.branch2.Hattn.value_conv.bn.running_mean
-context4.branch2.Hattn.value_conv.bn.running_var
-context4.branch2.Hattn.value_conv.bn.num_batches_tracked
-context4.branch2.Wattn.gamma
-context4.branch2.Wattn.query_conv.conv.weight
-context4.branch2.Wattn.query_conv.bn.weight
-context4.branch2.Wattn.query_conv.bn.bias
-context4.branch2.Wattn.query_conv.bn.running_mean
-context4.branch2.Wattn.query_conv.bn.running_var
-context4.branch2.Wattn.query_conv.bn.num_batches_tracked
-context4.branch2.Wattn.key_conv.conv.weight
-context4.branch2.Wattn.key_conv.bn.weight
-context4.branch2.Wattn.key_conv.bn.bias
-context4.branch2.Wattn.key_conv.bn.running_mean
-context4.branch2.Wattn.key_conv.bn.running_var
-context4.branch2.Wattn.key_conv.bn.num_batches_tracked
-context4.branch2.Wattn.value_conv.conv.weight
-context4.branch2.Wattn.value_conv.bn.weight
-context4.branch2.Wattn.value_conv.bn.bias
-context4.branch2.Wattn.value_conv.bn.running_mean
-context4.branch2.Wattn.value_conv.bn.running_var
-context4.branch2.Wattn.value_conv.bn.num_batches_tracked
-context4.branch3.conv0.conv.weight
-context4.branch3.conv0.bn.weight
-context4.branch3.conv0.bn.bias
-context4.branch3.conv0.bn.running_mean
-context4.branch3.conv0.bn.running_var
-context4.branch3.conv0.bn.num_batches_tracked
-context4.branch3.conv1.conv.weight
-context4.branch3.conv1.bn.weight
-context4.branch3.conv1.bn.bias
-context4.branch3.conv1.bn.running_mean
-context4.branch3.conv1.bn.running_var
-context4.branch3.conv1.bn.num_batches_tracked
-context4.branch3.conv2.conv.weight
-context4.branch3.conv2.bn.weight
-context4.branch3.conv2.bn.bias
-context4.branch3.conv2.bn.running_mean
-context4.branch3.conv2.bn.running_var
-context4.branch3.conv2.bn.num_batches_tracked
-context4.branch3.conv3.conv.weight
-context4.branch3.conv3.bn.weight
-context4.branch3.conv3.bn.bias
-context4.branch3.conv3.bn.running_mean
-context4.branch3.conv3.bn.running_var
-context4.branch3.conv3.bn.num_batches_tracked
-context4.branch3.Hattn.gamma
-context4.branch3.Hattn.query_conv.conv.weight
-context4.branch3.Hattn.query_conv.bn.weight
-context4.branch3.Hattn.query_conv.bn.bias
-context4.branch3.Hattn.query_conv.bn.running_mean
-context4.branch3.Hattn.query_conv.bn.running_var
-context4.branch3.Hattn.query_conv.bn.num_batches_tracked
-context4.branch3.Hattn.key_conv.conv.weight
-context4.branch3.Hattn.key_conv.bn.weight
-context4.branch3.Hattn.key_conv.bn.bias
-context4.branch3.Hattn.key_conv.bn.running_mean
-context4.branch3.Hattn.key_conv.bn.running_var
-context4.branch3.Hattn.key_conv.bn.num_batches_tracked
-context4.branch3.Hattn.value_conv.conv.weight
-context4.branch3.Hattn.value_conv.bn.weight
-context4.branch3.Hattn.value_conv.bn.bias
-context4.branch3.Hattn.value_conv.bn.running_mean
-context4.branch3.Hattn.value_conv.bn.running_var
-context4.branch3.Hattn.value_conv.bn.num_batches_tracked
-context4.branch3.Wattn.gamma
-context4.branch3.Wattn.query_conv.conv.weight
-context4.branch3.Wattn.query_conv.bn.weight
-context4.branch3.Wattn.query_conv.bn.bias
-context4.branch3.Wattn.query_conv.bn.running_mean
-context4.branch3.Wattn.query_conv.bn.running_var
-context4.branch3.Wattn.query_conv.bn.num_batches_tracked
-context4.branch3.Wattn.key_conv.conv.weight
-context4.branch3.Wattn.key_conv.bn.weight
-context4.branch3.Wattn.key_conv.bn.bias
-context4.branch3.Wattn.key_conv.bn.running_mean
-context4.branch3.Wattn.key_conv.bn.running_var
-context4.branch3.Wattn.key_conv.bn.num_batches_tracked
-context4.branch3.Wattn.value_conv.conv.weight
-context4.branch3.Wattn.value_conv.bn.weight
-context4.branch3.Wattn.value_conv.bn.bias
-context4.branch3.Wattn.value_conv.bn.running_mean
-context4.branch3.Wattn.value_conv.bn.running_var
-context4.branch3.Wattn.value_conv.bn.num_batches_tracked
-context4.conv_cat.conv.weight
-context4.conv_cat.bn.weight
-context4.conv_cat.bn.bias
-context4.conv_cat.bn.running_mean
-context4.conv_cat.bn.running_var
-context4.conv_cat.bn.num_batches_tracked
-context4.conv_res.conv.weight
-context4.conv_res.bn.weight
-context4.conv_res.bn.bias
-context4.conv_res.bn.running_mean
-context4.conv_res.bn.running_var
-context4.conv_res.bn.num_batches_tracked
-context5.branch0.conv.weight
-context5.branch0.bn.weight
-context5.branch0.bn.bias
-context5.branch0.bn.running_mean
-context5.branch0.bn.running_var
-context5.branch0.bn.num_batches_tracked
-context5.branch1.conv0.conv.weight
-context5.branch1.conv0.bn.weight
-context5.branch1.conv0.bn.bias
-context5.branch1.conv0.bn.running_mean
-context5.branch1.conv0.bn.running_var
-context5.branch1.conv0.bn.num_batches_tracked
-context5.branch1.conv1.conv.weight
-context5.branch1.conv1.bn.weight
-context5.branch1.conv1.bn.bias
-context5.branch1.conv1.bn.running_mean
-context5.branch1.conv1.bn.running_var
-context5.branch1.conv1.bn.num_batches_tracked
-context5.branch1.conv2.conv.weight
-context5.branch1.conv2.bn.weight
-context5.branch1.conv2.bn.bias
-context5.branch1.conv2.bn.running_mean
-context5.branch1.conv2.bn.running_var
-context5.branch1.conv2.bn.num_batches_tracked
-context5.branch1.conv3.conv.weight
-context5.branch1.conv3.bn.weight
-context5.branch1.conv3.bn.bias
-context5.branch1.conv3.bn.running_mean
-context5.branch1.conv3.bn.running_var
-context5.branch1.conv3.bn.num_batches_tracked
-context5.branch1.Hattn.gamma
-context5.branch1.Hattn.query_conv.conv.weight
-context5.branch1.Hattn.query_conv.bn.weight
-context5.branch1.Hattn.query_conv.bn.bias
-context5.branch1.Hattn.query_conv.bn.running_mean
-context5.branch1.Hattn.query_conv.bn.running_var
-context5.branch1.Hattn.query_conv.bn.num_batches_tracked
-context5.branch1.Hattn.key_conv.conv.weight
-context5.branch1.Hattn.key_conv.bn.weight
-context5.branch1.Hattn.key_conv.bn.bias
-context5.branch1.Hattn.key_conv.bn.running_mean
-context5.branch1.Hattn.key_conv.bn.running_var
-context5.branch1.Hattn.key_conv.bn.num_batches_tracked
-context5.branch1.Hattn.value_conv.conv.weight
-context5.branch1.Hattn.value_conv.bn.weight
-context5.branch1.Hattn.value_conv.bn.bias
-context5.branch1.Hattn.value_conv.bn.running_mean
-context5.branch1.Hattn.value_conv.bn.running_var
-context5.branch1.Hattn.value_conv.bn.num_batches_tracked
-context5.branch1.Wattn.gamma
-context5.branch1.Wattn.query_conv.conv.weight
-context5.branch1.Wattn.query_conv.bn.weight
-context5.branch1.Wattn.query_conv.bn.bias
-context5.branch1.Wattn.query_conv.bn.running_mean
-context5.branch1.Wattn.query_conv.bn.running_var
-context5.branch1.Wattn.query_conv.bn.num_batches_tracked
-context5.branch1.Wattn.key_conv.conv.weight
-context5.branch1.Wattn.key_conv.bn.weight
-context5.branch1.Wattn.key_conv.bn.bias
-context5.branch1.Wattn.key_conv.bn.running_mean
-context5.branch1.Wattn.key_conv.bn.running_var
-context5.branch1.Wattn.key_conv.bn.num_batches_tracked
-context5.branch1.Wattn.value_conv.conv.weight
-context5.branch1.Wattn.value_conv.bn.weight
-context5.branch1.Wattn.value_conv.bn.bias
-context5.branch1.Wattn.value_conv.bn.running_mean
-context5.branch1.Wattn.value_conv.bn.running_var
-context5.branch1.Wattn.value_conv.bn.num_batches_tracked
-context5.branch2.conv0.conv.weight
-context5.branch2.conv0.bn.weight
-context5.branch2.conv0.bn.bias
-context5.branch2.conv0.bn.running_mean
-context5.branch2.conv0.bn.running_var
-context5.branch2.conv0.bn.num_batches_tracked
-context5.branch2.conv1.conv.weight
-context5.branch2.conv1.bn.weight
-context5.branch2.conv1.bn.bias
-context5.branch2.conv1.bn.running_mean
-context5.branch2.conv1.bn.running_var
-context5.branch2.conv1.bn.num_batches_tracked
-context5.branch2.conv2.conv.weight
-context5.branch2.conv2.bn.weight
-context5.branch2.conv2.bn.bias
-context5.branch2.conv2.bn.running_mean
-context5.branch2.conv2.bn.running_var
-context5.branch2.conv2.bn.num_batches_tracked
-context5.branch2.conv3.conv.weight
-context5.branch2.conv3.bn.weight
-context5.branch2.conv3.bn.bias
-context5.branch2.conv3.bn.running_mean
-context5.branch2.conv3.bn.running_var
-context5.branch2.conv3.bn.num_batches_tracked
-context5.branch2.Hattn.gamma
-context5.branch2.Hattn.query_conv.conv.weight
-context5.branch2.Hattn.query_conv.bn.weight
-context5.branch2.Hattn.query_conv.bn.bias
-context5.branch2.Hattn.query_conv.bn.running_mean
-context5.branch2.Hattn.query_conv.bn.running_var
-context5.branch2.Hattn.query_conv.bn.num_batches_tracked
-context5.branch2.Hattn.key_conv.conv.weight
-context5.branch2.Hattn.key_conv.bn.weight
-context5.branch2.Hattn.key_conv.bn.bias
-context5.branch2.Hattn.key_conv.bn.running_mean
-context5.branch2.Hattn.key_conv.bn.running_var
-context5.branch2.Hattn.key_conv.bn.num_batches_tracked
-context5.branch2.Hattn.value_conv.conv.weight
-context5.branch2.Hattn.value_conv.bn.weight
-context5.branch2.Hattn.value_conv.bn.bias
-context5.branch2.Hattn.value_conv.bn.running_mean
-context5.branch2.Hattn.value_conv.bn.running_var
-context5.branch2.Hattn.value_conv.bn.num_batches_tracked
-context5.branch2.Wattn.gamma
-context5.branch2.Wattn.query_conv.conv.weight
-context5.branch2.Wattn.query_conv.bn.weight
-context5.branch2.Wattn.query_conv.bn.bias
-context5.branch2.Wattn.query_conv.bn.running_mean
-context5.branch2.Wattn.query_conv.bn.running_var
-context5.branch2.Wattn.query_conv.bn.num_batches_tracked
-context5.branch2.Wattn.key_conv.conv.weight
-context5.branch2.Wattn.key_conv.bn.weight
-context5.branch2.Wattn.key_conv.bn.bias
-context5.branch2.Wattn.key_conv.bn.running_mean
-context5.branch2.Wattn.key_conv.bn.running_var
-context5.branch2.Wattn.key_conv.bn.num_batches_tracked
-context5.branch2.Wattn.value_conv.conv.weight
-context5.branch2.Wattn.value_conv.bn.weight
-context5.branch2.Wattn.value_conv.bn.bias
-context5.branch2.Wattn.value_conv.bn.running_mean
-context5.branch2.Wattn.value_conv.bn.running_var
-context5.branch2.Wattn.value_conv.bn.num_batches_tracked
-context5.branch3.conv0.conv.weight
-context5.branch3.conv0.bn.weight
-context5.branch3.conv0.bn.bias
-context5.branch3.conv0.bn.running_mean
-context5.branch3.conv0.bn.running_var
-context5.branch3.conv0.bn.num_batches_tracked
-context5.branch3.conv1.conv.weight
-context5.branch3.conv1.bn.weight
-context5.branch3.conv1.bn.bias
-context5.branch3.conv1.bn.running_mean
-context5.branch3.conv1.bn.running_var
-context5.branch3.conv1.bn.num_batches_tracked
-context5.branch3.conv2.conv.weight
-context5.branch3.conv2.bn.weight
-context5.branch3.conv2.bn.bias
-context5.branch3.conv2.bn.running_mean
-context5.branch3.conv2.bn.running_var
-context5.branch3.conv2.bn.num_batches_tracked
-context5.branch3.conv3.conv.weight
-context5.branch3.conv3.bn.weight
-context5.branch3.conv3.bn.bias
-context5.branch3.conv3.bn.running_mean
-context5.branch3.conv3.bn.running_var
-context5.branch3.conv3.bn.num_batches_tracked
-context5.branch3.Hattn.gamma
-context5.branch3.Hattn.query_conv.conv.weight
-context5.branch3.Hattn.query_conv.bn.weight
-context5.branch3.Hattn.query_conv.bn.bias
-context5.branch3.Hattn.query_conv.bn.running_mean
-context5.branch3.Hattn.query_conv.bn.running_var
-context5.branch3.Hattn.query_conv.bn.num_batches_tracked
-context5.branch3.Hattn.key_conv.conv.weight
-context5.branch3.Hattn.key_conv.bn.weight
-context5.branch3.Hattn.key_conv.bn.bias
-context5.branch3.Hattn.key_conv.bn.running_mean
-context5.branch3.Hattn.key_conv.bn.running_var
-context5.branch3.Hattn.key_conv.bn.num_batches_tracked
-context5.branch3.Hattn.value_conv.conv.weight
-context5.branch3.Hattn.value_conv.bn.weight
-context5.branch3.Hattn.value_conv.bn.bias
-context5.branch3.Hattn.value_conv.bn.running_mean
-context5.branch3.Hattn.value_conv.bn.running_var
-context5.branch3.Hattn.value_conv.bn.num_batches_tracked
-context5.branch3.Wattn.gamma
-context5.branch3.Wattn.query_conv.conv.weight
-context5.branch3.Wattn.query_conv.bn.weight
-context5.branch3.Wattn.query_conv.bn.bias
-context5.branch3.Wattn.query_conv.bn.running_mean
-context5.branch3.Wattn.query_conv.bn.running_var
-context5.branch3.Wattn.query_conv.bn.num_batches_tracked
-context5.branch3.Wattn.key_conv.conv.weight
-context5.branch3.Wattn.key_conv.bn.weight
-context5.branch3.Wattn.key_conv.bn.bias
-context5.branch3.Wattn.key_conv.bn.running_mean
-context5.branch3.Wattn.key_conv.bn.running_var
-context5.branch3.Wattn.key_conv.bn.num_batches_tracked
-context5.branch3.Wattn.value_conv.conv.weight
-context5.branch3.Wattn.value_conv.bn.weight
-context5.branch3.Wattn.value_conv.bn.bias
-context5.branch3.Wattn.value_conv.bn.running_mean
-context5.branch3.Wattn.value_conv.bn.running_var
-context5.branch3.Wattn.value_conv.bn.num_batches_tracked
-context5.conv_cat.conv.weight
-context5.conv_cat.bn.weight
-context5.conv_cat.bn.bias
-context5.conv_cat.bn.running_mean
-context5.conv_cat.bn.running_var
-context5.conv_cat.bn.num_batches_tracked
-context5.conv_res.conv.weight
-context5.conv_res.bn.weight
-context5.conv_res.bn.bias
-context5.conv_res.bn.running_mean
-context5.conv_res.bn.running_var
-context5.conv_res.bn.num_batches_tracked
-decoder.conv1.conv.weight
-decoder.conv1.bn.weight
-decoder.conv1.bn.bias
-decoder.conv1.bn.running_mean
-decoder.conv1.bn.running_var
-decoder.conv1.bn.num_batches_tracked
-decoder.conv2.conv.weight
-decoder.conv2.bn.weight
-decoder.conv2.bn.bias
-decoder.conv2.bn.running_mean
-decoder.conv2.bn.running_var
-decoder.conv2.bn.num_batches_tracked
-decoder.conv3.conv.weight
-decoder.conv3.bn.weight
-decoder.conv3.bn.bias
-decoder.conv3.bn.running_mean
-decoder.conv3.bn.running_var
-decoder.conv3.bn.num_batches_tracked
-decoder.conv4.conv.weight
-decoder.conv4.bn.weight
-decoder.conv4.bn.bias
-decoder.conv4.bn.running_mean
-decoder.conv4.bn.running_var
-decoder.conv4.bn.num_batches_tracked
-decoder.conv5.conv.weight
-decoder.Hattn.gamma
-decoder.Hattn.query_conv.conv.weight
-decoder.Hattn.query_conv.bn.weight
-decoder.Hattn.query_conv.bn.bias
-decoder.Hattn.query_conv.bn.running_mean
-decoder.Hattn.query_conv.bn.running_var
-decoder.Hattn.query_conv.bn.num_batches_tracked
-decoder.Hattn.key_conv.conv.weight
-decoder.Hattn.key_conv.bn.weight
-decoder.Hattn.key_conv.bn.bias
-decoder.Hattn.key_conv.bn.running_mean
-decoder.Hattn.key_conv.bn.running_var
-decoder.Hattn.key_conv.bn.num_batches_tracked
-decoder.Hattn.value_conv.conv.weight
-decoder.Hattn.value_conv.bn.weight
-decoder.Hattn.value_conv.bn.bias
-decoder.Hattn.value_conv.bn.running_mean
-decoder.Hattn.value_conv.bn.running_var
-decoder.Hattn.value_conv.bn.num_batches_tracked
-decoder.Wattn.gamma
-decoder.Wattn.query_conv.conv.weight
-decoder.Wattn.query_conv.bn.weight
-decoder.Wattn.query_conv.bn.bias
-decoder.Wattn.query_conv.bn.running_mean
-decoder.Wattn.query_conv.bn.running_var
-decoder.Wattn.query_conv.bn.num_batches_tracked
-decoder.Wattn.key_conv.conv.weight
-decoder.Wattn.key_conv.bn.weight
-decoder.Wattn.key_conv.bn.bias
-decoder.Wattn.key_conv.bn.running_mean
-decoder.Wattn.key_conv.bn.running_var
-decoder.Wattn.key_conv.bn.num_batches_tracked
-decoder.Wattn.value_conv.conv.weight
-decoder.Wattn.value_conv.bn.weight
-decoder.Wattn.value_conv.bn.bias
-decoder.Wattn.value_conv.bn.running_mean
-decoder.Wattn.value_conv.bn.running_var
-decoder.Wattn.value_conv.bn.num_batches_tracked
-attention0.threshold
-attention0.lthreshold
-attention0.conv_query.0.conv.weight
-attention0.conv_query.0.bn.weight
-attention0.conv_query.0.bn.bias
-attention0.conv_query.0.bn.running_mean
-attention0.conv_query.0.bn.running_var
-attention0.conv_query.0.bn.num_batches_tracked
-attention0.conv_query.1.conv.weight
-attention0.conv_query.1.bn.weight
-attention0.conv_query.1.bn.bias
-attention0.conv_query.1.bn.running_mean
-attention0.conv_query.1.bn.running_var
-attention0.conv_query.1.bn.num_batches_tracked
-attention0.conv_key.0.conv.weight
-attention0.conv_key.0.bn.weight
-attention0.conv_key.0.bn.bias
-attention0.conv_key.0.bn.running_mean
-attention0.conv_key.0.bn.running_var
-attention0.conv_key.0.bn.num_batches_tracked
-attention0.conv_key.1.conv.weight
-attention0.conv_key.1.bn.weight
-attention0.conv_key.1.bn.bias
-attention0.conv_key.1.bn.running_mean
-attention0.conv_key.1.bn.running_var
-attention0.conv_key.1.bn.num_batches_tracked
-attention0.conv_value.0.conv.weight
-attention0.conv_value.0.bn.weight
-attention0.conv_value.0.bn.bias
-attention0.conv_value.0.bn.running_mean
-attention0.conv_value.0.bn.running_var
-attention0.conv_value.0.bn.num_batches_tracked
-attention0.conv_value.1.conv.weight
-attention0.conv_value.1.bn.weight
-attention0.conv_value.1.bn.bias
-attention0.conv_value.1.bn.running_mean
-attention0.conv_value.1.bn.running_var
-attention0.conv_value.1.bn.num_batches_tracked
-attention0.conv_out1.conv.weight
-attention0.conv_out1.bn.weight
-attention0.conv_out1.bn.bias
-attention0.conv_out1.bn.running_mean
-attention0.conv_out1.bn.running_var
-attention0.conv_out1.bn.num_batches_tracked
-attention0.conv_out2.conv.weight
-attention0.conv_out2.bn.weight
-attention0.conv_out2.bn.bias
-attention0.conv_out2.bn.running_mean
-attention0.conv_out2.bn.running_var
-attention0.conv_out2.bn.num_batches_tracked
-attention0.conv_out3.conv.weight
-attention0.conv_out3.bn.weight
-attention0.conv_out3.bn.bias
-attention0.conv_out3.bn.running_mean
-attention0.conv_out3.bn.running_var
-attention0.conv_out3.bn.num_batches_tracked
-attention0.conv_out4.conv.weight
-attention0.conv_out4.bn.weight
-attention0.conv_out4.bn.bias
-attention0.conv_out4.bn.running_mean
-attention0.conv_out4.bn.running_var
-attention0.conv_out4.bn.num_batches_tracked
-attention1.threshold
-attention1.lthreshold
-attention1.conv_query.0.conv.weight
-attention1.conv_query.0.bn.weight
-attention1.conv_query.0.bn.bias
-attention1.conv_query.0.bn.running_mean
-attention1.conv_query.0.bn.running_var
-attention1.conv_query.0.bn.num_batches_tracked
-attention1.conv_query.1.conv.weight
-attention1.conv_query.1.bn.weight
-attention1.conv_query.1.bn.bias
-attention1.conv_query.1.bn.running_mean
-attention1.conv_query.1.bn.running_var
-attention1.conv_query.1.bn.num_batches_tracked
-attention1.conv_key.0.conv.weight
-attention1.conv_key.0.bn.weight
-attention1.conv_key.0.bn.bias
-attention1.conv_key.0.bn.running_mean
-attention1.conv_key.0.bn.running_var
-attention1.conv_key.0.bn.num_batches_tracked
-attention1.conv_key.1.conv.weight
-attention1.conv_key.1.bn.weight
-attention1.conv_key.1.bn.bias
-attention1.conv_key.1.bn.running_mean
-attention1.conv_key.1.bn.running_var
-attention1.conv_key.1.bn.num_batches_tracked
-attention1.conv_value.0.conv.weight
-attention1.conv_value.0.bn.weight
-attention1.conv_value.0.bn.bias
-attention1.conv_value.0.bn.running_mean
-attention1.conv_value.0.bn.running_var
-attention1.conv_value.0.bn.num_batches_tracked
-attention1.conv_value.1.conv.weight
-attention1.conv_value.1.bn.weight
-attention1.conv_value.1.bn.bias
-attention1.conv_value.1.bn.running_mean
-attention1.conv_value.1.bn.running_var
-attention1.conv_value.1.bn.num_batches_tracked
-attention1.conv_out1.conv.weight
-attention1.conv_out1.bn.weight
-attention1.conv_out1.bn.bias
-attention1.conv_out1.bn.running_mean
-attention1.conv_out1.bn.running_var
-attention1.conv_out1.bn.num_batches_tracked
-attention1.conv_out2.conv.weight
-attention1.conv_out2.bn.weight
-attention1.conv_out2.bn.bias
-attention1.conv_out2.bn.running_mean
-attention1.conv_out2.bn.running_var
-attention1.conv_out2.bn.num_batches_tracked
-attention1.conv_out3.conv.weight
-attention1.conv_out3.bn.weight
-attention1.conv_out3.bn.bias
-attention1.conv_out3.bn.running_mean
-attention1.conv_out3.bn.running_var
-attention1.conv_out3.bn.num_batches_tracked
-attention1.conv_out4.conv.weight
-attention1.conv_out4.bn.weight
-attention1.conv_out4.bn.bias
-attention1.conv_out4.bn.running_mean
-attention1.conv_out4.bn.running_var
-attention1.conv_out4.bn.num_batches_tracked
-attention2.threshold
-attention2.conv_query.0.conv.weight
-attention2.conv_query.0.bn.weight
-attention2.conv_query.0.bn.bias
-attention2.conv_query.0.bn.running_mean
-attention2.conv_query.0.bn.running_var
-attention2.conv_query.0.bn.num_batches_tracked
-attention2.conv_query.1.conv.weight
-attention2.conv_query.1.bn.weight
-attention2.conv_query.1.bn.bias
-attention2.conv_query.1.bn.running_mean
-attention2.conv_query.1.bn.running_var
-attention2.conv_query.1.bn.num_batches_tracked
-attention2.conv_key.0.conv.weight
-attention2.conv_key.0.bn.weight
-attention2.conv_key.0.bn.bias
-attention2.conv_key.0.bn.running_mean
-attention2.conv_key.0.bn.running_var
-attention2.conv_key.0.bn.num_batches_tracked
-attention2.conv_key.1.conv.weight
-attention2.conv_key.1.bn.weight
-attention2.conv_key.1.bn.bias
-attention2.conv_key.1.bn.running_mean
-attention2.conv_key.1.bn.running_var
-attention2.conv_key.1.bn.num_batches_tracked
-attention2.conv_value.0.conv.weight
-attention2.conv_value.0.bn.weight
-attention2.conv_value.0.bn.bias
-attention2.conv_value.0.bn.running_mean
-attention2.conv_value.0.bn.running_var
-attention2.conv_value.0.bn.num_batches_tracked
-attention2.conv_value.1.conv.weight
-attention2.conv_value.1.bn.weight
-attention2.conv_value.1.bn.bias
-attention2.conv_value.1.bn.running_mean
-attention2.conv_value.1.bn.running_var
-attention2.conv_value.1.bn.num_batches_tracked
-attention2.conv_out1.conv.weight
-attention2.conv_out1.bn.weight
-attention2.conv_out1.bn.bias
-attention2.conv_out1.bn.running_mean
-attention2.conv_out1.bn.running_var
-attention2.conv_out1.bn.num_batches_tracked
-attention2.conv_out2.conv.weight
-attention2.conv_out2.bn.weight
-attention2.conv_out2.bn.bias
-attention2.conv_out2.bn.running_mean
-attention2.conv_out2.bn.running_var
-attention2.conv_out2.bn.num_batches_tracked
-attention2.conv_out3.conv.weight
-attention2.conv_out3.bn.weight
-attention2.conv_out3.bn.bias
-attention2.conv_out3.bn.running_mean
-attention2.conv_out3.bn.running_var
-attention2.conv_out3.bn.num_batches_tracked
-attention2.conv_out4.conv.weight
-attention2.conv_out4.bn.weight
-attention2.conv_out4.bn.bias
-attention2.conv_out4.bn.running_mean
-attention2.conv_out4.bn.running_var
-attention2.conv_out4.bn.num_batches_tracked
-[DEBUG] Embed dim=128 Layers 4 Depths [2, 2, 18, 2] Num Heads [4, 8, 16, 32] Window size: 12 (BiRefNet-SET - arch.py:74)
-Model type: InSPyReNet
+backbone.patch_embed.proj.weight [128, 3, 4, 4]
+backbone.patch_embed.proj.bias [128]
+backbone.patch_embed.norm.weight [128]
+backbone.patch_embed.norm.bias [128]
+backbone.layers.0.blocks.0.norm1.weight [128]
+backbone.layers.0.blocks.0.norm1.bias [128]
+backbone.layers.0.blocks.0.attn.relative_position_bias_table [529, 4]
+backbone.layers.0.blocks.0.attn.relative_position_index [144, 144]
+backbone.layers.0.blocks.0.attn.qkv.weight [384, 128]
+backbone.layers.0.blocks.0.attn.qkv.bias [384]
+backbone.layers.0.blocks.0.attn.proj.weight [128, 128]
+backbone.layers.0.blocks.0.attn.proj.bias [128]
+backbone.layers.0.blocks.0.norm2.weight [128]
+backbone.layers.0.blocks.0.norm2.bias [128]
+backbone.layers.0.blocks.0.mlp.fc1.weight [512, 128]
+backbone.layers.0.blocks.0.mlp.fc1.bias [512]
+backbone.layers.0.blocks.0.mlp.fc2.weight [128, 512]
+backbone.layers.0.blocks.0.mlp.fc2.bias [128]
+backbone.layers.0.blocks.1.norm1.weight [128]
+backbone.layers.0.blocks.1.norm1.bias [128]
+backbone.layers.0.blocks.1.attn.relative_position_bias_table [529, 4]
+backbone.layers.0.blocks.1.attn.relative_position_index [144, 144]
+backbone.layers.0.blocks.1.attn.qkv.weight [384, 128]
+backbone.layers.0.blocks.1.attn.qkv.bias [384]
+backbone.layers.0.blocks.1.attn.proj.weight [128, 128]
+backbone.layers.0.blocks.1.attn.proj.bias [128]
+backbone.layers.0.blocks.1.norm2.weight [128]
+backbone.layers.0.blocks.1.norm2.bias [128]
+backbone.layers.0.blocks.1.mlp.fc1.weight [512, 128]
+backbone.layers.0.blocks.1.mlp.fc1.bias [512]
+backbone.layers.0.blocks.1.mlp.fc2.weight [128, 512]
+backbone.layers.0.blocks.1.mlp.fc2.bias [128]
+backbone.layers.0.downsample.reduction.weight [256, 512]
+backbone.layers.0.downsample.norm.weight [512]
+backbone.layers.0.downsample.norm.bias [512]
+backbone.layers.1.blocks.0.norm1.weight [256]
+backbone.layers.1.blocks.0.norm1.bias [256]
+backbone.layers.1.blocks.0.attn.relative_position_bias_table [529, 8]
+backbone.layers.1.blocks.0.attn.relative_position_index [144, 144]
+backbone.layers.1.blocks.0.attn.qkv.weight [768, 256]
+backbone.layers.1.blocks.0.attn.qkv.bias [768]
+backbone.layers.1.blocks.0.attn.proj.weight [256, 256]
+backbone.layers.1.blocks.0.attn.proj.bias [256]
+backbone.layers.1.blocks.0.norm2.weight [256]
+backbone.layers.1.blocks.0.norm2.bias [256]
+backbone.layers.1.blocks.0.mlp.fc1.weight [1024, 256]
+backbone.layers.1.blocks.0.mlp.fc1.bias [1024]
+backbone.layers.1.blocks.0.mlp.fc2.weight [256, 1024]
+backbone.layers.1.blocks.0.mlp.fc2.bias [256]
+backbone.layers.1.blocks.1.norm1.weight [256]
+backbone.layers.1.blocks.1.norm1.bias [256]
+backbone.layers.1.blocks.1.attn.relative_position_bias_table [529, 8]
+backbone.layers.1.blocks.1.attn.relative_position_index [144, 144]
+backbone.layers.1.blocks.1.attn.qkv.weight [768, 256]
+backbone.layers.1.blocks.1.attn.qkv.bias [768]
+backbone.layers.1.blocks.1.attn.proj.weight [256, 256]
+backbone.layers.1.blocks.1.attn.proj.bias [256]
+backbone.layers.1.blocks.1.norm2.weight [256]
+backbone.layers.1.blocks.1.norm2.bias [256]
+backbone.layers.1.blocks.1.mlp.fc1.weight [1024, 256]
+backbone.layers.1.blocks.1.mlp.fc1.bias [1024]
+backbone.layers.1.blocks.1.mlp.fc2.weight [256, 1024]
+backbone.layers.1.blocks.1.mlp.fc2.bias [256]
+backbone.layers.1.downsample.reduction.weight [512, 1024]
+backbone.layers.1.downsample.norm.weight [1024]
+backbone.layers.1.downsample.norm.bias [1024]
+backbone.layers.2.blocks.0.norm1.weight [512]
+backbone.layers.2.blocks.0.norm1.bias [512]
+backbone.layers.2.blocks.0.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.0.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.0.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.0.attn.qkv.bias [1536]
+backbone.layers.2.blocks.0.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.0.attn.proj.bias [512]
+backbone.layers.2.blocks.0.norm2.weight [512]
+backbone.layers.2.blocks.0.norm2.bias [512]
+backbone.layers.2.blocks.0.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.0.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.0.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.0.mlp.fc2.bias [512]
+backbone.layers.2.blocks.1.norm1.weight [512]
+backbone.layers.2.blocks.1.norm1.bias [512]
+backbone.layers.2.blocks.1.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.1.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.1.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.1.attn.qkv.bias [1536]
+backbone.layers.2.blocks.1.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.1.attn.proj.bias [512]
+backbone.layers.2.blocks.1.norm2.weight [512]
+backbone.layers.2.blocks.1.norm2.bias [512]
+backbone.layers.2.blocks.1.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.1.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.1.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.1.mlp.fc2.bias [512]
+backbone.layers.2.blocks.2.norm1.weight [512]
+backbone.layers.2.blocks.2.norm1.bias [512]
+backbone.layers.2.blocks.2.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.2.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.2.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.2.attn.qkv.bias [1536]
+backbone.layers.2.blocks.2.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.2.attn.proj.bias [512]
+backbone.layers.2.blocks.2.norm2.weight [512]
+backbone.layers.2.blocks.2.norm2.bias [512]
+backbone.layers.2.blocks.2.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.2.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.2.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.2.mlp.fc2.bias [512]
+backbone.layers.2.blocks.3.norm1.weight [512]
+backbone.layers.2.blocks.3.norm1.bias [512]
+backbone.layers.2.blocks.3.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.3.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.3.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.3.attn.qkv.bias [1536]
+backbone.layers.2.blocks.3.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.3.attn.proj.bias [512]
+backbone.layers.2.blocks.3.norm2.weight [512]
+backbone.layers.2.blocks.3.norm2.bias [512]
+backbone.layers.2.blocks.3.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.3.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.3.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.3.mlp.fc2.bias [512]
+backbone.layers.2.blocks.4.norm1.weight [512]
+backbone.layers.2.blocks.4.norm1.bias [512]
+backbone.layers.2.blocks.4.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.4.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.4.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.4.attn.qkv.bias [1536]
+backbone.layers.2.blocks.4.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.4.attn.proj.bias [512]
+backbone.layers.2.blocks.4.norm2.weight [512]
+backbone.layers.2.blocks.4.norm2.bias [512]
+backbone.layers.2.blocks.4.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.4.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.4.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.4.mlp.fc2.bias [512]
+backbone.layers.2.blocks.5.norm1.weight [512]
+backbone.layers.2.blocks.5.norm1.bias [512]
+backbone.layers.2.blocks.5.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.5.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.5.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.5.attn.qkv.bias [1536]
+backbone.layers.2.blocks.5.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.5.attn.proj.bias [512]
+backbone.layers.2.blocks.5.norm2.weight [512]
+backbone.layers.2.blocks.5.norm2.bias [512]
+backbone.layers.2.blocks.5.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.5.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.5.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.5.mlp.fc2.bias [512]
+backbone.layers.2.blocks.6.norm1.weight [512]
+backbone.layers.2.blocks.6.norm1.bias [512]
+backbone.layers.2.blocks.6.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.6.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.6.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.6.attn.qkv.bias [1536]
+backbone.layers.2.blocks.6.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.6.attn.proj.bias [512]
+backbone.layers.2.blocks.6.norm2.weight [512]
+backbone.layers.2.blocks.6.norm2.bias [512]
+backbone.layers.2.blocks.6.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.6.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.6.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.6.mlp.fc2.bias [512]
+backbone.layers.2.blocks.7.norm1.weight [512]
+backbone.layers.2.blocks.7.norm1.bias [512]
+backbone.layers.2.blocks.7.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.7.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.7.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.7.attn.qkv.bias [1536]
+backbone.layers.2.blocks.7.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.7.attn.proj.bias [512]
+backbone.layers.2.blocks.7.norm2.weight [512]
+backbone.layers.2.blocks.7.norm2.bias [512]
+backbone.layers.2.blocks.7.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.7.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.7.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.7.mlp.fc2.bias [512]
+backbone.layers.2.blocks.8.norm1.weight [512]
+backbone.layers.2.blocks.8.norm1.bias [512]
+backbone.layers.2.blocks.8.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.8.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.8.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.8.attn.qkv.bias [1536]
+backbone.layers.2.blocks.8.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.8.attn.proj.bias [512]
+backbone.layers.2.blocks.8.norm2.weight [512]
+backbone.layers.2.blocks.8.norm2.bias [512]
+backbone.layers.2.blocks.8.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.8.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.8.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.8.mlp.fc2.bias [512]
+backbone.layers.2.blocks.9.norm1.weight [512]
+backbone.layers.2.blocks.9.norm1.bias [512]
+backbone.layers.2.blocks.9.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.9.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.9.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.9.attn.qkv.bias [1536]
+backbone.layers.2.blocks.9.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.9.attn.proj.bias [512]
+backbone.layers.2.blocks.9.norm2.weight [512]
+backbone.layers.2.blocks.9.norm2.bias [512]
+backbone.layers.2.blocks.9.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.9.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.9.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.9.mlp.fc2.bias [512]
+backbone.layers.2.blocks.10.norm1.weight [512]
+backbone.layers.2.blocks.10.norm1.bias [512]
+backbone.layers.2.blocks.10.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.10.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.10.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.10.attn.qkv.bias [1536]
+backbone.layers.2.blocks.10.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.10.attn.proj.bias [512]
+backbone.layers.2.blocks.10.norm2.weight [512]
+backbone.layers.2.blocks.10.norm2.bias [512]
+backbone.layers.2.blocks.10.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.10.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.10.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.10.mlp.fc2.bias [512]
+backbone.layers.2.blocks.11.norm1.weight [512]
+backbone.layers.2.blocks.11.norm1.bias [512]
+backbone.layers.2.blocks.11.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.11.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.11.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.11.attn.qkv.bias [1536]
+backbone.layers.2.blocks.11.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.11.attn.proj.bias [512]
+backbone.layers.2.blocks.11.norm2.weight [512]
+backbone.layers.2.blocks.11.norm2.bias [512]
+backbone.layers.2.blocks.11.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.11.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.11.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.11.mlp.fc2.bias [512]
+backbone.layers.2.blocks.12.norm1.weight [512]
+backbone.layers.2.blocks.12.norm1.bias [512]
+backbone.layers.2.blocks.12.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.12.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.12.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.12.attn.qkv.bias [1536]
+backbone.layers.2.blocks.12.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.12.attn.proj.bias [512]
+backbone.layers.2.blocks.12.norm2.weight [512]
+backbone.layers.2.blocks.12.norm2.bias [512]
+backbone.layers.2.blocks.12.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.12.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.12.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.12.mlp.fc2.bias [512]
+backbone.layers.2.blocks.13.norm1.weight [512]
+backbone.layers.2.blocks.13.norm1.bias [512]
+backbone.layers.2.blocks.13.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.13.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.13.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.13.attn.qkv.bias [1536]
+backbone.layers.2.blocks.13.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.13.attn.proj.bias [512]
+backbone.layers.2.blocks.13.norm2.weight [512]
+backbone.layers.2.blocks.13.norm2.bias [512]
+backbone.layers.2.blocks.13.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.13.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.13.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.13.mlp.fc2.bias [512]
+backbone.layers.2.blocks.14.norm1.weight [512]
+backbone.layers.2.blocks.14.norm1.bias [512]
+backbone.layers.2.blocks.14.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.14.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.14.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.14.attn.qkv.bias [1536]
+backbone.layers.2.blocks.14.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.14.attn.proj.bias [512]
+backbone.layers.2.blocks.14.norm2.weight [512]
+backbone.layers.2.blocks.14.norm2.bias [512]
+backbone.layers.2.blocks.14.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.14.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.14.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.14.mlp.fc2.bias [512]
+backbone.layers.2.blocks.15.norm1.weight [512]
+backbone.layers.2.blocks.15.norm1.bias [512]
+backbone.layers.2.blocks.15.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.15.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.15.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.15.attn.qkv.bias [1536]
+backbone.layers.2.blocks.15.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.15.attn.proj.bias [512]
+backbone.layers.2.blocks.15.norm2.weight [512]
+backbone.layers.2.blocks.15.norm2.bias [512]
+backbone.layers.2.blocks.15.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.15.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.15.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.15.mlp.fc2.bias [512]
+backbone.layers.2.blocks.16.norm1.weight [512]
+backbone.layers.2.blocks.16.norm1.bias [512]
+backbone.layers.2.blocks.16.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.16.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.16.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.16.attn.qkv.bias [1536]
+backbone.layers.2.blocks.16.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.16.attn.proj.bias [512]
+backbone.layers.2.blocks.16.norm2.weight [512]
+backbone.layers.2.blocks.16.norm2.bias [512]
+backbone.layers.2.blocks.16.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.16.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.16.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.16.mlp.fc2.bias [512]
+backbone.layers.2.blocks.17.norm1.weight [512]
+backbone.layers.2.blocks.17.norm1.bias [512]
+backbone.layers.2.blocks.17.attn.relative_position_bias_table [529, 16]
+backbone.layers.2.blocks.17.attn.relative_position_index [144, 144]
+backbone.layers.2.blocks.17.attn.qkv.weight [1536, 512]
+backbone.layers.2.blocks.17.attn.qkv.bias [1536]
+backbone.layers.2.blocks.17.attn.proj.weight [512, 512]
+backbone.layers.2.blocks.17.attn.proj.bias [512]
+backbone.layers.2.blocks.17.norm2.weight [512]
+backbone.layers.2.blocks.17.norm2.bias [512]
+backbone.layers.2.blocks.17.mlp.fc1.weight [2048, 512]
+backbone.layers.2.blocks.17.mlp.fc1.bias [2048]
+backbone.layers.2.blocks.17.mlp.fc2.weight [512, 2048]
+backbone.layers.2.blocks.17.mlp.fc2.bias [512]
+backbone.layers.2.downsample.reduction.weight [1024, 2048]
+backbone.layers.2.downsample.norm.weight [2048]
+backbone.layers.2.downsample.norm.bias [2048]
+backbone.layers.3.blocks.0.norm1.weight [1024]
+backbone.layers.3.blocks.0.norm1.bias [1024]
+backbone.layers.3.blocks.0.attn.relative_position_bias_table [529, 32]
+backbone.layers.3.blocks.0.attn.relative_position_index [144, 144]
+backbone.layers.3.blocks.0.attn.qkv.weight [3072, 1024]
+backbone.layers.3.blocks.0.attn.qkv.bias [3072]
+backbone.layers.3.blocks.0.attn.proj.weight [1024, 1024]
+backbone.layers.3.blocks.0.attn.proj.bias [1024]
+backbone.layers.3.blocks.0.norm2.weight [1024]
+backbone.layers.3.blocks.0.norm2.bias [1024]
+backbone.layers.3.blocks.0.mlp.fc1.weight [4096, 1024]
+backbone.layers.3.blocks.0.mlp.fc1.bias [4096]
+backbone.layers.3.blocks.0.mlp.fc2.weight [1024, 4096]
+backbone.layers.3.blocks.0.mlp.fc2.bias [1024]
+backbone.layers.3.blocks.1.norm1.weight [1024]
+backbone.layers.3.blocks.1.norm1.bias [1024]
+backbone.layers.3.blocks.1.attn.relative_position_bias_table [529, 32]
+backbone.layers.3.blocks.1.attn.relative_position_index [144, 144]
+backbone.layers.3.blocks.1.attn.qkv.weight [3072, 1024]
+backbone.layers.3.blocks.1.attn.qkv.bias [3072]
+backbone.layers.3.blocks.1.attn.proj.weight [1024, 1024]
+backbone.layers.3.blocks.1.attn.proj.bias [1024]
+backbone.layers.3.blocks.1.norm2.weight [1024]
+backbone.layers.3.blocks.1.norm2.bias [1024]
+backbone.layers.3.blocks.1.mlp.fc1.weight [4096, 1024]
+backbone.layers.3.blocks.1.mlp.fc1.bias [4096]
+backbone.layers.3.blocks.1.mlp.fc2.weight [1024, 4096]
+backbone.layers.3.blocks.1.mlp.fc2.bias [1024]
+backbone.norm0.weight [128]
+backbone.norm0.bias [128]
+backbone.norm1.weight [256]
+backbone.norm1.bias [256]
+backbone.norm2.weight [512]
+backbone.norm2.bias [512]
+backbone.norm3.weight [1024]
+backbone.norm3.bias [1024]
+context1.branch0.conv.weight [64, 128, 1, 1]
+context1.branch0.bn.weight [64]
+context1.branch0.bn.bias [64]
+context1.branch0.bn.running_mean [64]
+context1.branch0.bn.running_var [64]
+context1.branch0.bn.num_batches_tracked []
+context1.branch1.conv0.conv.weight [64, 128, 1, 1]
+context1.branch1.conv0.bn.weight [64]
+context1.branch1.conv0.bn.bias [64]
+context1.branch1.conv0.bn.running_mean [64]
+context1.branch1.conv0.bn.running_var [64]
+context1.branch1.conv0.bn.num_batches_tracked []
+context1.branch1.conv1.conv.weight [64, 64, 1, 3]
+context1.branch1.conv1.bn.weight [64]
+context1.branch1.conv1.bn.bias [64]
+context1.branch1.conv1.bn.running_mean [64]
+context1.branch1.conv1.bn.running_var [64]
+context1.branch1.conv1.bn.num_batches_tracked []
+context1.branch1.conv2.conv.weight [64, 64, 3, 1]
+context1.branch1.conv2.bn.weight [64]
+context1.branch1.conv2.bn.bias [64]
+context1.branch1.conv2.bn.running_mean [64]
+context1.branch1.conv2.bn.running_var [64]
+context1.branch1.conv2.bn.num_batches_tracked []
+context1.branch1.conv3.conv.weight [64, 64, 3, 3]
+context1.branch1.conv3.bn.weight [64]
+context1.branch1.conv3.bn.bias [64]
+context1.branch1.conv3.bn.running_mean [64]
+context1.branch1.conv3.bn.running_var [64]
+context1.branch1.conv3.bn.num_batches_tracked []
+context1.branch1.Hattn.gamma [1]
+context1.branch1.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch1.Hattn.query_conv.bn.weight [8]
+context1.branch1.Hattn.query_conv.bn.bias [8]
+context1.branch1.Hattn.query_conv.bn.running_mean [8]
+context1.branch1.Hattn.query_conv.bn.running_var [8]
+context1.branch1.Hattn.query_conv.bn.num_batches_tracked []
+context1.branch1.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch1.Hattn.key_conv.bn.weight [8]
+context1.branch1.Hattn.key_conv.bn.bias [8]
+context1.branch1.Hattn.key_conv.bn.running_mean [8]
+context1.branch1.Hattn.key_conv.bn.running_var [8]
+context1.branch1.Hattn.key_conv.bn.num_batches_tracked []
+context1.branch1.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch1.Hattn.value_conv.bn.weight [64]
+context1.branch1.Hattn.value_conv.bn.bias [64]
+context1.branch1.Hattn.value_conv.bn.running_mean [64]
+context1.branch1.Hattn.value_conv.bn.running_var [64]
+context1.branch1.Hattn.value_conv.bn.num_batches_tracked []
+context1.branch1.Wattn.gamma [1]
+context1.branch1.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch1.Wattn.query_conv.bn.weight [8]
+context1.branch1.Wattn.query_conv.bn.bias [8]
+context1.branch1.Wattn.query_conv.bn.running_mean [8]
+context1.branch1.Wattn.query_conv.bn.running_var [8]
+context1.branch1.Wattn.query_conv.bn.num_batches_tracked []
+context1.branch1.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch1.Wattn.key_conv.bn.weight [8]
+context1.branch1.Wattn.key_conv.bn.bias [8]
+context1.branch1.Wattn.key_conv.bn.running_mean [8]
+context1.branch1.Wattn.key_conv.bn.running_var [8]
+context1.branch1.Wattn.key_conv.bn.num_batches_tracked []
+context1.branch1.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch1.Wattn.value_conv.bn.weight [64]
+context1.branch1.Wattn.value_conv.bn.bias [64]
+context1.branch1.Wattn.value_conv.bn.running_mean [64]
+context1.branch1.Wattn.value_conv.bn.running_var [64]
+context1.branch1.Wattn.value_conv.bn.num_batches_tracked []
+context1.branch2.conv0.conv.weight [64, 128, 1, 1]
+context1.branch2.conv0.bn.weight [64]
+context1.branch2.conv0.bn.bias [64]
+context1.branch2.conv0.bn.running_mean [64]
+context1.branch2.conv0.bn.running_var [64]
+context1.branch2.conv0.bn.num_batches_tracked []
+context1.branch2.conv1.conv.weight [64, 64, 1, 5]
+context1.branch2.conv1.bn.weight [64]
+context1.branch2.conv1.bn.bias [64]
+context1.branch2.conv1.bn.running_mean [64]
+context1.branch2.conv1.bn.running_var [64]
+context1.branch2.conv1.bn.num_batches_tracked []
+context1.branch2.conv2.conv.weight [64, 64, 5, 1]
+context1.branch2.conv2.bn.weight [64]
+context1.branch2.conv2.bn.bias [64]
+context1.branch2.conv2.bn.running_mean [64]
+context1.branch2.conv2.bn.running_var [64]
+context1.branch2.conv2.bn.num_batches_tracked []
+context1.branch2.conv3.conv.weight [64, 64, 3, 3]
+context1.branch2.conv3.bn.weight [64]
+context1.branch2.conv3.bn.bias [64]
+context1.branch2.conv3.bn.running_mean [64]
+context1.branch2.conv3.bn.running_var [64]
+context1.branch2.conv3.bn.num_batches_tracked []
+context1.branch2.Hattn.gamma [1]
+context1.branch2.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch2.Hattn.query_conv.bn.weight [8]
+context1.branch2.Hattn.query_conv.bn.bias [8]
+context1.branch2.Hattn.query_conv.bn.running_mean [8]
+context1.branch2.Hattn.query_conv.bn.running_var [8]
+context1.branch2.Hattn.query_conv.bn.num_batches_tracked []
+context1.branch2.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch2.Hattn.key_conv.bn.weight [8]
+context1.branch2.Hattn.key_conv.bn.bias [8]
+context1.branch2.Hattn.key_conv.bn.running_mean [8]
+context1.branch2.Hattn.key_conv.bn.running_var [8]
+context1.branch2.Hattn.key_conv.bn.num_batches_tracked []
+context1.branch2.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch2.Hattn.value_conv.bn.weight [64]
+context1.branch2.Hattn.value_conv.bn.bias [64]
+context1.branch2.Hattn.value_conv.bn.running_mean [64]
+context1.branch2.Hattn.value_conv.bn.running_var [64]
+context1.branch2.Hattn.value_conv.bn.num_batches_tracked []
+context1.branch2.Wattn.gamma [1]
+context1.branch2.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch2.Wattn.query_conv.bn.weight [8]
+context1.branch2.Wattn.query_conv.bn.bias [8]
+context1.branch2.Wattn.query_conv.bn.running_mean [8]
+context1.branch2.Wattn.query_conv.bn.running_var [8]
+context1.branch2.Wattn.query_conv.bn.num_batches_tracked []
+context1.branch2.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch2.Wattn.key_conv.bn.weight [8]
+context1.branch2.Wattn.key_conv.bn.bias [8]
+context1.branch2.Wattn.key_conv.bn.running_mean [8]
+context1.branch2.Wattn.key_conv.bn.running_var [8]
+context1.branch2.Wattn.key_conv.bn.num_batches_tracked []
+context1.branch2.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch2.Wattn.value_conv.bn.weight [64]
+context1.branch2.Wattn.value_conv.bn.bias [64]
+context1.branch2.Wattn.value_conv.bn.running_mean [64]
+context1.branch2.Wattn.value_conv.bn.running_var [64]
+context1.branch2.Wattn.value_conv.bn.num_batches_tracked []
+context1.branch3.conv0.conv.weight [64, 128, 1, 1]
+context1.branch3.conv0.bn.weight [64]
+context1.branch3.conv0.bn.bias [64]
+context1.branch3.conv0.bn.running_mean [64]
+context1.branch3.conv0.bn.running_var [64]
+context1.branch3.conv0.bn.num_batches_tracked []
+context1.branch3.conv1.conv.weight [64, 64, 1, 7]
+context1.branch3.conv1.bn.weight [64]
+context1.branch3.conv1.bn.bias [64]
+context1.branch3.conv1.bn.running_mean [64]
+context1.branch3.conv1.bn.running_var [64]
+context1.branch3.conv1.bn.num_batches_tracked []
+context1.branch3.conv2.conv.weight [64, 64, 7, 1]
+context1.branch3.conv2.bn.weight [64]
+context1.branch3.conv2.bn.bias [64]
+context1.branch3.conv2.bn.running_mean [64]
+context1.branch3.conv2.bn.running_var [64]
+context1.branch3.conv2.bn.num_batches_tracked []
+context1.branch3.conv3.conv.weight [64, 64, 3, 3]
+context1.branch3.conv3.bn.weight [64]
+context1.branch3.conv3.bn.bias [64]
+context1.branch3.conv3.bn.running_mean [64]
+context1.branch3.conv3.bn.running_var [64]
+context1.branch3.conv3.bn.num_batches_tracked []
+context1.branch3.Hattn.gamma [1]
+context1.branch3.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch3.Hattn.query_conv.bn.weight [8]
+context1.branch3.Hattn.query_conv.bn.bias [8]
+context1.branch3.Hattn.query_conv.bn.running_mean [8]
+context1.branch3.Hattn.query_conv.bn.running_var [8]
+context1.branch3.Hattn.query_conv.bn.num_batches_tracked []
+context1.branch3.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch3.Hattn.key_conv.bn.weight [8]
+context1.branch3.Hattn.key_conv.bn.bias [8]
+context1.branch3.Hattn.key_conv.bn.running_mean [8]
+context1.branch3.Hattn.key_conv.bn.running_var [8]
+context1.branch3.Hattn.key_conv.bn.num_batches_tracked []
+context1.branch3.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch3.Hattn.value_conv.bn.weight [64]
+context1.branch3.Hattn.value_conv.bn.bias [64]
+context1.branch3.Hattn.value_conv.bn.running_mean [64]
+context1.branch3.Hattn.value_conv.bn.running_var [64]
+context1.branch3.Hattn.value_conv.bn.num_batches_tracked []
+context1.branch3.Wattn.gamma [1]
+context1.branch3.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context1.branch3.Wattn.query_conv.bn.weight [8]
+context1.branch3.Wattn.query_conv.bn.bias [8]
+context1.branch3.Wattn.query_conv.bn.running_mean [8]
+context1.branch3.Wattn.query_conv.bn.running_var [8]
+context1.branch3.Wattn.query_conv.bn.num_batches_tracked []
+context1.branch3.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context1.branch3.Wattn.key_conv.bn.weight [8]
+context1.branch3.Wattn.key_conv.bn.bias [8]
+context1.branch3.Wattn.key_conv.bn.running_mean [8]
+context1.branch3.Wattn.key_conv.bn.running_var [8]
+context1.branch3.Wattn.key_conv.bn.num_batches_tracked []
+context1.branch3.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context1.branch3.Wattn.value_conv.bn.weight [64]
+context1.branch3.Wattn.value_conv.bn.bias [64]
+context1.branch3.Wattn.value_conv.bn.running_mean [64]
+context1.branch3.Wattn.value_conv.bn.running_var [64]
+context1.branch3.Wattn.value_conv.bn.num_batches_tracked []
+context1.conv_cat.conv.weight [64, 256, 3, 3]
+context1.conv_cat.bn.weight [64]
+context1.conv_cat.bn.bias [64]
+context1.conv_cat.bn.running_mean [64]
+context1.conv_cat.bn.running_var [64]
+context1.conv_cat.bn.num_batches_tracked []
+context1.conv_res.conv.weight [64, 128, 1, 1]
+context1.conv_res.bn.weight [64]
+context1.conv_res.bn.bias [64]
+context1.conv_res.bn.running_mean [64]
+context1.conv_res.bn.running_var [64]
+context1.conv_res.bn.num_batches_tracked []
+context2.branch0.conv.weight [64, 128, 1, 1]
+context2.branch0.bn.weight [64]
+context2.branch0.bn.bias [64]
+context2.branch0.bn.running_mean [64]
+context2.branch0.bn.running_var [64]
+context2.branch0.bn.num_batches_tracked []
+context2.branch1.conv0.conv.weight [64, 128, 1, 1]
+context2.branch1.conv0.bn.weight [64]
+context2.branch1.conv0.bn.bias [64]
+context2.branch1.conv0.bn.running_mean [64]
+context2.branch1.conv0.bn.running_var [64]
+context2.branch1.conv0.bn.num_batches_tracked []
+context2.branch1.conv1.conv.weight [64, 64, 1, 3]
+context2.branch1.conv1.bn.weight [64]
+context2.branch1.conv1.bn.bias [64]
+context2.branch1.conv1.bn.running_mean [64]
+context2.branch1.conv1.bn.running_var [64]
+context2.branch1.conv1.bn.num_batches_tracked []
+context2.branch1.conv2.conv.weight [64, 64, 3, 1]
+context2.branch1.conv2.bn.weight [64]
+context2.branch1.conv2.bn.bias [64]
+context2.branch1.conv2.bn.running_mean [64]
+context2.branch1.conv2.bn.running_var [64]
+context2.branch1.conv2.bn.num_batches_tracked []
+context2.branch1.conv3.conv.weight [64, 64, 3, 3]
+context2.branch1.conv3.bn.weight [64]
+context2.branch1.conv3.bn.bias [64]
+context2.branch1.conv3.bn.running_mean [64]
+context2.branch1.conv3.bn.running_var [64]
+context2.branch1.conv3.bn.num_batches_tracked []
+context2.branch1.Hattn.gamma [1]
+context2.branch1.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch1.Hattn.query_conv.bn.weight [8]
+context2.branch1.Hattn.query_conv.bn.bias [8]
+context2.branch1.Hattn.query_conv.bn.running_mean [8]
+context2.branch1.Hattn.query_conv.bn.running_var [8]
+context2.branch1.Hattn.query_conv.bn.num_batches_tracked []
+context2.branch1.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch1.Hattn.key_conv.bn.weight [8]
+context2.branch1.Hattn.key_conv.bn.bias [8]
+context2.branch1.Hattn.key_conv.bn.running_mean [8]
+context2.branch1.Hattn.key_conv.bn.running_var [8]
+context2.branch1.Hattn.key_conv.bn.num_batches_tracked []
+context2.branch1.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch1.Hattn.value_conv.bn.weight [64]
+context2.branch1.Hattn.value_conv.bn.bias [64]
+context2.branch1.Hattn.value_conv.bn.running_mean [64]
+context2.branch1.Hattn.value_conv.bn.running_var [64]
+context2.branch1.Hattn.value_conv.bn.num_batches_tracked []
+context2.branch1.Wattn.gamma [1]
+context2.branch1.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch1.Wattn.query_conv.bn.weight [8]
+context2.branch1.Wattn.query_conv.bn.bias [8]
+context2.branch1.Wattn.query_conv.bn.running_mean [8]
+context2.branch1.Wattn.query_conv.bn.running_var [8]
+context2.branch1.Wattn.query_conv.bn.num_batches_tracked []
+context2.branch1.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch1.Wattn.key_conv.bn.weight [8]
+context2.branch1.Wattn.key_conv.bn.bias [8]
+context2.branch1.Wattn.key_conv.bn.running_mean [8]
+context2.branch1.Wattn.key_conv.bn.running_var [8]
+context2.branch1.Wattn.key_conv.bn.num_batches_tracked []
+context2.branch1.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch1.Wattn.value_conv.bn.weight [64]
+context2.branch1.Wattn.value_conv.bn.bias [64]
+context2.branch1.Wattn.value_conv.bn.running_mean [64]
+context2.branch1.Wattn.value_conv.bn.running_var [64]
+context2.branch1.Wattn.value_conv.bn.num_batches_tracked []
+context2.branch2.conv0.conv.weight [64, 128, 1, 1]
+context2.branch2.conv0.bn.weight [64]
+context2.branch2.conv0.bn.bias [64]
+context2.branch2.conv0.bn.running_mean [64]
+context2.branch2.conv0.bn.running_var [64]
+context2.branch2.conv0.bn.num_batches_tracked []
+context2.branch2.conv1.conv.weight [64, 64, 1, 5]
+context2.branch2.conv1.bn.weight [64]
+context2.branch2.conv1.bn.bias [64]
+context2.branch2.conv1.bn.running_mean [64]
+context2.branch2.conv1.bn.running_var [64]
+context2.branch2.conv1.bn.num_batches_tracked []
+context2.branch2.conv2.conv.weight [64, 64, 5, 1]
+context2.branch2.conv2.bn.weight [64]
+context2.branch2.conv2.bn.bias [64]
+context2.branch2.conv2.bn.running_mean [64]
+context2.branch2.conv2.bn.running_var [64]
+context2.branch2.conv2.bn.num_batches_tracked []
+context2.branch2.conv3.conv.weight [64, 64, 3, 3]
+context2.branch2.conv3.bn.weight [64]
+context2.branch2.conv3.bn.bias [64]
+context2.branch2.conv3.bn.running_mean [64]
+context2.branch2.conv3.bn.running_var [64]
+context2.branch2.conv3.bn.num_batches_tracked []
+context2.branch2.Hattn.gamma [1]
+context2.branch2.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch2.Hattn.query_conv.bn.weight [8]
+context2.branch2.Hattn.query_conv.bn.bias [8]
+context2.branch2.Hattn.query_conv.bn.running_mean [8]
+context2.branch2.Hattn.query_conv.bn.running_var [8]
+context2.branch2.Hattn.query_conv.bn.num_batches_tracked []
+context2.branch2.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch2.Hattn.key_conv.bn.weight [8]
+context2.branch2.Hattn.key_conv.bn.bias [8]
+context2.branch2.Hattn.key_conv.bn.running_mean [8]
+context2.branch2.Hattn.key_conv.bn.running_var [8]
+context2.branch2.Hattn.key_conv.bn.num_batches_tracked []
+context2.branch2.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch2.Hattn.value_conv.bn.weight [64]
+context2.branch2.Hattn.value_conv.bn.bias [64]
+context2.branch2.Hattn.value_conv.bn.running_mean [64]
+context2.branch2.Hattn.value_conv.bn.running_var [64]
+context2.branch2.Hattn.value_conv.bn.num_batches_tracked []
+context2.branch2.Wattn.gamma [1]
+context2.branch2.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch2.Wattn.query_conv.bn.weight [8]
+context2.branch2.Wattn.query_conv.bn.bias [8]
+context2.branch2.Wattn.query_conv.bn.running_mean [8]
+context2.branch2.Wattn.query_conv.bn.running_var [8]
+context2.branch2.Wattn.query_conv.bn.num_batches_tracked []
+context2.branch2.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch2.Wattn.key_conv.bn.weight [8]
+context2.branch2.Wattn.key_conv.bn.bias [8]
+context2.branch2.Wattn.key_conv.bn.running_mean [8]
+context2.branch2.Wattn.key_conv.bn.running_var [8]
+context2.branch2.Wattn.key_conv.bn.num_batches_tracked []
+context2.branch2.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch2.Wattn.value_conv.bn.weight [64]
+context2.branch2.Wattn.value_conv.bn.bias [64]
+context2.branch2.Wattn.value_conv.bn.running_mean [64]
+context2.branch2.Wattn.value_conv.bn.running_var [64]
+context2.branch2.Wattn.value_conv.bn.num_batches_tracked []
+context2.branch3.conv0.conv.weight [64, 128, 1, 1]
+context2.branch3.conv0.bn.weight [64]
+context2.branch3.conv0.bn.bias [64]
+context2.branch3.conv0.bn.running_mean [64]
+context2.branch3.conv0.bn.running_var [64]
+context2.branch3.conv0.bn.num_batches_tracked []
+context2.branch3.conv1.conv.weight [64, 64, 1, 7]
+context2.branch3.conv1.bn.weight [64]
+context2.branch3.conv1.bn.bias [64]
+context2.branch3.conv1.bn.running_mean [64]
+context2.branch3.conv1.bn.running_var [64]
+context2.branch3.conv1.bn.num_batches_tracked []
+context2.branch3.conv2.conv.weight [64, 64, 7, 1]
+context2.branch3.conv2.bn.weight [64]
+context2.branch3.conv2.bn.bias [64]
+context2.branch3.conv2.bn.running_mean [64]
+context2.branch3.conv2.bn.running_var [64]
+context2.branch3.conv2.bn.num_batches_tracked []
+context2.branch3.conv3.conv.weight [64, 64, 3, 3]
+context2.branch3.conv3.bn.weight [64]
+context2.branch3.conv3.bn.bias [64]
+context2.branch3.conv3.bn.running_mean [64]
+context2.branch3.conv3.bn.running_var [64]
+context2.branch3.conv3.bn.num_batches_tracked []
+context2.branch3.Hattn.gamma [1]
+context2.branch3.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch3.Hattn.query_conv.bn.weight [8]
+context2.branch3.Hattn.query_conv.bn.bias [8]
+context2.branch3.Hattn.query_conv.bn.running_mean [8]
+context2.branch3.Hattn.query_conv.bn.running_var [8]
+context2.branch3.Hattn.query_conv.bn.num_batches_tracked []
+context2.branch3.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch3.Hattn.key_conv.bn.weight [8]
+context2.branch3.Hattn.key_conv.bn.bias [8]
+context2.branch3.Hattn.key_conv.bn.running_mean [8]
+context2.branch3.Hattn.key_conv.bn.running_var [8]
+context2.branch3.Hattn.key_conv.bn.num_batches_tracked []
+context2.branch3.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch3.Hattn.value_conv.bn.weight [64]
+context2.branch3.Hattn.value_conv.bn.bias [64]
+context2.branch3.Hattn.value_conv.bn.running_mean [64]
+context2.branch3.Hattn.value_conv.bn.running_var [64]
+context2.branch3.Hattn.value_conv.bn.num_batches_tracked []
+context2.branch3.Wattn.gamma [1]
+context2.branch3.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context2.branch3.Wattn.query_conv.bn.weight [8]
+context2.branch3.Wattn.query_conv.bn.bias [8]
+context2.branch3.Wattn.query_conv.bn.running_mean [8]
+context2.branch3.Wattn.query_conv.bn.running_var [8]
+context2.branch3.Wattn.query_conv.bn.num_batches_tracked []
+context2.branch3.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context2.branch3.Wattn.key_conv.bn.weight [8]
+context2.branch3.Wattn.key_conv.bn.bias [8]
+context2.branch3.Wattn.key_conv.bn.running_mean [8]
+context2.branch3.Wattn.key_conv.bn.running_var [8]
+context2.branch3.Wattn.key_conv.bn.num_batches_tracked []
+context2.branch3.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context2.branch3.Wattn.value_conv.bn.weight [64]
+context2.branch3.Wattn.value_conv.bn.bias [64]
+context2.branch3.Wattn.value_conv.bn.running_mean [64]
+context2.branch3.Wattn.value_conv.bn.running_var [64]
+context2.branch3.Wattn.value_conv.bn.num_batches_tracked []
+context2.conv_cat.conv.weight [64, 256, 3, 3]
+context2.conv_cat.bn.weight [64]
+context2.conv_cat.bn.bias [64]
+context2.conv_cat.bn.running_mean [64]
+context2.conv_cat.bn.running_var [64]
+context2.conv_cat.bn.num_batches_tracked []
+context2.conv_res.conv.weight [64, 128, 1, 1]
+context2.conv_res.bn.weight [64]
+context2.conv_res.bn.bias [64]
+context2.conv_res.bn.running_mean [64]
+context2.conv_res.bn.running_var [64]
+context2.conv_res.bn.num_batches_tracked []
+context3.branch0.conv.weight [64, 256, 1, 1]
+context3.branch0.bn.weight [64]
+context3.branch0.bn.bias [64]
+context3.branch0.bn.running_mean [64]
+context3.branch0.bn.running_var [64]
+context3.branch0.bn.num_batches_tracked []
+context3.branch1.conv0.conv.weight [64, 256, 1, 1]
+context3.branch1.conv0.bn.weight [64]
+context3.branch1.conv0.bn.bias [64]
+context3.branch1.conv0.bn.running_mean [64]
+context3.branch1.conv0.bn.running_var [64]
+context3.branch1.conv0.bn.num_batches_tracked []
+context3.branch1.conv1.conv.weight [64, 64, 1, 3]
+context3.branch1.conv1.bn.weight [64]
+context3.branch1.conv1.bn.bias [64]
+context3.branch1.conv1.bn.running_mean [64]
+context3.branch1.conv1.bn.running_var [64]
+context3.branch1.conv1.bn.num_batches_tracked []
+context3.branch1.conv2.conv.weight [64, 64, 3, 1]
+context3.branch1.conv2.bn.weight [64]
+context3.branch1.conv2.bn.bias [64]
+context3.branch1.conv2.bn.running_mean [64]
+context3.branch1.conv2.bn.running_var [64]
+context3.branch1.conv2.bn.num_batches_tracked []
+context3.branch1.conv3.conv.weight [64, 64, 3, 3]
+context3.branch1.conv3.bn.weight [64]
+context3.branch1.conv3.bn.bias [64]
+context3.branch1.conv3.bn.running_mean [64]
+context3.branch1.conv3.bn.running_var [64]
+context3.branch1.conv3.bn.num_batches_tracked []
+context3.branch1.Hattn.gamma [1]
+context3.branch1.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch1.Hattn.query_conv.bn.weight [8]
+context3.branch1.Hattn.query_conv.bn.bias [8]
+context3.branch1.Hattn.query_conv.bn.running_mean [8]
+context3.branch1.Hattn.query_conv.bn.running_var [8]
+context3.branch1.Hattn.query_conv.bn.num_batches_tracked []
+context3.branch1.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch1.Hattn.key_conv.bn.weight [8]
+context3.branch1.Hattn.key_conv.bn.bias [8]
+context3.branch1.Hattn.key_conv.bn.running_mean [8]
+context3.branch1.Hattn.key_conv.bn.running_var [8]
+context3.branch1.Hattn.key_conv.bn.num_batches_tracked []
+context3.branch1.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch1.Hattn.value_conv.bn.weight [64]
+context3.branch1.Hattn.value_conv.bn.bias [64]
+context3.branch1.Hattn.value_conv.bn.running_mean [64]
+context3.branch1.Hattn.value_conv.bn.running_var [64]
+context3.branch1.Hattn.value_conv.bn.num_batches_tracked []
+context3.branch1.Wattn.gamma [1]
+context3.branch1.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch1.Wattn.query_conv.bn.weight [8]
+context3.branch1.Wattn.query_conv.bn.bias [8]
+context3.branch1.Wattn.query_conv.bn.running_mean [8]
+context3.branch1.Wattn.query_conv.bn.running_var [8]
+context3.branch1.Wattn.query_conv.bn.num_batches_tracked []
+context3.branch1.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch1.Wattn.key_conv.bn.weight [8]
+context3.branch1.Wattn.key_conv.bn.bias [8]
+context3.branch1.Wattn.key_conv.bn.running_mean [8]
+context3.branch1.Wattn.key_conv.bn.running_var [8]
+context3.branch1.Wattn.key_conv.bn.num_batches_tracked []
+context3.branch1.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch1.Wattn.value_conv.bn.weight [64]
+context3.branch1.Wattn.value_conv.bn.bias [64]
+context3.branch1.Wattn.value_conv.bn.running_mean [64]
+context3.branch1.Wattn.value_conv.bn.running_var [64]
+context3.branch1.Wattn.value_conv.bn.num_batches_tracked []
+context3.branch2.conv0.conv.weight [64, 256, 1, 1]
+context3.branch2.conv0.bn.weight [64]
+context3.branch2.conv0.bn.bias [64]
+context3.branch2.conv0.bn.running_mean [64]
+context3.branch2.conv0.bn.running_var [64]
+context3.branch2.conv0.bn.num_batches_tracked []
+context3.branch2.conv1.conv.weight [64, 64, 1, 5]
+context3.branch2.conv1.bn.weight [64]
+context3.branch2.conv1.bn.bias [64]
+context3.branch2.conv1.bn.running_mean [64]
+context3.branch2.conv1.bn.running_var [64]
+context3.branch2.conv1.bn.num_batches_tracked []
+context3.branch2.conv2.conv.weight [64, 64, 5, 1]
+context3.branch2.conv2.bn.weight [64]
+context3.branch2.conv2.bn.bias [64]
+context3.branch2.conv2.bn.running_mean [64]
+context3.branch2.conv2.bn.running_var [64]
+context3.branch2.conv2.bn.num_batches_tracked []
+context3.branch2.conv3.conv.weight [64, 64, 3, 3]
+context3.branch2.conv3.bn.weight [64]
+context3.branch2.conv3.bn.bias [64]
+context3.branch2.conv3.bn.running_mean [64]
+context3.branch2.conv3.bn.running_var [64]
+context3.branch2.conv3.bn.num_batches_tracked []
+context3.branch2.Hattn.gamma [1]
+context3.branch2.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch2.Hattn.query_conv.bn.weight [8]
+context3.branch2.Hattn.query_conv.bn.bias [8]
+context3.branch2.Hattn.query_conv.bn.running_mean [8]
+context3.branch2.Hattn.query_conv.bn.running_var [8]
+context3.branch2.Hattn.query_conv.bn.num_batches_tracked []
+context3.branch2.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch2.Hattn.key_conv.bn.weight [8]
+context3.branch2.Hattn.key_conv.bn.bias [8]
+context3.branch2.Hattn.key_conv.bn.running_mean [8]
+context3.branch2.Hattn.key_conv.bn.running_var [8]
+context3.branch2.Hattn.key_conv.bn.num_batches_tracked []
+context3.branch2.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch2.Hattn.value_conv.bn.weight [64]
+context3.branch2.Hattn.value_conv.bn.bias [64]
+context3.branch2.Hattn.value_conv.bn.running_mean [64]
+context3.branch2.Hattn.value_conv.bn.running_var [64]
+context3.branch2.Hattn.value_conv.bn.num_batches_tracked []
+context3.branch2.Wattn.gamma [1]
+context3.branch2.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch2.Wattn.query_conv.bn.weight [8]
+context3.branch2.Wattn.query_conv.bn.bias [8]
+context3.branch2.Wattn.query_conv.bn.running_mean [8]
+context3.branch2.Wattn.query_conv.bn.running_var [8]
+context3.branch2.Wattn.query_conv.bn.num_batches_tracked []
+context3.branch2.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch2.Wattn.key_conv.bn.weight [8]
+context3.branch2.Wattn.key_conv.bn.bias [8]
+context3.branch2.Wattn.key_conv.bn.running_mean [8]
+context3.branch2.Wattn.key_conv.bn.running_var [8]
+context3.branch2.Wattn.key_conv.bn.num_batches_tracked []
+context3.branch2.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch2.Wattn.value_conv.bn.weight [64]
+context3.branch2.Wattn.value_conv.bn.bias [64]
+context3.branch2.Wattn.value_conv.bn.running_mean [64]
+context3.branch2.Wattn.value_conv.bn.running_var [64]
+context3.branch2.Wattn.value_conv.bn.num_batches_tracked []
+context3.branch3.conv0.conv.weight [64, 256, 1, 1]
+context3.branch3.conv0.bn.weight [64]
+context3.branch3.conv0.bn.bias [64]
+context3.branch3.conv0.bn.running_mean [64]
+context3.branch3.conv0.bn.running_var [64]
+context3.branch3.conv0.bn.num_batches_tracked []
+context3.branch3.conv1.conv.weight [64, 64, 1, 7]
+context3.branch3.conv1.bn.weight [64]
+context3.branch3.conv1.bn.bias [64]
+context3.branch3.conv1.bn.running_mean [64]
+context3.branch3.conv1.bn.running_var [64]
+context3.branch3.conv1.bn.num_batches_tracked []
+context3.branch3.conv2.conv.weight [64, 64, 7, 1]
+context3.branch3.conv2.bn.weight [64]
+context3.branch3.conv2.bn.bias [64]
+context3.branch3.conv2.bn.running_mean [64]
+context3.branch3.conv2.bn.running_var [64]
+context3.branch3.conv2.bn.num_batches_tracked []
+context3.branch3.conv3.conv.weight [64, 64, 3, 3]
+context3.branch3.conv3.bn.weight [64]
+context3.branch3.conv3.bn.bias [64]
+context3.branch3.conv3.bn.running_mean [64]
+context3.branch3.conv3.bn.running_var [64]
+context3.branch3.conv3.bn.num_batches_tracked []
+context3.branch3.Hattn.gamma [1]
+context3.branch3.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch3.Hattn.query_conv.bn.weight [8]
+context3.branch3.Hattn.query_conv.bn.bias [8]
+context3.branch3.Hattn.query_conv.bn.running_mean [8]
+context3.branch3.Hattn.query_conv.bn.running_var [8]
+context3.branch3.Hattn.query_conv.bn.num_batches_tracked []
+context3.branch3.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch3.Hattn.key_conv.bn.weight [8]
+context3.branch3.Hattn.key_conv.bn.bias [8]
+context3.branch3.Hattn.key_conv.bn.running_mean [8]
+context3.branch3.Hattn.key_conv.bn.running_var [8]
+context3.branch3.Hattn.key_conv.bn.num_batches_tracked []
+context3.branch3.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch3.Hattn.value_conv.bn.weight [64]
+context3.branch3.Hattn.value_conv.bn.bias [64]
+context3.branch3.Hattn.value_conv.bn.running_mean [64]
+context3.branch3.Hattn.value_conv.bn.running_var [64]
+context3.branch3.Hattn.value_conv.bn.num_batches_tracked []
+context3.branch3.Wattn.gamma [1]
+context3.branch3.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context3.branch3.Wattn.query_conv.bn.weight [8]
+context3.branch3.Wattn.query_conv.bn.bias [8]
+context3.branch3.Wattn.query_conv.bn.running_mean [8]
+context3.branch3.Wattn.query_conv.bn.running_var [8]
+context3.branch3.Wattn.query_conv.bn.num_batches_tracked []
+context3.branch3.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context3.branch3.Wattn.key_conv.bn.weight [8]
+context3.branch3.Wattn.key_conv.bn.bias [8]
+context3.branch3.Wattn.key_conv.bn.running_mean [8]
+context3.branch3.Wattn.key_conv.bn.running_var [8]
+context3.branch3.Wattn.key_conv.bn.num_batches_tracked []
+context3.branch3.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context3.branch3.Wattn.value_conv.bn.weight [64]
+context3.branch3.Wattn.value_conv.bn.bias [64]
+context3.branch3.Wattn.value_conv.bn.running_mean [64]
+context3.branch3.Wattn.value_conv.bn.running_var [64]
+context3.branch3.Wattn.value_conv.bn.num_batches_tracked []
+context3.conv_cat.conv.weight [64, 256, 3, 3]
+context3.conv_cat.bn.weight [64]
+context3.conv_cat.bn.bias [64]
+context3.conv_cat.bn.running_mean [64]
+context3.conv_cat.bn.running_var [64]
+context3.conv_cat.bn.num_batches_tracked []
+context3.conv_res.conv.weight [64, 256, 1, 1]
+context3.conv_res.bn.weight [64]
+context3.conv_res.bn.bias [64]
+context3.conv_res.bn.running_mean [64]
+context3.conv_res.bn.running_var [64]
+context3.conv_res.bn.num_batches_tracked []
+context4.branch0.conv.weight [64, 512, 1, 1]
+context4.branch0.bn.weight [64]
+context4.branch0.bn.bias [64]
+context4.branch0.bn.running_mean [64]
+context4.branch0.bn.running_var [64]
+context4.branch0.bn.num_batches_tracked []
+context4.branch1.conv0.conv.weight [64, 512, 1, 1]
+context4.branch1.conv0.bn.weight [64]
+context4.branch1.conv0.bn.bias [64]
+context4.branch1.conv0.bn.running_mean [64]
+context4.branch1.conv0.bn.running_var [64]
+context4.branch1.conv0.bn.num_batches_tracked []
+context4.branch1.conv1.conv.weight [64, 64, 1, 3]
+context4.branch1.conv1.bn.weight [64]
+context4.branch1.conv1.bn.bias [64]
+context4.branch1.conv1.bn.running_mean [64]
+context4.branch1.conv1.bn.running_var [64]
+context4.branch1.conv1.bn.num_batches_tracked []
+context4.branch1.conv2.conv.weight [64, 64, 3, 1]
+context4.branch1.conv2.bn.weight [64]
+context4.branch1.conv2.bn.bias [64]
+context4.branch1.conv2.bn.running_mean [64]
+context4.branch1.conv2.bn.running_var [64]
+context4.branch1.conv2.bn.num_batches_tracked []
+context4.branch1.conv3.conv.weight [64, 64, 3, 3]
+context4.branch1.conv3.bn.weight [64]
+context4.branch1.conv3.bn.bias [64]
+context4.branch1.conv3.bn.running_mean [64]
+context4.branch1.conv3.bn.running_var [64]
+context4.branch1.conv3.bn.num_batches_tracked []
+context4.branch1.Hattn.gamma [1]
+context4.branch1.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch1.Hattn.query_conv.bn.weight [8]
+context4.branch1.Hattn.query_conv.bn.bias [8]
+context4.branch1.Hattn.query_conv.bn.running_mean [8]
+context4.branch1.Hattn.query_conv.bn.running_var [8]
+context4.branch1.Hattn.query_conv.bn.num_batches_tracked []
+context4.branch1.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch1.Hattn.key_conv.bn.weight [8]
+context4.branch1.Hattn.key_conv.bn.bias [8]
+context4.branch1.Hattn.key_conv.bn.running_mean [8]
+context4.branch1.Hattn.key_conv.bn.running_var [8]
+context4.branch1.Hattn.key_conv.bn.num_batches_tracked []
+context4.branch1.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch1.Hattn.value_conv.bn.weight [64]
+context4.branch1.Hattn.value_conv.bn.bias [64]
+context4.branch1.Hattn.value_conv.bn.running_mean [64]
+context4.branch1.Hattn.value_conv.bn.running_var [64]
+context4.branch1.Hattn.value_conv.bn.num_batches_tracked []
+context4.branch1.Wattn.gamma [1]
+context4.branch1.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch1.Wattn.query_conv.bn.weight [8]
+context4.branch1.Wattn.query_conv.bn.bias [8]
+context4.branch1.Wattn.query_conv.bn.running_mean [8]
+context4.branch1.Wattn.query_conv.bn.running_var [8]
+context4.branch1.Wattn.query_conv.bn.num_batches_tracked []
+context4.branch1.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch1.Wattn.key_conv.bn.weight [8]
+context4.branch1.Wattn.key_conv.bn.bias [8]
+context4.branch1.Wattn.key_conv.bn.running_mean [8]
+context4.branch1.Wattn.key_conv.bn.running_var [8]
+context4.branch1.Wattn.key_conv.bn.num_batches_tracked []
+context4.branch1.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch1.Wattn.value_conv.bn.weight [64]
+context4.branch1.Wattn.value_conv.bn.bias [64]
+context4.branch1.Wattn.value_conv.bn.running_mean [64]
+context4.branch1.Wattn.value_conv.bn.running_var [64]
+context4.branch1.Wattn.value_conv.bn.num_batches_tracked []
+context4.branch2.conv0.conv.weight [64, 512, 1, 1]
+context4.branch2.conv0.bn.weight [64]
+context4.branch2.conv0.bn.bias [64]
+context4.branch2.conv0.bn.running_mean [64]
+context4.branch2.conv0.bn.running_var [64]
+context4.branch2.conv0.bn.num_batches_tracked []
+context4.branch2.conv1.conv.weight [64, 64, 1, 5]
+context4.branch2.conv1.bn.weight [64]
+context4.branch2.conv1.bn.bias [64]
+context4.branch2.conv1.bn.running_mean [64]
+context4.branch2.conv1.bn.running_var [64]
+context4.branch2.conv1.bn.num_batches_tracked []
+context4.branch2.conv2.conv.weight [64, 64, 5, 1]
+context4.branch2.conv2.bn.weight [64]
+context4.branch2.conv2.bn.bias [64]
+context4.branch2.conv2.bn.running_mean [64]
+context4.branch2.conv2.bn.running_var [64]
+context4.branch2.conv2.bn.num_batches_tracked []
+context4.branch2.conv3.conv.weight [64, 64, 3, 3]
+context4.branch2.conv3.bn.weight [64]
+context4.branch2.conv3.bn.bias [64]
+context4.branch2.conv3.bn.running_mean [64]
+context4.branch2.conv3.bn.running_var [64]
+context4.branch2.conv3.bn.num_batches_tracked []
+context4.branch2.Hattn.gamma [1]
+context4.branch2.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch2.Hattn.query_conv.bn.weight [8]
+context4.branch2.Hattn.query_conv.bn.bias [8]
+context4.branch2.Hattn.query_conv.bn.running_mean [8]
+context4.branch2.Hattn.query_conv.bn.running_var [8]
+context4.branch2.Hattn.query_conv.bn.num_batches_tracked []
+context4.branch2.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch2.Hattn.key_conv.bn.weight [8]
+context4.branch2.Hattn.key_conv.bn.bias [8]
+context4.branch2.Hattn.key_conv.bn.running_mean [8]
+context4.branch2.Hattn.key_conv.bn.running_var [8]
+context4.branch2.Hattn.key_conv.bn.num_batches_tracked []
+context4.branch2.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch2.Hattn.value_conv.bn.weight [64]
+context4.branch2.Hattn.value_conv.bn.bias [64]
+context4.branch2.Hattn.value_conv.bn.running_mean [64]
+context4.branch2.Hattn.value_conv.bn.running_var [64]
+context4.branch2.Hattn.value_conv.bn.num_batches_tracked []
+context4.branch2.Wattn.gamma [1]
+context4.branch2.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch2.Wattn.query_conv.bn.weight [8]
+context4.branch2.Wattn.query_conv.bn.bias [8]
+context4.branch2.Wattn.query_conv.bn.running_mean [8]
+context4.branch2.Wattn.query_conv.bn.running_var [8]
+context4.branch2.Wattn.query_conv.bn.num_batches_tracked []
+context4.branch2.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch2.Wattn.key_conv.bn.weight [8]
+context4.branch2.Wattn.key_conv.bn.bias [8]
+context4.branch2.Wattn.key_conv.bn.running_mean [8]
+context4.branch2.Wattn.key_conv.bn.running_var [8]
+context4.branch2.Wattn.key_conv.bn.num_batches_tracked []
+context4.branch2.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch2.Wattn.value_conv.bn.weight [64]
+context4.branch2.Wattn.value_conv.bn.bias [64]
+context4.branch2.Wattn.value_conv.bn.running_mean [64]
+context4.branch2.Wattn.value_conv.bn.running_var [64]
+context4.branch2.Wattn.value_conv.bn.num_batches_tracked []
+context4.branch3.conv0.conv.weight [64, 512, 1, 1]
+context4.branch3.conv0.bn.weight [64]
+context4.branch3.conv0.bn.bias [64]
+context4.branch3.conv0.bn.running_mean [64]
+context4.branch3.conv0.bn.running_var [64]
+context4.branch3.conv0.bn.num_batches_tracked []
+context4.branch3.conv1.conv.weight [64, 64, 1, 7]
+context4.branch3.conv1.bn.weight [64]
+context4.branch3.conv1.bn.bias [64]
+context4.branch3.conv1.bn.running_mean [64]
+context4.branch3.conv1.bn.running_var [64]
+context4.branch3.conv1.bn.num_batches_tracked []
+context4.branch3.conv2.conv.weight [64, 64, 7, 1]
+context4.branch3.conv2.bn.weight [64]
+context4.branch3.conv2.bn.bias [64]
+context4.branch3.conv2.bn.running_mean [64]
+context4.branch3.conv2.bn.running_var [64]
+context4.branch3.conv2.bn.num_batches_tracked []
+context4.branch3.conv3.conv.weight [64, 64, 3, 3]
+context4.branch3.conv3.bn.weight [64]
+context4.branch3.conv3.bn.bias [64]
+context4.branch3.conv3.bn.running_mean [64]
+context4.branch3.conv3.bn.running_var [64]
+context4.branch3.conv3.bn.num_batches_tracked []
+context4.branch3.Hattn.gamma [1]
+context4.branch3.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch3.Hattn.query_conv.bn.weight [8]
+context4.branch3.Hattn.query_conv.bn.bias [8]
+context4.branch3.Hattn.query_conv.bn.running_mean [8]
+context4.branch3.Hattn.query_conv.bn.running_var [8]
+context4.branch3.Hattn.query_conv.bn.num_batches_tracked []
+context4.branch3.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch3.Hattn.key_conv.bn.weight [8]
+context4.branch3.Hattn.key_conv.bn.bias [8]
+context4.branch3.Hattn.key_conv.bn.running_mean [8]
+context4.branch3.Hattn.key_conv.bn.running_var [8]
+context4.branch3.Hattn.key_conv.bn.num_batches_tracked []
+context4.branch3.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch3.Hattn.value_conv.bn.weight [64]
+context4.branch3.Hattn.value_conv.bn.bias [64]
+context4.branch3.Hattn.value_conv.bn.running_mean [64]
+context4.branch3.Hattn.value_conv.bn.running_var [64]
+context4.branch3.Hattn.value_conv.bn.num_batches_tracked []
+context4.branch3.Wattn.gamma [1]
+context4.branch3.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context4.branch3.Wattn.query_conv.bn.weight [8]
+context4.branch3.Wattn.query_conv.bn.bias [8]
+context4.branch3.Wattn.query_conv.bn.running_mean [8]
+context4.branch3.Wattn.query_conv.bn.running_var [8]
+context4.branch3.Wattn.query_conv.bn.num_batches_tracked []
+context4.branch3.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context4.branch3.Wattn.key_conv.bn.weight [8]
+context4.branch3.Wattn.key_conv.bn.bias [8]
+context4.branch3.Wattn.key_conv.bn.running_mean [8]
+context4.branch3.Wattn.key_conv.bn.running_var [8]
+context4.branch3.Wattn.key_conv.bn.num_batches_tracked []
+context4.branch3.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context4.branch3.Wattn.value_conv.bn.weight [64]
+context4.branch3.Wattn.value_conv.bn.bias [64]
+context4.branch3.Wattn.value_conv.bn.running_mean [64]
+context4.branch3.Wattn.value_conv.bn.running_var [64]
+context4.branch3.Wattn.value_conv.bn.num_batches_tracked []
+context4.conv_cat.conv.weight [64, 256, 3, 3]
+context4.conv_cat.bn.weight [64]
+context4.conv_cat.bn.bias [64]
+context4.conv_cat.bn.running_mean [64]
+context4.conv_cat.bn.running_var [64]
+context4.conv_cat.bn.num_batches_tracked []
+context4.conv_res.conv.weight [64, 512, 1, 1]
+context4.conv_res.bn.weight [64]
+context4.conv_res.bn.bias [64]
+context4.conv_res.bn.running_mean [64]
+context4.conv_res.bn.running_var [64]
+context4.conv_res.bn.num_batches_tracked []
+context5.branch0.conv.weight [64, 1024, 1, 1]
+context5.branch0.bn.weight [64]
+context5.branch0.bn.bias [64]
+context5.branch0.bn.running_mean [64]
+context5.branch0.bn.running_var [64]
+context5.branch0.bn.num_batches_tracked []
+context5.branch1.conv0.conv.weight [64, 1024, 1, 1]
+context5.branch1.conv0.bn.weight [64]
+context5.branch1.conv0.bn.bias [64]
+context5.branch1.conv0.bn.running_mean [64]
+context5.branch1.conv0.bn.running_var [64]
+context5.branch1.conv0.bn.num_batches_tracked []
+context5.branch1.conv1.conv.weight [64, 64, 1, 3]
+context5.branch1.conv1.bn.weight [64]
+context5.branch1.conv1.bn.bias [64]
+context5.branch1.conv1.bn.running_mean [64]
+context5.branch1.conv1.bn.running_var [64]
+context5.branch1.conv1.bn.num_batches_tracked []
+context5.branch1.conv2.conv.weight [64, 64, 3, 1]
+context5.branch1.conv2.bn.weight [64]
+context5.branch1.conv2.bn.bias [64]
+context5.branch1.conv2.bn.running_mean [64]
+context5.branch1.conv2.bn.running_var [64]
+context5.branch1.conv2.bn.num_batches_tracked []
+context5.branch1.conv3.conv.weight [64, 64, 3, 3]
+context5.branch1.conv3.bn.weight [64]
+context5.branch1.conv3.bn.bias [64]
+context5.branch1.conv3.bn.running_mean [64]
+context5.branch1.conv3.bn.running_var [64]
+context5.branch1.conv3.bn.num_batches_tracked []
+context5.branch1.Hattn.gamma [1]
+context5.branch1.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch1.Hattn.query_conv.bn.weight [8]
+context5.branch1.Hattn.query_conv.bn.bias [8]
+context5.branch1.Hattn.query_conv.bn.running_mean [8]
+context5.branch1.Hattn.query_conv.bn.running_var [8]
+context5.branch1.Hattn.query_conv.bn.num_batches_tracked []
+context5.branch1.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch1.Hattn.key_conv.bn.weight [8]
+context5.branch1.Hattn.key_conv.bn.bias [8]
+context5.branch1.Hattn.key_conv.bn.running_mean [8]
+context5.branch1.Hattn.key_conv.bn.running_var [8]
+context5.branch1.Hattn.key_conv.bn.num_batches_tracked []
+context5.branch1.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch1.Hattn.value_conv.bn.weight [64]
+context5.branch1.Hattn.value_conv.bn.bias [64]
+context5.branch1.Hattn.value_conv.bn.running_mean [64]
+context5.branch1.Hattn.value_conv.bn.running_var [64]
+context5.branch1.Hattn.value_conv.bn.num_batches_tracked []
+context5.branch1.Wattn.gamma [1]
+context5.branch1.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch1.Wattn.query_conv.bn.weight [8]
+context5.branch1.Wattn.query_conv.bn.bias [8]
+context5.branch1.Wattn.query_conv.bn.running_mean [8]
+context5.branch1.Wattn.query_conv.bn.running_var [8]
+context5.branch1.Wattn.query_conv.bn.num_batches_tracked []
+context5.branch1.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch1.Wattn.key_conv.bn.weight [8]
+context5.branch1.Wattn.key_conv.bn.bias [8]
+context5.branch1.Wattn.key_conv.bn.running_mean [8]
+context5.branch1.Wattn.key_conv.bn.running_var [8]
+context5.branch1.Wattn.key_conv.bn.num_batches_tracked []
+context5.branch1.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch1.Wattn.value_conv.bn.weight [64]
+context5.branch1.Wattn.value_conv.bn.bias [64]
+context5.branch1.Wattn.value_conv.bn.running_mean [64]
+context5.branch1.Wattn.value_conv.bn.running_var [64]
+context5.branch1.Wattn.value_conv.bn.num_batches_tracked []
+context5.branch2.conv0.conv.weight [64, 1024, 1, 1]
+context5.branch2.conv0.bn.weight [64]
+context5.branch2.conv0.bn.bias [64]
+context5.branch2.conv0.bn.running_mean [64]
+context5.branch2.conv0.bn.running_var [64]
+context5.branch2.conv0.bn.num_batches_tracked []
+context5.branch2.conv1.conv.weight [64, 64, 1, 5]
+context5.branch2.conv1.bn.weight [64]
+context5.branch2.conv1.bn.bias [64]
+context5.branch2.conv1.bn.running_mean [64]
+context5.branch2.conv1.bn.running_var [64]
+context5.branch2.conv1.bn.num_batches_tracked []
+context5.branch2.conv2.conv.weight [64, 64, 5, 1]
+context5.branch2.conv2.bn.weight [64]
+context5.branch2.conv2.bn.bias [64]
+context5.branch2.conv2.bn.running_mean [64]
+context5.branch2.conv2.bn.running_var [64]
+context5.branch2.conv2.bn.num_batches_tracked []
+context5.branch2.conv3.conv.weight [64, 64, 3, 3]
+context5.branch2.conv3.bn.weight [64]
+context5.branch2.conv3.bn.bias [64]
+context5.branch2.conv3.bn.running_mean [64]
+context5.branch2.conv3.bn.running_var [64]
+context5.branch2.conv3.bn.num_batches_tracked []
+context5.branch2.Hattn.gamma [1]
+context5.branch2.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch2.Hattn.query_conv.bn.weight [8]
+context5.branch2.Hattn.query_conv.bn.bias [8]
+context5.branch2.Hattn.query_conv.bn.running_mean [8]
+context5.branch2.Hattn.query_conv.bn.running_var [8]
+context5.branch2.Hattn.query_conv.bn.num_batches_tracked []
+context5.branch2.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch2.Hattn.key_conv.bn.weight [8]
+context5.branch2.Hattn.key_conv.bn.bias [8]
+context5.branch2.Hattn.key_conv.bn.running_mean [8]
+context5.branch2.Hattn.key_conv.bn.running_var [8]
+context5.branch2.Hattn.key_conv.bn.num_batches_tracked []
+context5.branch2.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch2.Hattn.value_conv.bn.weight [64]
+context5.branch2.Hattn.value_conv.bn.bias [64]
+context5.branch2.Hattn.value_conv.bn.running_mean [64]
+context5.branch2.Hattn.value_conv.bn.running_var [64]
+context5.branch2.Hattn.value_conv.bn.num_batches_tracked []
+context5.branch2.Wattn.gamma [1]
+context5.branch2.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch2.Wattn.query_conv.bn.weight [8]
+context5.branch2.Wattn.query_conv.bn.bias [8]
+context5.branch2.Wattn.query_conv.bn.running_mean [8]
+context5.branch2.Wattn.query_conv.bn.running_var [8]
+context5.branch2.Wattn.query_conv.bn.num_batches_tracked []
+context5.branch2.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch2.Wattn.key_conv.bn.weight [8]
+context5.branch2.Wattn.key_conv.bn.bias [8]
+context5.branch2.Wattn.key_conv.bn.running_mean [8]
+context5.branch2.Wattn.key_conv.bn.running_var [8]
+context5.branch2.Wattn.key_conv.bn.num_batches_tracked []
+context5.branch2.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch2.Wattn.value_conv.bn.weight [64]
+context5.branch2.Wattn.value_conv.bn.bias [64]
+context5.branch2.Wattn.value_conv.bn.running_mean [64]
+context5.branch2.Wattn.value_conv.bn.running_var [64]
+context5.branch2.Wattn.value_conv.bn.num_batches_tracked []
+context5.branch3.conv0.conv.weight [64, 1024, 1, 1]
+context5.branch3.conv0.bn.weight [64]
+context5.branch3.conv0.bn.bias [64]
+context5.branch3.conv0.bn.running_mean [64]
+context5.branch3.conv0.bn.running_var [64]
+context5.branch3.conv0.bn.num_batches_tracked []
+context5.branch3.conv1.conv.weight [64, 64, 1, 7]
+context5.branch3.conv1.bn.weight [64]
+context5.branch3.conv1.bn.bias [64]
+context5.branch3.conv1.bn.running_mean [64]
+context5.branch3.conv1.bn.running_var [64]
+context5.branch3.conv1.bn.num_batches_tracked []
+context5.branch3.conv2.conv.weight [64, 64, 7, 1]
+context5.branch3.conv2.bn.weight [64]
+context5.branch3.conv2.bn.bias [64]
+context5.branch3.conv2.bn.running_mean [64]
+context5.branch3.conv2.bn.running_var [64]
+context5.branch3.conv2.bn.num_batches_tracked []
+context5.branch3.conv3.conv.weight [64, 64, 3, 3]
+context5.branch3.conv3.bn.weight [64]
+context5.branch3.conv3.bn.bias [64]
+context5.branch3.conv3.bn.running_mean [64]
+context5.branch3.conv3.bn.running_var [64]
+context5.branch3.conv3.bn.num_batches_tracked []
+context5.branch3.Hattn.gamma [1]
+context5.branch3.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch3.Hattn.query_conv.bn.weight [8]
+context5.branch3.Hattn.query_conv.bn.bias [8]
+context5.branch3.Hattn.query_conv.bn.running_mean [8]
+context5.branch3.Hattn.query_conv.bn.running_var [8]
+context5.branch3.Hattn.query_conv.bn.num_batches_tracked []
+context5.branch3.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch3.Hattn.key_conv.bn.weight [8]
+context5.branch3.Hattn.key_conv.bn.bias [8]
+context5.branch3.Hattn.key_conv.bn.running_mean [8]
+context5.branch3.Hattn.key_conv.bn.running_var [8]
+context5.branch3.Hattn.key_conv.bn.num_batches_tracked []
+context5.branch3.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch3.Hattn.value_conv.bn.weight [64]
+context5.branch3.Hattn.value_conv.bn.bias [64]
+context5.branch3.Hattn.value_conv.bn.running_mean [64]
+context5.branch3.Hattn.value_conv.bn.running_var [64]
+context5.branch3.Hattn.value_conv.bn.num_batches_tracked []
+context5.branch3.Wattn.gamma [1]
+context5.branch3.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+context5.branch3.Wattn.query_conv.bn.weight [8]
+context5.branch3.Wattn.query_conv.bn.bias [8]
+context5.branch3.Wattn.query_conv.bn.running_mean [8]
+context5.branch3.Wattn.query_conv.bn.running_var [8]
+context5.branch3.Wattn.query_conv.bn.num_batches_tracked []
+context5.branch3.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+context5.branch3.Wattn.key_conv.bn.weight [8]
+context5.branch3.Wattn.key_conv.bn.bias [8]
+context5.branch3.Wattn.key_conv.bn.running_mean [8]
+context5.branch3.Wattn.key_conv.bn.running_var [8]
+context5.branch3.Wattn.key_conv.bn.num_batches_tracked []
+context5.branch3.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+context5.branch3.Wattn.value_conv.bn.weight [64]
+context5.branch3.Wattn.value_conv.bn.bias [64]
+context5.branch3.Wattn.value_conv.bn.running_mean [64]
+context5.branch3.Wattn.value_conv.bn.running_var [64]
+context5.branch3.Wattn.value_conv.bn.num_batches_tracked []
+context5.conv_cat.conv.weight [64, 256, 3, 3]
+context5.conv_cat.bn.weight [64]
+context5.conv_cat.bn.bias [64]
+context5.conv_cat.bn.running_mean [64]
+context5.conv_cat.bn.running_var [64]
+context5.conv_cat.bn.num_batches_tracked []
+context5.conv_res.conv.weight [64, 1024, 1, 1]
+context5.conv_res.bn.weight [64]
+context5.conv_res.bn.bias [64]
+context5.conv_res.bn.running_mean [64]
+context5.conv_res.bn.running_var [64]
+context5.conv_res.bn.num_batches_tracked []
+decoder.conv1.conv.weight [64, 192, 3, 3]
+decoder.conv1.bn.weight [64]
+decoder.conv1.bn.bias [64]
+decoder.conv1.bn.running_mean [64]
+decoder.conv1.bn.running_var [64]
+decoder.conv1.bn.num_batches_tracked []
+decoder.conv2.conv.weight [64, 64, 3, 3]
+decoder.conv2.bn.weight [64]
+decoder.conv2.bn.bias [64]
+decoder.conv2.bn.running_mean [64]
+decoder.conv2.bn.running_var [64]
+decoder.conv2.bn.num_batches_tracked []
+decoder.conv3.conv.weight [64, 64, 3, 3]
+decoder.conv3.bn.weight [64]
+decoder.conv3.bn.bias [64]
+decoder.conv3.bn.running_mean [64]
+decoder.conv3.bn.running_var [64]
+decoder.conv3.bn.num_batches_tracked []
+decoder.conv4.conv.weight [64, 64, 3, 3]
+decoder.conv4.bn.weight [64]
+decoder.conv4.bn.bias [64]
+decoder.conv4.bn.running_mean [64]
+decoder.conv4.bn.running_var [64]
+decoder.conv4.bn.num_batches_tracked []
+decoder.conv5.conv.weight [1, 64, 3, 3]
+decoder.Hattn.gamma [1]
+decoder.Hattn.query_conv.conv.weight [8, 64, 1, 1]
+decoder.Hattn.query_conv.bn.weight [8]
+decoder.Hattn.query_conv.bn.bias [8]
+decoder.Hattn.query_conv.bn.running_mean [8]
+decoder.Hattn.query_conv.bn.running_var [8]
+decoder.Hattn.query_conv.bn.num_batches_tracked []
+decoder.Hattn.key_conv.conv.weight [8, 64, 1, 1]
+decoder.Hattn.key_conv.bn.weight [8]
+decoder.Hattn.key_conv.bn.bias [8]
+decoder.Hattn.key_conv.bn.running_mean [8]
+decoder.Hattn.key_conv.bn.running_var [8]
+decoder.Hattn.key_conv.bn.num_batches_tracked []
+decoder.Hattn.value_conv.conv.weight [64, 64, 1, 1]
+decoder.Hattn.value_conv.bn.weight [64]
+decoder.Hattn.value_conv.bn.bias [64]
+decoder.Hattn.value_conv.bn.running_mean [64]
+decoder.Hattn.value_conv.bn.running_var [64]
+decoder.Hattn.value_conv.bn.num_batches_tracked []
+decoder.Wattn.gamma [1]
+decoder.Wattn.query_conv.conv.weight [8, 64, 1, 1]
+decoder.Wattn.query_conv.bn.weight [8]
+decoder.Wattn.query_conv.bn.bias [8]
+decoder.Wattn.query_conv.bn.running_mean [8]
+decoder.Wattn.query_conv.bn.running_var [8]
+decoder.Wattn.query_conv.bn.num_batches_tracked []
+decoder.Wattn.key_conv.conv.weight [8, 64, 1, 1]
+decoder.Wattn.key_conv.bn.weight [8]
+decoder.Wattn.key_conv.bn.bias [8]
+decoder.Wattn.key_conv.bn.running_mean [8]
+decoder.Wattn.key_conv.bn.running_var [8]
+decoder.Wattn.key_conv.bn.num_batches_tracked []
+decoder.Wattn.value_conv.conv.weight [64, 64, 1, 1]
+decoder.Wattn.value_conv.bn.weight [64]
+decoder.Wattn.value_conv.bn.bias [64]
+decoder.Wattn.value_conv.bn.running_mean [64]
+decoder.Wattn.value_conv.bn.running_var [64]
+decoder.Wattn.value_conv.bn.num_batches_tracked []
+attention0.threshold [1]
+attention0.lthreshold [1]
+attention0.conv_query.0.conv.weight [64, 64, 3, 3]
+attention0.conv_query.0.bn.weight [64]
+attention0.conv_query.0.bn.bias [64]
+attention0.conv_query.0.bn.running_mean [64]
+attention0.conv_query.0.bn.running_var [64]
+attention0.conv_query.0.bn.num_batches_tracked []
+attention0.conv_query.1.conv.weight [64, 64, 3, 3]
+attention0.conv_query.1.bn.weight [64]
+attention0.conv_query.1.bn.bias [64]
+attention0.conv_query.1.bn.running_mean [64]
+attention0.conv_query.1.bn.running_var [64]
+attention0.conv_query.1.bn.num_batches_tracked []
+attention0.conv_key.0.conv.weight [64, 64, 1, 1]
+attention0.conv_key.0.bn.weight [64]
+attention0.conv_key.0.bn.bias [64]
+attention0.conv_key.0.bn.running_mean [64]
+attention0.conv_key.0.bn.running_var [64]
+attention0.conv_key.0.bn.num_batches_tracked []
+attention0.conv_key.1.conv.weight [64, 64, 1, 1]
+attention0.conv_key.1.bn.weight [64]
+attention0.conv_key.1.bn.bias [64]
+attention0.conv_key.1.bn.running_mean [64]
+attention0.conv_key.1.bn.running_var [64]
+attention0.conv_key.1.bn.num_batches_tracked []
+attention0.conv_value.0.conv.weight [64, 64, 1, 1]
+attention0.conv_value.0.bn.weight [64]
+attention0.conv_value.0.bn.bias [64]
+attention0.conv_value.0.bn.running_mean [64]
+attention0.conv_value.0.bn.running_var [64]
+attention0.conv_value.0.bn.num_batches_tracked []
+attention0.conv_value.1.conv.weight [64, 64, 1, 1]
+attention0.conv_value.1.bn.weight [64]
+attention0.conv_value.1.bn.bias [64]
+attention0.conv_value.1.bn.running_mean [64]
+attention0.conv_value.1.bn.running_var [64]
+attention0.conv_value.1.bn.num_batches_tracked []
+attention0.conv_out1.conv.weight [64, 64, 3, 3]
+attention0.conv_out1.bn.weight [64]
+attention0.conv_out1.bn.bias [64]
+attention0.conv_out1.bn.running_mean [64]
+attention0.conv_out1.bn.running_var [64]
+attention0.conv_out1.bn.num_batches_tracked []
+attention0.conv_out2.conv.weight [64, 128, 3, 3]
+attention0.conv_out2.bn.weight [64]
+attention0.conv_out2.bn.bias [64]
+attention0.conv_out2.bn.running_mean [64]
+attention0.conv_out2.bn.running_var [64]
+attention0.conv_out2.bn.num_batches_tracked []
+attention0.conv_out3.conv.weight [64, 64, 3, 3]
+attention0.conv_out3.bn.weight [64]
+attention0.conv_out3.bn.bias [64]
+attention0.conv_out3.bn.running_mean [64]
+attention0.conv_out3.bn.running_var [64]
+attention0.conv_out3.bn.num_batches_tracked []
+attention0.conv_out4.conv.weight [1, 64, 1, 1]
+attention0.conv_out4.bn.weight [1]
+attention0.conv_out4.bn.bias [1]
+attention0.conv_out4.bn.running_mean [1]
+attention0.conv_out4.bn.running_var [1]
+attention0.conv_out4.bn.num_batches_tracked []
+attention1.threshold [1]
+attention1.lthreshold [1]
+attention1.conv_query.0.conv.weight [64, 128, 3, 3]
+attention1.conv_query.0.bn.weight [64]
+attention1.conv_query.0.bn.bias [64]
+attention1.conv_query.0.bn.running_mean [64]
+attention1.conv_query.0.bn.running_var [64]
+attention1.conv_query.0.bn.num_batches_tracked []
+attention1.conv_query.1.conv.weight [64, 64, 3, 3]
+attention1.conv_query.1.bn.weight [64]
+attention1.conv_query.1.bn.bias [64]
+attention1.conv_query.1.bn.running_mean [64]
+attention1.conv_query.1.bn.running_var [64]
+attention1.conv_query.1.bn.num_batches_tracked []
+attention1.conv_key.0.conv.weight [64, 128, 1, 1]
+attention1.conv_key.0.bn.weight [64]
+attention1.conv_key.0.bn.bias [64]
+attention1.conv_key.0.bn.running_mean [64]
+attention1.conv_key.0.bn.running_var [64]
+attention1.conv_key.0.bn.num_batches_tracked []
+attention1.conv_key.1.conv.weight [64, 64, 1, 1]
+attention1.conv_key.1.bn.weight [64]
+attention1.conv_key.1.bn.bias [64]
+attention1.conv_key.1.bn.running_mean [64]
+attention1.conv_key.1.bn.running_var [64]
+attention1.conv_key.1.bn.num_batches_tracked []
+attention1.conv_value.0.conv.weight [64, 128, 1, 1]
+attention1.conv_value.0.bn.weight [64]
+attention1.conv_value.0.bn.bias [64]
+attention1.conv_value.0.bn.running_mean [64]
+attention1.conv_value.0.bn.running_var [64]
+attention1.conv_value.0.bn.num_batches_tracked []
+attention1.conv_value.1.conv.weight [64, 64, 1, 1]
+attention1.conv_value.1.bn.weight [64]
+attention1.conv_value.1.bn.bias [64]
+attention1.conv_value.1.bn.running_mean [64]
+attention1.conv_value.1.bn.running_var [64]
+attention1.conv_value.1.bn.num_batches_tracked []
+attention1.conv_out1.conv.weight [64, 64, 3, 3]
+attention1.conv_out1.bn.weight [64]
+attention1.conv_out1.bn.bias [64]
+attention1.conv_out1.bn.running_mean [64]
+attention1.conv_out1.bn.running_var [64]
+attention1.conv_out1.bn.num_batches_tracked []
+attention1.conv_out2.conv.weight [64, 192, 3, 3]
+attention1.conv_out2.bn.weight [64]
+attention1.conv_out2.bn.bias [64]
+attention1.conv_out2.bn.running_mean [64]
+attention1.conv_out2.bn.running_var [64]
+attention1.conv_out2.bn.num_batches_tracked []
+attention1.conv_out3.conv.weight [64, 64, 3, 3]
+attention1.conv_out3.bn.weight [64]
+attention1.conv_out3.bn.bias [64]
+attention1.conv_out3.bn.running_mean [64]
+attention1.conv_out3.bn.running_var [64]
+attention1.conv_out3.bn.num_batches_tracked []
+attention1.conv_out4.conv.weight [1, 64, 1, 1]
+attention1.conv_out4.bn.weight [1]
+attention1.conv_out4.bn.bias [1]
+attention1.conv_out4.bn.running_mean [1]
+attention1.conv_out4.bn.running_var [1]
+attention1.conv_out4.bn.num_batches_tracked []
+attention2.threshold [1]
+attention2.conv_query.0.conv.weight [64, 128, 3, 3]
+attention2.conv_query.0.bn.weight [64]
+attention2.conv_query.0.bn.bias [64]
+attention2.conv_query.0.bn.running_mean [64]
+attention2.conv_query.0.bn.running_var [64]
+attention2.conv_query.0.bn.num_batches_tracked []
+attention2.conv_query.1.conv.weight [64, 64, 3, 3]
+attention2.conv_query.1.bn.weight [64]
+attention2.conv_query.1.bn.bias [64]
+attention2.conv_query.1.bn.running_mean [64]
+attention2.conv_query.1.bn.running_var [64]
+attention2.conv_query.1.bn.num_batches_tracked []
+attention2.conv_key.0.conv.weight [64, 128, 1, 1]
+attention2.conv_key.0.bn.weight [64]
+attention2.conv_key.0.bn.bias [64]
+attention2.conv_key.0.bn.running_mean [64]
+attention2.conv_key.0.bn.running_var [64]
+attention2.conv_key.0.bn.num_batches_tracked []
+attention2.conv_key.1.conv.weight [64, 64, 1, 1]
+attention2.conv_key.1.bn.weight [64]
+attention2.conv_key.1.bn.bias [64]
+attention2.conv_key.1.bn.running_mean [64]
+attention2.conv_key.1.bn.running_var [64]
+attention2.conv_key.1.bn.num_batches_tracked []
+attention2.conv_value.0.conv.weight [64, 128, 1, 1]
+attention2.conv_value.0.bn.weight [64]
+attention2.conv_value.0.bn.bias [64]
+attention2.conv_value.0.bn.running_mean [64]
+attention2.conv_value.0.bn.running_var [64]
+attention2.conv_value.0.bn.num_batches_tracked []
+attention2.conv_value.1.conv.weight [64, 64, 1, 1]
+attention2.conv_value.1.bn.weight [64]
+attention2.conv_value.1.bn.bias [64]
+attention2.conv_value.1.bn.running_mean [64]
+attention2.conv_value.1.bn.running_var [64]
+attention2.conv_value.1.bn.num_batches_tracked []
+attention2.conv_out1.conv.weight [64, 64, 3, 3]
+attention2.conv_out1.bn.weight [64]
+attention2.conv_out1.bn.bias [64]
+attention2.conv_out1.bn.running_mean [64]
+attention2.conv_out1.bn.running_var [64]
+attention2.conv_out1.bn.num_batches_tracked []
+attention2.conv_out2.conv.weight [64, 192, 3, 3]
+attention2.conv_out2.bn.weight [64]
+attention2.conv_out2.bn.bias [64]
+attention2.conv_out2.bn.running_mean [64]
+attention2.conv_out2.bn.running_var [64]
+attention2.conv_out2.bn.num_batches_tracked []
+attention2.conv_out3.conv.weight [64, 64, 3, 3]
+attention2.conv_out3.bn.weight [64]
+attention2.conv_out3.bn.bias [64]
+attention2.conv_out3.bn.running_mean [64]
+attention2.conv_out3.bn.running_var [64]
+attention2.conv_out3.bn.num_batches_tracked []
+attention2.conv_out4.conv.weight [1, 64, 1, 1]
+attention2.conv_out4.bn.weight [1]
+attention2.conv_out4.bn.bias [1]
+attention2.conv_out4.bn.running_mean [1]
+attention2.conv_out4.bn.running_var [1]
+attention2.conv_out4.bn.num_batches_tracked []
+Model type: InSPyReNet (torch.float32)
 Back bone type: swin_v1_b
 Model version: 1
