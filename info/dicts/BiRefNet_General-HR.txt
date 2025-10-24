@@ -1,0 +1,767 @@
+Analyzing: models/General-HR.safetensors
+
+--- PyTorch Model State Dict ---
+Key                                                                               |                     Shape |    Num Elements | SHA256 (start)
+------------------------------------------------------------------------------------------------------------------------------------------------
+bb.layers.0.blocks.0.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.0.blocks.1.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.1.blocks.0.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.1.blocks.1.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.0.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.1.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.10.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.11.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.12.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.13.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.14.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.15.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.16.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.17.attn.relative_position_index                                |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.2.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.3.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.4.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.5.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.6.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.7.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.8.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.2.blocks.9.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.3.blocks.0.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+bb.layers.3.blocks.1.attn.relative_position_index                                 |                [144, 144] |          20,736 | 66d081f9
+
+decoder.decoder_block1.bn_in.num_batches_tracked                                  |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.bn_out.num_batches_tracked                                 |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.aspp1.bn.num_batches_tracked                       |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.aspp_deforms.0.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.aspp_deforms.1.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.aspp_deforms.2.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.bn1.num_batches_tracked                            |                        [] |               1 | 05cf1b42
+decoder.decoder_block1.dec_att.global_avg_pool.2.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.bn_in.num_batches_tracked                                  |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.bn_out.num_batches_tracked                                 |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.aspp1.bn.num_batches_tracked                       |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.aspp_deforms.0.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.aspp_deforms.1.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.aspp_deforms.2.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.bn1.num_batches_tracked                            |                        [] |               1 | 05cf1b42
+decoder.decoder_block2.dec_att.global_avg_pool.2.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.bn_in.num_batches_tracked                                  |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.bn_out.num_batches_tracked                                 |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.aspp1.bn.num_batches_tracked                       |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.aspp_deforms.0.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.aspp_deforms.1.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.aspp_deforms.2.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.bn1.num_batches_tracked                            |                        [] |               1 | 05cf1b42
+decoder.decoder_block3.dec_att.global_avg_pool.2.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.bn_in.num_batches_tracked                                  |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.bn_out.num_batches_tracked                                 |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.aspp1.bn.num_batches_tracked                       |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.aspp_deforms.0.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.aspp_deforms.1.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.aspp_deforms.2.bn.num_batches_tracked              |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.bn1.num_batches_tracked                            |                        [] |               1 | 05cf1b42
+decoder.decoder_block4.dec_att.global_avg_pool.2.num_batches_tracked              |                        [] |               1 | 05cf1b42
+
+decoder.gdt_convs_2.1.num_batches_tracked                                         |                        [] |               1 | 05cf1b42
+decoder.gdt_convs_3.1.num_batches_tracked                                         |                        [] |               1 | 05cf1b42
+decoder.gdt_convs_4.1.num_batches_tracked                                         |                        [] |               1 | 05cf1b42
+squeeze_module.0.bn_in.num_batches_tracked                                        |                        [] |               1 | 05cf1b42
+squeeze_module.0.bn_out.num_batches_tracked                                       |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.aspp1.bn.num_batches_tracked                             |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.aspp_deforms.0.bn.num_batches_tracked                    |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.aspp_deforms.1.bn.num_batches_tracked                    |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.aspp_deforms.2.bn.num_batches_tracked                    |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.bn1.num_batches_tracked                                  |                        [] |               1 | 05cf1b42
+squeeze_module.0.dec_att.global_avg_pool.2.num_batches_tracked                    |                        [] |               1 | 05cf1b42
+
+bb.layers.0.blocks.0.attn.proj.bias                                               |                     [192] |             192 | 8c852f8c
+bb.layers.0.blocks.0.attn.proj.weight                                             |                [192, 192] |          36,864 | 3542bd39
+bb.layers.0.blocks.0.attn.qkv.bias                                                |                     [576] |             576 | 1ab1c19d
+bb.layers.0.blocks.0.attn.qkv.weight                                              |                [576, 192] |         110,592 | 4f18d9c6
+bb.layers.0.blocks.0.attn.relative_position_bias_table                            |                  [529, 6] |           3,174 | f2f6d4c9
+bb.layers.0.blocks.0.mlp.fc1.bias                                                 |                     [768] |             768 | 83e7d373
+bb.layers.0.blocks.0.mlp.fc1.weight                                               |                [768, 192] |         147,456 | 22ec039d
+bb.layers.0.blocks.0.mlp.fc2.bias                                                 |                     [192] |             192 | fd2051e2
+bb.layers.0.blocks.0.mlp.fc2.weight                                               |                [192, 768] |         147,456 | 4065bafc
+bb.layers.0.blocks.0.norm1.bias                                                   |                     [192] |             192 | 90ea4269
+bb.layers.0.blocks.0.norm1.weight                                                 |                     [192] |             192 | 325e6d63
+bb.layers.0.blocks.0.norm2.bias                                                   |                     [192] |             192 | 22ca7e6f
+bb.layers.0.blocks.0.norm2.weight                                                 |                     [192] |             192 | 74c4de0e
+bb.layers.0.blocks.1.attn.proj.bias                                               |                     [192] |             192 | adeec3e6
+bb.layers.0.blocks.1.attn.proj.weight                                             |                [192, 192] |          36,864 | 6e5a7f3f
+bb.layers.0.blocks.1.attn.qkv.bias                                                |                     [576] |             576 | c6143937
+bb.layers.0.blocks.1.attn.qkv.weight                                              |                [576, 192] |         110,592 | 09fd49a4
+bb.layers.0.blocks.1.attn.relative_position_bias_table                            |                  [529, 6] |           3,174 | 459cd030
+bb.layers.0.blocks.1.mlp.fc1.bias                                                 |                     [768] |             768 | 1c256f41
+bb.layers.0.blocks.1.mlp.fc1.weight                                               |                [768, 192] |         147,456 | 537612d9
+bb.layers.0.blocks.1.mlp.fc2.bias                                                 |                     [192] |             192 | 176e3d51
+bb.layers.0.blocks.1.mlp.fc2.weight                                               |                [192, 768] |         147,456 | 75ae3fca
+bb.layers.0.blocks.1.norm1.bias                                                   |                     [192] |             192 | 41a8c957
+bb.layers.0.blocks.1.norm1.weight                                                 |                     [192] |             192 | bde0e7f5
+bb.layers.0.blocks.1.norm2.bias                                                   |                     [192] |             192 | 79b20b43
+bb.layers.0.blocks.1.norm2.weight                                                 |                     [192] |             192 | b691d20a
+bb.layers.0.downsample.norm.bias                                                  |                     [768] |             768 | c93cce92
+bb.layers.0.downsample.norm.weight                                                |                     [768] |             768 | e04eab16
+bb.layers.0.downsample.reduction.weight                                           |                [384, 768] |         294,912 | 079e7a3f
+bb.layers.1.blocks.0.attn.proj.bias                                               |                     [384] |             384 | 57c3b3ec
+bb.layers.1.blocks.0.attn.proj.weight                                             |                [384, 384] |         147,456 | 9e4d6fed
+bb.layers.1.blocks.0.attn.qkv.bias                                                |                    [1152] |           1,152 | 9cfa392a
+bb.layers.1.blocks.0.attn.qkv.weight                                              |               [1152, 384] |         442,368 | 32160af9
+bb.layers.1.blocks.0.attn.relative_position_bias_table                            |                 [529, 12] |           6,348 | c6c60f67
+bb.layers.1.blocks.0.mlp.fc1.bias                                                 |                    [1536] |           1,536 | 25a1cca2
+bb.layers.1.blocks.0.mlp.fc1.weight                                               |               [1536, 384] |         589,824 | 0f3eb705
+bb.layers.1.blocks.0.mlp.fc2.bias                                                 |                     [384] |             384 | a11dbedb
+bb.layers.1.blocks.0.mlp.fc2.weight                                               |               [384, 1536] |         589,824 | cc0e2a04
+bb.layers.1.blocks.0.norm1.bias                                                   |                     [384] |             384 | f72a7fbf
+bb.layers.1.blocks.0.norm1.weight                                                 |                     [384] |             384 | ddd0a578
+bb.layers.1.blocks.0.norm2.bias                                                   |                     [384] |             384 | 18216e0e
+bb.layers.1.blocks.0.norm2.weight                                                 |                     [384] |             384 | 72de513f
+bb.layers.1.blocks.1.attn.proj.bias                                               |                     [384] |             384 | 9511f726
+bb.layers.1.blocks.1.attn.proj.weight                                             |                [384, 384] |         147,456 | ea115028
+bb.layers.1.blocks.1.attn.qkv.bias                                                |                    [1152] |           1,152 | 305b4f6e
+bb.layers.1.blocks.1.attn.qkv.weight                                              |               [1152, 384] |         442,368 | 7a00e1d0
+bb.layers.1.blocks.1.attn.relative_position_bias_table                            |                 [529, 12] |           6,348 | 8dd23d9a
+bb.layers.1.blocks.1.mlp.fc1.bias                                                 |                    [1536] |           1,536 | c53a845a
+bb.layers.1.blocks.1.mlp.fc1.weight                                               |               [1536, 384] |         589,824 | 1d46ccfc
+bb.layers.1.blocks.1.mlp.fc2.bias                                                 |                     [384] |             384 | f9afbab6
+bb.layers.1.blocks.1.mlp.fc2.weight                                               |               [384, 1536] |         589,824 | 714becde
+bb.layers.1.blocks.1.norm1.bias                                                   |                     [384] |             384 | 1dea3358
+bb.layers.1.blocks.1.norm1.weight                                                 |                     [384] |             384 | 57ea0549
+bb.layers.1.blocks.1.norm2.bias                                                   |                     [384] |             384 | 6ce12f69
+bb.layers.1.blocks.1.norm2.weight                                                 |                     [384] |             384 | 723e7776
+bb.layers.1.downsample.norm.bias                                                  |                    [1536] |           1,536 | 4e2f0e55
+bb.layers.1.downsample.norm.weight                                                |                    [1536] |           1,536 | c964c3ff
+bb.layers.1.downsample.reduction.weight                                           |               [768, 1536] |       1,179,648 | 4233fc95
+bb.layers.2.blocks.0.attn.proj.bias                                               |                     [768] |             768 | b310d730
+bb.layers.2.blocks.0.attn.proj.weight                                             |                [768, 768] |         589,824 | 1e790be2
+bb.layers.2.blocks.0.attn.qkv.bias                                                |                    [2304] |           2,304 | 4a95b881
+bb.layers.2.blocks.0.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 4f86591e
+bb.layers.2.blocks.0.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 3d0f77f3
+bb.layers.2.blocks.0.mlp.fc1.bias                                                 |                    [3072] |           3,072 | e5495dc5
+bb.layers.2.blocks.0.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | 11b7e330
+bb.layers.2.blocks.0.mlp.fc2.bias                                                 |                     [768] |             768 | 16bd2ac9
+bb.layers.2.blocks.0.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | 4e5d12e0
+bb.layers.2.blocks.0.norm1.bias                                                   |                     [768] |             768 | fdde37db
+bb.layers.2.blocks.0.norm1.weight                                                 |                     [768] |             768 | 8671eed1
+bb.layers.2.blocks.0.norm2.bias                                                   |                     [768] |             768 | 1af9e2b3
+bb.layers.2.blocks.0.norm2.weight                                                 |                     [768] |             768 | b06fb1fe
+bb.layers.2.blocks.1.attn.proj.bias                                               |                     [768] |             768 | e1d8a9c0
+bb.layers.2.blocks.1.attn.proj.weight                                             |                [768, 768] |         589,824 | f4023aca
+bb.layers.2.blocks.1.attn.qkv.bias                                                |                    [2304] |           2,304 | f4ac3a4e
+bb.layers.2.blocks.1.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 33350c55
+bb.layers.2.blocks.1.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | f33a9cc2
+bb.layers.2.blocks.1.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 67fe6557
+bb.layers.2.blocks.1.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | 3cda1b14
+bb.layers.2.blocks.1.mlp.fc2.bias                                                 |                     [768] |             768 | 3e15b62f
+bb.layers.2.blocks.1.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | 2313e303
+bb.layers.2.blocks.1.norm1.bias                                                   |                     [768] |             768 | a18ced4c
+bb.layers.2.blocks.1.norm1.weight                                                 |                     [768] |             768 | 361258ae
+bb.layers.2.blocks.1.norm2.bias                                                   |                     [768] |             768 | b03db4a2
+bb.layers.2.blocks.1.norm2.weight                                                 |                     [768] |             768 | 2e5625fc
+bb.layers.2.blocks.10.attn.proj.bias                                              |                     [768] |             768 | f30fa912
+bb.layers.2.blocks.10.attn.proj.weight                                            |                [768, 768] |         589,824 | ecd91e7d
+bb.layers.2.blocks.10.attn.qkv.bias                                               |                    [2304] |           2,304 | ca0ab451
+bb.layers.2.blocks.10.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 4d44d06e
+bb.layers.2.blocks.10.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | 95245288
+bb.layers.2.blocks.10.mlp.fc1.bias                                                |                    [3072] |           3,072 | 38a549c1
+bb.layers.2.blocks.10.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | 6f2e8b88
+bb.layers.2.blocks.10.mlp.fc2.bias                                                |                     [768] |             768 | 4a69c26c
+bb.layers.2.blocks.10.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | dcf99727
+bb.layers.2.blocks.10.norm1.bias                                                  |                     [768] |             768 | ab3b1718
+bb.layers.2.blocks.10.norm1.weight                                                |                     [768] |             768 | baff2fa3
+bb.layers.2.blocks.10.norm2.bias                                                  |                     [768] |             768 | 2c090258
+bb.layers.2.blocks.10.norm2.weight                                                |                     [768] |             768 | 2ac0a225
+bb.layers.2.blocks.11.attn.proj.bias                                              |                     [768] |             768 | ea397285
+bb.layers.2.blocks.11.attn.proj.weight                                            |                [768, 768] |         589,824 | fd4c0116
+bb.layers.2.blocks.11.attn.qkv.bias                                               |                    [2304] |           2,304 | b25fc5e5
+bb.layers.2.blocks.11.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 6fa79412
+bb.layers.2.blocks.11.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | dfe06949
+bb.layers.2.blocks.11.mlp.fc1.bias                                                |                    [3072] |           3,072 | 6fe499dc
+bb.layers.2.blocks.11.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | e478e686
+bb.layers.2.blocks.11.mlp.fc2.bias                                                |                     [768] |             768 | 2678005b
+bb.layers.2.blocks.11.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | 322fd448
+bb.layers.2.blocks.11.norm1.bias                                                  |                     [768] |             768 | 0267c579
+bb.layers.2.blocks.11.norm1.weight                                                |                     [768] |             768 | 40cb0cbc
+bb.layers.2.blocks.11.norm2.bias                                                  |                     [768] |             768 | a8a6db36
+bb.layers.2.blocks.11.norm2.weight                                                |                     [768] |             768 | 0073bccf
+bb.layers.2.blocks.12.attn.proj.bias                                              |                     [768] |             768 | b4da59d3
+bb.layers.2.blocks.12.attn.proj.weight                                            |                [768, 768] |         589,824 | 540151d4
+bb.layers.2.blocks.12.attn.qkv.bias                                               |                    [2304] |           2,304 | 3c90d2a8
+bb.layers.2.blocks.12.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 9865f3ae
+bb.layers.2.blocks.12.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | 94aeb92d
+bb.layers.2.blocks.12.mlp.fc1.bias                                                |                    [3072] |           3,072 | cba2f98e
+bb.layers.2.blocks.12.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | c57e43f9
+bb.layers.2.blocks.12.mlp.fc2.bias                                                |                     [768] |             768 | e42f9ca2
+bb.layers.2.blocks.12.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | 4655a774
+bb.layers.2.blocks.12.norm1.bias                                                  |                     [768] |             768 | 13c23f16
+bb.layers.2.blocks.12.norm1.weight                                                |                     [768] |             768 | df9dd8fa
+bb.layers.2.blocks.12.norm2.bias                                                  |                     [768] |             768 | f972ccb8
+bb.layers.2.blocks.12.norm2.weight                                                |                     [768] |             768 | c5e5bedf
+bb.layers.2.blocks.13.attn.proj.bias                                              |                     [768] |             768 | 05f3495e
+bb.layers.2.blocks.13.attn.proj.weight                                            |                [768, 768] |         589,824 | 4e272077
+bb.layers.2.blocks.13.attn.qkv.bias                                               |                    [2304] |           2,304 | f44d61a8
+bb.layers.2.blocks.13.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 33eaa3d1
+bb.layers.2.blocks.13.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | a1f6a906
+bb.layers.2.blocks.13.mlp.fc1.bias                                                |                    [3072] |           3,072 | 065f7b7b
+bb.layers.2.blocks.13.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | 8c39e449
+bb.layers.2.blocks.13.mlp.fc2.bias                                                |                     [768] |             768 | dcda0e4b
+bb.layers.2.blocks.13.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | 639ee995
+bb.layers.2.blocks.13.norm1.bias                                                  |                     [768] |             768 | 98a5e150
+bb.layers.2.blocks.13.norm1.weight                                                |                     [768] |             768 | 9ad381b2
+bb.layers.2.blocks.13.norm2.bias                                                  |                     [768] |             768 | 2dee8a36
+bb.layers.2.blocks.13.norm2.weight                                                |                     [768] |             768 | 20e8711e
+bb.layers.2.blocks.14.attn.proj.bias                                              |                     [768] |             768 | e4ceb4a4
+bb.layers.2.blocks.14.attn.proj.weight                                            |                [768, 768] |         589,824 | 04009283
+bb.layers.2.blocks.14.attn.qkv.bias                                               |                    [2304] |           2,304 | 9a272290
+bb.layers.2.blocks.14.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 92ee3b17
+bb.layers.2.blocks.14.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | b891e6c0
+bb.layers.2.blocks.14.mlp.fc1.bias                                                |                    [3072] |           3,072 | c2fdbf49
+bb.layers.2.blocks.14.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | 240a82dc
+bb.layers.2.blocks.14.mlp.fc2.bias                                                |                     [768] |             768 | b4785eda
+bb.layers.2.blocks.14.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | d3543120
+bb.layers.2.blocks.14.norm1.bias                                                  |                     [768] |             768 | 14bdf98f
+bb.layers.2.blocks.14.norm1.weight                                                |                     [768] |             768 | c764af1d
+bb.layers.2.blocks.14.norm2.bias                                                  |                     [768] |             768 | 7ced2a14
+bb.layers.2.blocks.14.norm2.weight                                                |                     [768] |             768 | d997e68e
+bb.layers.2.blocks.15.attn.proj.bias                                              |                     [768] |             768 | c0b7bd03
+bb.layers.2.blocks.15.attn.proj.weight                                            |                [768, 768] |         589,824 | f8f2a579
+bb.layers.2.blocks.15.attn.qkv.bias                                               |                    [2304] |           2,304 | 808e4997
+bb.layers.2.blocks.15.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 1bb70cfa
+bb.layers.2.blocks.15.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | 41fd13be
+bb.layers.2.blocks.15.mlp.fc1.bias                                                |                    [3072] |           3,072 | 976d5fa2
+bb.layers.2.blocks.15.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | dc8c5070
+bb.layers.2.blocks.15.mlp.fc2.bias                                                |                     [768] |             768 | 0af99d39
+bb.layers.2.blocks.15.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | f326cd13
+bb.layers.2.blocks.15.norm1.bias                                                  |                     [768] |             768 | 51432c4d
+bb.layers.2.blocks.15.norm1.weight                                                |                     [768] |             768 | 649f0375
+bb.layers.2.blocks.15.norm2.bias                                                  |                     [768] |             768 | 9fa720a4
+bb.layers.2.blocks.15.norm2.weight                                                |                     [768] |             768 | 5b84cce6
+bb.layers.2.blocks.16.attn.proj.bias                                              |                     [768] |             768 | b4807ca1
+bb.layers.2.blocks.16.attn.proj.weight                                            |                [768, 768] |         589,824 | 06fe1b0a
+bb.layers.2.blocks.16.attn.qkv.bias                                               |                    [2304] |           2,304 | b55b85f6
+bb.layers.2.blocks.16.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | 37918cbb
+bb.layers.2.blocks.16.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | 751f5091
+bb.layers.2.blocks.16.mlp.fc1.bias                                                |                    [3072] |           3,072 | 62f7f815
+bb.layers.2.blocks.16.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | d4333de4
+bb.layers.2.blocks.16.mlp.fc2.bias                                                |                     [768] |             768 | 4d4023d6
+bb.layers.2.blocks.16.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | bc763483
+bb.layers.2.blocks.16.norm1.bias                                                  |                     [768] |             768 | 99eda3d5
+bb.layers.2.blocks.16.norm1.weight                                                |                     [768] |             768 | 7b34301d
+bb.layers.2.blocks.16.norm2.bias                                                  |                     [768] |             768 | 4ef498d4
+bb.layers.2.blocks.16.norm2.weight                                                |                     [768] |             768 | 26411855
+bb.layers.2.blocks.17.attn.proj.bias                                              |                     [768] |             768 | 40714a41
+bb.layers.2.blocks.17.attn.proj.weight                                            |                [768, 768] |         589,824 | 92e85dee
+bb.layers.2.blocks.17.attn.qkv.bias                                               |                    [2304] |           2,304 | 4f193c3b
+bb.layers.2.blocks.17.attn.qkv.weight                                             |               [2304, 768] |       1,769,472 | a1d7d6dc
+bb.layers.2.blocks.17.attn.relative_position_bias_table                           |                 [529, 24] |          12,696 | 5bdc378b
+bb.layers.2.blocks.17.mlp.fc1.bias                                                |                    [3072] |           3,072 | a0f04bae
+bb.layers.2.blocks.17.mlp.fc1.weight                                              |               [3072, 768] |       2,359,296 | ca78d6da
+bb.layers.2.blocks.17.mlp.fc2.bias                                                |                     [768] |             768 | ad89abd7
+bb.layers.2.blocks.17.mlp.fc2.weight                                              |               [768, 3072] |       2,359,296 | 101ccbfd
+bb.layers.2.blocks.17.norm1.bias                                                  |                     [768] |             768 | a3272d51
+bb.layers.2.blocks.17.norm1.weight                                                |                     [768] |             768 | bdb3793a
+bb.layers.2.blocks.17.norm2.bias                                                  |                     [768] |             768 | 0b1bd7eb
+bb.layers.2.blocks.17.norm2.weight                                                |                     [768] |             768 | 8c964c32
+bb.layers.2.blocks.2.attn.proj.bias                                               |                     [768] |             768 | 05fa849c
+bb.layers.2.blocks.2.attn.proj.weight                                             |                [768, 768] |         589,824 | 4630c934
+bb.layers.2.blocks.2.attn.qkv.bias                                                |                    [2304] |           2,304 | 7611e1f1
+bb.layers.2.blocks.2.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 6a0e9a38
+bb.layers.2.blocks.2.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 1d7172a2
+bb.layers.2.blocks.2.mlp.fc1.bias                                                 |                    [3072] |           3,072 | ef2a58ec
+bb.layers.2.blocks.2.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | 39945852
+bb.layers.2.blocks.2.mlp.fc2.bias                                                 |                     [768] |             768 | 911f0355
+bb.layers.2.blocks.2.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | cafb2268
+bb.layers.2.blocks.2.norm1.bias                                                   |                     [768] |             768 | bf74fe1a
+bb.layers.2.blocks.2.norm1.weight                                                 |                     [768] |             768 | 192ea98c
+bb.layers.2.blocks.2.norm2.bias                                                   |                     [768] |             768 | 7d273d74
+bb.layers.2.blocks.2.norm2.weight                                                 |                     [768] |             768 | 68fea896
+bb.layers.2.blocks.3.attn.proj.bias                                               |                     [768] |             768 | 8144d4ef
+bb.layers.2.blocks.3.attn.proj.weight                                             |                [768, 768] |         589,824 | 91596bdb
+bb.layers.2.blocks.3.attn.qkv.bias                                                |                    [2304] |           2,304 | b1163f93
+bb.layers.2.blocks.3.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | b925cafc
+bb.layers.2.blocks.3.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | e895edb3
+bb.layers.2.blocks.3.mlp.fc1.bias                                                 |                    [3072] |           3,072 | e11eb9d3
+bb.layers.2.blocks.3.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | 887df2e2
+bb.layers.2.blocks.3.mlp.fc2.bias                                                 |                     [768] |             768 | 83013add
+bb.layers.2.blocks.3.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | 98ea1a7a
+bb.layers.2.blocks.3.norm1.bias                                                   |                     [768] |             768 | 30ae33b4
+bb.layers.2.blocks.3.norm1.weight                                                 |                     [768] |             768 | 0e9ea4f9
+bb.layers.2.blocks.3.norm2.bias                                                   |                     [768] |             768 | f4db4ec1
+bb.layers.2.blocks.3.norm2.weight                                                 |                     [768] |             768 | 032541d1
+bb.layers.2.blocks.4.attn.proj.bias                                               |                     [768] |             768 | 44ac8d4a
+bb.layers.2.blocks.4.attn.proj.weight                                             |                [768, 768] |         589,824 | ca3a7f3b
+bb.layers.2.blocks.4.attn.qkv.bias                                                |                    [2304] |           2,304 | c26b2fc4
+bb.layers.2.blocks.4.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 82b1b81e
+bb.layers.2.blocks.4.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | b46aaee2
+bb.layers.2.blocks.4.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 3940941b
+bb.layers.2.blocks.4.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | f53ccb29
+bb.layers.2.blocks.4.mlp.fc2.bias                                                 |                     [768] |             768 | b7446f7f
+bb.layers.2.blocks.4.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | b651032c
+bb.layers.2.blocks.4.norm1.bias                                                   |                     [768] |             768 | 9b2eeb9f
+bb.layers.2.blocks.4.norm1.weight                                                 |                     [768] |             768 | 0748748d
+bb.layers.2.blocks.4.norm2.bias                                                   |                     [768] |             768 | 6139305c
+bb.layers.2.blocks.4.norm2.weight                                                 |                     [768] |             768 | 29be7b6b
+bb.layers.2.blocks.5.attn.proj.bias                                               |                     [768] |             768 | d835871f
+bb.layers.2.blocks.5.attn.proj.weight                                             |                [768, 768] |         589,824 | a6c764f9
+bb.layers.2.blocks.5.attn.qkv.bias                                                |                    [2304] |           2,304 | 509c3451
+bb.layers.2.blocks.5.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | e95d0384
+bb.layers.2.blocks.5.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 97316727
+bb.layers.2.blocks.5.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 78bd3236
+bb.layers.2.blocks.5.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | 9e848833
+bb.layers.2.blocks.5.mlp.fc2.bias                                                 |                     [768] |             768 | 2816b52a
+bb.layers.2.blocks.5.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | 92893e9a
+bb.layers.2.blocks.5.norm1.bias                                                   |                     [768] |             768 | 05a1e4cf
+bb.layers.2.blocks.5.norm1.weight                                                 |                     [768] |             768 | db3ef665
+bb.layers.2.blocks.5.norm2.bias                                                   |                     [768] |             768 | fdadf6bb
+bb.layers.2.blocks.5.norm2.weight                                                 |                     [768] |             768 | 717625b1
+bb.layers.2.blocks.6.attn.proj.bias                                               |                     [768] |             768 | 3c633d53
+bb.layers.2.blocks.6.attn.proj.weight                                             |                [768, 768] |         589,824 | 2256b1ba
+bb.layers.2.blocks.6.attn.qkv.bias                                                |                    [2304] |           2,304 | a045cd64
+bb.layers.2.blocks.6.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | a98f14cf
+bb.layers.2.blocks.6.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 55a40200
+bb.layers.2.blocks.6.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 71c7e733
+bb.layers.2.blocks.6.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | ca4da2c0
+bb.layers.2.blocks.6.mlp.fc2.bias                                                 |                     [768] |             768 | 7729d3bc
+bb.layers.2.blocks.6.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | cb3a7e86
+bb.layers.2.blocks.6.norm1.bias                                                   |                     [768] |             768 | 542b40c5
+bb.layers.2.blocks.6.norm1.weight                                                 |                     [768] |             768 | eac43c83
+bb.layers.2.blocks.6.norm2.bias                                                   |                     [768] |             768 | 2bda836d
+bb.layers.2.blocks.6.norm2.weight                                                 |                     [768] |             768 | 112e531d
+bb.layers.2.blocks.7.attn.proj.bias                                               |                     [768] |             768 | cb815c39
+bb.layers.2.blocks.7.attn.proj.weight                                             |                [768, 768] |         589,824 | 02f25b6a
+bb.layers.2.blocks.7.attn.qkv.bias                                                |                    [2304] |           2,304 | 5c487512
+bb.layers.2.blocks.7.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 2cdf0b6c
+bb.layers.2.blocks.7.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 77fae17f
+bb.layers.2.blocks.7.mlp.fc1.bias                                                 |                    [3072] |           3,072 | b48f3f41
+bb.layers.2.blocks.7.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | edab5c95
+bb.layers.2.blocks.7.mlp.fc2.bias                                                 |                     [768] |             768 | 12e42231
+bb.layers.2.blocks.7.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | 5b8c5766
+bb.layers.2.blocks.7.norm1.bias                                                   |                     [768] |             768 | 144f2ab9
+bb.layers.2.blocks.7.norm1.weight                                                 |                     [768] |             768 | 19f92d33
+bb.layers.2.blocks.7.norm2.bias                                                   |                     [768] |             768 | 2b123cbe
+bb.layers.2.blocks.7.norm2.weight                                                 |                     [768] |             768 | 6af4a709
+bb.layers.2.blocks.8.attn.proj.bias                                               |                     [768] |             768 | 58e5349a
+bb.layers.2.blocks.8.attn.proj.weight                                             |                [768, 768] |         589,824 | fdcc7e0e
+bb.layers.2.blocks.8.attn.qkv.bias                                                |                    [2304] |           2,304 | ea60af19
+bb.layers.2.blocks.8.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | f622c469
+bb.layers.2.blocks.8.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 071c620c
+bb.layers.2.blocks.8.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 5f35eeda
+bb.layers.2.blocks.8.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | ebd7e6be
+bb.layers.2.blocks.8.mlp.fc2.bias                                                 |                     [768] |             768 | 4fd65536
+bb.layers.2.blocks.8.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | e0bdffd7
+bb.layers.2.blocks.8.norm1.bias                                                   |                     [768] |             768 | 462cda1e
+bb.layers.2.blocks.8.norm1.weight                                                 |                     [768] |             768 | 46346841
+bb.layers.2.blocks.8.norm2.bias                                                   |                     [768] |             768 | decff930
+bb.layers.2.blocks.8.norm2.weight                                                 |                     [768] |             768 | 240e70ba
+bb.layers.2.blocks.9.attn.proj.bias                                               |                     [768] |             768 | 227c8f2e
+bb.layers.2.blocks.9.attn.proj.weight                                             |                [768, 768] |         589,824 | cf4e2aae
+bb.layers.2.blocks.9.attn.qkv.bias                                                |                    [2304] |           2,304 | 1114e6d0
+bb.layers.2.blocks.9.attn.qkv.weight                                              |               [2304, 768] |       1,769,472 | 27f0eaca
+bb.layers.2.blocks.9.attn.relative_position_bias_table                            |                 [529, 24] |          12,696 | 725551ff
+bb.layers.2.blocks.9.mlp.fc1.bias                                                 |                    [3072] |           3,072 | 831a9eaf
+bb.layers.2.blocks.9.mlp.fc1.weight                                               |               [3072, 768] |       2,359,296 | c0981850
+bb.layers.2.blocks.9.mlp.fc2.bias                                                 |                     [768] |             768 | 28fce6ed
+bb.layers.2.blocks.9.mlp.fc2.weight                                               |               [768, 3072] |       2,359,296 | c5e13c29
+bb.layers.2.blocks.9.norm1.bias                                                   |                     [768] |             768 | 1ab96bfd
+bb.layers.2.blocks.9.norm1.weight                                                 |                     [768] |             768 | bba3817c
+bb.layers.2.blocks.9.norm2.bias                                                   |                     [768] |             768 | 81e035dc
+bb.layers.2.blocks.9.norm2.weight                                                 |                     [768] |             768 | b70a07ea
+bb.layers.2.downsample.norm.bias                                                  |                    [3072] |           3,072 | 40ef8d99
+bb.layers.2.downsample.norm.weight                                                |                    [3072] |           3,072 | f1641981
+bb.layers.2.downsample.reduction.weight                                           |              [1536, 3072] |       4,718,592 | 5397e635
+bb.layers.3.blocks.0.attn.proj.bias                                               |                    [1536] |           1,536 | d15f9152
+bb.layers.3.blocks.0.attn.proj.weight                                             |              [1536, 1536] |       2,359,296 | d2b22c46
+bb.layers.3.blocks.0.attn.qkv.bias                                                |                    [4608] |           4,608 | 9ad7836a
+bb.layers.3.blocks.0.attn.qkv.weight                                              |              [4608, 1536] |       7,077,888 | 9d0e5716
+bb.layers.3.blocks.0.attn.relative_position_bias_table                            |                 [529, 48] |          25,392 | 6fd0b900
+bb.layers.3.blocks.0.mlp.fc1.bias                                                 |                    [6144] |           6,144 | 3846b8b6
+bb.layers.3.blocks.0.mlp.fc1.weight                                               |              [6144, 1536] |       9,437,184 | 8b162f83
+bb.layers.3.blocks.0.mlp.fc2.bias                                                 |                    [1536] |           1,536 | 3870310c
+bb.layers.3.blocks.0.mlp.fc2.weight                                               |              [1536, 6144] |       9,437,184 | c1e10742
+bb.layers.3.blocks.0.norm1.bias                                                   |                    [1536] |           1,536 | 50978984
+bb.layers.3.blocks.0.norm1.weight                                                 |                    [1536] |           1,536 | 3aa34fa3
+bb.layers.3.blocks.0.norm2.bias                                                   |                    [1536] |           1,536 | 4c22583c
+bb.layers.3.blocks.0.norm2.weight                                                 |                    [1536] |           1,536 | 7c46bd2e
+bb.layers.3.blocks.1.attn.proj.bias                                               |                    [1536] |           1,536 | ed6eb9d0
+bb.layers.3.blocks.1.attn.proj.weight                                             |              [1536, 1536] |       2,359,296 | 02776fce
+bb.layers.3.blocks.1.attn.qkv.bias                                                |                    [4608] |           4,608 | 3ed40ee2
+bb.layers.3.blocks.1.attn.qkv.weight                                              |              [4608, 1536] |       7,077,888 | 1e3497da
+bb.layers.3.blocks.1.attn.relative_position_bias_table                            |                 [529, 48] |          25,392 | 2990e737
+bb.layers.3.blocks.1.mlp.fc1.bias                                                 |                    [6144] |           6,144 | dec099f7
+bb.layers.3.blocks.1.mlp.fc1.weight                                               |              [6144, 1536] |       9,437,184 | 3381ac57
+bb.layers.3.blocks.1.mlp.fc2.bias                                                 |                    [1536] |           1,536 | 3b93ebfd
+bb.layers.3.blocks.1.mlp.fc2.weight                                               |              [1536, 6144] |       9,437,184 | 1fdc1b26
+bb.layers.3.blocks.1.norm1.bias                                                   |                    [1536] |           1,536 | f87f0741
+bb.layers.3.blocks.1.norm1.weight                                                 |                    [1536] |           1,536 | 00c03fb2
+bb.layers.3.blocks.1.norm2.bias                                                   |                    [1536] |           1,536 | 115abd90
+bb.layers.3.blocks.1.norm2.weight                                                 |                    [1536] |           1,536 | eb58d2f6
+bb.norm0.bias                                                                     |                     [192] |             192 | 01a6e5d2
+bb.norm0.weight                                                                   |                     [192] |             192 | a663c2cb
+bb.norm1.bias                                                                     |                     [384] |             384 | 254a9a9a
+bb.norm1.weight                                                                   |                     [384] |             384 | 38b6fee1
+bb.norm2.bias                                                                     |                     [768] |             768 | 8c0afaad
+bb.norm2.weight                                                                   |                     [768] |             768 | a10781ff
+bb.norm3.bias                                                                     |                    [1536] |           1,536 | 3314624f
+bb.norm3.weight                                                                   |                    [1536] |           1,536 | dfef9983
+bb.patch_embed.norm.bias                                                          |                     [192] |             192 | 7f008ee8
+bb.patch_embed.norm.weight                                                        |                     [192] |             192 | ed7914f6
+bb.patch_embed.proj.bias                                                          |                     [192] |             192 | b915f986
+bb.patch_embed.proj.weight                                                        |            [192, 3, 4, 4] |           9,216 | 4639e083
+decoder.conv_ms_spvn_2.bias                                                       |                       [1] |               1 | 082ac3f6
+decoder.conv_ms_spvn_2.weight                                                     |            [1, 384, 1, 1] |             384 | 2f2bd7c2
+decoder.conv_ms_spvn_3.bias                                                       |                       [1] |               1 | 33976a9b
+decoder.conv_ms_spvn_3.weight                                                     |            [1, 768, 1, 1] |             768 | 373bd235
+decoder.conv_ms_spvn_4.bias                                                       |                       [1] |               1 | 9ef0305c
+decoder.conv_ms_spvn_4.weight                                                     |           [1, 1536, 1, 1] |           1,536 | 853b1fe7
+decoder.conv_out1.0.bias                                                          |                       [1] |               1 | eb373390
+decoder.conv_out1.0.weight                                                        |            [1, 240, 1, 1] |             240 | d4dd1c80
+decoder.decoder_block1.bn_in.bias                                                 |                      [64] |              64 | 1ae3dee8
+decoder.decoder_block1.bn_in.running_mean                                         |                      [64] |              64 | c35c2768
+decoder.decoder_block1.bn_in.running_var                                          |                      [64] |              64 | 62a3b6d1
+decoder.decoder_block1.bn_in.weight                                               |                      [64] |              64 | e91c4a32
+decoder.decoder_block1.bn_out.bias                                                |                     [192] |             192 | 34f2fb65
+decoder.decoder_block1.bn_out.running_mean                                        |                     [192] |             192 | f16c365c
+decoder.decoder_block1.bn_out.running_var                                         |                     [192] |             192 | 2af7adf9
+decoder.decoder_block1.bn_out.weight                                              |                     [192] |             192 | 552c507d
+decoder.decoder_block1.conv_in.bias                                               |                      [64] |              64 | 4e821abf
+decoder.decoder_block1.conv_in.weight                                             |           [64, 480, 3, 3] |         276,480 | 5949a3f5
+decoder.decoder_block1.conv_out.bias                                              |                     [192] |             192 | bd067fb2
+decoder.decoder_block1.conv_out.weight                                            |           [192, 64, 3, 3] |         110,592 | 026b8633
+decoder.decoder_block1.dec_att.aspp1.atrous_conv.modulator_conv.bias              |                       [1] |               1 | d6c92ec6
+decoder.decoder_block1.dec_att.aspp1.atrous_conv.modulator_conv.weight            |             [1, 64, 1, 1] |              64 | 8bcd35ea
+decoder.decoder_block1.dec_att.aspp1.atrous_conv.offset_conv.bias                 |                       [2] |               2 | a7cceaa6
+decoder.decoder_block1.dec_att.aspp1.atrous_conv.offset_conv.weight               |             [2, 64, 1, 1] |             128 | 7eaf298d
+decoder.decoder_block1.dec_att.aspp1.atrous_conv.regular_conv.weight              |           [256, 64, 1, 1] |          16,384 | 5176d9db
+decoder.decoder_block1.dec_att.aspp1.bn.bias                                      |                     [256] |             256 | 9a5b8522
+decoder.decoder_block1.dec_att.aspp1.bn.running_mean                              |                     [256] |             256 | eb3d662b
+decoder.decoder_block1.dec_att.aspp1.bn.running_var                               |                     [256] |             256 | f79cd376
+decoder.decoder_block1.dec_att.aspp1.bn.weight                                    |                     [256] |             256 | dceecb29
+decoder.decoder_block1.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.bias     |                       [1] |               1 | 6da9d70e
+decoder.decoder_block1.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.weight   |             [1, 64, 1, 1] |              64 | ae869541
+decoder.decoder_block1.dec_att.aspp_deforms.0.atrous_conv.offset_conv.bias        |                       [2] |               2 | 3c4f325b
+decoder.decoder_block1.dec_att.aspp_deforms.0.atrous_conv.offset_conv.weight      |             [2, 64, 1, 1] |             128 | 7e92b0dd
+decoder.decoder_block1.dec_att.aspp_deforms.0.atrous_conv.regular_conv.weight     |           [256, 64, 1, 1] |          16,384 | 945f433e
+decoder.decoder_block1.dec_att.aspp_deforms.0.bn.bias                             |                     [256] |             256 | 66f14712
+decoder.decoder_block1.dec_att.aspp_deforms.0.bn.running_mean                     |                     [256] |             256 | 5d008850
+decoder.decoder_block1.dec_att.aspp_deforms.0.bn.running_var                      |                     [256] |             256 | 7ad1a62b
+decoder.decoder_block1.dec_att.aspp_deforms.0.bn.weight                           |                     [256] |             256 | fa53524e
+decoder.decoder_block1.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.bias     |                       [9] |               9 | 700efe0c
+decoder.decoder_block1.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.weight   |             [9, 64, 3, 3] |           5,184 | 9a273b18
+decoder.decoder_block1.dec_att.aspp_deforms.1.atrous_conv.offset_conv.bias        |                      [18] |              18 | 2e6fca05
+decoder.decoder_block1.dec_att.aspp_deforms.1.atrous_conv.offset_conv.weight      |            [18, 64, 3, 3] |          10,368 | 514fb858
+decoder.decoder_block1.dec_att.aspp_deforms.1.atrous_conv.regular_conv.weight     |           [256, 64, 3, 3] |         147,456 | 6918dfa1
+decoder.decoder_block1.dec_att.aspp_deforms.1.bn.bias                             |                     [256] |             256 | 1607f0cf
+decoder.decoder_block1.dec_att.aspp_deforms.1.bn.running_mean                     |                     [256] |             256 | 495d95bd
+decoder.decoder_block1.dec_att.aspp_deforms.1.bn.running_var                      |                     [256] |             256 | 41e86b5b
+decoder.decoder_block1.dec_att.aspp_deforms.1.bn.weight                           |                     [256] |             256 | 92e5905c
+decoder.decoder_block1.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.bias     |                      [49] |              49 | 49a35ea2
+decoder.decoder_block1.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.weight   |            [49, 64, 7, 7] |         153,664 | d2f108f6
+decoder.decoder_block1.dec_att.aspp_deforms.2.atrous_conv.offset_conv.bias        |                      [98] |              98 | 2a1c45ee
+decoder.decoder_block1.dec_att.aspp_deforms.2.atrous_conv.offset_conv.weight      |            [98, 64, 7, 7] |         307,328 | b1a5e12c
+decoder.decoder_block1.dec_att.aspp_deforms.2.atrous_conv.regular_conv.weight     |           [256, 64, 7, 7] |         802,816 | 46f823d5
+decoder.decoder_block1.dec_att.aspp_deforms.2.bn.bias                             |                     [256] |             256 | c0bb16c4
+decoder.decoder_block1.dec_att.aspp_deforms.2.bn.running_mean                     |                     [256] |             256 | fff7d385
+decoder.decoder_block1.dec_att.aspp_deforms.2.bn.running_var                      |                     [256] |             256 | 92ba5977
+decoder.decoder_block1.dec_att.aspp_deforms.2.bn.weight                           |                     [256] |             256 | 199211ae
+decoder.decoder_block1.dec_att.bn1.bias                                           |                      [64] |              64 | 43efac85
+decoder.decoder_block1.dec_att.bn1.running_mean                                   |                      [64] |              64 | c7d0ce78
+decoder.decoder_block1.dec_att.bn1.running_var                                    |                      [64] |              64 | 39d4c31a
+decoder.decoder_block1.dec_att.bn1.weight                                         |                      [64] |              64 | 682830e1
+decoder.decoder_block1.dec_att.conv1.weight                                       |          [64, 1280, 1, 1] |          81,920 | 4d0a24af
+decoder.decoder_block1.dec_att.global_avg_pool.1.weight                           |           [256, 64, 1, 1] |          16,384 | c9a325dd
+decoder.decoder_block1.dec_att.global_avg_pool.2.bias                             |                     [256] |             256 | d52bccfb
+decoder.decoder_block1.dec_att.global_avg_pool.2.running_mean                     |                     [256] |             256 | 015fccc3
+decoder.decoder_block1.dec_att.global_avg_pool.2.running_var                      |                     [256] |             256 | 9f04eb9b
+decoder.decoder_block1.dec_att.global_avg_pool.2.weight                           |                     [256] |             256 | 904a46d0
+decoder.decoder_block2.bn_in.bias                                                 |                      [64] |              64 | a90036cf
+decoder.decoder_block2.bn_in.running_mean                                         |                      [64] |              64 | b3f96995
+decoder.decoder_block2.bn_in.running_var                                          |                      [64] |              64 | 0856359e
+decoder.decoder_block2.bn_in.weight                                               |                      [64] |              64 | a4e22dae
+decoder.decoder_block2.bn_out.bias                                                |                     [384] |             384 | 3afa1669
+decoder.decoder_block2.bn_out.running_mean                                        |                     [384] |             384 | 6503a3c1
+decoder.decoder_block2.bn_out.running_var                                         |                     [384] |             384 | 8c0a84b1
+decoder.decoder_block2.bn_out.weight                                              |                     [384] |             384 | a66b5f09
+decoder.decoder_block2.conv_in.bias                                               |                      [64] |              64 | bc5b8552
+decoder.decoder_block2.conv_in.weight                                             |           [64, 960, 3, 3] |         552,960 | de962e81
+decoder.decoder_block2.conv_out.bias                                              |                     [384] |             384 | e48e1db0
+decoder.decoder_block2.conv_out.weight                                            |           [384, 64, 3, 3] |         221,184 | e11eebca
+decoder.decoder_block2.dec_att.aspp1.atrous_conv.modulator_conv.bias              |                       [1] |               1 | da504ff8
+decoder.decoder_block2.dec_att.aspp1.atrous_conv.modulator_conv.weight            |             [1, 64, 1, 1] |              64 | 5c2ecf53
+decoder.decoder_block2.dec_att.aspp1.atrous_conv.offset_conv.bias                 |                       [2] |               2 | aa9ffd18
+decoder.decoder_block2.dec_att.aspp1.atrous_conv.offset_conv.weight               |             [2, 64, 1, 1] |             128 | ef5a4ded
+decoder.decoder_block2.dec_att.aspp1.atrous_conv.regular_conv.weight              |           [256, 64, 1, 1] |          16,384 | daa78803
+decoder.decoder_block2.dec_att.aspp1.bn.bias                                      |                     [256] |             256 | b5dd662a
+decoder.decoder_block2.dec_att.aspp1.bn.running_mean                              |                     [256] |             256 | 4f18ef24
+decoder.decoder_block2.dec_att.aspp1.bn.running_var                               |                     [256] |             256 | 274a08ea
+decoder.decoder_block2.dec_att.aspp1.bn.weight                                    |                     [256] |             256 | bf431911
+decoder.decoder_block2.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.bias     |                       [1] |               1 | 39380b75
+decoder.decoder_block2.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.weight   |             [1, 64, 1, 1] |              64 | bc693d8a
+decoder.decoder_block2.dec_att.aspp_deforms.0.atrous_conv.offset_conv.bias        |                       [2] |               2 | 594e8a37
+decoder.decoder_block2.dec_att.aspp_deforms.0.atrous_conv.offset_conv.weight      |             [2, 64, 1, 1] |             128 | d89e6a21
+decoder.decoder_block2.dec_att.aspp_deforms.0.atrous_conv.regular_conv.weight     |           [256, 64, 1, 1] |          16,384 | 3736aa04
+decoder.decoder_block2.dec_att.aspp_deforms.0.bn.bias                             |                     [256] |             256 | 0bcce24e
+decoder.decoder_block2.dec_att.aspp_deforms.0.bn.running_mean                     |                     [256] |             256 | 21609d70
+decoder.decoder_block2.dec_att.aspp_deforms.0.bn.running_var                      |                     [256] |             256 | 9b5e32a4
+decoder.decoder_block2.dec_att.aspp_deforms.0.bn.weight                           |                     [256] |             256 | c28d91db
+decoder.decoder_block2.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.bias     |                       [9] |               9 | c80b16c5
+decoder.decoder_block2.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.weight   |             [9, 64, 3, 3] |           5,184 | 65888996
+decoder.decoder_block2.dec_att.aspp_deforms.1.atrous_conv.offset_conv.bias        |                      [18] |              18 | 8cf88fde
+decoder.decoder_block2.dec_att.aspp_deforms.1.atrous_conv.offset_conv.weight      |            [18, 64, 3, 3] |          10,368 | f6f10bf0
+decoder.decoder_block2.dec_att.aspp_deforms.1.atrous_conv.regular_conv.weight     |           [256, 64, 3, 3] |         147,456 | ff913030
+decoder.decoder_block2.dec_att.aspp_deforms.1.bn.bias                             |                     [256] |             256 | 57a7cdef
+decoder.decoder_block2.dec_att.aspp_deforms.1.bn.running_mean                     |                     [256] |             256 | 16bdb241
+decoder.decoder_block2.dec_att.aspp_deforms.1.bn.running_var                      |                     [256] |             256 | 3013126f
+decoder.decoder_block2.dec_att.aspp_deforms.1.bn.weight                           |                     [256] |             256 | 06a1533e
+decoder.decoder_block2.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.bias     |                      [49] |              49 | 9a5d00dc
+decoder.decoder_block2.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.weight   |            [49, 64, 7, 7] |         153,664 | d32a65f6
+decoder.decoder_block2.dec_att.aspp_deforms.2.atrous_conv.offset_conv.bias        |                      [98] |              98 | 93d61812
+decoder.decoder_block2.dec_att.aspp_deforms.2.atrous_conv.offset_conv.weight      |            [98, 64, 7, 7] |         307,328 | 1f451397
+decoder.decoder_block2.dec_att.aspp_deforms.2.atrous_conv.regular_conv.weight     |           [256, 64, 7, 7] |         802,816 | 94f4cfec
+decoder.decoder_block2.dec_att.aspp_deforms.2.bn.bias                             |                     [256] |             256 | 6c66a30a
+decoder.decoder_block2.dec_att.aspp_deforms.2.bn.running_mean                     |                     [256] |             256 | 32956223
+decoder.decoder_block2.dec_att.aspp_deforms.2.bn.running_var                      |                     [256] |             256 | fd74930b
+decoder.decoder_block2.dec_att.aspp_deforms.2.bn.weight                           |                     [256] |             256 | 9b533209
+decoder.decoder_block2.dec_att.bn1.bias                                           |                      [64] |              64 | 4c1a4576
+decoder.decoder_block2.dec_att.bn1.running_mean                                   |                      [64] |              64 | fbeb7d93
+decoder.decoder_block2.dec_att.bn1.running_var                                    |                      [64] |              64 | 5e24819b
+decoder.decoder_block2.dec_att.bn1.weight                                         |                      [64] |              64 | e33c78c6
+decoder.decoder_block2.dec_att.conv1.weight                                       |          [64, 1280, 1, 1] |          81,920 | 3d1904dc
+decoder.decoder_block2.dec_att.global_avg_pool.1.weight                           |           [256, 64, 1, 1] |          16,384 | 47049fc4
+decoder.decoder_block2.dec_att.global_avg_pool.2.bias                             |                     [256] |             256 | cac5907a
+decoder.decoder_block2.dec_att.global_avg_pool.2.running_mean                     |                     [256] |             256 | ec8577fd
+decoder.decoder_block2.dec_att.global_avg_pool.2.running_var                      |                     [256] |             256 | 10969ff2
+decoder.decoder_block2.dec_att.global_avg_pool.2.weight                           |                     [256] |             256 | 0d5cbf29
+decoder.decoder_block3.bn_in.bias                                                 |                      [64] |              64 | 732d0f8c
+decoder.decoder_block3.bn_in.running_mean                                         |                      [64] |              64 | 82016567
+decoder.decoder_block3.bn_in.running_var                                          |                      [64] |              64 | 977b0266
+decoder.decoder_block3.bn_in.weight                                               |                      [64] |              64 | 1b16a960
+decoder.decoder_block3.bn_out.bias                                                |                     [768] |             768 | 6be7188f
+decoder.decoder_block3.bn_out.running_mean                                        |                     [768] |             768 | 7806d955
+decoder.decoder_block3.bn_out.running_var                                         |                     [768] |             768 | a344fa3e
+decoder.decoder_block3.bn_out.weight                                              |                     [768] |             768 | 89f267b1
+decoder.decoder_block3.conv_in.bias                                               |                      [64] |              64 | 1bbc9b84
+decoder.decoder_block3.conv_in.weight                                             |          [64, 1920, 3, 3] |       1,105,920 | 16d22f75
+decoder.decoder_block3.conv_out.bias                                              |                     [768] |             768 | f4d9b678
+decoder.decoder_block3.conv_out.weight                                            |           [768, 64, 3, 3] |         442,368 | c53aac0f
+decoder.decoder_block3.dec_att.aspp1.atrous_conv.modulator_conv.bias              |                       [1] |               1 | f04cc3c9
+decoder.decoder_block3.dec_att.aspp1.atrous_conv.modulator_conv.weight            |             [1, 64, 1, 1] |              64 | f52a7a33
+decoder.decoder_block3.dec_att.aspp1.atrous_conv.offset_conv.bias                 |                       [2] |               2 | a4fc2d92
+decoder.decoder_block3.dec_att.aspp1.atrous_conv.offset_conv.weight               |             [2, 64, 1, 1] |             128 | 09105ecd
+decoder.decoder_block3.dec_att.aspp1.atrous_conv.regular_conv.weight              |           [256, 64, 1, 1] |          16,384 | 1e29c64b
+decoder.decoder_block3.dec_att.aspp1.bn.bias                                      |                     [256] |             256 | c9a06f64
+decoder.decoder_block3.dec_att.aspp1.bn.running_mean                              |                     [256] |             256 | e66b0aec
+decoder.decoder_block3.dec_att.aspp1.bn.running_var                               |                     [256] |             256 | 9e2ecf44
+decoder.decoder_block3.dec_att.aspp1.bn.weight                                    |                     [256] |             256 | d9c51d32
+decoder.decoder_block3.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.bias     |                       [1] |               1 | f04cc3c9
+decoder.decoder_block3.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.weight   |             [1, 64, 1, 1] |              64 | 0000d5e6
+decoder.decoder_block3.dec_att.aspp_deforms.0.atrous_conv.offset_conv.bias        |                       [2] |               2 | 2acb0862
+decoder.decoder_block3.dec_att.aspp_deforms.0.atrous_conv.offset_conv.weight      |             [2, 64, 1, 1] |             128 | c82b89f9
+decoder.decoder_block3.dec_att.aspp_deforms.0.atrous_conv.regular_conv.weight     |           [256, 64, 1, 1] |          16,384 | c63d8579
+decoder.decoder_block3.dec_att.aspp_deforms.0.bn.bias                             |                     [256] |             256 | 05e45ffa
+decoder.decoder_block3.dec_att.aspp_deforms.0.bn.running_mean                     |                     [256] |             256 | 32089f46
+decoder.decoder_block3.dec_att.aspp_deforms.0.bn.running_var                      |                     [256] |             256 | 77c1b983
+decoder.decoder_block3.dec_att.aspp_deforms.0.bn.weight                           |                     [256] |             256 | 14bbe410
+decoder.decoder_block3.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.bias     |                       [9] |               9 | ef9b4dea
+decoder.decoder_block3.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.weight   |             [9, 64, 3, 3] |           5,184 | 8347b8e9
+decoder.decoder_block3.dec_att.aspp_deforms.1.atrous_conv.offset_conv.bias        |                      [18] |              18 | e07f1227
+decoder.decoder_block3.dec_att.aspp_deforms.1.atrous_conv.offset_conv.weight      |            [18, 64, 3, 3] |          10,368 | 0c7ba6e8
+decoder.decoder_block3.dec_att.aspp_deforms.1.atrous_conv.regular_conv.weight     |           [256, 64, 3, 3] |         147,456 | c433fa0b
+decoder.decoder_block3.dec_att.aspp_deforms.1.bn.bias                             |                     [256] |             256 | fe2638ca
+decoder.decoder_block3.dec_att.aspp_deforms.1.bn.running_mean                     |                     [256] |             256 | 67d7960d
+decoder.decoder_block3.dec_att.aspp_deforms.1.bn.running_var                      |                     [256] |             256 | 2c146c65
+decoder.decoder_block3.dec_att.aspp_deforms.1.bn.weight                           |                     [256] |             256 | 04b1bdd3
+decoder.decoder_block3.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.bias     |                      [49] |              49 | b1e6f925
+decoder.decoder_block3.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.weight   |            [49, 64, 7, 7] |         153,664 | 296fbb76
+decoder.decoder_block3.dec_att.aspp_deforms.2.atrous_conv.offset_conv.bias        |                      [98] |              98 | ea22b9d3
+decoder.decoder_block3.dec_att.aspp_deforms.2.atrous_conv.offset_conv.weight      |            [98, 64, 7, 7] |         307,328 | 038ca346
+decoder.decoder_block3.dec_att.aspp_deforms.2.atrous_conv.regular_conv.weight     |           [256, 64, 7, 7] |         802,816 | a3cf3612
+decoder.decoder_block3.dec_att.aspp_deforms.2.bn.bias                             |                     [256] |             256 | 9ce03973
+decoder.decoder_block3.dec_att.aspp_deforms.2.bn.running_mean                     |                     [256] |             256 | 8a8688c6
+decoder.decoder_block3.dec_att.aspp_deforms.2.bn.running_var                      |                     [256] |             256 | d34b7c18
+decoder.decoder_block3.dec_att.aspp_deforms.2.bn.weight                           |                     [256] |             256 | 3ed2b051
+decoder.decoder_block3.dec_att.bn1.bias                                           |                      [64] |              64 | 6dff4572
+decoder.decoder_block3.dec_att.bn1.running_mean                                   |                      [64] |              64 | 3058b9d3
+decoder.decoder_block3.dec_att.bn1.running_var                                    |                      [64] |              64 | ed31f8f5
+decoder.decoder_block3.dec_att.bn1.weight                                         |                      [64] |              64 | 8d42a9e2
+decoder.decoder_block3.dec_att.conv1.weight                                       |          [64, 1280, 1, 1] |          81,920 | 38c7bbd2
+decoder.decoder_block3.dec_att.global_avg_pool.1.weight                           |           [256, 64, 1, 1] |          16,384 | 569695f0
+decoder.decoder_block3.dec_att.global_avg_pool.2.bias                             |                     [256] |             256 | ca620efe
+decoder.decoder_block3.dec_att.global_avg_pool.2.running_mean                     |                     [256] |             256 | a995e8e6
+decoder.decoder_block3.dec_att.global_avg_pool.2.running_var                      |                     [256] |             256 | 08ddd884
+decoder.decoder_block3.dec_att.global_avg_pool.2.weight                           |                     [256] |             256 | e7e33830
+decoder.decoder_block4.bn_in.bias                                                 |                      [64] |              64 | d982e7db
+decoder.decoder_block4.bn_in.running_mean                                         |                      [64] |              64 | ebe4f763
+decoder.decoder_block4.bn_in.running_var                                          |                      [64] |              64 | c5ba6687
+decoder.decoder_block4.bn_in.weight                                               |                      [64] |              64 | 1de52e45
+decoder.decoder_block4.bn_out.bias                                                |                    [1536] |           1,536 | 1537bc6f
+decoder.decoder_block4.bn_out.running_mean                                        |                    [1536] |           1,536 | bc936a52
+decoder.decoder_block4.bn_out.running_var                                         |                    [1536] |           1,536 | 45d14e63
+decoder.decoder_block4.bn_out.weight                                              |                    [1536] |           1,536 | 1ddef2e3
+decoder.decoder_block4.conv_in.bias                                               |                      [64] |              64 | 5828b0e9
+decoder.decoder_block4.conv_in.weight                                             |          [64, 3456, 3, 3] |       1,990,656 | 52d949ce
+decoder.decoder_block4.conv_out.bias                                              |                    [1536] |           1,536 | 8c4662e6
+decoder.decoder_block4.conv_out.weight                                            |          [1536, 64, 3, 3] |         884,736 | 184161a0
+decoder.decoder_block4.dec_att.aspp1.atrous_conv.modulator_conv.bias              |                       [1] |               1 | b88e59b9
+decoder.decoder_block4.dec_att.aspp1.atrous_conv.modulator_conv.weight            |             [1, 64, 1, 1] |              64 | 6c5c0db8
+decoder.decoder_block4.dec_att.aspp1.atrous_conv.offset_conv.bias                 |                       [2] |               2 | 98f4cf72
+decoder.decoder_block4.dec_att.aspp1.atrous_conv.offset_conv.weight               |             [2, 64, 1, 1] |             128 | 0888ad6e
+decoder.decoder_block4.dec_att.aspp1.atrous_conv.regular_conv.weight              |           [256, 64, 1, 1] |          16,384 | 7aabde34
+decoder.decoder_block4.dec_att.aspp1.bn.bias                                      |                     [256] |             256 | b37a2315
+decoder.decoder_block4.dec_att.aspp1.bn.running_mean                              |                     [256] |             256 | 7ecd540d
+decoder.decoder_block4.dec_att.aspp1.bn.running_var                               |                     [256] |             256 | df1a22c5
+decoder.decoder_block4.dec_att.aspp1.bn.weight                                    |                     [256] |             256 | a165a306
+decoder.decoder_block4.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.bias     |                       [1] |               1 | fd31f555
+decoder.decoder_block4.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.weight   |             [1, 64, 1, 1] |              64 | 991f6765
+decoder.decoder_block4.dec_att.aspp_deforms.0.atrous_conv.offset_conv.bias        |                       [2] |               2 | 8c4d4523
+decoder.decoder_block4.dec_att.aspp_deforms.0.atrous_conv.offset_conv.weight      |             [2, 64, 1, 1] |             128 | 623614c9
+decoder.decoder_block4.dec_att.aspp_deforms.0.atrous_conv.regular_conv.weight     |           [256, 64, 1, 1] |          16,384 | 3ae37d78
+decoder.decoder_block4.dec_att.aspp_deforms.0.bn.bias                             |                     [256] |             256 | 1dc2acb3
+decoder.decoder_block4.dec_att.aspp_deforms.0.bn.running_mean                     |                     [256] |             256 | 3e236f24
+decoder.decoder_block4.dec_att.aspp_deforms.0.bn.running_var                      |                     [256] |             256 | 53a20044
+decoder.decoder_block4.dec_att.aspp_deforms.0.bn.weight                           |                     [256] |             256 | c7144038
+decoder.decoder_block4.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.bias     |                       [9] |               9 | 2c152082
+decoder.decoder_block4.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.weight   |             [9, 64, 3, 3] |           5,184 | 7be3ec77
+decoder.decoder_block4.dec_att.aspp_deforms.1.atrous_conv.offset_conv.bias        |                      [18] |              18 | c5db022b
+decoder.decoder_block4.dec_att.aspp_deforms.1.atrous_conv.offset_conv.weight      |            [18, 64, 3, 3] |          10,368 | 4d7c32a8
+decoder.decoder_block4.dec_att.aspp_deforms.1.atrous_conv.regular_conv.weight     |           [256, 64, 3, 3] |         147,456 | 91866e15
+decoder.decoder_block4.dec_att.aspp_deforms.1.bn.bias                             |                     [256] |             256 | 84dda35b
+decoder.decoder_block4.dec_att.aspp_deforms.1.bn.running_mean                     |                     [256] |             256 | b5290d13
+decoder.decoder_block4.dec_att.aspp_deforms.1.bn.running_var                      |                     [256] |             256 | ef2aa55d
+decoder.decoder_block4.dec_att.aspp_deforms.1.bn.weight                           |                     [256] |             256 | 9cced41c
+decoder.decoder_block4.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.bias     |                      [49] |              49 | b35d55b8
+decoder.decoder_block4.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.weight   |            [49, 64, 7, 7] |         153,664 | 784433f0
+decoder.decoder_block4.dec_att.aspp_deforms.2.atrous_conv.offset_conv.bias        |                      [98] |              98 | e282517a
+decoder.decoder_block4.dec_att.aspp_deforms.2.atrous_conv.offset_conv.weight      |            [98, 64, 7, 7] |         307,328 | b4c3dc0b
+decoder.decoder_block4.dec_att.aspp_deforms.2.atrous_conv.regular_conv.weight     |           [256, 64, 7, 7] |         802,816 | ac70b4a7
+decoder.decoder_block4.dec_att.aspp_deforms.2.bn.bias                             |                     [256] |             256 | 7ecbcaf7
+decoder.decoder_block4.dec_att.aspp_deforms.2.bn.running_mean                     |                     [256] |             256 | 312d1dcc
+decoder.decoder_block4.dec_att.aspp_deforms.2.bn.running_var                      |                     [256] |             256 | f8800a0f
+decoder.decoder_block4.dec_att.aspp_deforms.2.bn.weight                           |                     [256] |             256 | 34a021b9
+decoder.decoder_block4.dec_att.bn1.bias                                           |                      [64] |              64 | a1a5dd1b
+decoder.decoder_block4.dec_att.bn1.running_mean                                   |                      [64] |              64 | 91336931
+decoder.decoder_block4.dec_att.bn1.running_var                                    |                      [64] |              64 | f3cede6d
+decoder.decoder_block4.dec_att.bn1.weight                                         |                      [64] |              64 | 906a752a
+decoder.decoder_block4.dec_att.conv1.weight                                       |          [64, 1280, 1, 1] |          81,920 | cb6a19d7
+decoder.decoder_block4.dec_att.global_avg_pool.1.weight                           |           [256, 64, 1, 1] |          16,384 | 26bef00f
+decoder.decoder_block4.dec_att.global_avg_pool.2.bias                             |                     [256] |             256 | 852e7d3d
+decoder.decoder_block4.dec_att.global_avg_pool.2.running_mean                     |                     [256] |             256 | 1e98be9d
+decoder.decoder_block4.dec_att.global_avg_pool.2.running_var                      |                     [256] |             256 | e3fcd1d4
+decoder.decoder_block4.dec_att.global_avg_pool.2.weight                           |                     [256] |             256 | 61b257a4
+decoder.gdt_convs_2.0.bias                                                        |                      [16] |              16 | a16de31f
+decoder.gdt_convs_2.0.weight                                                      |           [16, 384, 3, 3] |          55,296 | 665cdd1a
+decoder.gdt_convs_2.1.bias                                                        |                      [16] |              16 | ee0defb9
+decoder.gdt_convs_2.1.running_mean                                                |                      [16] |              16 | e90f511f
+decoder.gdt_convs_2.1.running_var                                                 |                      [16] |              16 | 5aba5673
+decoder.gdt_convs_2.1.weight                                                      |                      [16] |              16 | 86c197a6
+decoder.gdt_convs_3.0.bias                                                        |                      [16] |              16 | a1b25bbc
+decoder.gdt_convs_3.0.weight                                                      |           [16, 768, 3, 3] |         110,592 | 4a554c51
+decoder.gdt_convs_3.1.bias                                                        |                      [16] |              16 | b2992042
+decoder.gdt_convs_3.1.running_mean                                                |                      [16] |              16 | 0cff745d
+decoder.gdt_convs_3.1.running_var                                                 |                      [16] |              16 | 56477368
+decoder.gdt_convs_3.1.weight                                                      |                      [16] |              16 | 884ecd56
+decoder.gdt_convs_4.0.bias                                                        |                      [16] |              16 | d3d6a0fa
+decoder.gdt_convs_4.0.weight                                                      |          [16, 1536, 3, 3] |         221,184 | 31bbe3f8
+decoder.gdt_convs_4.1.bias                                                        |                      [16] |              16 | 18739034
+decoder.gdt_convs_4.1.running_mean                                                |                      [16] |              16 | a3a519f5
+decoder.gdt_convs_4.1.running_var                                                 |                      [16] |              16 | 71728b7b
+decoder.gdt_convs_4.1.weight                                                      |                      [16] |              16 | 48f59e31
+decoder.gdt_convs_attn_2.0.bias                                                   |                       [1] |               1 | 43bb00d0
+decoder.gdt_convs_attn_2.0.weight                                                 |             [1, 16, 1, 1] |              16 | add44da5
+decoder.gdt_convs_attn_3.0.bias                                                   |                       [1] |               1 | 90c34597
+decoder.gdt_convs_attn_3.0.weight                                                 |             [1, 16, 1, 1] |              16 | c7d73a92
+decoder.gdt_convs_attn_4.0.bias                                                   |                       [1] |               1 | ec31682f
+decoder.gdt_convs_attn_4.0.weight                                                 |             [1, 16, 1, 1] |              16 | 550c6f27
+decoder.gdt_convs_pred_2.0.bias                                                   |                       [1] |               1 | eb11f52f
+decoder.gdt_convs_pred_2.0.weight                                                 |             [1, 16, 1, 1] |              16 | d8ed3921
+decoder.gdt_convs_pred_3.0.bias                                                   |                       [1] |               1 | 211ac2d4
+decoder.gdt_convs_pred_3.0.weight                                                 |             [1, 16, 1, 1] |              16 | ab02673f
+decoder.gdt_convs_pred_4.0.bias                                                   |                       [1] |               1 | dd1e03df
+decoder.gdt_convs_pred_4.0.weight                                                 |             [1, 16, 1, 1] |              16 | dc2ff176
+decoder.ipt_blk1.conv1.bias                                                       |                      [64] |              64 | fc15e12e
+decoder.ipt_blk1.conv1.weight                                                     |             [64, 3, 3, 3] |           1,728 | eda96cb7
+decoder.ipt_blk1.conv_out.bias                                                    |                      [48] |              48 | e05d53ea
+decoder.ipt_blk1.conv_out.weight                                                  |            [48, 64, 3, 3] |          27,648 | 6ba64eaf
+decoder.ipt_blk2.conv1.bias                                                       |                      [64] |              64 | cf3526f3
+decoder.ipt_blk2.conv1.weight                                                     |            [64, 48, 3, 3] |          27,648 | 7febef2f
+decoder.ipt_blk2.conv_out.bias                                                    |                      [96] |              96 | 51fcc4b7
+decoder.ipt_blk2.conv_out.weight                                                  |            [96, 64, 3, 3] |          55,296 | 052ff4f3
+decoder.ipt_blk3.conv1.bias                                                       |                      [64] |              64 | 071416e3
+decoder.ipt_blk3.conv1.weight                                                     |           [64, 192, 3, 3] |         110,592 | 2d22a3ba
+decoder.ipt_blk3.conv_out.bias                                                    |                     [192] |             192 | 387cb0b8
+decoder.ipt_blk3.conv_out.weight                                                  |           [192, 64, 3, 3] |         110,592 | d77f4db8
+decoder.ipt_blk4.conv1.bias                                                       |                      [64] |              64 | f7541f76
+decoder.ipt_blk4.conv1.weight                                                     |           [64, 768, 3, 3] |         442,368 | 162f6c6d
+decoder.ipt_blk4.conv_out.bias                                                    |                     [384] |             384 | 57a2754f
+decoder.ipt_blk4.conv_out.weight                                                  |           [384, 64, 3, 3] |         221,184 | e8436b82
+decoder.ipt_blk5.conv1.bias                                                       |                      [64] |              64 | 1913d688
+decoder.ipt_blk5.conv1.weight                                                     |          [64, 3072, 3, 3] |       1,769,472 | 44de4547
+decoder.ipt_blk5.conv_out.bias                                                    |                     [384] |             384 | 935caf7a
+decoder.ipt_blk5.conv_out.weight                                                  |           [384, 64, 3, 3] |         221,184 | 49d4aca7
+decoder.lateral_block2.conv.bias                                                  |                     [384] |             384 | 5991991d
+decoder.lateral_block2.conv.weight                                                |          [384, 384, 1, 1] |         147,456 | 60f48063
+decoder.lateral_block3.conv.bias                                                  |                     [768] |             768 | 993a7ac1
+decoder.lateral_block3.conv.weight                                                |          [768, 768, 1, 1] |         589,824 | 8aca495f
+decoder.lateral_block4.conv.bias                                                  |                    [1536] |           1,536 | 0d862793
+decoder.lateral_block4.conv.weight                                                |        [1536, 1536, 1, 1] |       2,359,296 | d1b0544d
+squeeze_module.0.bn_in.bias                                                       |                      [64] |              64 | 3d930b68
+squeeze_module.0.bn_in.running_mean                                               |                      [64] |              64 | 31079642
+squeeze_module.0.bn_in.running_var                                                |                      [64] |              64 | e90b6689
+squeeze_module.0.bn_in.weight                                                     |                      [64] |              64 | d40db4af
+squeeze_module.0.bn_out.bias                                                      |                    [3072] |           3,072 | c991d8a3
+squeeze_module.0.bn_out.running_mean                                              |                    [3072] |           3,072 | 7230ab4b
+squeeze_module.0.bn_out.running_var                                               |                    [3072] |           3,072 | 0ee5fff0
+squeeze_module.0.bn_out.weight                                                    |                    [3072] |           3,072 | 4be9849c
+squeeze_module.0.conv_in.bias                                                     |                      [64] |              64 | 630d10d7
+squeeze_module.0.conv_in.weight                                                   |          [64, 5760, 3, 3] |       3,317,760 | 963616f0
+squeeze_module.0.conv_out.bias                                                    |                    [3072] |           3,072 | 12abf075
+squeeze_module.0.conv_out.weight                                                  |          [3072, 64, 3, 3] |       1,769,472 | 27ca6f59
+squeeze_module.0.dec_att.aspp1.atrous_conv.modulator_conv.bias                    |                       [1] |               1 | 804afa39
+squeeze_module.0.dec_att.aspp1.atrous_conv.modulator_conv.weight                  |             [1, 64, 1, 1] |              64 | 3d07f408
+squeeze_module.0.dec_att.aspp1.atrous_conv.offset_conv.bias                       |                       [2] |               2 | 164d6ede
+squeeze_module.0.dec_att.aspp1.atrous_conv.offset_conv.weight                     |             [2, 64, 1, 1] |             128 | 2ebe80e8
+squeeze_module.0.dec_att.aspp1.atrous_conv.regular_conv.weight                    |           [256, 64, 1, 1] |          16,384 | 9b67b790
+squeeze_module.0.dec_att.aspp1.bn.bias                                            |                     [256] |             256 | f6a3cc9c
+squeeze_module.0.dec_att.aspp1.bn.running_mean                                    |                     [256] |             256 | 63fab508
+squeeze_module.0.dec_att.aspp1.bn.running_var                                     |                     [256] |             256 | 1c499443
+squeeze_module.0.dec_att.aspp1.bn.weight                                          |                     [256] |             256 | deae6cac
+squeeze_module.0.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.bias           |                       [1] |               1 | 19bca108
+squeeze_module.0.dec_att.aspp_deforms.0.atrous_conv.modulator_conv.weight         |             [1, 64, 1, 1] |              64 | bc714f75
+squeeze_module.0.dec_att.aspp_deforms.0.atrous_conv.offset_conv.bias              |                       [2] |               2 | 9474f34c
+squeeze_module.0.dec_att.aspp_deforms.0.atrous_conv.offset_conv.weight            |             [2, 64, 1, 1] |             128 | 195e89c4
+squeeze_module.0.dec_att.aspp_deforms.0.atrous_conv.regular_conv.weight           |           [256, 64, 1, 1] |          16,384 | 873e32a5
+squeeze_module.0.dec_att.aspp_deforms.0.bn.bias                                   |                     [256] |             256 | c4c80855
+squeeze_module.0.dec_att.aspp_deforms.0.bn.running_mean                           |                     [256] |             256 | 8f17f272
+squeeze_module.0.dec_att.aspp_deforms.0.bn.running_var                            |                     [256] |             256 | 37d56e14
+squeeze_module.0.dec_att.aspp_deforms.0.bn.weight                                 |                     [256] |             256 | df7f1e8e
+squeeze_module.0.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.bias           |                       [9] |               9 | 5c9e5db6
+squeeze_module.0.dec_att.aspp_deforms.1.atrous_conv.modulator_conv.weight         |             [9, 64, 3, 3] |           5,184 | d34325ca
+squeeze_module.0.dec_att.aspp_deforms.1.atrous_conv.offset_conv.bias              |                      [18] |              18 | 763d1f15
+squeeze_module.0.dec_att.aspp_deforms.1.atrous_conv.offset_conv.weight            |            [18, 64, 3, 3] |          10,368 | 507b59a5
+squeeze_module.0.dec_att.aspp_deforms.1.atrous_conv.regular_conv.weight           |           [256, 64, 3, 3] |         147,456 | af8aa84e
+squeeze_module.0.dec_att.aspp_deforms.1.bn.bias                                   |                     [256] |             256 | f0f945cf
+squeeze_module.0.dec_att.aspp_deforms.1.bn.running_mean                           |                     [256] |             256 | c940950d
+squeeze_module.0.dec_att.aspp_deforms.1.bn.running_var                            |                     [256] |             256 | 1b6f3928
+squeeze_module.0.dec_att.aspp_deforms.1.bn.weight                                 |                     [256] |             256 | d552912c
+squeeze_module.0.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.bias           |                      [49] |              49 | 8ebf2bd4
+squeeze_module.0.dec_att.aspp_deforms.2.atrous_conv.modulator_conv.weight         |            [49, 64, 7, 7] |         153,664 | 48789906
+squeeze_module.0.dec_att.aspp_deforms.2.atrous_conv.offset_conv.bias              |                      [98] |              98 | c2631fd9
+squeeze_module.0.dec_att.aspp_deforms.2.atrous_conv.offset_conv.weight            |            [98, 64, 7, 7] |         307,328 | 4e62e106
+squeeze_module.0.dec_att.aspp_deforms.2.atrous_conv.regular_conv.weight           |           [256, 64, 7, 7] |         802,816 | 6eeab5c8
+squeeze_module.0.dec_att.aspp_deforms.2.bn.bias                                   |                     [256] |             256 | 995311fb
+squeeze_module.0.dec_att.aspp_deforms.2.bn.running_mean                           |                     [256] |             256 | cc23ae34
+squeeze_module.0.dec_att.aspp_deforms.2.bn.running_var                            |                     [256] |             256 | b36adcef
+squeeze_module.0.dec_att.aspp_deforms.2.bn.weight                                 |                     [256] |             256 | b5f655e4
+squeeze_module.0.dec_att.bn1.bias                                                 |                      [64] |              64 | 3d2f3bcd
+squeeze_module.0.dec_att.bn1.running_mean                                         |                      [64] |              64 | 27a9c40b
+squeeze_module.0.dec_att.bn1.running_var                                          |                      [64] |              64 | 90fe4648
+squeeze_module.0.dec_att.bn1.weight                                               |                      [64] |              64 | 526f8a64
+squeeze_module.0.dec_att.conv1.weight                                             |          [64, 1280, 1, 1] |          81,920 | df04a12c
+squeeze_module.0.dec_att.global_avg_pool.1.weight                                 |           [256, 64, 1, 1] |          16,384 | 1186d373
+squeeze_module.0.dec_att.global_avg_pool.2.bias                                   |                     [256] |             256 | 78712a2b
+squeeze_module.0.dec_att.global_avg_pool.2.running_mean                           |                     [256] |             256 | d2fd9fbc
+squeeze_module.0.dec_att.global_avg_pool.2.running_var                            |                     [256] |             256 | 2cc907b4
+squeeze_module.0.dec_att.global_avg_pool.2.weight                                 |                     [256] |             256 | 4cdb8cb9
+------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                             |                           |     220,700,285 |
+Model type: BiRefNet (torch.float16)
+Back bone type: swin_v1_l
+Model version: 2
