@@ -106,7 +106,8 @@ class KnownModelsLoader:
 
         # --- Load and process the file ---
         with open(file_path, 'r') as f:
-            data = json.load(f)
+            filtered_lines = [line for line in f if not line.lstrip().startswith('#')]
+            data = json.loads("".join(filtered_lines))
 
         # Iterate through the top-level dictionary from the JSON
         for model_name, model_data in data.items():
