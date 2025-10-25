@@ -14,9 +14,6 @@ MODELS_DIR_KEY = "rembg"
 MODELS_DIR = "rembg"  # Using RemBG works, but ComfyUI will use the lowercase version when we ask
 main_logger = initialize_logger(NODES_NAME)
 
-BATCHED_OPS = ("INT", {
-                  "default": 1, "min": 1, "max": 256, "step": 1,
-                  "tooltip": ("How many images to process at once")})
 DEFAULT_UPSCALE = "bicubic"
 CATEGORY_BASE = "RemBG_SET"
 CATEGORY_BASIC = CATEGORY_BASE+"/Basic"

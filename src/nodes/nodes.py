@@ -2,7 +2,6 @@
 # Copyright (c) 2025 Instituto Nacional de Tecnología Industrial
 # License: GPLv3
 # Project: ComfyUI-RemoveBackground_SET
-from copy import deepcopy
 import json
 import os
 import safetensors.torch
@@ -13,9 +12,10 @@ from seconohe.torch import get_torch_device_options, get_canonical_device
 from seconohe.bti import BatchedTensorIterator
 # from seconohe.torch import get_pytorch_memory_usage_str
 import torch
+from comfy_api.latest import io
 from comfy import model_management
 import folder_paths
-from . import (main_logger, MODELS_DIR_KEY, MODELS_DIR, BATCHED_OPS, DEFAULT_UPSCALE, CATEGORY_BASIC, CATEGORY_LOAD,
+from . import (main_logger, MODELS_DIR_KEY, MODELS_DIR, DEFAULT_UPSCALE, CATEGORY_BASIC, CATEGORY_LOAD,
                CATEGORY_ADV)
 from .utils.arch import RemBg
 from .utils.inspyrenet_config import parse_inspyrenet_config
@@ -32,59 +32,56 @@ TORCH_DTYPE = {
     "float32": torch.float32,
     "bfloat16": torch.bfloat16,
 }
-WIDTH_OPT = ("INT", {
-                "default": 1024,
-                "min": 0,
-                "max": 16384,
-                "step": 32,
-                "tooltip": "The width of the pre-processing image, does not affect the final output image size"
-                })
-HEIGHT_OPT = ("INT", {
-                "default": 1024,
-                "min": 0,
-                "max": 16384,
-                "step": 32,
-                "tooltip": "The height of the pre-processing image, does not affect the final output image size"
-                })
-UPSCALE_OPT = (["area", "bicubic", "nearest-exact", "bilinear", "lanczos"], {
-                "default": DEFAULT_UPSCALE,
-                "tooltip": "Interpolation method for pre-processing image and post-processing mask"
-                })
-BLUR_SIZE_OPT = ("INT", {"default": 90, "min": 1, "max": 255, "step": 1,
-                 "tooltip": "Diameter for the coarse gaussian blur used for the `Approximate Fast Foreground "
-                            "Colour Estimation`"})
-BLUR_SIZE_TWO_OPT = ("INT", {"default": 6, "min": 1, "max": 255, "step": 1,
-                     "tooltip": "Diameter for the fine gaussian blur (see `blur_size`)"})
-COLOR_OPT = ("STRING", {
-                "default": "#000000",
-                "tooltip": "Color for fill.\n"
-                           "Can be an hexadecimal (#RRGGBB).\n"
-                           "Can be comma separated RGB values in [0-255] or [0-1.0] range.\n"
-                           "Also `rgb(R,G,B)`, `hsv(H,S,V)` and `hsl(H,S,L) are supported.\n'"
-                           "In addition around 140 color names are recognized"})
-MASK_THRESHOLD_OPT = ("FLOAT", {"default": 0.000, "min": 0.0, "max": 1.0, "step": 0.001,
-                      "tooltip": "Most models generates masks that contain a value from 0 to 1, but can be any value in "
-                                 "between.\n"
-                                 "Matte models can estimate transparency using it. If you need to make the mask 0 or 1, "
-                                 "but nothing in between, you can provide a threshold here. Values above it will become 1 "
-                                 "and the rest 0."})
-DTYPE_OPS = (["AUTO", "float32", "float16"], {"default": "AUTO"})
-DTYPE_OUTOPS = deepcopy(DTYPE_OPS)
-DTYPE_OUTOPS[1]["tooltip"] = ("Data type used for the outputs. `AUTO` means the same as the input."
-                              "Using `float16` can help when processing videos.")
-DTYPE_OPS[1]["tooltip"] = ("Data type used for inference. `AUTO` means the same as the model on disk."
-                           "Using a smaller size will save resources, but might degradate the results.")
-DEPTH_OPS = ("MASK", {"tooltip": "For models that starts with a depth map"})
-DIFFDIS_VAE = ("VAE", {"tooltip": "SD Turbo VAE for DiffDIS"})
-POSITIVE = ("CONDITIONING", {"tooltip": "Experimental for DiffDIS"})
+WIDTH_OPT = io.Int.Input("width", default=1024, min=0, max=16384, step=32,
+                         tooltip="The width of the pre-processing image, does not affect the final output image size")
+HEIGHT_OPT = io.Int.Input("height", default=1024, min=0, max=16384, step=32,
+                          tooltip="The height of the pre-processing image, does not affect the final output image size")
+UPSCALE_OPT = io.Combo.Input("upscale_method", options=["area", "bicubic", "nearest-exact", "bilinear", "lanczos"],
+                             default=DEFAULT_UPSCALE,
+                             tooltip="Interpolation method for pre-processing image and post-processing mask")
+BLUR_SIZE_OPT = io.Int.Input("blur_size", default=90, min=1, max=255, step=1,
+                             tooltip="Diameter for the coarse gaussian blur used for the `Approximate Fast Foreground "
+                             "Colour Estimation`")
+BLUR_SIZE_TWO_OPT = io.Int.Input("blur_size_two", default=6, min=1, max=255, step=1,
+                                 tooltip="Diameter for the fine gaussian blur (see `blur_size`)")
+COLOR_OPT = io.String.Input("color", default="#000000", tooltip="Color for fill.\n"
+                            "Can be an hexadecimal (#RRGGBB).\n"
+                            "Can be comma separated RGB values in [0-255] or [0-1.0] range.\n"
+                            "Also `rgb(R,G,B)`, `hsv(H,S,V)` and `hsl(H,S,L) are supported.\n'"
+                            "In addition around 140 color names are recognized")
+MASK_THRESHOLD_OPT = io.Float.Input("mask_threshold", default=0.0, min=0.0, max=1.0, step=0.001,
+                                    tooltip="Most models generates masks that contain a value from 0 to 1, but can be any "
+                                    "value in between.\n"
+                                    "Matte models can estimate transparency using it. If you need to make the mask 0 or 1, "
+                                    "but nothing in between, you can provide a threshold here. Values above it will become 1 "
+                                    "and the rest 0.")
+DTYPES = ["AUTO", "float32", "float16"]
+DTYPE_OPS = io.Combo.Input("dtype", options=DTYPES, default=DTYPES[0], optional=True,
+                           tooltip="Data type used for inference. `AUTO` means the same as the model on disk."
+                                   "Using a smaller size will save resources, but might degradate the results.")
+DTYPE_OUTOPS = io.Combo.Input("out_dtype", options=DTYPES, default=DTYPES[0], optional=True,
+                              tooltip="Data type used for the outputs. `AUTO` means the same as the input."
+                                      "Using `float16` can help when processing videos.")
+
+DEPTH_OPS = io.Mask.Input("depths", tooltip="For models that starts with a depth map", optional=True)
+DIFFDIS_VAE = io.Vae.Input("vae", optional=True, tooltip="SD Turbo VAE for DiffDIS")
+POSITIVE = io.Conditioning.Input("positive", optional=True, tooltip="Experimental for DiffDIS")
+BATCHED_OPS = io.Int.Input("batch_size", default=1, min=1, max=256, step=1, tooltip="How many images to process at once")
 HELP_DIR = "`ComfyUI/models/"+MODELS_DIR+"`"
 MODEL_TOOLTIP = "The remove background model from `Load RemBG model by file` or any of the `Load XXXXXX model by name` nodes"
+MODEL_OUT_TOOLTIP = "The remove background model ready to be used in a processing node"
 MASKS_TOOLTIP = ("The estimated masks, where a higher value means the model estimates it belongs to the foreground "
                  "with more confidence.")
 DEPTHS_TOOLTIP = ("The estimated depth map. Either from the `depths` input or computed. Note this applies only to PDFNet.\n"
                   "This is the map generated by `Depth Anything V2`")
 EDGES_TOOLTIP = "The estimated edges. This is only generated by the DiffDIS model."
 IMAGE_TOOLTIP = "The images with the background removed (transparent) or replaced by the background image"
+DEVICE_TOOLTIP = "Device where the model will be run"
+IMG_READY_TOOLTIP = ("One or more images to process, they must be normalized to a range that "
+                     "is good for the model. Their size must be similar to the size used to train the model.")
+IMG_TOOLTIP = "One or more images to process, will be scaled to a size that is good for the model."
+SETRemBG = io.Custom("SET_REMBG")
+NormParams = io.Custom("NORM_PARAMS")
 
 
 def dtype_str_to_torch(dtype: str) -> torch.dtype:
@@ -161,36 +158,26 @@ def add_inspyrenet_models():
 add_inspyrenet_models()
 
 
-class LoadModel:
+class LoadModel(io.ComfyNode):
     """ Load already downloaded model """
     @classmethod
-    def INPUT_TYPES(cls):
+    def define_schema(cls) -> io.Schema:
         device_options, _ = get_torch_device_options(with_auto=True)
-        return {
-            "required": {
-                "model": (folder_paths.get_filename_list(MODELS_DIR_KEY),
-                          {"tooltip": f"The name of the model, the node scans {HELP_DIR}"}),
-                "device": (device_options,
-                           {"tooltip": "Device where the model will be run"}),
-            },
-            "optional": {
-                "dtype": DTYPE_OPS,
-                "vae": DIFFDIS_VAE,
-                "positive": POSITIVE,
-            }
-        }
+        return io.Schema(
+            node_id="LoadRembgByBiRefNetModel_SET",
+            display_name="Load RemBG model by file",
+            category=CATEGORY_LOAD,
+            description=(f"Load background remove model from folder {HELP_DIR}"
+                         " or the path of `rembg` configured in the extra YAML file"),
+            inputs=[io.Combo.Input("model", options=folder_paths.get_filename_list(MODELS_DIR_KEY),
+                                   tooltip=f"The name of the model, the node scans {HELP_DIR}"),
+                    io.Combo.Input("device", options=device_options, tooltip=DEVICE_TOOLTIP),
+                    DTYPE_OPS, DIFFDIS_VAE, POSITIVE],
+            outputs=[SETRemBG.Output(display_name="model", tooltip=MODEL_OUT_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("SET_REMBG",)
-    RETURN_NAMES = ("model",)
-    OUTPUT_TOOLTIPS = ("The remove background model ready to be used in a processing node",)
-    FUNCTION = "load_model_file"
-    CATEGORY = CATEGORY_LOAD
-    DESCRIPTION = (f"Load background remove model from folder {HELP_DIR}"
-                   " or the path of birefnet configured in the extra YAML file")
-    UNIQUE_NAME = "LoadRembgByBiRefNetModel_SET"
-    DISPLAY_NAME = "Load RemBG model by file"
-
-    def load_model_file(self, model, device, dtype="auto", vae=None, positive=None):
+    @classmethod
+    def execute(cls, model, device, dtype="auto", vae=None, positive=None) -> io.NodeOutput:
         model_path = model if os.path.isabs(model) else folder_paths.get_full_path(MODELS_DIR_KEY, model)
 
         # Load the state dict
@@ -220,41 +207,38 @@ class LoadModel:
 
         # Create an instance
         arch.instantiate_model(state_dict, target_device, target_dtype)
-        return arch,
+        return io.NodeOutput(arch)
 
 
-class AutoDownloadBiRefNetModel(LoadModel):
+class AutoDownloadBiRefNetModel(io.ComfyNode):
     """ Base class for all the auto-downloaders """
     model_type = 'BiRefNet'
 
     @classmethod
-    def INPUT_TYPES(cls):
+    def define_schema(cls) -> io.Schema:
         device_options, _ = get_torch_device_options(with_auto=True)
         cls.known_models = {v.ops_name: v for k, v in KNOWN_MODELS.items() if v.model_t == cls.model_type}
-        inputs = {
-            "required": {
-                "model_name": (list(cls.known_models.keys()),
-                               {"tooltip": "The name of the model, from the list of known models of this type"}),
-                "device": (device_options, {"tooltip": "Device where the model will be run"}),
-            },
-            "optional": {
-                "dtype": DTYPE_OPS
-            }
-        }
+        inputs = [io.Combo.Input("model_name", options=list(cls.known_models.keys()),
+                                 tooltip="The name of the model, from the list of known models of this type"),
+                  io.Combo.Input("device", options=device_options, tooltip=DEVICE_TOOLTIP),
+                  DTYPE_OPS]
         if cls.model_type == 'DiffDIS':
-            inputs["optional"]["vae"] = DIFFDIS_VAE
-            inputs["optional"]["positive"] = POSITIVE
-        return inputs
-
-    RETURN_TYPES = ("SET_REMBG", "INT", "INT",     "NORM_PARAMS")
-    RETURN_NAMES = ("model", "train_w", "train_h", "norm_params")
-    OUTPUT_TOOLTIPS = ("The remove background model ready to be used in a processing node",
-                       "Width of the images used to train this model",
-                       "Height of the images used to train this model",
-                       "Normalization parameters for the input images. This is needed only for advanced use when you want "
-                       "to manually pre-process the images. The `Arbitrary Normalize` node from "
-                       "`Image Misc` can use these parameters to apply the correct normalization.")
-    FUNCTION = "load_model"
+            inputs.append(DIFFDIS_VAE)
+            inputs.append(POSITIVE)
+        return io.Schema(
+            node_id=cls.UNIQUE_NAME,
+            display_name=cls.DISPLAY_NAME,
+            category=CATEGORY_LOAD,
+            description=cls.DESCRIPTION,
+            inputs=inputs,
+            outputs=[SETRemBG.Output(display_name="model", tooltip=MODEL_OUT_TOOLTIP),
+                     io.Int.Output(display_name="train_w", tooltip="Width of the images used to train this model"),
+                     io.Int.Output(display_name="train_h", tooltip="Height of the images used to train this model"),
+                     NormParams.Output(display_name="norm_params", tooltip="Normalization parameters for the input images. "
+                                       "This is needed only for advanced use when you want "
+                                       "to manually pre-process the images. The `Arbitrary Normalize` node from "
+                                       "`Image Misc` can use these parameters to apply the correct normalization.")]
+        )
 
     @classmethod
     def fill_description(cls):
@@ -262,8 +246,9 @@ class AutoDownloadBiRefNetModel(LoadModel):
         cls.UNIQUE_NAME = cls.__name__ + "_SET"
         cls.DISPLAY_NAME = f"Load {cls.model_type} model by name"
 
-    def load_model(self, model_name, device, dtype="float32", vae=None, positive=None):
-        m = self.known_models[model_name]
+    @classmethod
+    def execute(cls, model_name, device, dtype="float32", vae=None, positive=None) -> io.NodeOutput:
+        m = cls.known_models[model_name]
         if m.file_name is None:
             # Use the name in the URL
             fname = os.path.basename(m.url)
@@ -273,7 +258,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         model_full_path = folder_paths.get_full_path(MODELS_DIR_KEY, fname)
         if model_full_path is None:
             download_file(logger, m.url, models_path_default, fname)
-        res = super().load_model_file(fname, device, dtype, vae=vae, positive=positive)
+        res = LoadModel.execute(fname, device, dtype, vae=vae, positive=positive).result
         arch = res[0]
         # Known training sizes have priority over default architecture sizes
         arch.w = m.train_w
@@ -281,7 +266,7 @@ class AutoDownloadBiRefNetModel(LoadModel):
         arch.sub_type = m.name
         if m.no_commercial:
             logger.warning(f"`{arch.get_name()}` model isn't for commercial use!")
-        return (arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std})
+        return io.NodeOutput(arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std})
 
 
 # BiRefNet is de default
@@ -340,131 +325,80 @@ class AutoDownloadDiffDISModel(AutoDownloadBiRefNetModel):
 AutoDownloadDiffDISModel.fill_description()
 
 
-class GetMaskLow:
+class GetMaskLow(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model": ("SET_REMBG", {"tooltip": MODEL_TOOLTIP}),
-                "images": ("IMAGE", {"tooltip": "One or more images to process, they must be normalized to a range that "
-                           "is good for the model. Their size must be similar to the size used to train the model."}),
-                "batch_size": BATCHED_OPS,
-            },
-            "optional": {
-                "depths": DEPTH_OPS,
-                "out_dtype": DTYPE_OUTOPS,
-            }
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="GetMaskLowByBiRefNet_SET",
+            display_name="Get background mask low level",
+            category=CATEGORY_ADV,
+            description=("Computes the foreground mask. No pre or post processing is applied, you must do it outside the "
+                         "node.\nSee the `Get background mask` node"),
+            inputs=[SETRemBG.Input("model", tooltip=MODEL_TOOLTIP),
+                    io.Image.Input("images", tooltip=IMG_READY_TOOLTIP),
+                    BATCHED_OPS,
+                    DEPTH_OPS,
+                    DTYPE_OUTOPS],
+            outputs=[io.Mask.Output(display_name="masks", tooltip=MASKS_TOOLTIP),
+                     io.Mask.Output(display_name="depths", tooltip=DEPTHS_TOOLTIP),
+                     io.Mask.Output(display_name="edges", tooltip=EDGES_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("MASK", "MASK", "MASK")
-    RETURN_NAMES = ("masks", "depths", "edges")
-    OUTPUT_TOOLTIPS = (MASKS_TOOLTIP, DEPTHS_TOOLTIP, EDGES_TOOLTIP)
-    DESCRIPTION = ("Computes the foreground mask. No pre or post processing is applied, you must do it outside the node."
-                   "\nSee the `Get background mask` node")
-    FUNCTION = "get_mask"
-    CATEGORY = CATEGORY_ADV
-    UNIQUE_NAME = "GetMaskLowByBiRefNet_SET"
-    DISPLAY_NAME = "Get background mask low level"
-
-    def get_mask(self, model, images, batch_size, depths=None, out_dtype=None):
-        return model.run_inference(images, depths, batch_size, keep_depths=True, keep_edges=True, keep_masks=True,
-                                   out_dtype=dtype_str_to_torch(out_dtype))[1:]
-
-
-class GetMask(GetMaskLow):
     @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model": ("SET_REMBG", {"tooltip": MODEL_TOOLTIP}),
-                "images": ("IMAGE", {"tooltip": "One or more images to process, will be scaled to a size that is good "
-                           "for the model."}),
-                "width": WIDTH_OPT,
-                "height": HEIGHT_OPT,
-                "upscale_method": UPSCALE_OPT,
-                "mask_threshold": MASK_THRESHOLD_OPT,
-                "batch_size": BATCHED_OPS,
-            },
-            "optional": {
-                "depths": DEPTH_OPS,
-                "out_dtype": DTYPE_OUTOPS,
-            }
-        }
-
-    DESCRIPTION = ("Computes the foreground mask. It normalizes the input images, scales them to the model size, computes "
-                   "the masks and then scales the masks to the image size.\n"
-                   "No background removal/replacement is done.\n"
-                   "See the `Remove background (full)`.")
-    CATEGORY = CATEGORY_BASIC
-    UNIQUE_NAME = "GetMaskByBiRefNet_SET"
-    DISPLAY_NAME = "Get background mask"
-
-    def get_mask(self, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
-                 batch_size=1, depths=None, out_dtype=None):
-        return model.run_inference(images, depths, batch_size,
-                                   model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
-                                   mask_threshold=mask_threshold,
-                                   keep_depths=True, keep_edges=True, keep_masks=True,
-                                   out_dtype=dtype_str_to_torch(out_dtype))[1:]
+    def execute(cls, model, images, batch_size, depths=None, out_dtype=None) -> io.NodeOutput:
+        return io.NodeOutput(*model.run_inference(images, depths, batch_size, keep_depths=True, keep_edges=True,
+                                                  keep_masks=True, out_dtype=dtype_str_to_torch(out_dtype))[1:])
 
 
-class Advanced(GetMask):
+class GetMask(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model": ("SET_REMBG", {"tooltip": MODEL_TOOLTIP}),
-                "images": ("IMAGE", {"tooltip": "One or more images to process, will be scaled to a size that is good "
-                           "for the model."}),
-                "width": WIDTH_OPT,
-                "height": HEIGHT_OPT,
-                "upscale_method": UPSCALE_OPT,
-                "blur_size": BLUR_SIZE_OPT,
-                "blur_size_two": BLUR_SIZE_TWO_OPT,
-                "fill_color": ("BOOLEAN", {"default": False, "tooltip": "When enabled and no background is provided we "
-                               "fill the background using a color."}),
-                "color": COLOR_OPT,
-                "mask_threshold": MASK_THRESHOLD_OPT,
-                "batch_size": BATCHED_OPS,
-            },
-            "optional": {
-                "depths": DEPTH_OPS,
-                "background": ("IMAGE", {"tooltip": "Image to use as background"}),
-                "out_dtype": DTYPE_OUTOPS,
-            }
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="GetMaskByBiRefNet_SET",
+            display_name="Get background mask",
+            category=CATEGORY_BASIC,
+            description=("Computes the foreground mask. It normalizes the input images, scales them to the model size, "
+                         "computes the masks and then scales the masks to the image size.\n"
+                         "No background removal/replacement is done.\n"
+                         "See the `Remove background (full)`."),
+            inputs=[SETRemBG.Input("model", tooltip=MODEL_TOOLTIP),
+                    io.Image.Input("images", tooltip=IMG_TOOLTIP),
+                    WIDTH_OPT,
+                    HEIGHT_OPT,
+                    UPSCALE_OPT,
+                    MASK_THRESHOLD_OPT,
+                    BATCHED_OPS,
+                    DEPTH_OPS,
+                    DTYPE_OUTOPS],
+            outputs=[io.Mask.Output(display_name="masks", tooltip=MASKS_TOOLTIP),
+                     io.Mask.Output(display_name="depths", tooltip=DEPTHS_TOOLTIP),
+                     io.Mask.Output(display_name="edges", tooltip=EDGES_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("IMAGE",  "MASK",  "MASK",  "MASK")
-    RETURN_NAMES = ("images", "masks", "depths", "edges")
-    OUTPUT_TOOLTIPS = (IMAGE_TOOLTIP, MASKS_TOOLTIP, DEPTHS_TOOLTIP, EDGES_TOOLTIP)
-    DESCRIPTION = ("Removes or replaces the background from the input image.\n"
-                   "Gives more options and also generates masks and other stuff.")
-    FUNCTION = "rem_bg"
-    CATEGORY = CATEGORY_ADV
-    UNIQUE_NAME = "RembgByBiRefNetAdvanced_SET"
-    DISPLAY_NAME = "Remove background (full)"
+    @classmethod
+    def execute(cls, model, images, width=1024, height=1024, upscale_method=DEFAULT_UPSCALE, mask_threshold=0.000,
+                batch_size=1, depths=None, out_dtype=None) -> io.NodeOutput:
+        return io.NodeOutput(*model.run_inference(images, depths, batch_size,
+                                                  model_w=width, model_h=height, scale_method=upscale_method,
+                                                  preproc_img=True, mask_threshold=mask_threshold,
+                                                  keep_depths=True, keep_edges=True, keep_masks=True,
+                                                  out_dtype=dtype_str_to_torch(out_dtype))[1:])
 
-    def rem_bg(self, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
-               fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None,
-               keep_misc=True, out_dtype=None):
+
+class ImageComposer(object):
+    def __init__(self, blur_size, blur_size_two, fill_color, color, background, batch_size, target_device, target_dtype):
         self.blur_size = blur_size
         self.blur_size_two = blur_size_two
         self.fill_color = fill_color
         self.color = color
         if background is not None:
             self.background_iterator = BatchedTensorIterator(tensor=background, sub_batch_size=batch_size,
-                                                             device=model.target_device, dtype=model.target_dtype)
+                                                             device=target_device, dtype=target_dtype)
         else:
             self.background_iterator = None
         self.background = background
-        return model.run_inference(images, depths, batch_size,
-                                   model_w=width, model_h=height, scale_method=upscale_method, preproc_img=True,
-                                   mask_threshold=mask_threshold,
-                                   image_compose=self.apply_mask,
-                                   keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc,
-                                   out_dtype=dtype_str_to_torch(out_dtype))
 
-    def apply_mask(self, images_bchw, masks_bchw, batch_range):
+    def compose(self, images_bchw, masks_bchw, batch_range):
         background = (None if self.background_iterator is None else
                       self.background_iterator.get_aux_batch(self.background, batch_range))
         out_images = apply_mask(logger, images_bchw.movedim(1, -1), masks=masks_bchw.squeeze(1),
@@ -474,35 +408,73 @@ class Advanced(GetMask):
         return out_images.movedim(-1, 1)
 
 
-class RemBGSimple(Advanced):
+class Advanced(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model": ("SET_REMBG", {"tooltip": MODEL_TOOLTIP}),
-                "images": ("IMAGE", {"tooltip": "One or more images to process, will be scaled to a size that is good "
-                           "for the model."}),
-                "batch_size": BATCHED_OPS,
-            },
-            "optional": {
-                "depths": DEPTH_OPS,
-                "background": ("IMAGE", {"tooltip": "Image to use as background"}),
-                "out_dtype": DTYPE_OUTOPS,
-            }
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="RembgByBiRefNetAdvanced_SET",
+            display_name="Remove background (full)",
+            category=CATEGORY_ADV,
+            description=("Removes or replaces the background from the input image.\n"
+                         "Gives more options and also generates masks and other stuff."),
+            inputs=[SETRemBG.Input("model", tooltip=MODEL_TOOLTIP),
+                    io.Image.Input("images", tooltip=IMG_TOOLTIP),
+                    WIDTH_OPT,
+                    HEIGHT_OPT,
+                    UPSCALE_OPT,
+                    BLUR_SIZE_OPT,
+                    BLUR_SIZE_TWO_OPT,
+                    io.Boolean.Input("fill_color", default=False,
+                                     tooltip="When enabled and no background is provided we "
+                                     "fill the background using a color."),
+                    COLOR_OPT,
+                    MASK_THRESHOLD_OPT,
+                    BATCHED_OPS,
+                    DEPTH_OPS,
+                    io.Image.Input("background", tooltip="Image to use as background", optional=True),
+                    DTYPE_OUTOPS],
+            outputs=[io.Image.Output(display_name="images", tooltip=IMAGE_TOOLTIP),
+                     io.Mask.Output(display_name="masks", tooltip=MASKS_TOOLTIP),
+                     io.Mask.Output(display_name="depths", tooltip=DEPTHS_TOOLTIP),
+                     io.Mask.Output(display_name="edges", tooltip=EDGES_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("images",)
-    OUTPUT_TOOLTIPS = (IMAGE_TOOLTIP,)
-    DESCRIPTION = ("Removes or replaces the background from the input image.")
-    FUNCTION = "rem_bg"
-    CATEGORY = CATEGORY_BASIC
-    UNIQUE_NAME = "RembgByBiRefNet_SET"
-    DISPLAY_NAME = "Remove background"
+    @classmethod
+    def execute(cls, model, images, upscale_method=DEFAULT_UPSCALE, width=1024, height=1024, blur_size=91, blur_size_two=7,
+                fill_color=False, color=None, mask_threshold=0.000, batch_size=True, depths=None, background=None,
+                keep_misc=True, out_dtype=None) -> io.NodeOutput:
 
-    def rem_bg(self, model, images, batch_size, depths=None, background=None, out_dtype=None):
+        composer = ImageComposer(blur_size, blur_size_two, fill_color, color, background, batch_size, model.target_device,
+                                 model.target_dtype)
+        return io.NodeOutput(*model.run_inference(images, depths, batch_size, model_w=width, model_h=height,
+                                                  scale_method=upscale_method, preproc_img=True,
+                                                  mask_threshold=mask_threshold,
+                                                  image_compose=composer,
+                                                  keep_depths=keep_misc, keep_edges=keep_misc, keep_masks=keep_misc,
+                                                  out_dtype=dtype_str_to_torch(out_dtype)))
+
+
+class RemBGSimple(io.ComfyNode):
+    @classmethod
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="RembgByBiRefNet_SET",
+            display_name="Remove background",
+            category=CATEGORY_BASIC,
+            description="Removes or replaces the background from the input image.",
+            inputs=[SETRemBG.Input("model", tooltip=MODEL_TOOLTIP),
+                    io.Image.Input("images", tooltip=IMG_TOOLTIP),
+                    BATCHED_OPS,
+                    DEPTH_OPS,
+                    io.Image.Input("background", tooltip="Image to use as background", optional=True),
+                    DTYPE_OUTOPS],
+            outputs=[io.Image.Output(display_name="images", tooltip=IMAGE_TOOLTIP)]
+        )
+
+    @classmethod
+    def execute(cls, model, images, batch_size, depths=None, background=None, out_dtype=None) -> io.NodeOutput:
         w = model.w
         h = model.h
         logger.debug(f"Using size {w}x{h}")
-        return super().rem_bg(model, images, width=w, height=h, batch_size=batch_size, depths=depths, background=background,
-                              keep_misc=False, out_dtype=out_dtype)[:1]
+        return io.NodeOutput(Advanced.execute(model, images, width=w, height=h, batch_size=batch_size, depths=depths,
+                                              background=background, keep_misc=False, out_dtype=out_dtype)[0])

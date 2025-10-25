@@ -1,8 +1,9 @@
-from .src.nodes import main_logger, __version__, MODELS_DIR_KEY, MODELS_DIR
+from .src.nodes import MODELS_DIR_KEY, MODELS_DIR  # main_logger, __version__,
 import folder_paths
 import os
-from seconohe.register_nodes import register_nodes
+# from seconohe.register_nodes import register_nodes
 from seconohe import JS_PATH
+from comfy_api.latest import ComfyExtension, io
 
 
 models_dir_default = os.path.join(folder_paths.models_dir, MODELS_DIR)
@@ -20,6 +21,32 @@ from .src.nodes import nodes  # noqa: E402
 from .src.nodes import nodes_dan  # noqa: E402
 
 
-NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(main_logger, [nodes, nodes_dan], version=__version__)
+# NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(main_logger, [nodes, nodes_dan], version=__version__)
 WEB_DIRECTORY = JS_PATH
-__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+# __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+
+
+class MyExtension(ComfyExtension):
+    # must be declared as async
+    async def get_node_list(self) -> list[type[io.ComfyNode]]:
+        return [
+            nodes.LoadModel,
+            nodes.AutoDownloadBiRefNetModel,
+            nodes.AutoDownloadBENModel,
+            nodes.AutoDownloadInSPyReNetModel,
+            nodes.AutoDownloadU2NetModel,
+            nodes.AutoDownloadISNetModel,
+            nodes.AutoDownloadMODNetModel,
+            nodes.AutoDownloadPDFNetModel,
+            nodes.AutoDownloadDiffDISModel,
+            nodes.GetMaskLow,
+            nodes.GetMask,
+            nodes.Advanced,
+            nodes.RemBGSimple,
+            nodes_dan.DownloadAndLoadDepthAnythingV2Model,
+            nodes_dan.DepthAnything_V2,
+        ]
+
+
+async def comfy_entrypoint() -> MyExtension:
+    return MyExtension()

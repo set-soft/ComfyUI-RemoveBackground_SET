@@ -26,6 +26,7 @@ except ImportError:
 
 # ComfyUI imports
 try:
+    from comfy_api.latest import io
     from comfy.model_management import get_torch_device
     from comfy.utils import load_torch_file
     from folder_paths import models_dir
@@ -44,7 +45,7 @@ except ImportError:
 
 
 # Local imports
-from . import main_logger as logger, BATCHED_OPS, CATEGORY_LOAD, CATEGORY_ADV
+from . import main_logger as logger, CATEGORY_LOAD, CATEGORY_ADV
 from .depth_anything.dpt_v2 import DepthAnythingV2
 
 
@@ -64,122 +65,114 @@ KNOWN_MODELS = {
     'Large Metric Indoor F32 (1.3 GiB)': 'depth_anything_v2_metric_hypersim_vitl_fp32.safetensors',
     'Large Metric Outdoor F32 (1.3 GiB)': 'depth_anything_v2_metric_vkitti_vitl_fp32.safetensors',
 }
+MODEL_CONFIGS = {
+    'vits': {'encoder': 'vits', 'features': 64, 'out_channels': [48, 96, 192, 384]},
+    'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
+    'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
+    # 'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
+}
+MODEL_TOOLTIP = ("The name of the model to use.\n"
+                 "Small, Base and Large are available in 16 and 32 bits.\n"
+                 "The 16 bits version works quite well for most uses.\n"
+                 "PDFNet was trained using the Base version.")
+DAN_MODEL_OUT_TOOLTIP = "The model ready to be used by the `Depth Anything V2` node"
+DAModel = io.Custom("DAMODEL")
+BATCHED_OPS = io.Int.Input("batch_size", default=1, min=1, max=256, step=1, tooltip="How many images to process at once")
+DEPTH_IMG_TOOLTIP = ("The same map in a format compatible with nodes that needs an image.\n"
+                     "The three channels (R, G, B) are the same buffer, shared with the mask.")
 
 
-class DownloadAndLoadDepthAnythingV2Model:
+class DownloadAndLoadDepthAnythingV2Model(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(s):
-        return {"required": {
-            "model": (list(KNOWN_MODELS.keys()), {
-                "tooltip": "The name of the model to use.\nSmall, Base and Large are "
-                           "available in 16 and 32 bits. The 16 bits version works quite well for most uses.\n"
-                           "PDFNet was trained using the Base version."}),
-            },
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="DownloadAndLoadDepthAnythingV2Model_SET",
+            display_name="Load Depth Anything by name",
+            category=CATEGORY_LOAD,
+            description=("Load a Depth Anything V2 model.\n"
+                         "Models are autodownload to `ComfyUI/models/depthanything` from\n"
+                         "https://huggingface.co/Kijai/DepthAnythingV2-safetensors/tree/main\n\n"
+                         "F16 might reduce quality, be careful."),
+            inputs=[io.Combo.Input("model", options=list(KNOWN_MODELS.keys()), tooltip=MODEL_TOOLTIP)],
+            outputs=[DAModel.Output(display_name="da_v2_model", tooltip=DAN_MODEL_OUT_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("DAMODEL",)
-    RETURN_NAMES = ("da_v2_model",)
-    OUTPUT_TOOLTIPS = ("The model ready to be used by the `Depth Anything V2` node",)
-    FUNCTION = "loadmodel"
-    CATEGORY = CATEGORY_LOAD
-    DESCRIPTION = ("Load a Depth Anything V2 model.\n"
-                   "Models are autodownload to `ComfyUI/models/depthanything` from\n"
-                   "https://huggingface.co/Kijai/DepthAnythingV2-safetensors/tree/main\n\n"
-                   "F16 might reduce quality, be careful.")
-    UNIQUE_NAME = "DownloadAndLoadDepthAnythingV2Model_SET"
-    DISPLAY_NAME = "Load Depth Anything by name"
-
-    def loadmodel(self, model):
+    @classmethod
+    def execute(cls, model) -> io.NodeOutput:
         device = get_torch_device()
         fname = KNOWN_MODELS[model]
         dtype = torch.float16 if "fp16" in fname else torch.float32
-        model_configs = {
-            'vits': {'encoder': 'vits', 'features': 64, 'out_channels': [48, 96, 192, 384]},
-            'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
-            'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
-            # 'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
-        }
-        custom_config = {
-            'model_name': fname,
-        }
-        if not hasattr(self, 'model') or self.model is None or custom_config != self.current_config:
-            self.current_config = custom_config
-            download_path = os.path.join(models_dir, "depthanything")
-            model_path = os.path.join(download_path, fname)
+        download_path = os.path.join(models_dir, "depthanything")
+        model_path = os.path.join(download_path, fname)
 
-            if not os.path.exists(model_path):
-                download_file(logger, BASE_URL+fname, download_path, fname)
+        if not os.path.exists(model_path):
+            download_file(logger, BASE_URL+fname, download_path, fname)
 
-            if "vitl" in fname:
-                encoder = "vitl"
-            elif "vitb" in fname:
-                encoder = "vitb"
-            elif "vits" in fname:
-                encoder = "vits"
+        if "vitl" in fname:
+            encoder = "vitl"
+        elif "vitb" in fname:
+            encoder = "vitb"
+        elif "vits" in fname:
+            encoder = "vits"
 
-            if "hypersim" in fname:
-                max_depth = 20.0
+        if "hypersim" in fname:
+            max_depth = 20.0
+        else:
+            max_depth = 80.0
+
+        with (init_empty_weights() if is_accelerate_available else nullcontext()):
+            if 'metric' in fname:
+                model = DepthAnythingV2(**{**MODEL_CONFIGS[encoder], 'is_metric': True, 'max_depth': max_depth})
             else:
-                max_depth = 80.0
+                model = DepthAnythingV2(**MODEL_CONFIGS[encoder])
 
-            with (init_empty_weights() if is_accelerate_available else nullcontext()):
-                if 'metric' in fname:
-                    self.model = DepthAnythingV2(**{**model_configs[encoder], 'is_metric': True, 'max_depth': max_depth})
-                else:
-                    self.model = DepthAnythingV2(**model_configs[encoder])
+        logger.debug(f"Loading Depth Anything V2 weights from {model_path}")
+        state_dict = load_torch_file(model_path)
+        if is_accelerate_available:
+            for key in state_dict:
+                set_module_tensor_to_device(model, key, device=device, dtype=dtype, value=state_dict[key])
+        else:
+            model.load_state_dict(state_dict)
 
-            logger.debug(f"Loading Depth Anything V2 weights from {model_path}")
-            state_dict = load_torch_file(model_path)
-            if is_accelerate_available:
-                for key in state_dict:
-                    set_module_tensor_to_device(self.model, key, device=device, dtype=dtype, value=state_dict[key])
-            else:
-                self.model.load_state_dict(state_dict)
-
-            self.model.eval()
-            da_model = {
-                "model": self.model,
-                "dtype": dtype,
-                "is_metric": self.model.is_metric
-            }
-
-        return (da_model,)
+        model.eval()
+        da_model = {
+            "model": model,
+            "dtype": dtype,
+            "is_metric": model.is_metric
+        }
+        return io.NodeOutput(da_model)
 
 
-class DepthAnything_V2:
+class DepthAnything_V2(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "da_model": ("DAMODEL", {"tooltip": "The model from the `Load Depth Anything by name` node."}),
-                "images": ("IMAGE", {"tooltip": "One or more images to process, will be normalized and scaled."}),
-                "batch_size": BATCHED_OPS,
-            },
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="DepthAnything_V2_SET",
+            display_name="Depth Anything V2",
+            category=CATEGORY_ADV,
+            description="Create a depth map of the image\nSee: https://depth-anything-v2.github.io",
+            inputs=[
+                DAModel.Input("da_model", tooltip="The model from the `Load Depth Anything by name` node."),
+                io.Image.Input("images", tooltip="One or more images to process, will be normalized and scaled."),
+                BATCHED_OPS],
+            outputs=[io.Mask.Output(display_name="depths", tooltip="The depth map"),
+                     io.Image.Output(display_name="depth_imgs", tooltip=DEPTH_IMG_TOOLTIP)]
+        )
 
-    RETURN_TYPES = ("MASK", "IMAGE")
-    RETURN_NAMES = ("depths", "depth_imgs")
-    OUTPUT_TOOLTIPS = ("The depth map",
-                       "The same map in a format compatible with nodes that needs an image.\n"
-                       "The three channels (R, G, B) are the same buffer, shared with the mask.")
-    FUNCTION = "process"
-    CATEGORY = CATEGORY_ADV
-    DESCRIPTION = "Create a depth map of the image\nSee: https://depth-anything-v2.github.io"
-    UNIQUE_NAME = "DepthAnything_V2_SET"
-    DISPLAY_NAME = "Depth Anything V2"
-
-    def process(self, da_model, images, batch_size):
+    @classmethod
+    def execute(cls, da_model, images, batch_size) -> io.NodeOutput:
         model = da_model['model']
         model.target_dtype = da_model['dtype']
         model.target_device = get_torch_device()
         with model_to_target(logger, model):
-            depths_bchw = self.process_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype,
-                                           out_device="cpu")
+            depths_bchw = cls.process_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype,
+                                          out_device="cpu")
         masks = depths_bchw.squeeze(1)  # BHW
         # Returns the computed masks and a view that is an image, but no extra memory is used
-        return (masks, masks.unsqueeze(-1).expand(-1, -1, -1, 3))
+        return io.NodeOutput(masks, masks.unsqueeze(-1).expand(-1, -1, -1, 3))
 
-    def process_low(self, da_model, images_bchw, batch_size, out_dtype, out_device):
+    @classmethod
+    def process_low(cls, da_model, images_bchw, batch_size, out_dtype, out_device):
         model = da_model['model']
         is_metric = da_model['is_metric']
         B, C, H, W = images_bchw.shape
