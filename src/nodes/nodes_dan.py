@@ -70,17 +70,22 @@ class DownloadAndLoadDepthAnythingV2Model:
     @classmethod
     def INPUT_TYPES(s):
         return {"required": {
-            "model": (list(KNOWN_MODELS.keys()), ),
+            "model": (list(KNOWN_MODELS.keys()), {
+                "tooltip": "The name of the model to use.\nSmall, Base and Large are "
+                           "available in 16 and 32 bits. The 16 bits version works quite well for most uses.\n"
+                           "PDFNet was trained using the Base version."}),
             },
         }
 
     RETURN_TYPES = ("DAMODEL",)
     RETURN_NAMES = ("da_v2_model",)
+    OUTPUT_TOOLTIPS = ("The model ready to be used by the `Depth Anything V2` node",)
     FUNCTION = "loadmodel"
     CATEGORY = CATEGORY_LOAD
-    DESCRIPTION = ("Models autodownload to `ComfyUI/models/depthanything` from\n"
+    DESCRIPTION = ("Load a Depth Anything V2 model.\n"
+                   "Models are autodownload to `ComfyUI/models/depthanything` from\n"
                    "https://huggingface.co/Kijai/DepthAnythingV2-safetensors/tree/main\n\n"
-                   "F16 reduces quality by a LOT, not recommended.")
+                   "F16 might reduce quality, be careful.")
     UNIQUE_NAME = "DownloadAndLoadDepthAnythingV2Model_SET"
     DISPLAY_NAME = "Load Depth Anything by name"
 
@@ -146,14 +151,17 @@ class DepthAnything_V2:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "da_model": ("DAMODEL", ),
-                "images": ("IMAGE", ),
+                "da_model": ("DAMODEL", {"tooltip": "The model from the `Load Depth Anything by name` node."}),
+                "images": ("IMAGE", {"tooltip": "One or more images to process, will be normalized and scaled."}),
                 "batch_size": BATCHED_OPS,
             },
         }
 
     RETURN_TYPES = ("MASK", "IMAGE")
     RETURN_NAMES = ("depths", "depth_imgs")
+    OUTPUT_TOOLTIPS = ("The depth map",
+                       "The same map in a format compatible with nodes that needs an image.\n"
+                       "The three channels (R, G, B) are the same buffer, shared with the mask.")
     FUNCTION = "process"
     CATEGORY = CATEGORY_ADV
     DESCRIPTION = "Create a depth map of the image\nSee: https://depth-anything-v2.github.io"
