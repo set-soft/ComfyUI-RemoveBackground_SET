@@ -51,16 +51,16 @@ if __name__ == "__main__":
         if k.startswith('sideout'):
             del state_dict[k]
 
-    model = bb_a.instantiate_model()
-    model.load_state_dict(state_dict)
-    model.eval()
     if args.half:
-        model.to(dtype=torch.float16)
+        dtype = torch.float16
         fp = 'F16'
         dt = 'float16'
     else:
+        dtype = torch.float32
         fp = 'F32'
         dt = 'float32'
+
+    model = bb_a.instantiate_model(state_dict, dtype=dtype)
 
     name = "BEN2" if model_path.endswith(".safetensors") else "BEN1"
     if model_path.endswith(".safetensors"):
