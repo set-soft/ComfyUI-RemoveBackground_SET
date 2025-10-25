@@ -531,6 +531,34 @@
         "file_t": "pytorch",
         "dataset": "DUTS-TR"
     },
+    "U-2-Net Human F16 (u2net_human_seg)": {
+        "name": "Human F16 (u2net_human_seg)",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/U2Net/U2Net_Human_F16.safetensors",
+        "file_name": null,
+        "train_w": 320,
+        "train_h": 320,
+        "model_t": "U-2-Net",
+        "size": "85 MiB",
+        "ops_name": "Human F16 (u2net_human_seg 85 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "pytorch",
+        "dataset": "Supervisely Persons Labeled"
+    },
+    "U-2-Net Human (u2net_human_seg)": {
+        "name": "Human (u2net_human_seg)",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/U2Net/U2Net_Human_F32.safetensors",
+        "file_name": null,
+        "train_w": 320,
+        "train_h": 320,
+        "model_t": "U-2-Net",
+        "size": "169 MiB",
+        "ops_name": "Human (u2net_human_seg 169 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "Supervisely Persons Labeled"
+    },
     #
     # IS-Net models
     #
