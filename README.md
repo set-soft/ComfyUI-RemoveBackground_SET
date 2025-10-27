@@ -52,7 +52,11 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 ### Loaders
 
 The loaders are used to load a background removal model. We have a general loader that will look for models in the `ComfyUI/models/rembg` folder.
-You can reconfigure this path using the `rembg` key in the `extra_model_paths.yaml` file of ComfyUI.
+You can reconfigure this path using the `RemBG_SET` key in the `extra_model_paths.yaml` file of ComfyUI.
+
+Note that we also look for the `rembg` and `birefnet` keys. If these keys aren't defined we assume they point to `ComfyUI/models/rembg` and
+`ComfyUI/models/BiRefNet`. Also note that models downloaded to `~/.transparent-background/`
+(or `${TRANSPARENT_BACKGROUND_FILE_PATH'}.transparent-background/`) will be also available.
 
 In addition we have automatic downloaders for each supported model family.
 

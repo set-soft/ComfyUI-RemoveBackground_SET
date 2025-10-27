@@ -10,8 +10,8 @@ __copyright__ = "Copyright © 2025 Salvador E. Tropea / Instituto Nacional de Te
 __license__ = "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
 __author__ = "Salvador E. Tropea"
 NODES_NAME = "RemoveBackground_SET"
-MODELS_DIR_KEY = "rembg"
-MODELS_DIR = "rembg"  # Using RemBG works, but ComfyUI will use the lowercase version when we ask
+MODELS_DIR_KEY = "RemBG_SET"
+MODELS_DIR = "rembg"
 main_logger = initialize_logger(NODES_NAME)
 
 DEFAULT_UPSCALE = "bicubic"

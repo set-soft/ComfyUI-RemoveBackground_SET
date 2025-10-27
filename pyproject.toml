@@ -31,6 +31,8 @@ PublisherId = "set-soft"
 DisplayName = "Remove Background (SET)"
 Icon = "https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/main/doc/LogoRemBG.jpg"
 Banner = "https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/main/doc/Banner.jpg"
+# comfy_api.latest for v3 API was introduced here:
+requires-comfyui = ">=0.3.48"
 
 [tool.setuptools.dynamic]
 version = {attr = "nodes.__version__"}
