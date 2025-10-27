@@ -33,7 +33,7 @@ from ..u2net.u2net import U2NET_full, U2NET_lite, ISNet
 from ..modnet.modnet import MODNet
 from ..pdfnet.PDFNet import build_model as PDFNet
 from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
-from ..nodes_dan import DownloadAndLoadDepthAnythingV2Model, BASE_MODEL_NAME, DepthAnything_V2
+from ..dan import BASE_MODEL_NAME, load_dan, dan_low
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -499,7 +499,7 @@ class RemBg(object):
         self.create_depths = depths_bhw is None
         if self.create_depths:
             if self.da_model is None:
-                self.da_model = DownloadAndLoadDepthAnythingV2Model.execute(BASE_MODEL_NAME)[0]
+                self.da_model = load_dan(BASE_MODEL_NAME)
                 # Make the model work in the same device and with the same dtype as the main model
                 model = self.da_model['model']
                 model.target_dtype = self.target_dtype
@@ -532,8 +532,8 @@ class RemBg(object):
         if not self.create_depths:
             return self.scale_to_model(self.batched_iterator.get_aux_batch(self.depths_bchw, batch_range))
         # Needed and not provided
-        depths_bchw = DepthAnything_V2.process_low(self.da_model, images_bchw, images_bchw.shape[0],
-                                                   out_dtype=self.target_dtype, out_device=self.target_device)
+        depths_bchw = dan_low(self.da_model, images_bchw, images_bchw.shape[0], out_dtype=self.target_dtype,
+                              out_device=self.target_device)
         self.collect_depths(depths_bchw)
         return depths_bchw
 

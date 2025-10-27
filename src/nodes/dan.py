@@ -1,0 +1,175 @@
+#
+# Adapted from: https://github.com/kijai/ComfyUI-DepthAnythingV2
+# Credits go to Kijai (Jukka Seppänen) https://github.com/kijai
+#
+# Adapted by Salvador E. Tropea
+# Why?
+# - Can automagically used when no depth maps are provided for the PDFNet model
+# - Don't like the silent downloader (no progress and cryptic names)
+# - Extra dependencies we can avoid, IDK why for "accelerate" if the code explicitly makes it optional
+#
+from contextlib import nullcontext
+import os
+from seconohe.downloader import download_file
+from seconohe.bti import BatchedTensorIterator
+from seconohe.torch import model_to_target
+from seconohe.logger import get_debug_level
+import torch
+import torch.nn.functional as F
+from torchvision import transforms
+try:
+    from accelerate import init_empty_weights
+    from accelerate.utils import set_module_tensor_to_device
+    is_accelerate_available = True
+except ImportError:
+    pass
+
+# ComfyUI imports
+try:
+    from comfy.model_management import get_torch_device
+    from comfy.utils import load_torch_file
+    from folder_paths import models_dir
+except ImportError:
+    from seconohe.torch import get_torch_device_options
+    import safetensors
+
+    models_dir = './'
+
+    def get_torch_device():
+        _, default = get_torch_device_options()
+        return torch.device(default)
+
+    def load_torch_file(model_path):
+        return safetensors.torch.load_file(model_path, device="cpu")
+
+
+# Local imports
+from . import main_logger as logger
+from .depth_anything.dpt_v2 import DepthAnythingV2
+
+
+BASE_URL = 'https://huggingface.co/Kijai/DepthAnythingV2-safetensors/resolve/main/'
+BASE_MODEL_NAME = 'Base F32 (372 MiB)'
+IMAGE_MOD = 14
+KNOWN_MODELS = {
+    #
+    # BiRefNet models
+    #
+    'Small F16 (47 MiB)': 'depth_anything_v2_vits_fp16.safetensors',
+    'Small F32 (95 MiB)': 'depth_anything_v2_vits_fp32.safetensors',
+    'Base F16 (186 MiB)': 'depth_anything_v2_vitb_fp16.safetensors',
+    BASE_MODEL_NAME: 'depth_anything_v2_vitb_fp32.safetensors',
+    'Large F16 (640 MiB)': 'depth_anything_v2_vitl_fp16.safetensors',
+    'Large F32 (1.3 GiB)': 'depth_anything_v2_vitl_fp32.safetensors',
+    'Large Metric Indoor F32 (1.3 GiB)': 'depth_anything_v2_metric_hypersim_vitl_fp32.safetensors',
+    'Large Metric Outdoor F32 (1.3 GiB)': 'depth_anything_v2_metric_vkitti_vitl_fp32.safetensors',
+}
+MODEL_CONFIGS = {
+    'vits': {'encoder': 'vits', 'features': 64, 'out_channels': [48, 96, 192, 384]},
+    'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
+    'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
+    # 'vitg': {'encoder': 'vitg', 'features': 384, 'out_channels': [1536, 1536, 1536, 1536]}
+}
+
+
+def load_dan(model):
+    device = get_torch_device()
+    fname = KNOWN_MODELS[model]
+    dtype = torch.float16 if "fp16" in fname else torch.float32
+    download_path = os.path.join(models_dir, "depthanything")
+    model_path = os.path.join(download_path, fname)
+
+    if not os.path.exists(model_path):
+        download_file(logger, BASE_URL+fname, download_path, fname)
+
+    if "vitl" in fname:
+        encoder = "vitl"
+    elif "vitb" in fname:
+        encoder = "vitb"
+    elif "vits" in fname:
+        encoder = "vits"
+
+    if "hypersim" in fname:
+        max_depth = 20.0
+    else:
+        max_depth = 80.0
+
+    with (init_empty_weights() if is_accelerate_available else nullcontext()):
+        if 'metric' in fname:
+            model = DepthAnythingV2(**{**MODEL_CONFIGS[encoder], 'is_metric': True, 'max_depth': max_depth})
+        else:
+            model = DepthAnythingV2(**MODEL_CONFIGS[encoder])
+
+    logger.debug(f"Loading Depth Anything V2 weights from {model_path}")
+    state_dict = load_torch_file(model_path)
+    if is_accelerate_available:
+        for key in state_dict:
+            set_module_tensor_to_device(model, key, device=device, dtype=dtype, value=state_dict[key])
+    else:
+        model.load_state_dict(state_dict)
+
+    model.eval()
+    da_model = {
+        "model": model,
+        "dtype": dtype,
+        "is_metric": model.is_metric
+    }
+    return da_model
+
+
+def dan_low(da_model, images_bchw, batch_size, out_dtype, out_device):
+    model = da_model['model']
+    is_metric = da_model['is_metric']
+    B, C, H, W = images_bchw.shape
+
+    # The model expects image sizes multiples than 14 (patch height)
+    orig_H, orig_W = H, W
+    if orig_H % IMAGE_MOD != 0 or orig_W % IMAGE_MOD != 0:
+        needs_resize = True
+        W = W - (W % IMAGE_MOD)
+        H = H - (H % IMAGE_MOD)
+    else:
+        needs_resize = False
+
+    debug_level = get_debug_level(logger)
+    if debug_level >= 1:
+        logger.debug(f"Starting Depth Anything V2 inference: {model.__class__.__name__}")
+        if debug_level >= 2:
+            logger.debug(f"- Model: {model.target_device}/{model.target_dtype} is_metric {is_metric}")
+            logger.debug(f"- Input: {images_bchw.shape} {images_bchw.device}/{images_bchw.dtype} "
+                         f"needs_resize: {needs_resize} ({W}x{H})")
+            logger.debug(f"- Output: cpu/{out_dtype}")
+
+    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    batched_iterator = BatchedTensorIterator(tensor=images_bchw, sub_batch_size=batch_size,
+                                             device=model.target_device, dtype=model.target_dtype)
+    out = []
+    for batch_range in batched_iterator:
+        images_bchw = batched_iterator.get_batch(batch_range)
+        # Pre-process
+        if needs_resize:
+            images_bchw = F.interpolate(images_bchw, size=(H, W), mode="bilinear")
+        # Inference
+        depth_bchw = model(normalize(images_bchw))
+        del images_bchw
+        # Post-process
+        if needs_resize:
+            depth_bchw = F.interpolate(depth_bchw, size=(orig_H, orig_W), mode="bilinear")
+        depth_bchw = (depth_bchw - depth_bchw.min()) / (depth_bchw.max() - depth_bchw.min())  # Force [0,1]
+        if is_metric:
+            depth_bchw = 1 - depth_bchw
+        out.append(depth_bchw.to(device=out_device, dtype=out_dtype))
+        del depth_bchw
+
+    return torch.cat(out, dim=0)
+
+
+def run_dan(da_model, images, batch_size):
+    model = da_model['model']
+    model.target_dtype = da_model['dtype']
+    model.target_device = get_torch_device()
+    with model_to_target(logger, model):
+        depths_bchw = dan_low(da_model, images.movedim(-1, 1), batch_size, out_dtype=images.dtype, out_device="cpu")
+    masks = depths_bchw.squeeze(1)  # BHW
+    # Returns the computed masks and a view that is an image, but no extra memory is used
+    return masks, masks.unsqueeze(-1).expand(-1, -1, -1, 3)
