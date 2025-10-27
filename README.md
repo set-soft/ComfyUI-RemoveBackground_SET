@@ -4,7 +4,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 
 ![Remove Background](https://raw.githubusercontent.com/set-soft/ComfyUI-RemoveBackground_SET/main/doc/Banner.jpg)
 
-> [!NOTE]
+> [!IMPORTANT]
 > ComfyUI 0.3.48 is currently needed (Aug 1, 2025)
 
 ## &#x2699;&#xFE0F; Main features
