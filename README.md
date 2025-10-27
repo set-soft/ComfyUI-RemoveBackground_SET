@@ -233,6 +233,11 @@ You can install the nodes from the ComfyUI nodes manager, the name is *Remove Ba
     git clone https://github.com/set-soft/ComfyUI-RemoveBackground_SET ComfyUI-RemoveBackground_SET
     ```
 2.  Install dependencies: `pip install -r ComfyUI/custom_nodes/ComfyUI-RemoveBackground_SET/requirements.txt`
+
+> [!IMPORTANT]
+> SeCoNoHe lib is developed in parallel with my nodes, when installing the nodes from the repo you might need to install
+> a fresh copy of SeCoNoHe. `pip install git+https://github.com/set-soft/seconohe.git`
+
 3.  Restart ComfyUI.
 
 The nodes should then appear under the "RemBG_SET" category in the "Add Node" menu.
