@@ -315,6 +315,7 @@
         "dataset": "DIS5K"
     },
     "MVANet Finegrain F16": {
+        # Oriented to e-commerce
         "name": "Finegrain F16",
         "url": "https://huggingface.co/finegrain/finegrain-box-segmenter/resolve/main/model.safetensors",
         "file_name": "Finegrain_F16",
@@ -325,7 +326,8 @@
         "ops_name": "Finegrain F16 (184 MiB)",
         "no_commercial": false,
         "dtype": "float16",
-        "file_t": "safetensors"
+        "file_t": "safetensors",
+        "dataset": "Nfinite, Finegrain"
     },
     #
     # InSPyReNet models
