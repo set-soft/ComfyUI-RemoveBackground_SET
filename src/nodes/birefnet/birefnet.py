@@ -9,32 +9,49 @@
 #
 # License: MIT
 #
+# Adapted by Salvador E. Tropea
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from einops import rearrange
+from typing import List
 
 from .backbone import build_backbone
 from .blocks import BasicDecBlk, BasicLatBlk
 
 
-def image2patches(image, grid_h=2, grid_w=2, patch_ref=None, transformation='b c (hg h) (wg w) -> (b hg wg) c h w'):
-    if patch_ref is not None:
-        grid_h, grid_w = image.shape[-2] // patch_ref.shape[-2], image.shape[-1] // patch_ref.shape[-1]
-    patches = rearrange(image, transformation, hg=grid_h, wg=grid_w)
+def image2patches(image: torch.Tensor, patch_ref: torch.Tensor) -> torch.Tensor:
+    """
+    Replacement for einops.rearrange. Pattern: 'b c (hg h) (wg w) -> b (c hg wg) h w'
+
+    Args:
+        image: Input tensor of shape (b, c, H, W).
+        patch_ref: A reference tensor whose last two dims define the patch size (h, w).
+    """
+    # 1. Get dimensions
+    b, c, H, W = image.shape
+    h, w = patch_ref.shape[-2], patch_ref.shape[-1]
+    hg = H // h
+    wg = W // w
+
+    # 2. Reshape to split height and width into grid and patch dimensions
+    # Shape becomes: (b, c, hg, h, wg, w)
+    patches = image.view(b, c, hg, h, wg, w)
+
+    # 3. Permute to bring grid dimensions (hg, wg) next to the channel dimension (c)
+    # Target order: b, c, hg, wg, h, w
+    patches = patches.permute(0, 1, 2, 4, 3, 5)
+
+    # 4. Reshape to merge the channel and grid dimensions
+    # Final shape: (b, c * hg * wg, h, w)
+    patches = patches.reshape(b, c * hg * wg, h, w)
+
     return patches
-
-
-def patches2image(patches, grid_h=2, grid_w=2, patch_ref=None, transformation='(b hg wg) c h w -> b c (hg h) (wg w)'):
-    if patch_ref is not None:
-        grid_h, grid_w = patch_ref.shape[-2] // patches[0].shape[-2], patch_ref.shape[-1] // patches[0].shape[-1]
-    image = rearrange(patches, transformation, hg=grid_h, wg=grid_w)
-    return image
 
 
 class BiRefNet(nn.Module):
     def __init__(self, arch):
-        super(BiRefNet, self).__init__()
+        super().__init__()
         self.bb = build_backbone(arch.bb)
 
         # BasicDecBlk_x1
@@ -74,7 +91,7 @@ class BiRefNet(nn.Module):
 
 class Decoder(nn.Module):
     def __init__(self, channels):
-        super(Decoder, self).__init__()
+        super().__init__()
         self.split = True
         N_dec_ipt = 64
         DBlock = SimpleConvs
@@ -113,11 +130,11 @@ class Decoder(nn.Module):
         self.gdt_convs_attn_3 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
         self.gdt_convs_attn_2 = nn.Sequential(nn.Conv2d(_N, 1, 1, 1, 0))
 
-    def forward(self, features):
+    def forward(self, features: List[torch.Tensor]) -> List[torch.Tensor]:
         x, x1, x2, x3, x4 = features
         outs = []
 
-        patches_batch = image2patches(x, patch_ref=x4, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+        patches_batch = image2patches(x, x4)
         x4 = torch.cat((x4, self.ipt_blk5(F.interpolate(patches_batch,
                                                         size=x4.shape[2:], mode='bilinear', align_corners=True))), 1)
         p4 = self.decoder_block4(x4)
@@ -128,7 +145,7 @@ class Decoder(nn.Module):
         _p4 = F.interpolate(p4, size=x3.shape[2:], mode='bilinear', align_corners=True)
         _p3 = _p4 + self.lateral_block4(x3)
 
-        patches_batch = image2patches(x, patch_ref=_p3, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+        patches_batch = image2patches(x, _p3)
         _p3 = torch.cat((_p3, self.ipt_blk4(F.interpolate(patches_batch, size=x3.shape[2:],
                                                           mode='bilinear', align_corners=True))), 1)
         p3 = self.decoder_block3(_p3)
@@ -140,7 +157,7 @@ class Decoder(nn.Module):
         _p3 = F.interpolate(p3, size=x2.shape[2:], mode='bilinear', align_corners=True)
         _p2 = _p3 + self.lateral_block3(x2)
 
-        patches_batch = image2patches(x, patch_ref=_p2, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+        patches_batch = image2patches(x, _p2)
         _p2 = torch.cat((_p2, self.ipt_blk3(F.interpolate(patches_batch, size=x2.shape[2:], mode='bilinear',
                                                           align_corners=True))), 1)
         p2 = self.decoder_block2(_p2)
@@ -151,13 +168,13 @@ class Decoder(nn.Module):
         _p2 = F.interpolate(p2, size=x1.shape[2:], mode='bilinear', align_corners=True)
         _p1 = _p2 + self.lateral_block2(x1)
 
-        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+        patches_batch = image2patches(x, _p1)
         _p1 = torch.cat((_p1, self.ipt_blk2(F.interpolate(patches_batch, size=x1.shape[2:], mode='bilinear',
                                                           align_corners=True))), 1)
         _p1 = self.decoder_block1(_p1)
         _p1 = F.interpolate(_p1, size=x.shape[2:], mode='bilinear', align_corners=True)
 
-        patches_batch = image2patches(x, patch_ref=_p1, transformation='b c (hg h) (wg w) -> b (c hg wg) h w')
+        patches_batch = image2patches(x, _p1)
         _p1 = torch.cat((_p1, self.ipt_blk1(F.interpolate(patches_batch, size=x.shape[2:], mode='bilinear',
                                                           align_corners=True))), 1)
         p1_out = self.conv_out1(_p1)
@@ -167,9 +184,7 @@ class Decoder(nn.Module):
 
 
 class SimpleConvs(nn.Module):
-    def __init__(
-        self, in_channels: int, out_channels: int, inter_channels=64
-    ) -> None:
+    def __init__(self, in_channels: int, out_channels: int, inter_channels=64) -> None:
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels, inter_channels, 3, 1, 1)
         self.conv_out = nn.Conv2d(inter_channels, out_channels, 3, 1, 1)

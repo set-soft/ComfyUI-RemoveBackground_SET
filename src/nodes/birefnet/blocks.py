@@ -78,10 +78,13 @@ class ASPPDeformable(nn.Module):
 
     def forward(self, x):
         x1 = self.aspp1(x)
-        x_aspp_deforms = [aspp_deform(x) for aspp_deform in self.aspp_deforms]
+        xs = [x1]
+        for aspp_deform in self.aspp_deforms:
+            xs.append(aspp_deform(x))
         x5 = self.global_avg_pool(x)
         x5 = F.interpolate(x5, size=x1.size()[2:], mode='bilinear', align_corners=True)
-        x = torch.cat((x1, *x_aspp_deforms, x5), dim=1)
+        xs.append(x5)
+        x = torch.cat(xs, dim=1)
 
         x = self.conv1(x)
         x = self.bn1(x)
@@ -104,7 +107,7 @@ class DeformableConv2d(nn.Module):
                  padding=1,
                  bias=False):
 
-        super(DeformableConv2d, self).__init__()
+        super().__init__()
 
         assert type(kernel_size) is tuple or type(kernel_size) is int
 
@@ -151,7 +154,7 @@ class DeformableConv2d(nn.Module):
             offset=offset,
             weight=self.regular_conv.weight,
             bias=self.regular_conv.bias,
-            padding=self.padding,
+            padding=(self.padding, self.padding),
             mask=modulator,
             stride=self.stride,
         )

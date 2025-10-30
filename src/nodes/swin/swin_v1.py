@@ -3,13 +3,16 @@
 # Copyright (c) 2021 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Ze Liu, Yutong Lin, Yixuan Wei
+# Adapted by Salvador E. Tropea
 # --------------------------------------------------------
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
 from itertools import repeat
 import collections.abc
+from typing import Optional, Tuple, List
 
 
 # Copied and simplified implementation of to_2tuple.
@@ -37,7 +40,7 @@ class Mlp(nn.Module):
         self.fc2 = nn.Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.fc1(x)
         x = self.act(x)
         x = self.drop(x)
@@ -46,7 +49,7 @@ class Mlp(nn.Module):
         return x
 
 
-def window_partition(x, window_size):
+def window_partition(x: torch.Tensor, window_size: int) -> torch.Tensor:
     """
     Args:
         x: (B, H, W, C)
@@ -61,7 +64,7 @@ def window_partition(x, window_size):
     return windows
 
 
-def window_reverse(windows, window_size, H, W):
+def window_reverse(windows: torch.Tensor, window_size: int, H: int, W: int) -> torch.Tensor:
     """
     Args:
         windows: (num_windows*B, window_size, window_size, C)
@@ -128,7 +131,7 @@ class WindowAttention(nn.Module):
 
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(self, x, mask=None):
+    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         """ Forward function.
 
         Args:
@@ -203,10 +206,7 @@ class SwinTransformerBlock(nn.Module):
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)
 
-        self.H = None
-        self.W = None
-
-    def forward(self, x, mask_matrix):
+    def forward(self, x: torch.Tensor, H: int, W: int, mask_matrix: torch.Tensor) -> torch.Tensor:
         """ Forward function.
 
         Args:
@@ -215,7 +215,6 @@ class SwinTransformerBlock(nn.Module):
             mask_matrix: Attention mask for cyclic shift.
         """
         B, L, C = x.shape
-        H, W = self.H, self.W
         assert L == H * W, "input feature has wrong size"
 
         shortcut = x
@@ -279,7 +278,7 @@ class PatchMerging(nn.Module):
         self.reduction = nn.Linear(4 * dim, 2 * dim, bias=False)
         self.norm = norm_layer(4 * dim)
 
-    def forward(self, x, H, W):
+    def forward(self, x: torch.Tensor, H: int, W: int) -> torch.Tensor:
         """ Forward function.
 
         Args:
@@ -307,6 +306,15 @@ class PatchMerging(nn.Module):
         x = self.reduction(x)
 
         return x
+
+
+class CheckpointedLayer(nn.Module):
+    def __init__(self, layer):
+        super().__init__()
+        self.layer = layer
+
+    def forward(self, *args, **kwargs):
+        return checkpoint(self.layer, *args, **kwargs)
 
 
 class BasicLayer(nn.Module):
@@ -346,11 +354,11 @@ class BasicLayer(nn.Module):
         self.window_size = window_size
         self.shift_size = window_size // 2
         self.depth = depth
-        self.use_checkpoint = use_checkpoint
 
         # build blocks
-        self.blocks = nn.ModuleList([
-            SwinTransformerBlock(
+        blocks = []
+        for i in range(depth):
+            block = SwinTransformerBlock(
                 dim=dim,
                 num_heads=num_heads,
                 window_size=window_size,
@@ -362,7 +370,9 @@ class BasicLayer(nn.Module):
                 attn_drop=attn_drop,
                 drop_path=drop_path[i] if isinstance(drop_path, list) else drop_path,
                 norm_layer=norm_layer)
-            for i in range(depth)])
+            # Avoid using checkpoint inside the forward, if needed solve it here
+            blocks.append(CheckpointedLayer(block) if use_checkpoint else block)
+        self.blocks = nn.ModuleList(blocks)
 
         # patch merging layer
         if downsample is not None:
@@ -370,7 +380,7 @@ class BasicLayer(nn.Module):
         else:
             self.downsample = None
 
-    def forward(self, x, H, W):
+    def forward(self, x: torch.Tensor, H: int, W: int) -> Tuple[torch.Tensor, int, int, torch.Tensor, int, int]:
         """ Forward function.
 
         Args:
@@ -379,21 +389,19 @@ class BasicLayer(nn.Module):
         """
 
         # calculate attention mask for SW-MSA
-        # Turn int to torch.tensor for the compatibility with torch.compile in PyTorch 2.5. (BiRefNet)
-        Hp = torch.ceil(torch.tensor(H) / self.window_size).to(torch.int64) * self.window_size
-        Wp = torch.ceil(torch.tensor(W) / self.window_size).to(torch.int64) * self.window_size
-        img_mask = torch.zeros((1, Hp, Wp, 1), device=x.device)  # 1 Hp Wp 1
-        h_slices = (slice(0, -self.window_size),
-                    slice(-self.window_size, -self.shift_size),
-                    slice(-self.shift_size, None))
-        w_slices = (slice(0, -self.window_size),
-                    slice(-self.window_size, -self.shift_size),
-                    slice(-self.shift_size, None))
-        cnt = 0
-        for h in h_slices:
-            for w in w_slices:
-                img_mask[:, h, w, :] = cnt
-                cnt += 1
+        Hp = math.ceil(H / self.window_size) * self.window_size
+        Wp = math.ceil(W / self.window_size) * self.window_size
+        img_mask = torch.zeros([1, Hp, Wp, 1], device=x.device)  # 1 Hp Wp 1
+
+        img_mask[:, 0:-self.window_size, 0:-self.window_size, :] = 0
+        img_mask[:, 0:-self.window_size, -self.window_size:-self.shift_size, :] = 1
+        img_mask[:, 0:-self.window_size, -self.shift_size:Wp, :] = 2
+        img_mask[:, -self.window_size:-self.shift_size, 0:-self.window_size, :] = 3
+        img_mask[:, -self.window_size:-self.shift_size, -self.window_size:-self.shift_size, :] = 4
+        img_mask[:, -self.window_size:-self.shift_size, -self.shift_size:Wp, :] = 5
+        img_mask[:, -self.shift_size:Hp, 0:-self.window_size, :] = 6
+        img_mask[:, -self.shift_size:Hp, -self.window_size:-self.shift_size, :] = 7
+        img_mask[:, -self.shift_size:Hp, -self.shift_size:Wp, :] = 8
 
         mask_windows = window_partition(img_mask, self.window_size)  # nW, window_size, window_size, 1
         mask_windows = mask_windows.view(-1, self.window_size * self.window_size)
@@ -401,11 +409,7 @@ class BasicLayer(nn.Module):
         attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-100.0)).masked_fill(attn_mask == 0, float(0.0)).to(x.dtype)
 
         for blk in self.blocks:
-            blk.H, blk.W = H, W
-            if self.use_checkpoint:
-                x = checkpoint.checkpoint(blk, x, attn_mask)
-            else:
-                x = blk(x, attn_mask)
+            x = blk(x, H, W, attn_mask)
         if self.downsample is not None:
             x_down = self.downsample(x, H, W)
             Wh, Ww = (H + 1) // 2, (W + 1) // 2
@@ -438,7 +442,7 @@ class PatchEmbed(nn.Module):
         else:
             self.norm = None
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward function."""
         # padding
         _, _, H, W = x.size()
@@ -513,7 +517,6 @@ class SwinTransformer(nn.Module):
         self.pretrain_img_size = pretrain_img_size
         self.num_layers = len(depths)
         self.embed_dim = embed_dim
-        self.ape = ape
         self.patch_norm = patch_norm
         self.out_indices = out_indices
         self.frozen_stages = frozen_stages
@@ -525,12 +528,14 @@ class SwinTransformer(nn.Module):
             norm_layer=norm_layer if self.patch_norm else None)
 
         # absolute position embedding
-        if self.ape:
+        if ape:
             pretrain_img_size = to_2tuple(pretrain_img_size)
             patch_size = to_2tuple(patch_size)
             patches_resolution = [pretrain_img_size[0] // patch_size[0], pretrain_img_size[1] // patch_size[1]]
 
             self.absolute_pos_embed = nn.Parameter(torch.zeros(1, embed_dim, patches_resolution[0], patches_resolution[1]))
+        else:
+            self.absolute_pos_embed = None
 
         self.pos_drop = nn.Dropout(p=drop_rate)
 
@@ -559,37 +564,20 @@ class SwinTransformer(nn.Module):
         num_features = [int(embed_dim * 2 ** i) for i in range(self.num_layers)]
         self.num_features = num_features
 
-        # add a norm layer for each output
-        for i_layer in out_indices:
-            layer = norm_layer(num_features[i_layer])
-            layer_name = f'norm{i_layer}'
-            self.add_module(layer_name, layer)
+        # Add a norm layer for each output
+        # Note: The original code used norm{i} as name and then getattr in the forward
+        #       This code uses out_norms.{i} and then we can iterate just like with self.layers
+        self.out_norms = nn.ModuleList()
+        for i in out_indices:
+            layer = norm_layer(num_features[i])
+            self.out_norms.append(layer)  # Now: out_norms.{i} Was: norm{i}
 
-        self._freeze_stages()
-
-    def _freeze_stages(self):
-        if self.frozen_stages >= 0:
-            self.patch_embed.eval()
-            for param in self.patch_embed.parameters():
-                param.requires_grad = False
-
-        if self.frozen_stages >= 1 and self.ape:
-            self.absolute_pos_embed.requires_grad = False
-
-        if self.frozen_stages >= 2:
-            self.pos_drop.eval()
-            for i in range(0, self.frozen_stages - 1):
-                m = self.layers[i]
-                m.eval()
-                for param in m.parameters():
-                    param.requires_grad = False
-
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> List[torch.Tensor]:
         """Forward function."""
         x = self.patch_embed(x)
 
         Wh, Ww = x.size(2), x.size(3)
-        if self.ape:
+        if self.absolute_pos_embed is not None:
             # interpolate the position embedding to the corresponding size
             absolute_pos_embed = F.interpolate(self.absolute_pos_embed, size=(Wh, Ww), mode='bicubic')
             x = (x + absolute_pos_embed)  # B Wh*Ww C
@@ -597,18 +585,15 @@ class SwinTransformer(nn.Module):
         outs = [x.contiguous()] if self.full_output else []
         x = x.flatten(2).transpose(1, 2)
         x = self.pos_drop(x)
-        for i in range(self.num_layers):
-            layer = self.layers[i]
+
+        for i, (layer, out_norm) in enumerate(zip(self.layers, self.out_norms)):
             x_out, H, W, x, Wh, Ww = layer(x, Wh, Ww)
-
             if i in self.out_indices:
-                norm_layer = getattr(self, f'norm{i}')
-                x_out = norm_layer(x_out)
-
+                x_out = out_norm(x_out)
                 out = x_out.view(-1, H, W, self.num_features[i]).permute(0, 3, 1, 2).contiguous()
                 outs.append(out)
 
-        return tuple(outs)
+        return outs
 
 
 def swin_v1_t():

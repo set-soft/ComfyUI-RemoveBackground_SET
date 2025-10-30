@@ -51,6 +51,8 @@ MVANET_RENAME = {
 }
 FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1.Residual_1.WindowAttention.WindowSDPA.'
                       'rpb.relative_position_bias_table')
+ENABLE_TORCH_SCRIPT = False
+ENABLE_TORCH_COMPILE = False
 
 
 # This is needed for old models
@@ -442,6 +444,18 @@ class RemBg(object):
             name += " "+self.sub_type
         return name
 
+    def adapt_state_dict(self, state_dict):
+        """ Applies translations that we introduced """
+        if not self.bb.startswith('swin'):
+            # We just messed with Swin V1
+            return
+        start_key = self.bb_prefix + '.norm'
+        start_key_l = len(start_key)
+        rep_key = self.bb_prefix + '.out_norms.'
+        for k, v in list(state_dict.items()):
+            if k.startswith(start_key):
+                state_dict[rep_key + k[start_key_l:]] = state_dict.pop(k)
+
     def instantiate_model(self, state_dict, device="cpu", dtype=torch.float32):
         if self.model_type == 'MVANet':
             model = MVANet(ben_variant=self.ben_variant)
@@ -468,9 +482,22 @@ class RemBg(object):
         self.model = model
         self.target_device = self.model.target_device = torch.device(device)
         self.target_dtype = dtype
+        self.adapt_state_dict(state_dict)
         model.load_state_dict(state_dict)
         model.to(dtype=dtype)
         model.eval()
+
+        if ENABLE_TORCH_SCRIPT:
+            self.logger.debug("Starting Torch Script")
+            model = torch.jit.script(model)
+            self.logger.debug("Finished Torch Script")
+            self.model = model
+        elif ENABLE_TORCH_COMPILE:
+            self.logger.debug("Starting Torch Compile")
+            model = torch.compile(model.to(device=device, dtype=dtype))
+            self.logger.debug("Finished Torch Compile")
+            self.model = model
+
         return model
 
     def show_inference_info(self, image, depths):
