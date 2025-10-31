@@ -1,0 +1,1408 @@
+Analyzing: models/BAS/model-56.pth
+
+--- PyTorch Model State Dict ---
+Key                                                         |                     Shape |    Num Elements | SHA256 (start)
+--------------------------------------------------------------------------------------------------------------------------
+test_conv.weight                                            |              [1, 3, 3, 3] |              27 | d5f3eb37
+test_conv.bias                                              |                       [1] |               1 | df3f6198
+decoder.sqz_s2.0.weight                                     |           [64, 256, 3, 3] |         147,456 | a87dc291
+decoder.sqz_s2.0.bias                                       |                      [64] |              64 | 7a9c2998
+decoder.sqz_s2.1.weight                                     |                      [64] |              64 | f4bd61cb
+decoder.sqz_s2.1.bias                                       |                      [64] |              64 | fad2db92
+decoder.sqz_s2.1.running_mean                               |                      [64] |              64 | 4ea27e52
+decoder.sqz_s2.1.running_var                                |                      [64] |              64 | 78e3396c
+decoder.sqz_s2.1.num_batches_tracked                        |                        [] |               1 | 76e9aa8a
+decoder.sqz_r5.0.weight                                     |           [64, 512, 3, 3] |         294,912 | 21eaa6f3
+decoder.sqz_r5.0.bias                                       |                      [64] |              64 | 350b7f05
+decoder.sqz_r5.1.weight                                     |                      [64] |              64 | 500756bc
+decoder.sqz_r5.1.bias                                       |                      [64] |              64 | 90279e3a
+decoder.sqz_r5.1.running_mean                               |                      [64] |              64 | f33e860f
+decoder.sqz_r5.1.running_var                                |                      [64] |              64 | 77aa32be
+decoder.sqz_r5.1.num_batches_tracked                        |                        [] |               1 | 76e9aa8a
+decoder.GF.0.weight                                         |           [64, 128, 3, 3] |          73,728 | 7f99686f
+decoder.GF.0.bias                                           |                      [64] |              64 | bf2fc157
+decoder.GF.1.weight                                         |                      [64] |              64 | 3411a392
+decoder.GF.1.bias                                           |                      [64] |              64 | 8ac3c7d1
+decoder.GF.1.running_mean                                   |                      [64] |              64 | 8f673ec9
+decoder.GF.1.running_var                                    |                      [64] |              64 | 2667407b
+decoder.GF.1.num_batches_tracked                            |                        [] |               1 | 76e9aa8a
+decoder.d1.squeeze1.0.weight                                |           [64, 512, 1, 1] |          32,768 | 660eaaa8
+decoder.d1.squeeze1.0.bias                                  |                      [64] |              64 | 1c44392c
+decoder.d1.squeeze1.1.weight                                |                      [64] |              64 | 940c1669
+decoder.d1.squeeze1.1.bias                                  |                      [64] |              64 | 3e5d6083
+decoder.d1.squeeze1.1.running_mean                          |                      [64] |              64 | 0ddc04b3
+decoder.d1.squeeze1.1.running_var                           |                      [64] |              64 | 86391f17
+decoder.d1.squeeze1.1.num_batches_tracked                   |                        [] |               1 | 76e9aa8a
+decoder.d1.squeeze2.0.weight                                |            [64, 64, 3, 3] |          36,864 | 651e24e2
+decoder.d1.squeeze2.0.bias                                  |                      [64] |              64 | ae17f638
+decoder.d1.squeeze2.1.weight                                |                      [64] |              64 | f2d72098
+decoder.d1.squeeze2.1.bias                                  |                      [64] |              64 | 26cee8dd
+decoder.d1.squeeze2.1.running_mean                          |                      [64] |              64 | 2352f05f
+decoder.d1.squeeze2.1.running_var                           |                      [64] |              64 | 7daca439
+decoder.d1.squeeze2.1.num_batches_tracked                   |                        [] |               1 | 76e9aa8a
+decoder.d2.short_cut.weight                                 |            [64, 64, 1, 1] |           4,096 | 61b196dc
+decoder.d2.short_cut.bias                                   |                      [64] |              64 | 625d1a09
+decoder.d2.conv.0.weight                                    |           [64, 576, 3, 3] |         331,776 | 4b4158d8
+decoder.d2.conv.0.bias                                      |                      [64] |              64 | 5623ac3c
+decoder.d2.conv.1.weight                                    |                      [64] |              64 | 18243996
+decoder.d2.conv.1.bias                                      |                      [64] |              64 | 3fc47490
+decoder.d2.conv.1.running_mean                              |                      [64] |              64 | 9d16d447
+decoder.d2.conv.1.running_var                               |                      [64] |              64 | 17b9c6b6
+decoder.d2.conv.1.num_batches_tracked                       |                        [] |               1 | 76e9aa8a
+decoder.d2.conv.3.weight                                    |            [64, 64, 3, 3] |          36,864 | 9e035f02
+decoder.d2.conv.3.bias                                      |                      [64] |              64 | 7bba2bf8
+decoder.d2.conv.4.weight                                    |                      [64] |              64 | 88f2859f
+decoder.d2.conv.4.bias                                      |                      [64] |              64 | 630a6b80
+decoder.d2.conv.4.running_mean                              |                      [64] |              64 | 717defae
+decoder.d2.conv.4.running_var                               |                      [64] |              64 | c1f4ac2f
+decoder.d2.conv.4.num_batches_tracked                       |                        [] |               1 | 76e9aa8a
+decoder.d2.conv2.0.weight                                   |            [64, 64, 3, 3] |          36,864 | d431b4b1
+decoder.d2.conv2.0.bias                                     |                      [64] |              64 | 23a39f5f
+decoder.d2.conv2.1.weight                                   |                      [64] |              64 | b011c1ce
+decoder.d2.conv2.1.bias                                     |                      [64] |              64 | 98c32d56
+decoder.d2.conv2.1.running_mean                             |                      [64] |              64 | 629b9ba4
+decoder.d2.conv2.1.running_var                              |                      [64] |              64 | 027d9e42
+decoder.d2.conv2.1.num_batches_tracked                      |                        [] |               1 | 76e9aa8a
+decoder.d2.conv2.3.weight                                   |            [64, 64, 3, 3] |          36,864 | cb382251
+decoder.d2.conv2.3.bias                                     |                      [64] |              64 | 789860b1
+decoder.d2.conv2.4.weight                                   |                      [64] |              64 | 8abff459
+decoder.d2.conv2.4.bias                                     |                      [64] |              64 | 1b0b52f1
+decoder.d2.conv2.4.running_mean                             |                      [64] |              64 | 9c822061
+decoder.d2.conv2.4.running_var                              |                      [64] |              64 | 8b7bb2c8
+decoder.d2.conv2.4.num_batches_tracked                      |                        [] |               1 | 76e9aa8a
+decoder.d3.short_cut.weight                                 |            [64, 64, 1, 1] |           4,096 | 00eb95b2
+decoder.d3.short_cut.bias                                   |                      [64] |              64 | 7dcce4e2
+decoder.d3.conv.0.weight                                    |           [64, 128, 3, 3] |          73,728 | d5b53bcb
+decoder.d3.conv.0.bias                                      |                      [64] |              64 | 82b52b84
+decoder.d3.conv.1.weight                                    |                      [64] |              64 | fbeacf3d
+decoder.d3.conv.1.bias                                      |                      [64] |              64 | 32fff417
+decoder.d3.conv.1.running_mean                              |                      [64] |              64 | f3f6c415
+decoder.d3.conv.1.running_var                               |                      [64] |              64 | aa763923
+decoder.d3.conv.1.num_batches_tracked                       |                        [] |               1 | 76e9aa8a
+decoder.d3.conv.3.weight                                    |            [64, 64, 3, 3] |          36,864 | 86ce249b
+decoder.d3.conv.3.bias                                      |                      [64] |              64 | 16031b1c
+decoder.d3.conv.4.weight                                    |                      [64] |              64 | b508d611
+decoder.d3.conv.4.bias                                      |                      [64] |              64 | 65b46b76
+decoder.d3.conv.4.running_mean                              |                      [64] |              64 | be39e333
+decoder.d3.conv.4.running_var                               |                      [64] |              64 | 7bfbcbc2
+decoder.d3.conv.4.num_batches_tracked                       |                        [] |               1 | 76e9aa8a
+decoder.d3.conv2.0.weight                                   |            [64, 64, 3, 3] |          36,864 | fc95a53f
+decoder.d3.conv2.0.bias                                     |                      [64] |              64 | 18e9a112
+decoder.d3.conv2.1.weight                                   |                      [64] |              64 | 5e4d6a1e
+decoder.d3.conv2.1.bias                                     |                      [64] |              64 | 6605a1d8
+decoder.d3.conv2.1.running_mean                             |                      [64] |              64 | 3294f2c2
+decoder.d3.conv2.1.running_var                              |                      [64] |              64 | 7cd519c1
+decoder.d3.conv2.1.num_batches_tracked                      |                        [] |               1 | 76e9aa8a
+decoder.d3.conv2.3.weight                                   |            [64, 64, 3, 3] |          36,864 | d5f11222
+decoder.d3.conv2.3.bias                                     |                      [64] |              64 | b6d5cf71
+decoder.d3.conv2.4.weight                                   |                      [64] |              64 | 8b91d54d
+decoder.d3.conv2.4.bias                                     |                      [64] |              64 | e8ef47b4
+decoder.d3.conv2.4.running_mean                             |                      [64] |              64 | 6c5b3210
+decoder.d3.conv2.4.running_var                              |                      [64] |              64 | ce62e4cc
+decoder.d3.conv2.4.num_batches_tracked                      |                        [] |               1 | 76e9aa8a
+decoder.d4.db2.short_cut.weight                             |            [64, 64, 1, 1] |           4,096 | 0d66142b
+decoder.d4.db2.short_cut.bias                               |                      [64] |              64 | d86284a1
+decoder.d4.db2.conv.0.weight                                |           [64, 128, 3, 3] |          73,728 | f78b94e7
+decoder.d4.db2.conv.0.bias                                  |                      [64] |              64 | 317afe38
+decoder.d4.db2.conv.1.weight                                |                      [64] |              64 | d7300ba1
+decoder.d4.db2.conv.1.bias                                  |                      [64] |              64 | 0945fd22
+decoder.d4.db2.conv.1.running_mean                          |                      [64] |              64 | d3dc99d8
+decoder.d4.db2.conv.1.running_var                           |                      [64] |              64 | 786c873b
+decoder.d4.db2.conv.1.num_batches_tracked                   |                        [] |               1 | 76e9aa8a
+decoder.d4.db2.conv.3.weight                                |            [64, 64, 3, 3] |          36,864 | 0e54dd08
+decoder.d4.db2.conv.3.bias                                  |                      [64] |              64 | af8b83f5
+decoder.d4.db2.conv.4.weight                                |                      [64] |              64 | 73ed0dd7
+decoder.d4.db2.conv.4.bias                                  |                      [64] |              64 | 4a14875c
+decoder.d4.db2.conv.4.running_mean                          |                      [64] |              64 | 84bf7c83
+decoder.d4.db2.conv.4.running_var                           |                      [64] |              64 | a8b9a25d
+decoder.d4.db2.conv.4.num_batches_tracked                   |                        [] |               1 | 76e9aa8a
+decoder.d4.db2.conv2.0.weight                               |            [64, 64, 3, 3] |          36,864 | 431105d0
+decoder.d4.db2.conv2.0.bias                                 |                      [64] |              64 | 2f8381be
+decoder.d4.db2.conv2.1.weight                               |                      [64] |              64 | 0f0a6798
+decoder.d4.db2.conv2.1.bias                                 |                      [64] |              64 | 060176b6
+decoder.d4.db2.conv2.1.running_mean                         |                      [64] |              64 | fd52f295
+decoder.d4.db2.conv2.1.running_var                          |                      [64] |              64 | 5a5d171b
+decoder.d4.db2.conv2.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.db2.conv2.3.weight                               |            [64, 64, 3, 3] |          36,864 | caa94134
+decoder.d4.db2.conv2.3.bias                                 |                      [64] |              64 | ea800397
+decoder.d4.db2.conv2.4.weight                               |                      [64] |              64 | 78bc8a21
+decoder.d4.db2.conv2.4.bias                                 |                      [64] |              64 | 6012ff78
+decoder.d4.db2.conv2.4.running_mean                         |                      [64] |              64 | ffc2feaa
+decoder.d4.db2.conv2.4.running_var                          |                      [64] |              64 | e628b435
+decoder.d4.db2.conv2.4.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv1.0.weight                               |            [11, 11, 3, 3] |           1,089 | e775832d
+decoder.d4.HSC.conv1.1.weight                               |                      [11] |              11 | 0945e6e8
+decoder.d4.HSC.conv1.1.bias                                 |                      [11] |              11 | f2699f7f
+decoder.d4.HSC.conv1.1.running_mean                         |                      [11] |              11 | 240691ab
+decoder.d4.HSC.conv1.1.running_var                          |                      [11] |              11 | df02f190
+decoder.d4.HSC.conv1.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv1.2.weight                               |                       [1] |               1 | 7fff64c8
+decoder.d4.HSC.conv2.0.weight                               |            [16, 16, 3, 3] |           2,304 | 51c4438c
+decoder.d4.HSC.conv2.1.weight                               |                      [16] |              16 | 68c42f0f
+decoder.d4.HSC.conv2.1.bias                                 |                      [16] |              16 | dcda7681
+decoder.d4.HSC.conv2.1.running_mean                         |                      [16] |              16 | d7e37ce0
+decoder.d4.HSC.conv2.1.running_var                          |                      [16] |              16 | 179f9b3f
+decoder.d4.HSC.conv2.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv2.2.weight                               |                       [1] |               1 | 71fd9f69
+decoder.d4.HSC.conv3.0.weight                               |            [19, 19, 3, 3] |           3,249 | 92b8d046
+decoder.d4.HSC.conv3.1.weight                               |                      [19] |              19 | a974419b
+decoder.d4.HSC.conv3.1.bias                                 |                      [19] |              19 | d5736bde
+decoder.d4.HSC.conv3.1.running_mean                         |                      [19] |              19 | 9ac56734
+decoder.d4.HSC.conv3.1.running_var                          |                      [19] |              19 | da3cfaaf
+decoder.d4.HSC.conv3.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv3.2.weight                               |                       [1] |               1 | 0c4713f0
+decoder.d4.HSC.conv4.0.weight                               |            [20, 20, 3, 3] |           3,600 | 0c0f541c
+decoder.d4.HSC.conv4.1.weight                               |                      [20] |              20 | cff3dcef
+decoder.d4.HSC.conv4.1.bias                                 |                      [20] |              20 | 4e6d5ccd
+decoder.d4.HSC.conv4.1.running_mean                         |                      [20] |              20 | 66526433
+decoder.d4.HSC.conv4.1.running_var                          |                      [20] |              20 | 2024895a
+decoder.d4.HSC.conv4.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv4.2.weight                               |                       [1] |               1 | 00f92f89
+decoder.d4.HSC.conv5.0.weight                               |            [21, 21, 3, 3] |           3,969 | 6f13d3e9
+decoder.d4.HSC.conv5.1.weight                               |                      [21] |              21 | 6d8ac922
+decoder.d4.HSC.conv5.1.bias                                 |                      [21] |              21 | a46586d4
+decoder.d4.HSC.conv5.1.running_mean                         |                      [21] |              21 | 942f7b62
+decoder.d4.HSC.conv5.1.running_var                          |                      [21] |              21 | e4e5ae7e
+decoder.d4.HSC.conv5.1.num_batches_tracked                  |                        [] |               1 | 76e9aa8a
+decoder.d4.HSC.conv5.2.weight                               |                       [1] |               1 | 157cd4f2
+decoder.d4.edge1.weight                                     |             [1, 64, 3, 3] |             576 | 204ad18e
+decoder.d4.edge1.bias                                       |                       [1] |               1 | 66edcced
+decoder.d4.edge2.weight                                     |             [1, 64, 3, 3] |             576 | 4d7ea795
+decoder.d4.edge2.bias                                       |                       [1] |               1 | 404aa47a
+decoder.d4.sqz_r4.0.weight                                  |           [64, 288, 3, 3] |         165,888 | d98e5ece
+decoder.d4.sqz_r4.0.bias                                    |                      [64] |              64 | 4ff0ac9c
+decoder.d4.sqz_r4.1.weight                                  |                      [64] |              64 | baeac8dc
+decoder.d4.sqz_r4.1.bias                                    |                      [64] |              64 | b1c7e810
+decoder.d4.sqz_r4.1.running_mean                            |                      [64] |              64 | cc032569
+decoder.d4.sqz_r4.1.running_var                             |                      [64] |              64 | 0fa11807
+decoder.d4.sqz_r4.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d4.sqz_s1.0.weight                                  |           [64, 128, 3, 3] |          73,728 | b4cec678
+decoder.d4.sqz_s1.0.bias                                    |                      [64] |              64 | d13a8309
+decoder.d4.sqz_s1.1.weight                                  |                      [64] |              64 | 99eab764
+decoder.d4.sqz_s1.1.bias                                    |                      [64] |              64 | 08bb05ba
+decoder.d4.sqz_s1.1.running_mean                            |                      [64] |              64 | 895ed095
+decoder.d4.sqz_s1.1.running_var                             |                      [64] |              64 | 5869e864
+decoder.d4.sqz_s1.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d5.convert.0.weight                                 |           [64, 160, 1, 1] |          10,240 | 74578067
+decoder.d5.convert.1.weight                                 |                      [64] |              64 | 83e187f4
+decoder.d5.convert.1.bias                                   |                      [64] |              64 | 7ad79846
+decoder.d5.convert.1.running_mean                           |                      [64] |              64 | b3ddfe2a
+decoder.d5.convert.1.running_var                            |                      [64] |              64 | b9345a18
+decoder.d5.convert.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d5.convert.2.weight                                 |                       [1] |               1 | f3344ecc
+decoder.d5.conve1.0.weight                                  |            [64, 65, 3, 3] |          37,440 | d3c81d52
+decoder.d5.conve1.1.weight                                  |                      [64] |              64 | 2f20cd03
+decoder.d5.conve1.1.bias                                    |                      [64] |              64 | 5341e6b2
+decoder.d5.conve1.1.running_mean                            |                      [64] |              64 | 75dc437b
+decoder.d5.conve1.1.running_var                             |                      [64] |              64 | 06e5ce3f
+decoder.d5.conve1.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d5.conve1.2.weight                                  |                       [1] |               1 | 75e253f5
+decoder.d5.conve2.0.weight                                  |            [64, 65, 3, 3] |          37,440 | 7694b26b
+decoder.d5.conve2.1.weight                                  |                      [64] |              64 | 78312346
+decoder.d5.conve2.1.bias                                    |                      [64] |              64 | a9414404
+decoder.d5.conve2.1.running_mean                            |                      [64] |              64 | 09213de7
+decoder.d5.conve2.1.running_var                             |                      [64] |              64 | fc68ce39
+decoder.d5.conve2.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d5.conve2.2.weight                                  |                       [1] |               1 | a8e6b062
+decoder.d5.conve3.0.weight                                  |            [64, 65, 3, 3] |          37,440 | f30a7b7c
+decoder.d5.conve3.1.weight                                  |                      [64] |              64 | 284a21dc
+decoder.d5.conve3.1.bias                                    |                      [64] |              64 | acb9d22d
+decoder.d5.conve3.1.running_mean                            |                      [64] |              64 | 18393f9c
+decoder.d5.conve3.1.running_var                             |                      [64] |              64 | 3c3c1a21
+decoder.d5.conve3.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d5.conve3.2.weight                                  |                       [1] |               1 | dfa810f4
+decoder.d5.conve4.0.weight                                  |            [64, 65, 3, 3] |          37,440 | c809e711
+decoder.d5.conve4.1.weight                                  |                      [64] |              64 | 587b4a4c
+decoder.d5.conve4.1.bias                                    |                      [64] |              64 | f3217c13
+decoder.d5.conve4.1.running_mean                            |                      [64] |              64 | dabc2033
+decoder.d5.conve4.1.running_var                             |                      [64] |              64 | 20d2c03b
+decoder.d5.conve4.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d5.conve4.2.weight                                  |                       [1] |               1 | 1c27d38c
+decoder.d5.edge1.weight                                     |             [1, 64, 3, 3] |             576 | b759f94d
+decoder.d5.edge1.bias                                       |                       [1] |               1 | 83cd2ddb
+decoder.d5.edge2.weight                                     |             [1, 64, 3, 3] |             576 | 85f6a0a0
+decoder.d5.edge2.bias                                       |                       [1] |               1 | d7753a4b
+decoder.d5.convr.0.weight                                   |           [64, 128, 3, 3] |          73,728 | bcd12f33
+decoder.d5.convr.1.weight                                   |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.1.bias                                     |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.1.running_mean                             |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.1.running_var                              |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.1.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d5.convr.2.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d5.convr.3.weight                                   |            [64, 64, 3, 3] |          36,864 | a7f0a63d
+decoder.d5.convr.4.weight                                   |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.4.bias                                     |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.4.running_mean                             |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.4.running_var                              |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.4.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d5.convr.5.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d5.convr.6.weight                                   |            [64, 64, 3, 3] |          36,864 | 27eeb53e
+decoder.d5.convr.7.weight                                   |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.7.bias                                     |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.7.running_mean                             |                      [64] |              64 | 5341e6b2
+decoder.d5.convr.7.running_var                              |                      [64] |              64 | 2f20cd03
+decoder.d5.convr.7.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d5.convr.8.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d5.convr.9.weight                                   |             [1, 64, 3, 3] |             576 | 7b65b79c
+decoder.d5.convr.9.bias                                     |                       [1] |               1 | df3f6198
+decoder.d5.branch1.0.weight                                 |           [64, 128, 3, 3] |          73,728 | 0692ccb5
+decoder.d5.branch1.1.weight                                 |                      [64] |              64 | e5be6111
+decoder.d5.branch1.1.bias                                   |                      [64] |              64 | e0ab1243
+decoder.d5.branch1.1.running_mean                           |                      [64] |              64 | 237d31f7
+decoder.d5.branch1.1.running_var                            |                      [64] |              64 | 4c2538f2
+decoder.d5.branch1.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d5.branch1.2.weight                                 |                       [1] |               1 | 2967bed8
+decoder.d5.branch2.0.weight                                 |           [64, 128, 3, 3] |          73,728 | 4c9c1f28
+decoder.d5.branch2.1.weight                                 |                      [64] |              64 | af2f0432
+decoder.d5.branch2.1.bias                                   |                      [64] |              64 | d1981807
+decoder.d5.branch2.1.running_mean                           |                      [64] |              64 | af33c170
+decoder.d5.branch2.1.running_var                            |                      [64] |              64 | 64cb49b2
+decoder.d5.branch2.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d5.branch2.2.weight                                 |                       [1] |               1 | c3cf3bd5
+decoder.d6.convert.0.weight                                 |            [32, 96, 1, 1] |           3,072 | 3f747c8e
+decoder.d6.convert.1.weight                                 |                      [32] |              32 | d2c4c504
+decoder.d6.convert.1.bias                                   |                      [32] |              32 | 853b6095
+decoder.d6.convert.1.running_mean                           |                      [32] |              32 | eb534e0d
+decoder.d6.convert.1.running_var                            |                      [32] |              32 | 72f3bf03
+decoder.d6.convert.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d6.convert.2.weight                                 |                       [1] |               1 | 2edec76a
+decoder.d6.conve1.0.weight                                  |            [32, 33, 3, 3] |           9,504 | e23636bb
+decoder.d6.conve1.1.weight                                  |                      [32] |              32 | b638277a
+decoder.d6.conve1.1.bias                                    |                      [32] |              32 | 38723a2e
+decoder.d6.conve1.1.running_mean                            |                      [32] |              32 | 7064157f
+decoder.d6.conve1.1.running_var                             |                      [32] |              32 | d3eba5c7
+decoder.d6.conve1.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d6.conve1.2.weight                                  |                       [1] |               1 | 75e253f5
+decoder.d6.conve2.0.weight                                  |            [32, 33, 3, 3] |           9,504 | 922e4f63
+decoder.d6.conve2.1.weight                                  |                      [32] |              32 | f029cab7
+decoder.d6.conve2.1.bias                                    |                      [32] |              32 | c4c7fdca
+decoder.d6.conve2.1.running_mean                            |                      [32] |              32 | 02041485
+decoder.d6.conve2.1.running_var                             |                      [32] |              32 | bff9724e
+decoder.d6.conve2.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d6.conve2.2.weight                                  |                       [1] |               1 | d5bdc164
+decoder.d6.conve3.0.weight                                  |            [32, 33, 3, 3] |           9,504 | 8a5286e6
+decoder.d6.conve3.1.weight                                  |                      [32] |              32 | c1e74a07
+decoder.d6.conve3.1.bias                                    |                      [32] |              32 | 3924f63f
+decoder.d6.conve3.1.running_mean                            |                      [32] |              32 | d3638a27
+decoder.d6.conve3.1.running_var                             |                      [32] |              32 | 3e17ad53
+decoder.d6.conve3.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d6.conve3.2.weight                                  |                       [1] |               1 | 70980098
+decoder.d6.conve4.0.weight                                  |            [32, 33, 3, 3] |           9,504 | d560aab4
+decoder.d6.conve4.1.weight                                  |                      [32] |              32 | d0a2c572
+decoder.d6.conve4.1.bias                                    |                      [32] |              32 | 54f8e1f1
+decoder.d6.conve4.1.running_mean                            |                      [32] |              32 | 8cf2f63d
+decoder.d6.conve4.1.running_var                             |                      [32] |              32 | 1faf982d
+decoder.d6.conve4.1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+decoder.d6.conve4.2.weight                                  |                       [1] |               1 | fda596c3
+decoder.d6.edge1.weight                                     |             [1, 32, 3, 3] |             288 | 67a69e97
+decoder.d6.edge1.bias                                       |                       [1] |               1 | 86179bd1
+decoder.d6.edge2.weight                                     |             [1, 32, 3, 3] |             288 | 6b109a89
+decoder.d6.edge2.bias                                       |                       [1] |               1 | 5fdcdd05
+decoder.d6.convr.0.weight                                   |            [32, 64, 3, 3] |          18,432 | 63e76423
+decoder.d6.convr.1.weight                                   |                      [32] |              32 | b638277a
+decoder.d6.convr.1.bias                                     |                      [32] |              32 | 38723a2e
+decoder.d6.convr.1.running_mean                             |                      [32] |              32 | 38723a2e
+decoder.d6.convr.1.running_var                              |                      [32] |              32 | b638277a
+decoder.d6.convr.1.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d6.convr.2.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d6.convr.3.weight                                   |            [32, 32, 3, 3] |           9,216 | 45e42c33
+decoder.d6.convr.4.weight                                   |                      [32] |              32 | b638277a
+decoder.d6.convr.4.bias                                     |                      [32] |              32 | 38723a2e
+decoder.d6.convr.4.running_mean                             |                      [32] |              32 | 38723a2e
+decoder.d6.convr.4.running_var                              |                      [32] |              32 | b638277a
+decoder.d6.convr.4.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d6.convr.5.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d6.convr.6.weight                                   |            [32, 32, 3, 3] |           9,216 | e8d2230b
+decoder.d6.convr.7.weight                                   |                      [32] |              32 | b638277a
+decoder.d6.convr.7.bias                                     |                      [32] |              32 | 38723a2e
+decoder.d6.convr.7.running_mean                             |                      [32] |              32 | 38723a2e
+decoder.d6.convr.7.running_var                              |                      [32] |              32 | b638277a
+decoder.d6.convr.7.num_batches_tracked                      |                        [] |               1 | af5570f5
+decoder.d6.convr.8.weight                                   |                       [1] |               1 | 75e253f5
+decoder.d6.convr.9.weight                                   |             [1, 32, 3, 3] |             288 | 61d7558a
+decoder.d6.convr.9.bias                                     |                       [1] |               1 | df3f6198
+decoder.d6.branch1.0.weight                                 |            [32, 64, 3, 3] |          18,432 | cf3ba6d7
+decoder.d6.branch1.1.weight                                 |                      [32] |              32 | 41ddc0cc
+decoder.d6.branch1.1.bias                                   |                      [32] |              32 | 2f968088
+decoder.d6.branch1.1.running_mean                           |                      [32] |              32 | 0ae80a42
+decoder.d6.branch1.1.running_var                            |                      [32] |              32 | 63009a27
+decoder.d6.branch1.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d6.branch1.2.weight                                 |                       [1] |               1 | d5844947
+decoder.d6.branch2.0.weight                                 |            [32, 64, 3, 3] |          18,432 | c603a570
+decoder.d6.branch2.1.weight                                 |                      [32] |              32 | fd49774b
+decoder.d6.branch2.1.bias                                   |                      [32] |              32 | cbb04811
+decoder.d6.branch2.1.running_mean                           |                      [32] |              32 | 11fae325
+decoder.d6.branch2.1.running_var                            |                      [32] |              32 | 457c70f7
+decoder.d6.branch2.1.num_batches_tracked                    |                        [] |               1 | 76e9aa8a
+decoder.d6.branch2.2.weight                                 |                       [1] |               1 | bee3151e
+myFPSA.sqz512.0.weight                                      |           [32, 512, 3, 3] |         147,456 | ad4561b4
+myFPSA.sqz512.1.weight                                      |                      [32] |              32 | eee568c4
+myFPSA.sqz512.1.bias                                        |                      [32] |              32 | 28093544
+myFPSA.sqz512.1.running_mean                                |                      [32] |              32 | 4720f803
+myFPSA.sqz512.1.running_var                                 |                      [32] |              32 | f3d368d1
+myFPSA.sqz512.1.num_batches_tracked                         |                        [] |               1 | 76e9aa8a
+myFPSA.sqz512.2.weight                                      |                       [1] |               1 | 5903db54
+myFPSA.sqz256.0.weight                                      |           [32, 256, 3, 3] |          73,728 | 0332b8d3
+myFPSA.sqz256.1.weight                                      |                      [32] |              32 | 85d92b10
+myFPSA.sqz256.1.bias                                        |                      [32] |              32 | 295488c9
+myFPSA.sqz256.1.running_mean                                |                      [32] |              32 | c87b3b4e
+myFPSA.sqz256.1.running_var                                 |                      [32] |              32 | f14cd980
+myFPSA.sqz256.1.num_batches_tracked                         |                        [] |               1 | 76e9aa8a
+myFPSA.sqz256.2.weight                                      |                       [1] |               1 | d9e92caa
+myFPSA.sqz128.0.weight                                      |           [32, 128, 3, 3] |          36,864 | 1fdfbc65
+myFPSA.sqz128.1.weight                                      |                      [32] |              32 | cf99c135
+myFPSA.sqz128.1.bias                                        |                      [32] |              32 | 08a77fef
+myFPSA.sqz128.1.running_mean                                |                      [32] |              32 | 73ed0d21
+myFPSA.sqz128.1.running_var                                 |                      [32] |              32 | 58072c26
+myFPSA.sqz128.1.num_batches_tracked                         |                        [] |               1 | 76e9aa8a
+myFPSA.sqz128.2.weight                                      |                       [1] |               1 | 04dd1ae5
+myFPSA.sqz64.0.weight                                       |            [32, 64, 3, 3] |          18,432 | a9e01fa5
+myFPSA.sqz64.1.weight                                       |                      [32] |              32 | fdf75a51
+myFPSA.sqz64.1.bias                                         |                      [32] |              32 | 36fab3df
+myFPSA.sqz64.1.running_mean                                 |                      [32] |              32 | ed231b00
+myFPSA.sqz64.1.running_var                                  |                      [32] |              32 | b6d447b2
+myFPSA.sqz64.1.num_batches_tracked                          |                        [] |               1 | 76e9aa8a
+myFPSA.sqz64.2.weight                                       |                       [1] |               1 | 9c607c35
+myFPSA.sqz64_.0.weight                                      |            [32, 64, 3, 3] |          18,432 | 58c8d4f5
+myFPSA.sqz64_.1.weight                                      |                      [32] |              32 | b638277a
+myFPSA.sqz64_.1.bias                                        |                      [32] |              32 | 38723a2e
+myFPSA.sqz64_.1.running_mean                                |                      [32] |              32 | 38723a2e
+myFPSA.sqz64_.1.running_var                                 |                      [32] |              32 | b638277a
+myFPSA.sqz64_.1.num_batches_tracked                         |                        [] |               1 | af5570f5
+myFPSA.sqz64_.2.weight                                      |                       [1] |               1 | 75e253f5
+myFPSA.mhsa5.rel_h                                          |          [1, 4, 8, 1, 12] |             384 | e56c8942
+myFPSA.mhsa5.rel_w                                          |          [1, 4, 8, 12, 1] |             384 | 06dd8891
+myFPSA.mhsa5.query.weight                                   |            [32, 32, 1, 1] |           1,024 | c475c280
+myFPSA.mhsa5.query.bias                                     |                      [32] |              32 | 5a069733
+myFPSA.mhsa5.key.weight                                     |            [32, 32, 1, 1] |           1,024 | 7bc1dc1c
+myFPSA.mhsa5.key.bias                                       |                      [32] |              32 | 9f08a7f3
+myFPSA.mhsa5.value.weight                                   |            [32, 32, 1, 1] |           1,024 | 33c5a614
+myFPSA.mhsa5.value.bias                                     |                      [32] |              32 | 75e807c6
+myFPSA.daspp5_1.ASPP_3.asppconv.1.weight                    |           [128, 64, 1, 1] |           8,192 | 25edc84e
+myFPSA.daspp5_1.ASPP_3.asppconv.1.bias                      |                     [128] |             128 | e750880f
+myFPSA.daspp5_1.ASPP_3.asppconv.2.weight                    |                     [128] |             128 | 5dbbbc7a
+myFPSA.daspp5_1.ASPP_3.asppconv.2.bias                      |                     [128] |             128 | 6d85cc26
+myFPSA.daspp5_1.ASPP_3.asppconv.2.running_mean              |                     [128] |             128 | c3a7018a
+myFPSA.daspp5_1.ASPP_3.asppconv.2.running_var               |                     [128] |             128 | 36d2de1d
+myFPSA.daspp5_1.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_3.asppconv.4.weight                    |           [64, 128, 3, 3] |          73,728 | 77fc30ac
+myFPSA.daspp5_1.ASPP_3.asppconv.4.bias                      |                      [64] |              64 | b2fe65f9
+myFPSA.daspp5_1.ASPP_6.asppconv.0.weight                    |                     [128] |             128 | 93a0f3f4
+myFPSA.daspp5_1.ASPP_6.asppconv.0.bias                      |                     [128] |             128 | c68fe2b0
+myFPSA.daspp5_1.ASPP_6.asppconv.0.running_mean              |                     [128] |             128 | 9de91d3b
+myFPSA.daspp5_1.ASPP_6.asppconv.0.running_var               |                     [128] |             128 | d7735b31
+myFPSA.daspp5_1.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_6.asppconv.2.weight                    |          [128, 128, 1, 1] |          16,384 | 84d45c58
+myFPSA.daspp5_1.ASPP_6.asppconv.2.bias                      |                     [128] |             128 | f1ce6867
+myFPSA.daspp5_1.ASPP_6.asppconv.3.weight                    |                     [128] |             128 | 451b0b9f
+myFPSA.daspp5_1.ASPP_6.asppconv.3.bias                      |                     [128] |             128 | 5dd63360
+myFPSA.daspp5_1.ASPP_6.asppconv.3.running_mean              |                     [128] |             128 | d18edc04
+myFPSA.daspp5_1.ASPP_6.asppconv.3.running_var               |                     [128] |             128 | e8e52bde
+myFPSA.daspp5_1.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_6.asppconv.5.weight                    |           [64, 128, 3, 3] |          73,728 | bbf3e317
+myFPSA.daspp5_1.ASPP_6.asppconv.5.bias                      |                      [64] |              64 | 41b1e033
+myFPSA.daspp5_1.ASPP_12.asppconv.0.weight                   |                     [192] |             192 | d29f47da
+myFPSA.daspp5_1.ASPP_12.asppconv.0.bias                     |                     [192] |             192 | d4e505ed
+myFPSA.daspp5_1.ASPP_12.asppconv.0.running_mean             |                     [192] |             192 | 7059c293
+myFPSA.daspp5_1.ASPP_12.asppconv.0.running_var              |                     [192] |             192 | 5bd0bc53
+myFPSA.daspp5_1.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_12.asppconv.2.weight                   |          [128, 192, 1, 1] |          24,576 | 976cda7a
+myFPSA.daspp5_1.ASPP_12.asppconv.2.bias                     |                     [128] |             128 | 3bb0c461
+myFPSA.daspp5_1.ASPP_12.asppconv.3.weight                   |                     [128] |             128 | 8ee8aa5c
+myFPSA.daspp5_1.ASPP_12.asppconv.3.bias                     |                     [128] |             128 | 46e035cb
+myFPSA.daspp5_1.ASPP_12.asppconv.3.running_mean             |                     [128] |             128 | 72f6ebbc
+myFPSA.daspp5_1.ASPP_12.asppconv.3.running_var              |                     [128] |             128 | 3bbd6da1
+myFPSA.daspp5_1.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_12.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | f7000d6d
+myFPSA.daspp5_1.ASPP_12.asppconv.5.bias                     |                      [64] |              64 | 6ddc30d4
+myFPSA.daspp5_1.ASPP_18.asppconv.0.weight                   |                     [256] |             256 | b2609d94
+myFPSA.daspp5_1.ASPP_18.asppconv.0.bias                     |                     [256] |             256 | 7e466f28
+myFPSA.daspp5_1.ASPP_18.asppconv.0.running_mean             |                     [256] |             256 | 2c2a51f3
+myFPSA.daspp5_1.ASPP_18.asppconv.0.running_var              |                     [256] |             256 | cfde1e6d
+myFPSA.daspp5_1.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_18.asppconv.2.weight                   |          [128, 256, 1, 1] |          32,768 | a030f70d
+myFPSA.daspp5_1.ASPP_18.asppconv.2.bias                     |                     [128] |             128 | 9e0c8574
+myFPSA.daspp5_1.ASPP_18.asppconv.3.weight                   |                     [128] |             128 | 697e03a5
+myFPSA.daspp5_1.ASPP_18.asppconv.3.bias                     |                     [128] |             128 | fce326ca
+myFPSA.daspp5_1.ASPP_18.asppconv.3.running_mean             |                     [128] |             128 | 6e250e8c
+myFPSA.daspp5_1.ASPP_18.asppconv.3.running_var              |                     [128] |             128 | db3fb09b
+myFPSA.daspp5_1.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_18.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 0d506337
+myFPSA.daspp5_1.ASPP_18.asppconv.5.bias                     |                      [64] |              64 | 86a02d12
+myFPSA.daspp5_1.ASPP_24.asppconv.0.weight                   |                     [320] |             320 | 786b9f44
+myFPSA.daspp5_1.ASPP_24.asppconv.0.bias                     |                     [320] |             320 | 1e908874
+myFPSA.daspp5_1.ASPP_24.asppconv.0.running_mean             |                     [320] |             320 | 3f609dff
+myFPSA.daspp5_1.ASPP_24.asppconv.0.running_var              |                     [320] |             320 | 813732ab
+myFPSA.daspp5_1.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_24.asppconv.2.weight                   |          [128, 320, 1, 1] |          40,960 | 0c8ca55c
+myFPSA.daspp5_1.ASPP_24.asppconv.2.bias                     |                     [128] |             128 | c7f5c605
+myFPSA.daspp5_1.ASPP_24.asppconv.3.weight                   |                     [128] |             128 | 92f13886
+myFPSA.daspp5_1.ASPP_24.asppconv.3.bias                     |                     [128] |             128 | 90131bc1
+myFPSA.daspp5_1.ASPP_24.asppconv.3.running_mean             |                     [128] |             128 | 5ab6ad8e
+myFPSA.daspp5_1.ASPP_24.asppconv.3.running_var              |                     [128] |             128 | 713c9514
+myFPSA.daspp5_1.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp5_1.ASPP_24.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 90e7127a
+myFPSA.daspp5_1.ASPP_24.asppconv.5.bias                     |                      [64] |              64 | dc0ac000
+myFPSA.daspp5_1.classification.1.weight                     |           [64, 384, 1, 1] |          24,576 | 10ff2839
+myFPSA.daspp5_1.classification.1.bias                       |                      [64] |              64 | 9dc73c98
+myFPSA.selayer5.fc.0.weight                                 |                   [2, 32] |              64 | a7f9a929
+myFPSA.selayer5.fc.2.weight                                 |                   [32, 2] |              64 | 717efa47
+myFPSA.conv_se5.reduce.0.conv.weight                        |            [32, 64, 1, 1] |           2,048 | dbd74083
+myFPSA.conv_se5.reduce.0.bn.weight                          |                      [32] |              32 | 8fedf01b
+myFPSA.conv_se5.reduce.0.bn.bias                            |                      [32] |              32 | 15457564
+myFPSA.conv_se5.reduce.0.bn.running_mean                    |                      [32] |              32 | 207353b8
+myFPSA.conv_se5.reduce.0.bn.running_var                     |                      [32] |              32 | a3c92563
+myFPSA.conv_se5.reduce.0.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se5.reduce.1.conv.weight                        |            [32, 32, 3, 3] |           9,216 | 51fcaab5
+myFPSA.conv_se5.reduce.1.bn.weight                          |                      [32] |              32 | 5c479315
+myFPSA.conv_se5.reduce.1.bn.bias                            |                      [32] |              32 | 596a9b3c
+myFPSA.conv_se5.reduce.1.bn.running_mean                    |                      [32] |              32 | 5012b872
+myFPSA.conv_se5.reduce.1.bn.running_var                     |                      [32] |              32 | eab7ab2c
+myFPSA.conv_se5.reduce.1.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se5.reduce.2.conv.weight                        |            [32, 32, 3, 3] |           9,216 | b72996ca
+myFPSA.conv_se5.reduce.2.bn.weight                          |                      [32] |              32 | 8a70a8f0
+myFPSA.conv_se5.reduce.2.bn.bias                            |                      [32] |              32 | 827e504e
+myFPSA.conv_se5.reduce.2.bn.running_mean                    |                      [32] |              32 | c004e5e3
+myFPSA.conv_se5.reduce.2.bn.running_var                     |                      [32] |              32 | a7a726e1
+myFPSA.conv_se5.reduce.2.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.mhsa4.rel_h                                          |          [1, 4, 8, 1, 24] |             768 | 61fc0938
+myFPSA.mhsa4.rel_w                                          |          [1, 4, 8, 24, 1] |             768 | 0f733fea
+myFPSA.mhsa4.query.weight                                   |            [32, 32, 1, 1] |           1,024 | 24e67ac4
+myFPSA.mhsa4.query.bias                                     |                      [32] |              32 | 18dca6ef
+myFPSA.mhsa4.key.weight                                     |            [32, 32, 1, 1] |           1,024 | 9ef7962b
+myFPSA.mhsa4.key.bias                                       |                      [32] |              32 | 7fdb7039
+myFPSA.mhsa4.value.weight                                   |            [32, 32, 1, 1] |           1,024 | 1ae42ae8
+myFPSA.mhsa4.value.bias                                     |                      [32] |              32 | 9a2c97fd
+myFPSA.daspp4_1.ASPP_3.asppconv.1.weight                    |           [128, 64, 1, 1] |           8,192 | 815defb6
+myFPSA.daspp4_1.ASPP_3.asppconv.1.bias                      |                     [128] |             128 | fdf9599f
+myFPSA.daspp4_1.ASPP_3.asppconv.2.weight                    |                     [128] |             128 | a49187f3
+myFPSA.daspp4_1.ASPP_3.asppconv.2.bias                      |                     [128] |             128 | e1f97e11
+myFPSA.daspp4_1.ASPP_3.asppconv.2.running_mean              |                     [128] |             128 | 9bedcd69
+myFPSA.daspp4_1.ASPP_3.asppconv.2.running_var               |                     [128] |             128 | db822443
+myFPSA.daspp4_1.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_3.asppconv.4.weight                    |           [64, 128, 3, 3] |          73,728 | 7c2a2dd2
+myFPSA.daspp4_1.ASPP_3.asppconv.4.bias                      |                      [64] |              64 | 62040959
+myFPSA.daspp4_1.ASPP_6.asppconv.0.weight                    |                     [128] |             128 | f8dda123
+myFPSA.daspp4_1.ASPP_6.asppconv.0.bias                      |                     [128] |             128 | 6b45aca7
+myFPSA.daspp4_1.ASPP_6.asppconv.0.running_mean              |                     [128] |             128 | 55401a5d
+myFPSA.daspp4_1.ASPP_6.asppconv.0.running_var               |                     [128] |             128 | 62aca8a0
+myFPSA.daspp4_1.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_6.asppconv.2.weight                    |          [128, 128, 1, 1] |          16,384 | f0628beb
+myFPSA.daspp4_1.ASPP_6.asppconv.2.bias                      |                     [128] |             128 | e9aed456
+myFPSA.daspp4_1.ASPP_6.asppconv.3.weight                    |                     [128] |             128 | 1dcb53df
+myFPSA.daspp4_1.ASPP_6.asppconv.3.bias                      |                     [128] |             128 | b7035d1a
+myFPSA.daspp4_1.ASPP_6.asppconv.3.running_mean              |                     [128] |             128 | c1d05cbf
+myFPSA.daspp4_1.ASPP_6.asppconv.3.running_var               |                     [128] |             128 | 4fcc86d0
+myFPSA.daspp4_1.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_6.asppconv.5.weight                    |           [64, 128, 3, 3] |          73,728 | 6dca1ca7
+myFPSA.daspp4_1.ASPP_6.asppconv.5.bias                      |                      [64] |              64 | 6b83d2e2
+myFPSA.daspp4_1.ASPP_12.asppconv.0.weight                   |                     [192] |             192 | dd823a07
+myFPSA.daspp4_1.ASPP_12.asppconv.0.bias                     |                     [192] |             192 | 0fd02c88
+myFPSA.daspp4_1.ASPP_12.asppconv.0.running_mean             |                     [192] |             192 | 2e3d72aa
+myFPSA.daspp4_1.ASPP_12.asppconv.0.running_var              |                     [192] |             192 | 75982db8
+myFPSA.daspp4_1.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_12.asppconv.2.weight                   |          [128, 192, 1, 1] |          24,576 | 34e4a671
+myFPSA.daspp4_1.ASPP_12.asppconv.2.bias                     |                     [128] |             128 | 99180325
+myFPSA.daspp4_1.ASPP_12.asppconv.3.weight                   |                     [128] |             128 | 06e7325b
+myFPSA.daspp4_1.ASPP_12.asppconv.3.bias                     |                     [128] |             128 | d21d8776
+myFPSA.daspp4_1.ASPP_12.asppconv.3.running_mean             |                     [128] |             128 | da7f930f
+myFPSA.daspp4_1.ASPP_12.asppconv.3.running_var              |                     [128] |             128 | b3a19f04
+myFPSA.daspp4_1.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_12.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 6d82e602
+myFPSA.daspp4_1.ASPP_12.asppconv.5.bias                     |                      [64] |              64 | a06373a7
+myFPSA.daspp4_1.ASPP_18.asppconv.0.weight                   |                     [256] |             256 | 89c25f4d
+myFPSA.daspp4_1.ASPP_18.asppconv.0.bias                     |                     [256] |             256 | 7634d777
+myFPSA.daspp4_1.ASPP_18.asppconv.0.running_mean             |                     [256] |             256 | 3dfdedd9
+myFPSA.daspp4_1.ASPP_18.asppconv.0.running_var              |                     [256] |             256 | f97a98ee
+myFPSA.daspp4_1.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_18.asppconv.2.weight                   |          [128, 256, 1, 1] |          32,768 | 25043059
+myFPSA.daspp4_1.ASPP_18.asppconv.2.bias                     |                     [128] |             128 | 8685c309
+myFPSA.daspp4_1.ASPP_18.asppconv.3.weight                   |                     [128] |             128 | d543bca3
+myFPSA.daspp4_1.ASPP_18.asppconv.3.bias                     |                     [128] |             128 | 9eb9267b
+myFPSA.daspp4_1.ASPP_18.asppconv.3.running_mean             |                     [128] |             128 | 6aecad88
+myFPSA.daspp4_1.ASPP_18.asppconv.3.running_var              |                     [128] |             128 | b0366659
+myFPSA.daspp4_1.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_18.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 6340ef0c
+myFPSA.daspp4_1.ASPP_18.asppconv.5.bias                     |                      [64] |              64 | a1a87b3d
+myFPSA.daspp4_1.ASPP_24.asppconv.0.weight                   |                     [320] |             320 | afb3c319
+myFPSA.daspp4_1.ASPP_24.asppconv.0.bias                     |                     [320] |             320 | 13b03e1b
+myFPSA.daspp4_1.ASPP_24.asppconv.0.running_mean             |                     [320] |             320 | 76c7a84f
+myFPSA.daspp4_1.ASPP_24.asppconv.0.running_var              |                     [320] |             320 | b30dabfd
+myFPSA.daspp4_1.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_24.asppconv.2.weight                   |          [128, 320, 1, 1] |          40,960 | 1a34cc81
+myFPSA.daspp4_1.ASPP_24.asppconv.2.bias                     |                     [128] |             128 | 631c5090
+myFPSA.daspp4_1.ASPP_24.asppconv.3.weight                   |                     [128] |             128 | d2c04037
+myFPSA.daspp4_1.ASPP_24.asppconv.3.bias                     |                     [128] |             128 | c5b6a8fe
+myFPSA.daspp4_1.ASPP_24.asppconv.3.running_mean             |                     [128] |             128 | 86896dff
+myFPSA.daspp4_1.ASPP_24.asppconv.3.running_var              |                     [128] |             128 | be6e481a
+myFPSA.daspp4_1.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_1.ASPP_24.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | d01b3c63
+myFPSA.daspp4_1.ASPP_24.asppconv.5.bias                     |                      [64] |              64 | 2677ebc5
+myFPSA.daspp4_1.classification.1.weight                     |           [64, 384, 1, 1] |          24,576 | 8d92e947
+myFPSA.daspp4_1.classification.1.bias                       |                      [64] |              64 | 2d7cedde
+myFPSA.daspp4_2.ASPP_3.asppconv.1.weight                    |           [192, 96, 1, 1] |          18,432 | 3c80f759
+myFPSA.daspp4_2.ASPP_3.asppconv.1.bias                      |                     [192] |             192 | 629041bb
+myFPSA.daspp4_2.ASPP_3.asppconv.2.weight                    |                     [192] |             192 | af065119
+myFPSA.daspp4_2.ASPP_3.asppconv.2.bias                      |                     [192] |             192 | e1a90ef5
+myFPSA.daspp4_2.ASPP_3.asppconv.2.running_mean              |                     [192] |             192 | 80aaef63
+myFPSA.daspp4_2.ASPP_3.asppconv.2.running_var               |                     [192] |             192 | 72154910
+myFPSA.daspp4_2.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_3.asppconv.4.weight                    |           [96, 192, 3, 3] |         165,888 | 2dc6086d
+myFPSA.daspp4_2.ASPP_3.asppconv.4.bias                      |                      [96] |              96 | d3b32230
+myFPSA.daspp4_2.ASPP_6.asppconv.0.weight                    |                     [192] |             192 | f28ec823
+myFPSA.daspp4_2.ASPP_6.asppconv.0.bias                      |                     [192] |             192 | 33261e95
+myFPSA.daspp4_2.ASPP_6.asppconv.0.running_mean              |                     [192] |             192 | c55dcf60
+myFPSA.daspp4_2.ASPP_6.asppconv.0.running_var               |                     [192] |             192 | 5e0fe53b
+myFPSA.daspp4_2.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_6.asppconv.2.weight                    |          [192, 192, 1, 1] |          36,864 | 8a366a4d
+myFPSA.daspp4_2.ASPP_6.asppconv.2.bias                      |                     [192] |             192 | 994f0fc5
+myFPSA.daspp4_2.ASPP_6.asppconv.3.weight                    |                     [192] |             192 | 5df0b976
+myFPSA.daspp4_2.ASPP_6.asppconv.3.bias                      |                     [192] |             192 | c7a076a6
+myFPSA.daspp4_2.ASPP_6.asppconv.3.running_mean              |                     [192] |             192 | 8ea7a57f
+myFPSA.daspp4_2.ASPP_6.asppconv.3.running_var               |                     [192] |             192 | 1f92e91c
+myFPSA.daspp4_2.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_6.asppconv.5.weight                    |           [96, 192, 3, 3] |         165,888 | fd42b36b
+myFPSA.daspp4_2.ASPP_6.asppconv.5.bias                      |                      [96] |              96 | de0042aa
+myFPSA.daspp4_2.ASPP_12.asppconv.0.weight                   |                     [288] |             288 | dd47b77c
+myFPSA.daspp4_2.ASPP_12.asppconv.0.bias                     |                     [288] |             288 | 87e2ee0f
+myFPSA.daspp4_2.ASPP_12.asppconv.0.running_mean             |                     [288] |             288 | 7db8b6be
+myFPSA.daspp4_2.ASPP_12.asppconv.0.running_var              |                     [288] |             288 | b672132f
+myFPSA.daspp4_2.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_12.asppconv.2.weight                   |          [192, 288, 1, 1] |          55,296 | 0351a3b0
+myFPSA.daspp4_2.ASPP_12.asppconv.2.bias                     |                     [192] |             192 | ba499d12
+myFPSA.daspp4_2.ASPP_12.asppconv.3.weight                   |                     [192] |             192 | fc45a2b9
+myFPSA.daspp4_2.ASPP_12.asppconv.3.bias                     |                     [192] |             192 | ae34aeeb
+myFPSA.daspp4_2.ASPP_12.asppconv.3.running_mean             |                     [192] |             192 | ad66051b
+myFPSA.daspp4_2.ASPP_12.asppconv.3.running_var              |                     [192] |             192 | 6ea07f4d
+myFPSA.daspp4_2.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_12.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 9e62ec54
+myFPSA.daspp4_2.ASPP_12.asppconv.5.bias                     |                      [96] |              96 | 256d056e
+myFPSA.daspp4_2.ASPP_18.asppconv.0.weight                   |                     [384] |             384 | 557388f4
+myFPSA.daspp4_2.ASPP_18.asppconv.0.bias                     |                     [384] |             384 | e16b4ba1
+myFPSA.daspp4_2.ASPP_18.asppconv.0.running_mean             |                     [384] |             384 | 1c0c76f0
+myFPSA.daspp4_2.ASPP_18.asppconv.0.running_var              |                     [384] |             384 | 943e200a
+myFPSA.daspp4_2.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_18.asppconv.2.weight                   |          [192, 384, 1, 1] |          73,728 | df6a4c42
+myFPSA.daspp4_2.ASPP_18.asppconv.2.bias                     |                     [192] |             192 | 2bdf262d
+myFPSA.daspp4_2.ASPP_18.asppconv.3.weight                   |                     [192] |             192 | b86001dd
+myFPSA.daspp4_2.ASPP_18.asppconv.3.bias                     |                     [192] |             192 | e48645c5
+myFPSA.daspp4_2.ASPP_18.asppconv.3.running_mean             |                     [192] |             192 | b98a612f
+myFPSA.daspp4_2.ASPP_18.asppconv.3.running_var              |                     [192] |             192 | 273a4a6e
+myFPSA.daspp4_2.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_18.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 7fdc7817
+myFPSA.daspp4_2.ASPP_18.asppconv.5.bias                     |                      [96] |              96 | 397ff156
+myFPSA.daspp4_2.ASPP_24.asppconv.0.weight                   |                     [480] |             480 | 377fe91d
+myFPSA.daspp4_2.ASPP_24.asppconv.0.bias                     |                     [480] |             480 | 646aab6a
+myFPSA.daspp4_2.ASPP_24.asppconv.0.running_mean             |                     [480] |             480 | 003e7e03
+myFPSA.daspp4_2.ASPP_24.asppconv.0.running_var              |                     [480] |             480 | 7c823166
+myFPSA.daspp4_2.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_24.asppconv.2.weight                   |          [192, 480, 1, 1] |          92,160 | 544e35c7
+myFPSA.daspp4_2.ASPP_24.asppconv.2.bias                     |                     [192] |             192 | dbcd0348
+myFPSA.daspp4_2.ASPP_24.asppconv.3.weight                   |                     [192] |             192 | a9e3f2ba
+myFPSA.daspp4_2.ASPP_24.asppconv.3.bias                     |                     [192] |             192 | 1158c505
+myFPSA.daspp4_2.ASPP_24.asppconv.3.running_mean             |                     [192] |             192 | adf7c28e
+myFPSA.daspp4_2.ASPP_24.asppconv.3.running_var              |                     [192] |             192 | 4f4dab88
+myFPSA.daspp4_2.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp4_2.ASPP_24.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | dda97139
+myFPSA.daspp4_2.ASPP_24.asppconv.5.bias                     |                      [96] |              96 | bddf0141
+myFPSA.daspp4_2.classification.1.weight                     |           [96, 576, 1, 1] |          55,296 | 2c4ef099
+myFPSA.daspp4_2.classification.1.bias                       |                      [96] |              96 | 89ef6eca
+myFPSA.selayer4.fc.0.weight                                 |                   [2, 32] |              64 | b43e49e5
+myFPSA.selayer4.fc.2.weight                                 |                   [32, 2] |              64 | 17d543bb
+myFPSA.conv_se4.reduce.0.conv.weight                        |            [32, 96, 1, 1] |           3,072 | 1b07c90a
+myFPSA.conv_se4.reduce.0.bn.weight                          |                      [32] |              32 | 34167b8e
+myFPSA.conv_se4.reduce.0.bn.bias                            |                      [32] |              32 | fc1ed350
+myFPSA.conv_se4.reduce.0.bn.running_mean                    |                      [32] |              32 | 9c427d73
+myFPSA.conv_se4.reduce.0.bn.running_var                     |                      [32] |              32 | efbec76e
+myFPSA.conv_se4.reduce.0.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se4.reduce.1.conv.weight                        |            [32, 32, 3, 3] |           9,216 | fcb6bac1
+myFPSA.conv_se4.reduce.1.bn.weight                          |                      [32] |              32 | 6207fead
+myFPSA.conv_se4.reduce.1.bn.bias                            |                      [32] |              32 | 5c16817a
+myFPSA.conv_se4.reduce.1.bn.running_mean                    |                      [32] |              32 | 8c6e27f3
+myFPSA.conv_se4.reduce.1.bn.running_var                     |                      [32] |              32 | 8f22c0e7
+myFPSA.conv_se4.reduce.1.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se4.reduce.2.conv.weight                        |            [32, 32, 3, 3] |           9,216 | f4a4ef6a
+myFPSA.conv_se4.reduce.2.bn.weight                          |                      [32] |              32 | 30577bf8
+myFPSA.conv_se4.reduce.2.bn.bias                            |                      [32] |              32 | c0120a4e
+myFPSA.conv_se4.reduce.2.bn.running_mean                    |                      [32] |              32 | e7d4c8df
+myFPSA.conv_se4.reduce.2.bn.running_var                     |                      [32] |              32 | 70145f57
+myFPSA.conv_se4.reduce.2.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.mhsa3.rel_h                                          |          [1, 4, 8, 1, 48] |           1,536 | 64631c56
+myFPSA.mhsa3.rel_w                                          |          [1, 4, 8, 48, 1] |           1,536 | 5d49a893
+myFPSA.mhsa3.query.weight                                   |            [32, 32, 1, 1] |           1,024 | de8669a3
+myFPSA.mhsa3.query.bias                                     |                      [32] |              32 | 424e971a
+myFPSA.mhsa3.key.weight                                     |            [32, 32, 1, 1] |           1,024 | b651d0a2
+myFPSA.mhsa3.key.bias                                       |                      [32] |              32 | b27c9cbd
+myFPSA.mhsa3.value.weight                                   |            [32, 32, 1, 1] |           1,024 | 0fc01291
+myFPSA.mhsa3.value.bias                                     |                      [32] |              32 | 9feef21e
+myFPSA.daspp3_1.ASPP_3.asppconv.1.weight                    |           [128, 64, 1, 1] |           8,192 | 4df452b2
+myFPSA.daspp3_1.ASPP_3.asppconv.1.bias                      |                     [128] |             128 | 156067ba
+myFPSA.daspp3_1.ASPP_3.asppconv.2.weight                    |                     [128] |             128 | 34a359e9
+myFPSA.daspp3_1.ASPP_3.asppconv.2.bias                      |                     [128] |             128 | 6a2e07dc
+myFPSA.daspp3_1.ASPP_3.asppconv.2.running_mean              |                     [128] |             128 | d8d5f5f3
+myFPSA.daspp3_1.ASPP_3.asppconv.2.running_var               |                     [128] |             128 | 1f9378e9
+myFPSA.daspp3_1.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_3.asppconv.4.weight                    |           [64, 128, 3, 3] |          73,728 | 1aff0cb8
+myFPSA.daspp3_1.ASPP_3.asppconv.4.bias                      |                      [64] |              64 | 4784fe72
+myFPSA.daspp3_1.ASPP_6.asppconv.0.weight                    |                     [128] |             128 | 10cc941a
+myFPSA.daspp3_1.ASPP_6.asppconv.0.bias                      |                     [128] |             128 | 3057da24
+myFPSA.daspp3_1.ASPP_6.asppconv.0.running_mean              |                     [128] |             128 | dddadfc2
+myFPSA.daspp3_1.ASPP_6.asppconv.0.running_var               |                     [128] |             128 | 142aa090
+myFPSA.daspp3_1.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_6.asppconv.2.weight                    |          [128, 128, 1, 1] |          16,384 | 234ca72b
+myFPSA.daspp3_1.ASPP_6.asppconv.2.bias                      |                     [128] |             128 | 94a8294f
+myFPSA.daspp3_1.ASPP_6.asppconv.3.weight                    |                     [128] |             128 | d301f7bd
+myFPSA.daspp3_1.ASPP_6.asppconv.3.bias                      |                     [128] |             128 | d55f495f
+myFPSA.daspp3_1.ASPP_6.asppconv.3.running_mean              |                     [128] |             128 | fe01a05c
+myFPSA.daspp3_1.ASPP_6.asppconv.3.running_var               |                     [128] |             128 | 40237020
+myFPSA.daspp3_1.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_6.asppconv.5.weight                    |           [64, 128, 3, 3] |          73,728 | 6c4f441e
+myFPSA.daspp3_1.ASPP_6.asppconv.5.bias                      |                      [64] |              64 | 0c0370fd
+myFPSA.daspp3_1.ASPP_12.asppconv.0.weight                   |                     [192] |             192 | ea3efd7b
+myFPSA.daspp3_1.ASPP_12.asppconv.0.bias                     |                     [192] |             192 | 667b3ad1
+myFPSA.daspp3_1.ASPP_12.asppconv.0.running_mean             |                     [192] |             192 | d4218df0
+myFPSA.daspp3_1.ASPP_12.asppconv.0.running_var              |                     [192] |             192 | 55485497
+myFPSA.daspp3_1.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_12.asppconv.2.weight                   |          [128, 192, 1, 1] |          24,576 | f00adcb7
+myFPSA.daspp3_1.ASPP_12.asppconv.2.bias                     |                     [128] |             128 | d9c893f8
+myFPSA.daspp3_1.ASPP_12.asppconv.3.weight                   |                     [128] |             128 | 9e283eec
+myFPSA.daspp3_1.ASPP_12.asppconv.3.bias                     |                     [128] |             128 | 5f985da5
+myFPSA.daspp3_1.ASPP_12.asppconv.3.running_mean             |                     [128] |             128 | 219b21d6
+myFPSA.daspp3_1.ASPP_12.asppconv.3.running_var              |                     [128] |             128 | 9f404077
+myFPSA.daspp3_1.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_12.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 1efeb2aa
+myFPSA.daspp3_1.ASPP_12.asppconv.5.bias                     |                      [64] |              64 | 6a39982b
+myFPSA.daspp3_1.ASPP_18.asppconv.0.weight                   |                     [256] |             256 | 27325a2c
+myFPSA.daspp3_1.ASPP_18.asppconv.0.bias                     |                     [256] |             256 | 4c0f84b4
+myFPSA.daspp3_1.ASPP_18.asppconv.0.running_mean             |                     [256] |             256 | 165d0b12
+myFPSA.daspp3_1.ASPP_18.asppconv.0.running_var              |                     [256] |             256 | 4f1185ea
+myFPSA.daspp3_1.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_18.asppconv.2.weight                   |          [128, 256, 1, 1] |          32,768 | db931de3
+myFPSA.daspp3_1.ASPP_18.asppconv.2.bias                     |                     [128] |             128 | 68123cad
+myFPSA.daspp3_1.ASPP_18.asppconv.3.weight                   |                     [128] |             128 | dcf1410c
+myFPSA.daspp3_1.ASPP_18.asppconv.3.bias                     |                     [128] |             128 | a3bbd19f
+myFPSA.daspp3_1.ASPP_18.asppconv.3.running_mean             |                     [128] |             128 | 7ff0f1a8
+myFPSA.daspp3_1.ASPP_18.asppconv.3.running_var              |                     [128] |             128 | 38bbaa53
+myFPSA.daspp3_1.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_18.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 8b0fa0c3
+myFPSA.daspp3_1.ASPP_18.asppconv.5.bias                     |                      [64] |              64 | 2a2c2143
+myFPSA.daspp3_1.ASPP_24.asppconv.0.weight                   |                     [320] |             320 | 0299e807
+myFPSA.daspp3_1.ASPP_24.asppconv.0.bias                     |                     [320] |             320 | 74569044
+myFPSA.daspp3_1.ASPP_24.asppconv.0.running_mean             |                     [320] |             320 | 2fa52b25
+myFPSA.daspp3_1.ASPP_24.asppconv.0.running_var              |                     [320] |             320 | 5603fb0c
+myFPSA.daspp3_1.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_24.asppconv.2.weight                   |          [128, 320, 1, 1] |          40,960 | 4b2df90e
+myFPSA.daspp3_1.ASPP_24.asppconv.2.bias                     |                     [128] |             128 | 26e77831
+myFPSA.daspp3_1.ASPP_24.asppconv.3.weight                   |                     [128] |             128 | 0ac6c156
+myFPSA.daspp3_1.ASPP_24.asppconv.3.bias                     |                     [128] |             128 | b182d398
+myFPSA.daspp3_1.ASPP_24.asppconv.3.running_mean             |                     [128] |             128 | 80634017
+myFPSA.daspp3_1.ASPP_24.asppconv.3.running_var              |                     [128] |             128 | 53808c5b
+myFPSA.daspp3_1.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_1.ASPP_24.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 595cd02e
+myFPSA.daspp3_1.ASPP_24.asppconv.5.bias                     |                      [64] |              64 | 338841c0
+myFPSA.daspp3_1.classification.1.weight                     |           [64, 384, 1, 1] |          24,576 | 735095be
+myFPSA.daspp3_1.classification.1.bias                       |                      [64] |              64 | af7d7059
+myFPSA.daspp3_2.ASPP_3.asppconv.1.weight                    |           [192, 96, 1, 1] |          18,432 | 5d98c020
+myFPSA.daspp3_2.ASPP_3.asppconv.1.bias                      |                     [192] |             192 | d90de542
+myFPSA.daspp3_2.ASPP_3.asppconv.2.weight                    |                     [192] |             192 | f37095d5
+myFPSA.daspp3_2.ASPP_3.asppconv.2.bias                      |                     [192] |             192 | 05519141
+myFPSA.daspp3_2.ASPP_3.asppconv.2.running_mean              |                     [192] |             192 | 2e9b527d
+myFPSA.daspp3_2.ASPP_3.asppconv.2.running_var               |                     [192] |             192 | 60d8d742
+myFPSA.daspp3_2.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_3.asppconv.4.weight                    |           [96, 192, 3, 3] |         165,888 | 590b6441
+myFPSA.daspp3_2.ASPP_3.asppconv.4.bias                      |                      [96] |              96 | 4b4fb0f7
+myFPSA.daspp3_2.ASPP_6.asppconv.0.weight                    |                     [192] |             192 | 6ba21ea8
+myFPSA.daspp3_2.ASPP_6.asppconv.0.bias                      |                     [192] |             192 | a3e39d13
+myFPSA.daspp3_2.ASPP_6.asppconv.0.running_mean              |                     [192] |             192 | 907d3275
+myFPSA.daspp3_2.ASPP_6.asppconv.0.running_var               |                     [192] |             192 | cb6b8307
+myFPSA.daspp3_2.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_6.asppconv.2.weight                    |          [192, 192, 1, 1] |          36,864 | 3c024c0e
+myFPSA.daspp3_2.ASPP_6.asppconv.2.bias                      |                     [192] |             192 | 9a26013e
+myFPSA.daspp3_2.ASPP_6.asppconv.3.weight                    |                     [192] |             192 | 2903c88b
+myFPSA.daspp3_2.ASPP_6.asppconv.3.bias                      |                     [192] |             192 | b29a0bc3
+myFPSA.daspp3_2.ASPP_6.asppconv.3.running_mean              |                     [192] |             192 | 597a5d20
+myFPSA.daspp3_2.ASPP_6.asppconv.3.running_var               |                     [192] |             192 | 740ac87f
+myFPSA.daspp3_2.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_6.asppconv.5.weight                    |           [96, 192, 3, 3] |         165,888 | f4cf6492
+myFPSA.daspp3_2.ASPP_6.asppconv.5.bias                      |                      [96] |              96 | 43cda476
+myFPSA.daspp3_2.ASPP_12.asppconv.0.weight                   |                     [288] |             288 | 29bc3c2d
+myFPSA.daspp3_2.ASPP_12.asppconv.0.bias                     |                     [288] |             288 | c23ba6f0
+myFPSA.daspp3_2.ASPP_12.asppconv.0.running_mean             |                     [288] |             288 | 6e54d7f5
+myFPSA.daspp3_2.ASPP_12.asppconv.0.running_var              |                     [288] |             288 | 23b4171d
+myFPSA.daspp3_2.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_12.asppconv.2.weight                   |          [192, 288, 1, 1] |          55,296 | 4e797463
+myFPSA.daspp3_2.ASPP_12.asppconv.2.bias                     |                     [192] |             192 | 81f1c68c
+myFPSA.daspp3_2.ASPP_12.asppconv.3.weight                   |                     [192] |             192 | 591119f9
+myFPSA.daspp3_2.ASPP_12.asppconv.3.bias                     |                     [192] |             192 | 712a13ba
+myFPSA.daspp3_2.ASPP_12.asppconv.3.running_mean             |                     [192] |             192 | 11faa939
+myFPSA.daspp3_2.ASPP_12.asppconv.3.running_var              |                     [192] |             192 | 8d90a95f
+myFPSA.daspp3_2.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_12.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 5e306bc7
+myFPSA.daspp3_2.ASPP_12.asppconv.5.bias                     |                      [96] |              96 | 1e49f6d1
+myFPSA.daspp3_2.ASPP_18.asppconv.0.weight                   |                     [384] |             384 | 4dcada03
+myFPSA.daspp3_2.ASPP_18.asppconv.0.bias                     |                     [384] |             384 | 30d000b5
+myFPSA.daspp3_2.ASPP_18.asppconv.0.running_mean             |                     [384] |             384 | eadb718b
+myFPSA.daspp3_2.ASPP_18.asppconv.0.running_var              |                     [384] |             384 | 533a555b
+myFPSA.daspp3_2.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_18.asppconv.2.weight                   |          [192, 384, 1, 1] |          73,728 | 59b3dec5
+myFPSA.daspp3_2.ASPP_18.asppconv.2.bias                     |                     [192] |             192 | 912e0792
+myFPSA.daspp3_2.ASPP_18.asppconv.3.weight                   |                     [192] |             192 | 45e9bad9
+myFPSA.daspp3_2.ASPP_18.asppconv.3.bias                     |                     [192] |             192 | 1b22531b
+myFPSA.daspp3_2.ASPP_18.asppconv.3.running_mean             |                     [192] |             192 | 276348d4
+myFPSA.daspp3_2.ASPP_18.asppconv.3.running_var              |                     [192] |             192 | 7700ea4d
+myFPSA.daspp3_2.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_18.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 21d240ae
+myFPSA.daspp3_2.ASPP_18.asppconv.5.bias                     |                      [96] |              96 | b07fb925
+myFPSA.daspp3_2.ASPP_24.asppconv.0.weight                   |                     [480] |             480 | 194d51c7
+myFPSA.daspp3_2.ASPP_24.asppconv.0.bias                     |                     [480] |             480 | 96ea22d7
+myFPSA.daspp3_2.ASPP_24.asppconv.0.running_mean             |                     [480] |             480 | e62dcaa3
+myFPSA.daspp3_2.ASPP_24.asppconv.0.running_var              |                     [480] |             480 | 9cbc76f7
+myFPSA.daspp3_2.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_24.asppconv.2.weight                   |          [192, 480, 1, 1] |          92,160 | cf1ba9ce
+myFPSA.daspp3_2.ASPP_24.asppconv.2.bias                     |                     [192] |             192 | 2c710ee2
+myFPSA.daspp3_2.ASPP_24.asppconv.3.weight                   |                     [192] |             192 | 352261db
+myFPSA.daspp3_2.ASPP_24.asppconv.3.bias                     |                     [192] |             192 | aeb9876a
+myFPSA.daspp3_2.ASPP_24.asppconv.3.running_mean             |                     [192] |             192 | d1a47b6d
+myFPSA.daspp3_2.ASPP_24.asppconv.3.running_var              |                     [192] |             192 | 2146c26d
+myFPSA.daspp3_2.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp3_2.ASPP_24.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 3a516ea1
+myFPSA.daspp3_2.ASPP_24.asppconv.5.bias                     |                      [96] |              96 | 1856c79c
+myFPSA.daspp3_2.classification.1.weight                     |           [96, 576, 1, 1] |          55,296 | 16e7eb18
+myFPSA.daspp3_2.classification.1.bias                       |                      [96] |              96 | 91a09f63
+myFPSA.selayer3.fc.0.weight                                 |                   [2, 32] |              64 | 9f063a49
+myFPSA.selayer3.fc.2.weight                                 |                   [32, 2] |              64 | bb755dc7
+myFPSA.conv_se3.reduce.0.conv.weight                        |            [32, 96, 1, 1] |           3,072 | f76f9862
+myFPSA.conv_se3.reduce.0.bn.weight                          |                      [32] |              32 | a69199a3
+myFPSA.conv_se3.reduce.0.bn.bias                            |                      [32] |              32 | 8c98bf1e
+myFPSA.conv_se3.reduce.0.bn.running_mean                    |                      [32] |              32 | 328c39cc
+myFPSA.conv_se3.reduce.0.bn.running_var                     |                      [32] |              32 | eb7462b9
+myFPSA.conv_se3.reduce.0.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se3.reduce.1.conv.weight                        |            [32, 32, 3, 3] |           9,216 | 58122e00
+myFPSA.conv_se3.reduce.1.bn.weight                          |                      [32] |              32 | 90889622
+myFPSA.conv_se3.reduce.1.bn.bias                            |                      [32] |              32 | e3443c5a
+myFPSA.conv_se3.reduce.1.bn.running_mean                    |                      [32] |              32 | 1c1e9f84
+myFPSA.conv_se3.reduce.1.bn.running_var                     |                      [32] |              32 | 54e4470f
+myFPSA.conv_se3.reduce.1.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se3.reduce.2.conv.weight                        |            [32, 32, 3, 3] |           9,216 | 388db12c
+myFPSA.conv_se3.reduce.2.bn.weight                          |                      [32] |              32 | 376791e7
+myFPSA.conv_se3.reduce.2.bn.bias                            |                      [32] |              32 | 8d2bc97f
+myFPSA.conv_se3.reduce.2.bn.running_mean                    |                      [32] |              32 | 84bd4238
+myFPSA.conv_se3.reduce.2.bn.running_var                     |                      [32] |              32 | 6c7a1cae
+myFPSA.conv_se3.reduce.2.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.mhsa2.rel_h                                          |          [1, 4, 8, 1, 48] |           1,536 | db4facbe
+myFPSA.mhsa2.rel_w                                          |          [1, 4, 8, 48, 1] |           1,536 | 847c50fc
+myFPSA.mhsa2.query.weight                                   |            [32, 32, 1, 1] |           1,024 | 622e2029
+myFPSA.mhsa2.query.bias                                     |                      [32] |              32 | 3e541501
+myFPSA.mhsa2.key.weight                                     |            [32, 32, 1, 1] |           1,024 | 258a2974
+myFPSA.mhsa2.key.bias                                       |                      [32] |              32 | 8f5fca17
+myFPSA.mhsa2.value.weight                                   |            [32, 32, 1, 1] |           1,024 | d2153916
+myFPSA.mhsa2.value.bias                                     |                      [32] |              32 | 469b634b
+myFPSA.daspp2_1.ASPP_3.asppconv.1.weight                    |           [128, 64, 1, 1] |           8,192 | 80f9e582
+myFPSA.daspp2_1.ASPP_3.asppconv.1.bias                      |                     [128] |             128 | 32aab0e6
+myFPSA.daspp2_1.ASPP_3.asppconv.2.weight                    |                     [128] |             128 | e2c23a67
+myFPSA.daspp2_1.ASPP_3.asppconv.2.bias                      |                     [128] |             128 | ee811478
+myFPSA.daspp2_1.ASPP_3.asppconv.2.running_mean              |                     [128] |             128 | 17243e9d
+myFPSA.daspp2_1.ASPP_3.asppconv.2.running_var               |                     [128] |             128 | 55e99f09
+myFPSA.daspp2_1.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_3.asppconv.4.weight                    |           [64, 128, 3, 3] |          73,728 | af9bc7c8
+myFPSA.daspp2_1.ASPP_3.asppconv.4.bias                      |                      [64] |              64 | dc543faf
+myFPSA.daspp2_1.ASPP_6.asppconv.0.weight                    |                     [128] |             128 | e6abc455
+myFPSA.daspp2_1.ASPP_6.asppconv.0.bias                      |                     [128] |             128 | cd6d8177
+myFPSA.daspp2_1.ASPP_6.asppconv.0.running_mean              |                     [128] |             128 | 611300ef
+myFPSA.daspp2_1.ASPP_6.asppconv.0.running_var               |                     [128] |             128 | 616e8f3e
+myFPSA.daspp2_1.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_6.asppconv.2.weight                    |          [128, 128, 1, 1] |          16,384 | a5423970
+myFPSA.daspp2_1.ASPP_6.asppconv.2.bias                      |                     [128] |             128 | cfdde79a
+myFPSA.daspp2_1.ASPP_6.asppconv.3.weight                    |                     [128] |             128 | 47759a24
+myFPSA.daspp2_1.ASPP_6.asppconv.3.bias                      |                     [128] |             128 | f75ed4c9
+myFPSA.daspp2_1.ASPP_6.asppconv.3.running_mean              |                     [128] |             128 | 0f01237c
+myFPSA.daspp2_1.ASPP_6.asppconv.3.running_var               |                     [128] |             128 | df5d8686
+myFPSA.daspp2_1.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_6.asppconv.5.weight                    |           [64, 128, 3, 3] |          73,728 | d2a994a8
+myFPSA.daspp2_1.ASPP_6.asppconv.5.bias                      |                      [64] |              64 | f08c12e3
+myFPSA.daspp2_1.ASPP_12.asppconv.0.weight                   |                     [192] |             192 | 7bb40ffe
+myFPSA.daspp2_1.ASPP_12.asppconv.0.bias                     |                     [192] |             192 | 8f58f262
+myFPSA.daspp2_1.ASPP_12.asppconv.0.running_mean             |                     [192] |             192 | 9a33b697
+myFPSA.daspp2_1.ASPP_12.asppconv.0.running_var              |                     [192] |             192 | 3553e01b
+myFPSA.daspp2_1.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_12.asppconv.2.weight                   |          [128, 192, 1, 1] |          24,576 | e8c8ad63
+myFPSA.daspp2_1.ASPP_12.asppconv.2.bias                     |                     [128] |             128 | d04256d9
+myFPSA.daspp2_1.ASPP_12.asppconv.3.weight                   |                     [128] |             128 | 70ea9f21
+myFPSA.daspp2_1.ASPP_12.asppconv.3.bias                     |                     [128] |             128 | 4cdd655c
+myFPSA.daspp2_1.ASPP_12.asppconv.3.running_mean             |                     [128] |             128 | 32662f76
+myFPSA.daspp2_1.ASPP_12.asppconv.3.running_var              |                     [128] |             128 | 50cbfa02
+myFPSA.daspp2_1.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_12.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 21400465
+myFPSA.daspp2_1.ASPP_12.asppconv.5.bias                     |                      [64] |              64 | eacb2d3f
+myFPSA.daspp2_1.ASPP_18.asppconv.0.weight                   |                     [256] |             256 | dc42b2a0
+myFPSA.daspp2_1.ASPP_18.asppconv.0.bias                     |                     [256] |             256 | d75541c1
+myFPSA.daspp2_1.ASPP_18.asppconv.0.running_mean             |                     [256] |             256 | 0b8b0954
+myFPSA.daspp2_1.ASPP_18.asppconv.0.running_var              |                     [256] |             256 | 2a944219
+myFPSA.daspp2_1.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_18.asppconv.2.weight                   |          [128, 256, 1, 1] |          32,768 | 1c8feace
+myFPSA.daspp2_1.ASPP_18.asppconv.2.bias                     |                     [128] |             128 | cc30b88e
+myFPSA.daspp2_1.ASPP_18.asppconv.3.weight                   |                     [128] |             128 | d66427bf
+myFPSA.daspp2_1.ASPP_18.asppconv.3.bias                     |                     [128] |             128 | 1be1f2bb
+myFPSA.daspp2_1.ASPP_18.asppconv.3.running_mean             |                     [128] |             128 | c546a001
+myFPSA.daspp2_1.ASPP_18.asppconv.3.running_var              |                     [128] |             128 | 4fe1365c
+myFPSA.daspp2_1.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_18.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | de0aada5
+myFPSA.daspp2_1.ASPP_18.asppconv.5.bias                     |                      [64] |              64 | 2fddc2a3
+myFPSA.daspp2_1.ASPP_24.asppconv.0.weight                   |                     [320] |             320 | dc7800d5
+myFPSA.daspp2_1.ASPP_24.asppconv.0.bias                     |                     [320] |             320 | 0ec0a49c
+myFPSA.daspp2_1.ASPP_24.asppconv.0.running_mean             |                     [320] |             320 | 3cf8fca5
+myFPSA.daspp2_1.ASPP_24.asppconv.0.running_var              |                     [320] |             320 | 8d8d8664
+myFPSA.daspp2_1.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_24.asppconv.2.weight                   |          [128, 320, 1, 1] |          40,960 | d4db41e4
+myFPSA.daspp2_1.ASPP_24.asppconv.2.bias                     |                     [128] |             128 | 6b2fd924
+myFPSA.daspp2_1.ASPP_24.asppconv.3.weight                   |                     [128] |             128 | f8f2e211
+myFPSA.daspp2_1.ASPP_24.asppconv.3.bias                     |                     [128] |             128 | 211b6998
+myFPSA.daspp2_1.ASPP_24.asppconv.3.running_mean             |                     [128] |             128 | dbc83c41
+myFPSA.daspp2_1.ASPP_24.asppconv.3.running_var              |                     [128] |             128 | 0c33e3fe
+myFPSA.daspp2_1.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_1.ASPP_24.asppconv.5.weight                   |           [64, 128, 3, 3] |          73,728 | 6a0341a6
+myFPSA.daspp2_1.ASPP_24.asppconv.5.bias                     |                      [64] |              64 | 2b75d09f
+myFPSA.daspp2_1.classification.1.weight                     |           [64, 384, 1, 1] |          24,576 | ff9295fe
+myFPSA.daspp2_1.classification.1.bias                       |                      [64] |              64 | ae7485ff
+myFPSA.daspp2_2.ASPP_3.asppconv.1.weight                    |           [192, 96, 1, 1] |          18,432 | 7c8f94ef
+myFPSA.daspp2_2.ASPP_3.asppconv.1.bias                      |                     [192] |             192 | 9b7f18df
+myFPSA.daspp2_2.ASPP_3.asppconv.2.weight                    |                     [192] |             192 | 6048fed1
+myFPSA.daspp2_2.ASPP_3.asppconv.2.bias                      |                     [192] |             192 | c02b77af
+myFPSA.daspp2_2.ASPP_3.asppconv.2.running_mean              |                     [192] |             192 | 768dd81d
+myFPSA.daspp2_2.ASPP_3.asppconv.2.running_var               |                     [192] |             192 | b0579107
+myFPSA.daspp2_2.ASPP_3.asppconv.2.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_3.asppconv.4.weight                    |           [96, 192, 3, 3] |         165,888 | 4f83709a
+myFPSA.daspp2_2.ASPP_3.asppconv.4.bias                      |                      [96] |              96 | 2096c4d2
+myFPSA.daspp2_2.ASPP_6.asppconv.0.weight                    |                     [192] |             192 | 87ac26c5
+myFPSA.daspp2_2.ASPP_6.asppconv.0.bias                      |                     [192] |             192 | 0d2c95b0
+myFPSA.daspp2_2.ASPP_6.asppconv.0.running_mean              |                     [192] |             192 | f43ad535
+myFPSA.daspp2_2.ASPP_6.asppconv.0.running_var               |                     [192] |             192 | 9f5946a0
+myFPSA.daspp2_2.ASPP_6.asppconv.0.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_6.asppconv.2.weight                    |          [192, 192, 1, 1] |          36,864 | bc0acf1b
+myFPSA.daspp2_2.ASPP_6.asppconv.2.bias                      |                     [192] |             192 | c762052d
+myFPSA.daspp2_2.ASPP_6.asppconv.3.weight                    |                     [192] |             192 | ff3190ac
+myFPSA.daspp2_2.ASPP_6.asppconv.3.bias                      |                     [192] |             192 | 5eb0f319
+myFPSA.daspp2_2.ASPP_6.asppconv.3.running_mean              |                     [192] |             192 | 6deadaf2
+myFPSA.daspp2_2.ASPP_6.asppconv.3.running_var               |                     [192] |             192 | d4107f4b
+myFPSA.daspp2_2.ASPP_6.asppconv.3.num_batches_tracked       |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_6.asppconv.5.weight                    |           [96, 192, 3, 3] |         165,888 | f789adc6
+myFPSA.daspp2_2.ASPP_6.asppconv.5.bias                      |                      [96] |              96 | c4075483
+myFPSA.daspp2_2.ASPP_12.asppconv.0.weight                   |                     [288] |             288 | fad273e1
+myFPSA.daspp2_2.ASPP_12.asppconv.0.bias                     |                     [288] |             288 | d4415c38
+myFPSA.daspp2_2.ASPP_12.asppconv.0.running_mean             |                     [288] |             288 | ceff380d
+myFPSA.daspp2_2.ASPP_12.asppconv.0.running_var              |                     [288] |             288 | 6de64f02
+myFPSA.daspp2_2.ASPP_12.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_12.asppconv.2.weight                   |          [192, 288, 1, 1] |          55,296 | 4568e03a
+myFPSA.daspp2_2.ASPP_12.asppconv.2.bias                     |                     [192] |             192 | 91d94b6b
+myFPSA.daspp2_2.ASPP_12.asppconv.3.weight                   |                     [192] |             192 | 0f8821c9
+myFPSA.daspp2_2.ASPP_12.asppconv.3.bias                     |                     [192] |             192 | bc46c956
+myFPSA.daspp2_2.ASPP_12.asppconv.3.running_mean             |                     [192] |             192 | 4b616eea
+myFPSA.daspp2_2.ASPP_12.asppconv.3.running_var              |                     [192] |             192 | 86da401b
+myFPSA.daspp2_2.ASPP_12.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_12.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 0ab422d3
+myFPSA.daspp2_2.ASPP_12.asppconv.5.bias                     |                      [96] |              96 | 3a9690af
+myFPSA.daspp2_2.ASPP_18.asppconv.0.weight                   |                     [384] |             384 | a80c363a
+myFPSA.daspp2_2.ASPP_18.asppconv.0.bias                     |                     [384] |             384 | 94e02c08
+myFPSA.daspp2_2.ASPP_18.asppconv.0.running_mean             |                     [384] |             384 | 54b07bfb
+myFPSA.daspp2_2.ASPP_18.asppconv.0.running_var              |                     [384] |             384 | 27f6b3b4
+myFPSA.daspp2_2.ASPP_18.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_18.asppconv.2.weight                   |          [192, 384, 1, 1] |          73,728 | b95c1d61
+myFPSA.daspp2_2.ASPP_18.asppconv.2.bias                     |                     [192] |             192 | 03aa51c4
+myFPSA.daspp2_2.ASPP_18.asppconv.3.weight                   |                     [192] |             192 | 33e25469
+myFPSA.daspp2_2.ASPP_18.asppconv.3.bias                     |                     [192] |             192 | a1c13ec8
+myFPSA.daspp2_2.ASPP_18.asppconv.3.running_mean             |                     [192] |             192 | 3b643498
+myFPSA.daspp2_2.ASPP_18.asppconv.3.running_var              |                     [192] |             192 | b198d631
+myFPSA.daspp2_2.ASPP_18.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_18.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 7d1fec39
+myFPSA.daspp2_2.ASPP_18.asppconv.5.bias                     |                      [96] |              96 | 934c2b93
+myFPSA.daspp2_2.ASPP_24.asppconv.0.weight                   |                     [480] |             480 | 48aa6ad2
+myFPSA.daspp2_2.ASPP_24.asppconv.0.bias                     |                     [480] |             480 | 5f8d877a
+myFPSA.daspp2_2.ASPP_24.asppconv.0.running_mean             |                     [480] |             480 | 3a7a8f78
+myFPSA.daspp2_2.ASPP_24.asppconv.0.running_var              |                     [480] |             480 | 6bed8659
+myFPSA.daspp2_2.ASPP_24.asppconv.0.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_24.asppconv.2.weight                   |          [192, 480, 1, 1] |          92,160 | cd8043cd
+myFPSA.daspp2_2.ASPP_24.asppconv.2.bias                     |                     [192] |             192 | e8dcfdc9
+myFPSA.daspp2_2.ASPP_24.asppconv.3.weight                   |                     [192] |             192 | a8b89731
+myFPSA.daspp2_2.ASPP_24.asppconv.3.bias                     |                     [192] |             192 | d46727b2
+myFPSA.daspp2_2.ASPP_24.asppconv.3.running_mean             |                     [192] |             192 | 42f20a5e
+myFPSA.daspp2_2.ASPP_24.asppconv.3.running_var              |                     [192] |             192 | c2e84be2
+myFPSA.daspp2_2.ASPP_24.asppconv.3.num_batches_tracked      |                        [] |               1 | 76e9aa8a
+myFPSA.daspp2_2.ASPP_24.asppconv.5.weight                   |           [96, 192, 3, 3] |         165,888 | 56a6164b
+myFPSA.daspp2_2.ASPP_24.asppconv.5.bias                     |                      [96] |              96 | eb3c7cd9
+myFPSA.daspp2_2.classification.1.weight                     |           [96, 576, 1, 1] |          55,296 | d2e9a240
+myFPSA.daspp2_2.classification.1.bias                       |                      [96] |              96 | cfa1fa2d
+myFPSA.selayer2.fc.0.weight                                 |                   [2, 32] |              64 | 701fade4
+myFPSA.selayer2.fc.2.weight                                 |                   [32, 2] |              64 | 91273c93
+myFPSA.conv_se2.reduce.0.conv.weight                        |            [32, 96, 1, 1] |           3,072 | fc515b77
+myFPSA.conv_se2.reduce.0.bn.weight                          |                      [32] |              32 | 506dd741
+myFPSA.conv_se2.reduce.0.bn.bias                            |                      [32] |              32 | f4234d0c
+myFPSA.conv_se2.reduce.0.bn.running_mean                    |                      [32] |              32 | cdf40222
+myFPSA.conv_se2.reduce.0.bn.running_var                     |                      [32] |              32 | 44ea7d8b
+myFPSA.conv_se2.reduce.0.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se2.reduce.1.conv.weight                        |            [32, 32, 3, 3] |           9,216 | e43cbade
+myFPSA.conv_se2.reduce.1.bn.weight                          |                      [32] |              32 | bdadb5e8
+myFPSA.conv_se2.reduce.1.bn.bias                            |                      [32] |              32 | 1a50129d
+myFPSA.conv_se2.reduce.1.bn.running_mean                    |                      [32] |              32 | e02bb179
+myFPSA.conv_se2.reduce.1.bn.running_var                     |                      [32] |              32 | 4c83f5d8
+myFPSA.conv_se2.reduce.1.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+myFPSA.conv_se2.reduce.2.conv.weight                        |            [32, 32, 3, 3] |           9,216 | d55e6e32
+myFPSA.conv_se2.reduce.2.bn.weight                          |                      [32] |              32 | 2112b29d
+myFPSA.conv_se2.reduce.2.bn.bias                            |                      [32] |              32 | ce06c78c
+myFPSA.conv_se2.reduce.2.bn.running_mean                    |                      [32] |              32 | d54dd9fc
+myFPSA.conv_se2.reduce.2.bn.running_var                     |                      [32] |              32 | b1097b27
+myFPSA.conv_se2.reduce.2.bn.num_batches_tracked             |                        [] |               1 | 76e9aa8a
+
+resnet.conv1.weight                                         |             [64, 3, 7, 7] |           9,408 | d0a6197a
+resnet.bn1.weight                                           |                      [64] |              64 | 4dd1a15a
+resnet.bn1.bias                                             |                      [64] |              64 | 78984c1d
+resnet.bn1.running_mean                                     |                      [64] |              64 | d399ab64
+resnet.bn1.running_var                                      |                      [64] |              64 | d921f272
+resnet.bn1.num_batches_tracked                              |                        [] |               1 | 76e9aa8a
+resnet.layer1.0.conv1.weight                                |            [64, 64, 3, 3] |          36,864 | cdfa47c7
+resnet.layer1.0.bn1.weight                                  |                      [64] |              64 | 03ab055b
+resnet.layer1.0.bn1.bias                                    |                      [64] |              64 | 864f756c
+resnet.layer1.0.bn1.running_mean                            |                      [64] |              64 | ecf2ee70
+resnet.layer1.0.bn1.running_var                             |                      [64] |              64 | 509ec226
+resnet.layer1.0.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer1.0.conv2.weight                                |            [64, 64, 3, 3] |          36,864 | 73cb5506
+resnet.layer1.0.bn2.weight                                  |                      [64] |              64 | 0eeb3376
+resnet.layer1.0.bn2.bias                                    |                      [64] |              64 | fac3f2ba
+resnet.layer1.0.bn2.running_mean                            |                      [64] |              64 | 7b3bbb63
+resnet.layer1.0.bn2.running_var                             |                      [64] |              64 | d134142b
+resnet.layer1.0.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer1.1.conv1.weight                                |            [64, 64, 3, 3] |          36,864 | 62ad4658
+resnet.layer1.1.bn1.weight                                  |                      [64] |              64 | 91e25991
+resnet.layer1.1.bn1.bias                                    |                      [64] |              64 | a45d057b
+resnet.layer1.1.bn1.running_mean                            |                      [64] |              64 | b5edfe0a
+resnet.layer1.1.bn1.running_var                             |                      [64] |              64 | bf6a0f3d
+resnet.layer1.1.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer1.1.conv2.weight                                |            [64, 64, 3, 3] |          36,864 | 7f3ec631
+resnet.layer1.1.bn2.weight                                  |                      [64] |              64 | d17b6b49
+resnet.layer1.1.bn2.bias                                    |                      [64] |              64 | 6e0762a8
+resnet.layer1.1.bn2.running_mean                            |                      [64] |              64 | 6ee8f181
+resnet.layer1.1.bn2.running_var                             |                      [64] |              64 | 81e5f9f0
+resnet.layer1.1.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer2.0.conv1.weight                                |           [128, 64, 3, 3] |          73,728 | dcc39fe5
+resnet.layer2.0.bn1.weight                                  |                     [128] |             128 | 796e0f9c
+resnet.layer2.0.bn1.bias                                    |                     [128] |             128 | bec779f9
+resnet.layer2.0.bn1.running_mean                            |                     [128] |             128 | 7a8417a3
+resnet.layer2.0.bn1.running_var                             |                     [128] |             128 | 1bbd80c4
+resnet.layer2.0.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer2.0.conv2.weight                                |          [128, 128, 3, 3] |         147,456 | 1b170703
+resnet.layer2.0.bn2.weight                                  |                     [128] |             128 | 7a6c4320
+resnet.layer2.0.bn2.bias                                    |                     [128] |             128 | 119cf1f4
+resnet.layer2.0.bn2.running_mean                            |                     [128] |             128 | b198f8b5
+resnet.layer2.0.bn2.running_var                             |                     [128] |             128 | edb0825b
+resnet.layer2.0.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer2.0.downsample.0.weight                         |           [128, 64, 1, 1] |           8,192 | 7bd21779
+resnet.layer2.0.downsample.1.weight                         |                     [128] |             128 | 4840cba5
+resnet.layer2.0.downsample.1.bias                           |                     [128] |             128 | 119cf1f4
+resnet.layer2.0.downsample.1.running_mean                   |                     [128] |             128 | e7e016ff
+resnet.layer2.0.downsample.1.running_var                    |                     [128] |             128 | 2431e493
+resnet.layer2.0.downsample.1.num_batches_tracked            |                        [] |               1 | 76e9aa8a
+resnet.layer2.1.conv1.weight                                |          [128, 128, 3, 3] |         147,456 | 674af5a6
+resnet.layer2.1.bn1.weight                                  |                     [128] |             128 | c2bb3cf0
+resnet.layer2.1.bn1.bias                                    |                     [128] |             128 | 1a27137a
+resnet.layer2.1.bn1.running_mean                            |                     [128] |             128 | e42e64b1
+resnet.layer2.1.bn1.running_var                             |                     [128] |             128 | 14a7c835
+resnet.layer2.1.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer2.1.conv2.weight                                |          [128, 128, 3, 3] |         147,456 | 046168ad
+resnet.layer2.1.bn2.weight                                  |                     [128] |             128 | 1dea3db1
+resnet.layer2.1.bn2.bias                                    |                     [128] |             128 | 1ddde599
+resnet.layer2.1.bn2.running_mean                            |                     [128] |             128 | 4241861a
+resnet.layer2.1.bn2.running_var                             |                     [128] |             128 | 317dae51
+resnet.layer2.1.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer3.0.conv1.weight                                |          [256, 128, 3, 3] |         294,912 | b1087a12
+resnet.layer3.0.bn1.weight                                  |                     [256] |             256 | df4e98b7
+resnet.layer3.0.bn1.bias                                    |                     [256] |             256 | ee417571
+resnet.layer3.0.bn1.running_mean                            |                     [256] |             256 | 86df0d4d
+resnet.layer3.0.bn1.running_var                             |                     [256] |             256 | 8d1e4fda
+resnet.layer3.0.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer3.0.conv2.weight                                |          [256, 256, 3, 3] |         589,824 | 38dd9110
+resnet.layer3.0.bn2.weight                                  |                     [256] |             256 | 5bbea497
+resnet.layer3.0.bn2.bias                                    |                     [256] |             256 | ecf00e5e
+resnet.layer3.0.bn2.running_mean                            |                     [256] |             256 | dee203a4
+resnet.layer3.0.bn2.running_var                             |                     [256] |             256 | e20c08e9
+resnet.layer3.0.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer3.0.downsample.0.weight                         |          [256, 128, 1, 1] |          32,768 | 490c2185
+resnet.layer3.0.downsample.1.weight                         |                     [256] |             256 | c079b368
+resnet.layer3.0.downsample.1.bias                           |                     [256] |             256 | ecf00e5e
+resnet.layer3.0.downsample.1.running_mean                   |                     [256] |             256 | 491897fb
+resnet.layer3.0.downsample.1.running_var                    |                     [256] |             256 | 81da1e46
+resnet.layer3.0.downsample.1.num_batches_tracked            |                        [] |               1 | 76e9aa8a
+resnet.layer3.1.conv1.weight                                |          [256, 256, 3, 3] |         589,824 | 1b71defe
+resnet.layer3.1.bn1.weight                                  |                     [256] |             256 | 32fc3580
+resnet.layer3.1.bn1.bias                                    |                     [256] |             256 | 28ffe240
+resnet.layer3.1.bn1.running_mean                            |                     [256] |             256 | 61a82e0f
+resnet.layer3.1.bn1.running_var                             |                     [256] |             256 | 84178296
+resnet.layer3.1.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer3.1.conv2.weight                                |          [256, 256, 3, 3] |         589,824 | 76313311
+resnet.layer3.1.bn2.weight                                  |                     [256] |             256 | 332e68c5
+resnet.layer3.1.bn2.bias                                    |                     [256] |             256 | 9db905c5
+resnet.layer3.1.bn2.running_mean                            |                     [256] |             256 | c3d843fe
+resnet.layer3.1.bn2.running_var                             |                     [256] |             256 | 4c435993
+resnet.layer3.1.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer4.0.conv1.weight                                |          [512, 256, 3, 3] |       1,179,648 | baa9fa2d
+resnet.layer4.0.bn1.weight                                  |                     [512] |             512 | 691ed51c
+resnet.layer4.0.bn1.bias                                    |                     [512] |             512 | a4504774
+resnet.layer4.0.bn1.running_mean                            |                     [512] |             512 | 2fc0061c
+resnet.layer4.0.bn1.running_var                             |                     [512] |             512 | e20caf78
+resnet.layer4.0.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer4.0.conv2.weight                                |          [512, 512, 3, 3] |       2,359,296 | f4b34854
+resnet.layer4.0.bn2.weight                                  |                     [512] |             512 | 70d50fe3
+resnet.layer4.0.bn2.bias                                    |                     [512] |             512 | 68cbe798
+resnet.layer4.0.bn2.running_mean                            |                     [512] |             512 | 15cc5687
+resnet.layer4.0.bn2.running_var                             |                     [512] |             512 | b0d7cfdc
+resnet.layer4.0.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer4.0.downsample.0.weight                         |          [512, 256, 1, 1] |         131,072 | 5d3e7f97
+resnet.layer4.0.downsample.1.weight                         |                     [512] |             512 | b6148f08
+resnet.layer4.0.downsample.1.bias                           |                     [512] |             512 | 68cbe798
+resnet.layer4.0.downsample.1.running_mean                   |                     [512] |             512 | 79ba8155
+resnet.layer4.0.downsample.1.running_var                    |                     [512] |             512 | de0eb9db
+resnet.layer4.0.downsample.1.num_batches_tracked            |                        [] |               1 | 76e9aa8a
+resnet.layer4.1.conv1.weight                                |          [512, 512, 3, 3] |       2,359,296 | 6309a06e
+resnet.layer4.1.bn1.weight                                  |                     [512] |             512 | 2b4cf237
+resnet.layer4.1.bn1.bias                                    |                     [512] |             512 | 6c60d352
+resnet.layer4.1.bn1.running_mean                            |                     [512] |             512 | a3ebae90
+resnet.layer4.1.bn1.running_var                             |                     [512] |             512 | 60f91e90
+resnet.layer4.1.bn1.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+resnet.layer4.1.conv2.weight                                |          [512, 512, 3, 3] |       2,359,296 | 8a21be10
+resnet.layer4.1.bn2.weight                                  |                     [512] |             512 | 8561a523
+resnet.layer4.1.bn2.bias                                    |                     [512] |             512 | 50a74d83
+resnet.layer4.1.bn2.running_mean                            |                     [512] |             512 | f92e66f8
+resnet.layer4.1.bn2.running_var                             |                     [512] |             512 | 3b3474f9
+resnet.layer4.1.bn2.num_batches_tracked                     |                        [] |               1 | 76e9aa8a
+
+swin.patch_embed.proj.weight                                |            [128, 3, 4, 4] |           6,144 | 20077b78
+swin.patch_embed.proj.bias                                  |                     [128] |             128 | d80c3d29
+swin.patch_embed.norm.weight                                |                     [128] |             128 | ee43b685
+swin.patch_embed.norm.bias                                  |                     [128] |             128 | ce89e03a
+swin.layers.0.blocks.0.norm1.weight                         |                     [128] |             128 | d3918167
+swin.layers.0.blocks.0.norm1.bias                           |                     [128] |             128 | 35aff390
+swin.layers.0.blocks.0.attn.relative_position_bias_table    |                  [169, 4] |             676 | afc01004
+swin.layers.0.blocks.0.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.0.blocks.0.attn.qkv.weight                      |                [384, 128] |          49,152 | 1420d78c
+swin.layers.0.blocks.0.attn.qkv.bias                        |                     [384] |             384 | ecb46c9b
+swin.layers.0.blocks.0.attn.proj.weight                     |                [128, 128] |          16,384 | 20ee361c
+swin.layers.0.blocks.0.attn.proj.bias                       |                     [128] |             128 | b97e65c9
+swin.layers.0.blocks.0.norm2.weight                         |                     [128] |             128 | 89da26d5
+swin.layers.0.blocks.0.norm2.bias                           |                     [128] |             128 | beb8a8e9
+swin.layers.0.blocks.0.mlp.fc1.weight                       |                [512, 128] |          65,536 | 1c2fecde
+swin.layers.0.blocks.0.mlp.fc1.bias                         |                     [512] |             512 | 51c91c67
+swin.layers.0.blocks.0.mlp.fc2.weight                       |                [128, 512] |          65,536 | 86f7d59a
+swin.layers.0.blocks.0.mlp.fc2.bias                         |                     [128] |             128 | 620a5cba
+swin.layers.0.blocks.1.atten_mask                           |              [64, 49, 49] |         153,664 | 793ad508
+swin.layers.0.blocks.1.norm1.weight                         |                     [128] |             128 | 469ff42d
+swin.layers.0.blocks.1.norm1.bias                           |                     [128] |             128 | 35d94caf
+swin.layers.0.blocks.1.attn.relative_position_bias_table    |                  [169, 4] |             676 | 7f0350c9
+swin.layers.0.blocks.1.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.0.blocks.1.attn.qkv.weight                      |                [384, 128] |          49,152 | 7c3ff2ce
+swin.layers.0.blocks.1.attn.qkv.bias                        |                     [384] |             384 | 4593081f
+swin.layers.0.blocks.1.attn.proj.weight                     |                [128, 128] |          16,384 | 6d438100
+swin.layers.0.blocks.1.attn.proj.bias                       |                     [128] |             128 | 19a35cba
+swin.layers.0.blocks.1.norm2.weight                         |                     [128] |             128 | f5718457
+swin.layers.0.blocks.1.norm2.bias                           |                     [128] |             128 | cf25f5ec
+swin.layers.0.blocks.1.mlp.fc1.weight                       |                [512, 128] |          65,536 | 26644b03
+swin.layers.0.blocks.1.mlp.fc1.bias                         |                     [512] |             512 | e1f58b6c
+swin.layers.0.blocks.1.mlp.fc2.weight                       |                [128, 512] |          65,536 | 59f9b4cd
+swin.layers.0.blocks.1.mlp.fc2.bias                         |                     [128] |             128 | 2a687d73
+swin.layers.0.downsample.reduction.weight                   |                [256, 512] |         131,072 | 2091f8f6
+swin.layers.0.downsample.norm.weight                        |                     [512] |             512 | f7c02c24
+swin.layers.0.downsample.norm.bias                          |                     [512] |             512 | 04e98be6
+swin.layers.1.blocks.0.norm1.weight                         |                     [256] |             256 | 5793dad2
+swin.layers.1.blocks.0.norm1.bias                           |                     [256] |             256 | 75f0959a
+swin.layers.1.blocks.0.attn.relative_position_bias_table    |                  [169, 8] |           1,352 | 26406428
+swin.layers.1.blocks.0.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.1.blocks.0.attn.qkv.weight                      |                [768, 256] |         196,608 | 955f4e96
+swin.layers.1.blocks.0.attn.qkv.bias                        |                     [768] |             768 | ffb4c5cd
+swin.layers.1.blocks.0.attn.proj.weight                     |                [256, 256] |          65,536 | c126040d
+swin.layers.1.blocks.0.attn.proj.bias                       |                     [256] |             256 | 0914e4ee
+swin.layers.1.blocks.0.norm2.weight                         |                     [256] |             256 | 6ce61b62
+swin.layers.1.blocks.0.norm2.bias                           |                     [256] |             256 | 9941861c
+swin.layers.1.blocks.0.mlp.fc1.weight                       |               [1024, 256] |         262,144 | 3c5b4c3a
+swin.layers.1.blocks.0.mlp.fc1.bias                         |                    [1024] |           1,024 | 251ee46d
+swin.layers.1.blocks.0.mlp.fc2.weight                       |               [256, 1024] |         262,144 | 71138fe0
+swin.layers.1.blocks.0.mlp.fc2.bias                         |                     [256] |             256 | 187fc378
+swin.layers.1.blocks.1.atten_mask                           |              [16, 49, 49] |          38,416 | 1b932870
+swin.layers.1.blocks.1.norm1.weight                         |                     [256] |             256 | eb06a998
+swin.layers.1.blocks.1.norm1.bias                           |                     [256] |             256 | d181ad8c
+swin.layers.1.blocks.1.attn.relative_position_bias_table    |                  [169, 8] |           1,352 | 68ce2f71
+swin.layers.1.blocks.1.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.1.blocks.1.attn.qkv.weight                      |                [768, 256] |         196,608 | f4d0abd6
+swin.layers.1.blocks.1.attn.qkv.bias                        |                     [768] |             768 | 3016a356
+swin.layers.1.blocks.1.attn.proj.weight                     |                [256, 256] |          65,536 | 0b3cbdb8
+swin.layers.1.blocks.1.attn.proj.bias                       |                     [256] |             256 | ac574b8d
+swin.layers.1.blocks.1.norm2.weight                         |                     [256] |             256 | 8d86fb30
+swin.layers.1.blocks.1.norm2.bias                           |                     [256] |             256 | 5ac2e499
+swin.layers.1.blocks.1.mlp.fc1.weight                       |               [1024, 256] |         262,144 | 1d7b2d8a
+swin.layers.1.blocks.1.mlp.fc1.bias                         |                    [1024] |           1,024 | 6eebbc04
+swin.layers.1.blocks.1.mlp.fc2.weight                       |               [256, 1024] |         262,144 | 264dabd7
+swin.layers.1.blocks.1.mlp.fc2.bias                         |                     [256] |             256 | 40795d59
+swin.layers.1.downsample.reduction.weight                   |               [512, 1024] |         524,288 | 300d0354
+swin.layers.1.downsample.norm.weight                        |                    [1024] |           1,024 | ec6678d8
+swin.layers.1.downsample.norm.bias                          |                    [1024] |           1,024 | 6e41d07b
+swin.layers.2.blocks.0.norm1.weight                         |                     [512] |             512 | 118ed75a
+swin.layers.2.blocks.0.norm1.bias                           |                     [512] |             512 | 38528685
+swin.layers.2.blocks.0.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 483ae710
+swin.layers.2.blocks.0.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.0.attn.qkv.weight                      |               [1536, 512] |         786,432 | 0cfed503
+swin.layers.2.blocks.0.attn.qkv.bias                        |                    [1536] |           1,536 | aac1e0b2
+swin.layers.2.blocks.0.attn.proj.weight                     |                [512, 512] |         262,144 | bf239da1
+swin.layers.2.blocks.0.attn.proj.bias                       |                     [512] |             512 | bae8c53a
+swin.layers.2.blocks.0.norm2.weight                         |                     [512] |             512 | ed7adc2e
+swin.layers.2.blocks.0.norm2.bias                           |                     [512] |             512 | 713f401f
+swin.layers.2.blocks.0.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 17966827
+swin.layers.2.blocks.0.mlp.fc1.bias                         |                    [2048] |           2,048 | 13459f72
+swin.layers.2.blocks.0.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 2fbc15e8
+swin.layers.2.blocks.0.mlp.fc2.bias                         |                     [512] |             512 | 9dd8a1cb
+swin.layers.2.blocks.1.atten_mask                           |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.1.norm1.weight                         |                     [512] |             512 | 753c91eb
+swin.layers.2.blocks.1.norm1.bias                           |                     [512] |             512 | 1c66ef0e
+swin.layers.2.blocks.1.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 5d1659d2
+swin.layers.2.blocks.1.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.1.attn.qkv.weight                      |               [1536, 512] |         786,432 | bd921b92
+swin.layers.2.blocks.1.attn.qkv.bias                        |                    [1536] |           1,536 | 99820e26
+swin.layers.2.blocks.1.attn.proj.weight                     |                [512, 512] |         262,144 | eeb422a9
+swin.layers.2.blocks.1.attn.proj.bias                       |                     [512] |             512 | c1efa06c
+swin.layers.2.blocks.1.norm2.weight                         |                     [512] |             512 | c63d3e6e
+swin.layers.2.blocks.1.norm2.bias                           |                     [512] |             512 | 2a680dcb
+swin.layers.2.blocks.1.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 41bf00f5
+swin.layers.2.blocks.1.mlp.fc1.bias                         |                    [2048] |           2,048 | 154c7366
+swin.layers.2.blocks.1.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | be0c9cb4
+swin.layers.2.blocks.1.mlp.fc2.bias                         |                     [512] |             512 | e23305d0
+swin.layers.2.blocks.2.norm1.weight                         |                     [512] |             512 | 4b295b28
+swin.layers.2.blocks.2.norm1.bias                           |                     [512] |             512 | 0bcd896e
+swin.layers.2.blocks.2.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 3ad73b36
+swin.layers.2.blocks.2.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.2.attn.qkv.weight                      |               [1536, 512] |         786,432 | 001c1f39
+swin.layers.2.blocks.2.attn.qkv.bias                        |                    [1536] |           1,536 | 80695758
+swin.layers.2.blocks.2.attn.proj.weight                     |                [512, 512] |         262,144 | 4d9492ac
+swin.layers.2.blocks.2.attn.proj.bias                       |                     [512] |             512 | d11d90db
+swin.layers.2.blocks.2.norm2.weight                         |                     [512] |             512 | afd85645
+swin.layers.2.blocks.2.norm2.bias                           |                     [512] |             512 | 5662bb4b
+swin.layers.2.blocks.2.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 192551ad
+swin.layers.2.blocks.2.mlp.fc1.bias                         |                    [2048] |           2,048 | 6b682c6c
+swin.layers.2.blocks.2.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | f8db5174
+swin.layers.2.blocks.2.mlp.fc2.bias                         |                     [512] |             512 | f83bb02a
+swin.layers.2.blocks.3.atten_mask                           |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.3.norm1.weight                         |                     [512] |             512 | d5a26443
+swin.layers.2.blocks.3.norm1.bias                           |                     [512] |             512 | ce937f5a
+swin.layers.2.blocks.3.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | d73a0b05
+swin.layers.2.blocks.3.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.3.attn.qkv.weight                      |               [1536, 512] |         786,432 | cdabf1b1
+swin.layers.2.blocks.3.attn.qkv.bias                        |                    [1536] |           1,536 | 991439c8
+swin.layers.2.blocks.3.attn.proj.weight                     |                [512, 512] |         262,144 | e32de882
+swin.layers.2.blocks.3.attn.proj.bias                       |                     [512] |             512 | a64147ce
+swin.layers.2.blocks.3.norm2.weight                         |                     [512] |             512 | df6574a3
+swin.layers.2.blocks.3.norm2.bias                           |                     [512] |             512 | a20af0af
+swin.layers.2.blocks.3.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | bce20d94
+swin.layers.2.blocks.3.mlp.fc1.bias                         |                    [2048] |           2,048 | 7548a447
+swin.layers.2.blocks.3.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 10292431
+swin.layers.2.blocks.3.mlp.fc2.bias                         |                     [512] |             512 | 18bfcd9d
+swin.layers.2.blocks.4.norm1.weight                         |                     [512] |             512 | 0037459d
+swin.layers.2.blocks.4.norm1.bias                           |                     [512] |             512 | 21d514ac
+swin.layers.2.blocks.4.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | ab9b9a9f
+swin.layers.2.blocks.4.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.4.attn.qkv.weight                      |               [1536, 512] |         786,432 | a9c7259f
+swin.layers.2.blocks.4.attn.qkv.bias                        |                    [1536] |           1,536 | 9793f6c5
+swin.layers.2.blocks.4.attn.proj.weight                     |                [512, 512] |         262,144 | 25d221d7
+swin.layers.2.blocks.4.attn.proj.bias                       |                     [512] |             512 | b681a9e0
+swin.layers.2.blocks.4.norm2.weight                         |                     [512] |             512 | ae3389f5
+swin.layers.2.blocks.4.norm2.bias                           |                     [512] |             512 | e0b8d38d
+swin.layers.2.blocks.4.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 1a0a583e
+swin.layers.2.blocks.4.mlp.fc1.bias                         |                    [2048] |           2,048 | 05e868ca
+swin.layers.2.blocks.4.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 1fb52376
+swin.layers.2.blocks.4.mlp.fc2.bias                         |                     [512] |             512 | d84e8852
+swin.layers.2.blocks.5.atten_mask                           |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.5.norm1.weight                         |                     [512] |             512 | 0870b1e2
+swin.layers.2.blocks.5.norm1.bias                           |                     [512] |             512 | 756a16f3
+swin.layers.2.blocks.5.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 306641f7
+swin.layers.2.blocks.5.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.5.attn.qkv.weight                      |               [1536, 512] |         786,432 | 47bf23d9
+swin.layers.2.blocks.5.attn.qkv.bias                        |                    [1536] |           1,536 | 568c15aa
+swin.layers.2.blocks.5.attn.proj.weight                     |                [512, 512] |         262,144 | 9bd8a4ff
+swin.layers.2.blocks.5.attn.proj.bias                       |                     [512] |             512 | 45ce584c
+swin.layers.2.blocks.5.norm2.weight                         |                     [512] |             512 | f41ff357
+swin.layers.2.blocks.5.norm2.bias                           |                     [512] |             512 | 2250a6fc
+swin.layers.2.blocks.5.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | aabf1ffb
+swin.layers.2.blocks.5.mlp.fc1.bias                         |                    [2048] |           2,048 | 21bee4ce
+swin.layers.2.blocks.5.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 1a6773d8
+swin.layers.2.blocks.5.mlp.fc2.bias                         |                     [512] |             512 | d3df275f
+swin.layers.2.blocks.6.norm1.weight                         |                     [512] |             512 | 9407b7e2
+swin.layers.2.blocks.6.norm1.bias                           |                     [512] |             512 | 4f14abbb
+swin.layers.2.blocks.6.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 496226f4
+swin.layers.2.blocks.6.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.6.attn.qkv.weight                      |               [1536, 512] |         786,432 | cbfca870
+swin.layers.2.blocks.6.attn.qkv.bias                        |                    [1536] |           1,536 | 61781764
+swin.layers.2.blocks.6.attn.proj.weight                     |                [512, 512] |         262,144 | ea457efe
+swin.layers.2.blocks.6.attn.proj.bias                       |                     [512] |             512 | faa40df3
+swin.layers.2.blocks.6.norm2.weight                         |                     [512] |             512 | 5d5793c9
+swin.layers.2.blocks.6.norm2.bias                           |                     [512] |             512 | bfe654f0
+swin.layers.2.blocks.6.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | addcf1a6
+swin.layers.2.blocks.6.mlp.fc1.bias                         |                    [2048] |           2,048 | acf2294a
+swin.layers.2.blocks.6.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 42c3bc96
+swin.layers.2.blocks.6.mlp.fc2.bias                         |                     [512] |             512 | 870c316a
+swin.layers.2.blocks.7.atten_mask                           |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.7.norm1.weight                         |                     [512] |             512 | f285c8de
+swin.layers.2.blocks.7.norm1.bias                           |                     [512] |             512 | bf957bde
+swin.layers.2.blocks.7.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 730322d3
+swin.layers.2.blocks.7.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.7.attn.qkv.weight                      |               [1536, 512] |         786,432 | f333f4f2
+swin.layers.2.blocks.7.attn.qkv.bias                        |                    [1536] |           1,536 | 7a47eff5
+swin.layers.2.blocks.7.attn.proj.weight                     |                [512, 512] |         262,144 | b571e89a
+swin.layers.2.blocks.7.attn.proj.bias                       |                     [512] |             512 | e80be644
+swin.layers.2.blocks.7.norm2.weight                         |                     [512] |             512 | a9644147
+swin.layers.2.blocks.7.norm2.bias                           |                     [512] |             512 | 67661b82
+swin.layers.2.blocks.7.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | d9350e97
+swin.layers.2.blocks.7.mlp.fc1.bias                         |                    [2048] |           2,048 | 44861776
+swin.layers.2.blocks.7.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | dc3e0b33
+swin.layers.2.blocks.7.mlp.fc2.bias                         |                     [512] |             512 | 4871edb5
+swin.layers.2.blocks.8.norm1.weight                         |                     [512] |             512 | 3a42fd77
+swin.layers.2.blocks.8.norm1.bias                           |                     [512] |             512 | 89c57bcc
+swin.layers.2.blocks.8.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | ba5aea18
+swin.layers.2.blocks.8.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.8.attn.qkv.weight                      |               [1536, 512] |         786,432 | 1dcda978
+swin.layers.2.blocks.8.attn.qkv.bias                        |                    [1536] |           1,536 | de745339
+swin.layers.2.blocks.8.attn.proj.weight                     |                [512, 512] |         262,144 | 49642db2
+swin.layers.2.blocks.8.attn.proj.bias                       |                     [512] |             512 | 317a82c7
+swin.layers.2.blocks.8.norm2.weight                         |                     [512] |             512 | 16f5699e
+swin.layers.2.blocks.8.norm2.bias                           |                     [512] |             512 | 1d64efc1
+swin.layers.2.blocks.8.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 4e2c4135
+swin.layers.2.blocks.8.mlp.fc1.bias                         |                    [2048] |           2,048 | 0e39bc34
+swin.layers.2.blocks.8.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 12f824ac
+swin.layers.2.blocks.8.mlp.fc2.bias                         |                     [512] |             512 | 749fd655
+swin.layers.2.blocks.9.atten_mask                           |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.9.norm1.weight                         |                     [512] |             512 | 7ff20e84
+swin.layers.2.blocks.9.norm1.bias                           |                     [512] |             512 | c73b79f7
+swin.layers.2.blocks.9.attn.relative_position_bias_table    |                 [169, 16] |           2,704 | 04a76ab6
+swin.layers.2.blocks.9.attn.relative_position_index         |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.9.attn.qkv.weight                      |               [1536, 512] |         786,432 | 9d478774
+swin.layers.2.blocks.9.attn.qkv.bias                        |                    [1536] |           1,536 | ce43f625
+swin.layers.2.blocks.9.attn.proj.weight                     |                [512, 512] |         262,144 | dbfb52f8
+swin.layers.2.blocks.9.attn.proj.bias                       |                     [512] |             512 | 4dc1f69f
+swin.layers.2.blocks.9.norm2.weight                         |                     [512] |             512 | 24a2c6fc
+swin.layers.2.blocks.9.norm2.bias                           |                     [512] |             512 | 89a9dbd2
+swin.layers.2.blocks.9.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 45a7aaa4
+swin.layers.2.blocks.9.mlp.fc1.bias                         |                    [2048] |           2,048 | bda1c2f7
+swin.layers.2.blocks.9.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 0e85bcad
+swin.layers.2.blocks.9.mlp.fc2.bias                         |                     [512] |             512 | f341cb2a
+swin.layers.2.blocks.10.norm1.weight                        |                     [512] |             512 | 0d157fe4
+swin.layers.2.blocks.10.norm1.bias                          |                     [512] |             512 | 6f755459
+swin.layers.2.blocks.10.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | b2765b3c
+swin.layers.2.blocks.10.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.10.attn.qkv.weight                     |               [1536, 512] |         786,432 | fd2989af
+swin.layers.2.blocks.10.attn.qkv.bias                       |                    [1536] |           1,536 | 5c7146f8
+swin.layers.2.blocks.10.attn.proj.weight                    |                [512, 512] |         262,144 | 1e6508ec
+swin.layers.2.blocks.10.attn.proj.bias                      |                     [512] |             512 | d3ac4e9d
+swin.layers.2.blocks.10.norm2.weight                        |                     [512] |             512 | 9d49cb2c
+swin.layers.2.blocks.10.norm2.bias                          |                     [512] |             512 | 804358b1
+swin.layers.2.blocks.10.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | a006e785
+swin.layers.2.blocks.10.mlp.fc1.bias                        |                    [2048] |           2,048 | 1ebfaf22
+swin.layers.2.blocks.10.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | e956e581
+swin.layers.2.blocks.10.mlp.fc2.bias                        |                     [512] |             512 | 0fd3b891
+swin.layers.2.blocks.11.atten_mask                          |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.11.norm1.weight                        |                     [512] |             512 | 073b37cf
+swin.layers.2.blocks.11.norm1.bias                          |                     [512] |             512 | 0248cd1d
+swin.layers.2.blocks.11.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | 1784b945
+swin.layers.2.blocks.11.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.11.attn.qkv.weight                     |               [1536, 512] |         786,432 | b7874725
+swin.layers.2.blocks.11.attn.qkv.bias                       |                    [1536] |           1,536 | dc3f96a5
+swin.layers.2.blocks.11.attn.proj.weight                    |                [512, 512] |         262,144 | 89ee3884
+swin.layers.2.blocks.11.attn.proj.bias                      |                     [512] |             512 | 10771a5c
+swin.layers.2.blocks.11.norm2.weight                        |                     [512] |             512 | 2445308c
+swin.layers.2.blocks.11.norm2.bias                          |                     [512] |             512 | 03c3fb7c
+swin.layers.2.blocks.11.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | 640c56a9
+swin.layers.2.blocks.11.mlp.fc1.bias                        |                    [2048] |           2,048 | 2ec54169
+swin.layers.2.blocks.11.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | e3c621ca
+swin.layers.2.blocks.11.mlp.fc2.bias                        |                     [512] |             512 | 75c17ff1
+swin.layers.2.blocks.12.norm1.weight                        |                     [512] |             512 | f17e12ac
+swin.layers.2.blocks.12.norm1.bias                          |                     [512] |             512 | de25a020
+swin.layers.2.blocks.12.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | 30313f7c
+swin.layers.2.blocks.12.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.12.attn.qkv.weight                     |               [1536, 512] |         786,432 | 465613c7
+swin.layers.2.blocks.12.attn.qkv.bias                       |                    [1536] |           1,536 | ae984584
+swin.layers.2.blocks.12.attn.proj.weight                    |                [512, 512] |         262,144 | 8defd330
+swin.layers.2.blocks.12.attn.proj.bias                      |                     [512] |             512 | d6bf377e
+swin.layers.2.blocks.12.norm2.weight                        |                     [512] |             512 | 4314eb83
+swin.layers.2.blocks.12.norm2.bias                          |                     [512] |             512 | e3ee3451
+swin.layers.2.blocks.12.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | 7c2cb68d
+swin.layers.2.blocks.12.mlp.fc1.bias                        |                    [2048] |           2,048 | 95b2d849
+swin.layers.2.blocks.12.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | cdc7801f
+swin.layers.2.blocks.12.mlp.fc2.bias                        |                     [512] |             512 | bcdad4d9
+swin.layers.2.blocks.13.atten_mask                          |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.13.norm1.weight                        |                     [512] |             512 | eed54b62
+swin.layers.2.blocks.13.norm1.bias                          |                     [512] |             512 | f4284357
+swin.layers.2.blocks.13.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | 1f42b1fd
+swin.layers.2.blocks.13.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.13.attn.qkv.weight                     |               [1536, 512] |         786,432 | 45e13002
+swin.layers.2.blocks.13.attn.qkv.bias                       |                    [1536] |           1,536 | b20fdb38
+swin.layers.2.blocks.13.attn.proj.weight                    |                [512, 512] |         262,144 | 17742a8b
+swin.layers.2.blocks.13.attn.proj.bias                      |                     [512] |             512 | d06708f6
+swin.layers.2.blocks.13.norm2.weight                        |                     [512] |             512 | e15d7989
+swin.layers.2.blocks.13.norm2.bias                          |                     [512] |             512 | 03082c97
+swin.layers.2.blocks.13.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | d9cefbe3
+swin.layers.2.blocks.13.mlp.fc1.bias                        |                    [2048] |           2,048 | b31da1a5
+swin.layers.2.blocks.13.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | a4761662
+swin.layers.2.blocks.13.mlp.fc2.bias                        |                     [512] |             512 | c1d75328
+swin.layers.2.blocks.14.norm1.weight                        |                     [512] |             512 | 3337b0f6
+swin.layers.2.blocks.14.norm1.bias                          |                     [512] |             512 | e1af620e
+swin.layers.2.blocks.14.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | cb99097d
+swin.layers.2.blocks.14.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.14.attn.qkv.weight                     |               [1536, 512] |         786,432 | 8eb6310e
+swin.layers.2.blocks.14.attn.qkv.bias                       |                    [1536] |           1,536 | 7f72129b
+swin.layers.2.blocks.14.attn.proj.weight                    |                [512, 512] |         262,144 | 3cd814c9
+swin.layers.2.blocks.14.attn.proj.bias                      |                     [512] |             512 | 393943ca
+swin.layers.2.blocks.14.norm2.weight                        |                     [512] |             512 | 2e450055
+swin.layers.2.blocks.14.norm2.bias                          |                     [512] |             512 | cda1306f
+swin.layers.2.blocks.14.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | 562aeb7b
+swin.layers.2.blocks.14.mlp.fc1.bias                        |                    [2048] |           2,048 | b6877c1c
+swin.layers.2.blocks.14.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | b71cb53b
+swin.layers.2.blocks.14.mlp.fc2.bias                        |                     [512] |             512 | 98760759
+swin.layers.2.blocks.15.atten_mask                          |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.15.norm1.weight                        |                     [512] |             512 | 9d19df26
+swin.layers.2.blocks.15.norm1.bias                          |                     [512] |             512 | a65186ea
+swin.layers.2.blocks.15.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | a1eb4c11
+swin.layers.2.blocks.15.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.15.attn.qkv.weight                     |               [1536, 512] |         786,432 | d3f19f79
+swin.layers.2.blocks.15.attn.qkv.bias                       |                    [1536] |           1,536 | a899c426
+swin.layers.2.blocks.15.attn.proj.weight                    |                [512, 512] |         262,144 | 2463750a
+swin.layers.2.blocks.15.attn.proj.bias                      |                     [512] |             512 | 1ae73da4
+swin.layers.2.blocks.15.norm2.weight                        |                     [512] |             512 | 516b0ff3
+swin.layers.2.blocks.15.norm2.bias                          |                     [512] |             512 | 1004b78c
+swin.layers.2.blocks.15.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | 7f9dbefd
+swin.layers.2.blocks.15.mlp.fc1.bias                        |                    [2048] |           2,048 | c2fb91d2
+swin.layers.2.blocks.15.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | 7e54f0cc
+swin.layers.2.blocks.15.mlp.fc2.bias                        |                     [512] |             512 | bba0a16e
+swin.layers.2.blocks.16.norm1.weight                        |                     [512] |             512 | 13a42633
+swin.layers.2.blocks.16.norm1.bias                          |                     [512] |             512 | b7fa8dbe
+swin.layers.2.blocks.16.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | a91aad00
+swin.layers.2.blocks.16.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.16.attn.qkv.weight                     |               [1536, 512] |         786,432 | f6d9df8f
+swin.layers.2.blocks.16.attn.qkv.bias                       |                    [1536] |           1,536 | 11053f48
+swin.layers.2.blocks.16.attn.proj.weight                    |                [512, 512] |         262,144 | e74d09ff
+swin.layers.2.blocks.16.attn.proj.bias                      |                     [512] |             512 | e51f23b6
+swin.layers.2.blocks.16.norm2.weight                        |                     [512] |             512 | 13201482
+swin.layers.2.blocks.16.norm2.bias                          |                     [512] |             512 | 9324b590
+swin.layers.2.blocks.16.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | bf9aae22
+swin.layers.2.blocks.16.mlp.fc1.bias                        |                    [2048] |           2,048 | 5553c3b6
+swin.layers.2.blocks.16.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | a20772f2
+swin.layers.2.blocks.16.mlp.fc2.bias                        |                     [512] |             512 | a9424537
+swin.layers.2.blocks.17.atten_mask                          |               [4, 49, 49] |           9,604 | ffd74422
+swin.layers.2.blocks.17.norm1.weight                        |                     [512] |             512 | a2126dd3
+swin.layers.2.blocks.17.norm1.bias                          |                     [512] |             512 | b6dbc1ae
+swin.layers.2.blocks.17.attn.relative_position_bias_table   |                 [169, 16] |           2,704 | 3e5337d5
+swin.layers.2.blocks.17.attn.relative_position_index        |                  [49, 49] |           2,401 | e6eff537
+swin.layers.2.blocks.17.attn.qkv.weight                     |               [1536, 512] |         786,432 | 54333eff
+swin.layers.2.blocks.17.attn.qkv.bias                       |                    [1536] |           1,536 | 5a10e7b2
+swin.layers.2.blocks.17.attn.proj.weight                    |                [512, 512] |         262,144 | 3d0924b4
+swin.layers.2.blocks.17.attn.proj.bias                      |                     [512] |             512 | cfc89d7f
+swin.layers.2.blocks.17.norm2.weight                        |                     [512] |             512 | 7b1c0652
+swin.layers.2.blocks.17.norm2.bias                          |                     [512] |             512 | 0b1cab04
+swin.layers.2.blocks.17.mlp.fc1.weight                      |               [2048, 512] |       1,048,576 | 3de312b0
+swin.layers.2.blocks.17.mlp.fc1.bias                        |                    [2048] |           2,048 | 18ffef68
+swin.layers.2.blocks.17.mlp.fc2.weight                      |               [512, 2048] |       1,048,576 | 17d7df0f
+swin.layers.2.blocks.17.mlp.fc2.bias                        |                     [512] |             512 | 241ea9fe
+swin.norm.weight                                            |                    [1024] |           1,024 | faf85e7f
+swin.norm.bias                                              |                    [1024] |           1,024 | 548bc00f
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                       |                           |      79,215,827 |

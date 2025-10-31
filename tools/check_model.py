@@ -50,7 +50,12 @@ def show_keys_detailed(state_dict):
     # 3. Iterate and print the data, using the same dynamic width
     total_el = 0
     for key, tensor in state_dict.items():
-        num_elements = tensor.numel()
+        try:
+            num_elements = tensor.numel()
+        except AttributeError:
+            num_elements = 0
+            main_logger.error(f"Not tensor element: {key}")
+            continue
         total_el += num_elements
         tensor_bytes = tensor.cpu().numpy().tobytes()
         sha256_hash = hashlib.sha256(tensor_bytes).hexdigest()
@@ -94,6 +99,10 @@ if __name__ == "__main__":
         if 'model_state_dict' in state_dict:
             # BEN
             state_dict = state_dict['model_state_dict']
+            # safetensors.torch.save_file(state_dict, "model.safetensors")
+        elif 'net' in state_dict:
+            # BADIS v2
+            state_dict = state_dict['net']
             # safetensors.torch.save_file(state_dict, "model.safetensors")
     # Optional print keys
     if args.keys:

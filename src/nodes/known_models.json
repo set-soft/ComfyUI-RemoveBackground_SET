@@ -724,5 +724,36 @@
         "dtype": "float32",
         "file_t": "safetensors",
         "dataset": "DIS5K"
+    },
+    #
+    # BADIS model
+    #
+    "BADIS v2 Base F16": {
+        "name": "Base F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/BADIS/BADISv2_Base_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BADIS",
+        "size": "152 MiB",
+        "ops_name": "Base F16 (152 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DIS5K, HRSOD"
+    },
+    "BADIS v2 Base F32": {
+        "name": "Base F32",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/BADIS/BADISv2_Base_F32.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "BADIS",
+        "size": "303 MiB",
+        "ops_name": "Base (303 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "DIS5K, HRSOD"
     }
 }

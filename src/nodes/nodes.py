@@ -196,6 +196,9 @@ class LoadModel(io.ComfyNode):
             if 'model_state_dict' in state_dict:
                 # BEN
                 state_dict = state_dict['model_state_dict']
+            elif 'net' in state_dict:
+                # BADIS v2
+                state_dict = state_dict['net']
 
         # Check this is valid for a known model
         arch = RemBg(state_dict, logger, model, vae, positive)
@@ -323,6 +326,13 @@ class AutoDownloadDiffDISModel(AutoDownloadBiRefNetModel):
 
 
 AutoDownloadDiffDISModel.fill_description()
+
+
+class AutoDownloadBADISModel(AutoDownloadBiRefNetModel):
+    model_type = 'BADIS'
+
+
+AutoDownloadBADISModel.fill_description()
 
 
 class GetMaskLow(io.ComfyNode):

@@ -34,6 +34,7 @@ from ..modnet.modnet import MODNet
 from ..pdfnet.PDFNet import build_model as PDFNet
 from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
 from ..dan import BASE_MODEL_NAME, load_dan, dan_low
+from ..badis_v2.BADIS import BADIS
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -51,6 +52,7 @@ MVANET_RENAME = {
 }
 FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1.Residual_1.WindowAttention.WindowSDPA.'
                       'rpb.relative_position_bias_table')
+
 ENABLE_TORCH_SCRIPT = False
 ENABLE_TORCH_COMPILE = False
 
@@ -195,7 +197,7 @@ class RemBg(object):
             if FINEGRAIN_SWIN_KEY in state_dict:
                 state_dict = finegrain_convert(state_dict)
 
-            bb_name = self.is_swin(['bb', 'backbone', 'encoder'], state_dict)
+            bb_name = self.is_swin(['bb', 'backbone', 'encoder', 'swin'], state_dict)
             if bb_name is None:
                 return
             if not bb_name:
@@ -216,6 +218,11 @@ class RemBg(object):
                     self.why = 'Unknown Swin B variant model'
                     return
                 assert self.bb_prefix == 'backbone'
+        elif self.bb == 'swin_v1_badis':
+            if not self.is_badis_v2(state_dict):
+                # Don't know about it
+                self.why = 'Unknown 3 layers Swin variant model'
+                return
         else:  # swin_v1_l or swin_v1_t
             if not self.is_birefnet(state_dict):
                 # Don't know about it
@@ -228,6 +235,19 @@ class RemBg(object):
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
+
+    def is_badis_v2(self, state_dict):
+        layer = 'myFPSA.sqz512.0.weight'
+        if layer not in state_dict:
+            return False
+        self.model_type = 'BADIS'
+        self.version = 2
+        self.dtype = state_dict[layer].dtype
+        if "swin.norm.bias" in state_dict:
+            del state_dict["swin.norm.bias"]
+        if "swin.norm.weight" in state_dict:
+            del state_dict["swin.norm.weight"]
+        return True
 
     # InSPyReNet
     def is_inspyrenet(self, state_dict, lower_case_fname):
@@ -370,6 +390,9 @@ class RemBg(object):
         elif self.matches(embed_dim=128, depths=[2, 2, 18, 2], num_heads=[4, 8, 16, 32], window_size=12):
             self.bb = 'swin_v1_b'
             self.channels = [1024, 512, 256, 128]
+        elif self.matches(embed_dim=128, depths=[2, 2, 18], num_heads=[4, 8, 16], window_size=7):
+            self.bb = 'swin_v1_badis'
+            self.channels = [1024, 512, 256]
         else:
             self.why = 'unknown geometry'
             return None
@@ -449,6 +472,8 @@ class RemBg(object):
         if not self.bb.startswith('swin'):
             # We just messed with Swin V1
             return
+        if self.model_type == 'BADIS':
+            return  # Currently using a local copy of Swin
         start_key = self.bb_prefix + '.norm'
         start_key_l = len(start_key)
         rep_key = self.bb_prefix + '.out_norms.'
@@ -476,6 +501,8 @@ class RemBg(object):
             model = PDFNet(backbone_arch=self.bb)
         elif self.model_type == 'DiffDIS':
             model = DiffDISPipeline(vae=self.vae, unet=DiffDIS(), positive=self.positive)
+        elif self.model_type == 'BADIS':
+            model = BADIS()
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
