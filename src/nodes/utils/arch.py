@@ -35,6 +35,7 @@ from ..pdfnet.PDFNet import build_model as PDFNet
 from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
 from ..dan import BASE_MODEL_NAME, load_dan, dan_low
 from ..badis_v2.BADIS import BADIS
+from ..basnet.BASNet import BASNet
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -182,6 +183,18 @@ class RemBg(object):
             self.dtype = state_dict[layer].dtype
             self.ok = True
             logger.debug(f"Model type: {self.model_type} ({self.bb}) [{self.dtype}]")
+            return
+
+        # BASNet
+        layer = 'refunet.conv0.weight'
+        if layer in state_dict:
+            self.model_type = 'BASNet'
+            self.dtype = state_dict[layer].dtype
+            self.w = self.h = 256
+            self.ok = True
+            self.bb = 'None'  # No backbone
+            self.bb_ok = True
+            logger.debug(f"Model type: {self.model_type}")
             return
 
         #
@@ -503,6 +516,8 @@ class RemBg(object):
             model = DiffDISPipeline(vae=self.vae, unet=DiffDIS(), positive=self.positive)
         elif self.model_type == 'BADIS':
             model = BADIS()
+        elif self.model_type == 'BASNet':
+            model = BASNet()
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 

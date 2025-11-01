@@ -1,0 +1,446 @@
+Analyzing: models/BAS/basnet.pth
+
+--- PyTorch Model State Dict ---
+Key                                    |                     Shape |    Num Elements | SHA256 (start)
+-----------------------------------------------------------------------------------------------------
+inconv.weight                          |             [64, 3, 3, 3] |           1,728 | 0250e904
+inconv.bias                            |                      [64] |              64 | a4b30efb
+inbn.weight                            |                      [64] |              64 | 035cf1e9
+inbn.bias                              |                      [64] |              64 | 7a26809a
+inbn.running_mean                      |                      [64] |              64 | 019809b9
+inbn.running_var                       |                      [64] |              64 | c222ccf9
+encoder1.0.conv1.weight                |            [64, 64, 3, 3] |          36,864 | 09675ea0
+encoder1.0.bn1.weight                  |                      [64] |              64 | ea96c9de
+encoder1.0.bn1.bias                    |                      [64] |              64 | fe260a65
+encoder1.0.bn1.running_mean            |                      [64] |              64 | 8f757698
+encoder1.0.bn1.running_var             |                      [64] |              64 | 35d6441f
+encoder1.0.conv2.weight                |            [64, 64, 3, 3] |          36,864 | b7ef23ac
+encoder1.0.bn2.weight                  |                      [64] |              64 | edd39871
+encoder1.0.bn2.bias                    |                      [64] |              64 | d1663f27
+encoder1.0.bn2.running_mean            |                      [64] |              64 | 1fca2926
+encoder1.0.bn2.running_var             |                      [64] |              64 | d4fdf160
+encoder1.1.conv1.weight                |            [64, 64, 3, 3] |          36,864 | f4a03743
+encoder1.1.bn1.weight                  |                      [64] |              64 | 8920f6ca
+encoder1.1.bn1.bias                    |                      [64] |              64 | 98782924
+encoder1.1.bn1.running_mean            |                      [64] |              64 | c69c4286
+encoder1.1.bn1.running_var             |                      [64] |              64 | 68037a55
+encoder1.1.conv2.weight                |            [64, 64, 3, 3] |          36,864 | 86541fb9
+encoder1.1.bn2.weight                  |                      [64] |              64 | 6d8fa49d
+encoder1.1.bn2.bias                    |                      [64] |              64 | d11d416c
+encoder1.1.bn2.running_mean            |                      [64] |              64 | db869556
+encoder1.1.bn2.running_var             |                      [64] |              64 | a11c8941
+encoder1.2.conv1.weight                |            [64, 64, 3, 3] |          36,864 | 02672925
+encoder1.2.bn1.weight                  |                      [64] |              64 | 5b8dfdd5
+encoder1.2.bn1.bias                    |                      [64] |              64 | 88f99da2
+encoder1.2.bn1.running_mean            |                      [64] |              64 | acb1b216
+encoder1.2.bn1.running_var             |                      [64] |              64 | bc5a5161
+encoder1.2.conv2.weight                |            [64, 64, 3, 3] |          36,864 | 06cca2d9
+encoder1.2.bn2.weight                  |                      [64] |              64 | c731ff8d
+encoder1.2.bn2.bias                    |                      [64] |              64 | ce73bdd9
+encoder1.2.bn2.running_mean            |                      [64] |              64 | 0f3a395d
+encoder1.2.bn2.running_var             |                      [64] |              64 | f9813f4f
+encoder2.0.conv1.weight                |           [128, 64, 3, 3] |          73,728 | 4fede678
+encoder2.0.bn1.weight                  |                     [128] |             128 | 10488183
+encoder2.0.bn1.bias                    |                     [128] |             128 | 3c461da1
+encoder2.0.bn1.running_mean            |                     [128] |             128 | 5ad4f6db
+encoder2.0.bn1.running_var             |                     [128] |             128 | 541eda24
+encoder2.0.conv2.weight                |          [128, 128, 3, 3] |         147,456 | a3d4e545
+encoder2.0.bn2.weight                  |                     [128] |             128 | ec33dff7
+encoder2.0.bn2.bias                    |                     [128] |             128 | 662f7df2
+encoder2.0.bn2.running_mean            |                     [128] |             128 | a1613ac2
+encoder2.0.bn2.running_var             |                     [128] |             128 | e35c4444
+encoder2.0.downsample.0.weight         |           [128, 64, 1, 1] |           8,192 | b85818bd
+encoder2.0.downsample.1.weight         |                     [128] |             128 | 2f069c86
+encoder2.0.downsample.1.bias           |                     [128] |             128 | 662f7df2
+encoder2.0.downsample.1.running_mean   |                     [128] |             128 | 5709a532
+encoder2.0.downsample.1.running_var    |                     [128] |             128 | a606f707
+encoder2.1.conv1.weight                |          [128, 128, 3, 3] |         147,456 | dd6f7e21
+encoder2.1.bn1.weight                  |                     [128] |             128 | fa3ae2a1
+encoder2.1.bn1.bias                    |                     [128] |             128 | b01b9ba4
+encoder2.1.bn1.running_mean            |                     [128] |             128 | 543f96a1
+encoder2.1.bn1.running_var             |                     [128] |             128 | b41fd226
+encoder2.1.conv2.weight                |          [128, 128, 3, 3] |         147,456 | d24bce69
+encoder2.1.bn2.weight                  |                     [128] |             128 | f8c2ee08
+encoder2.1.bn2.bias                    |                     [128] |             128 | 6410cd59
+encoder2.1.bn2.running_mean            |                     [128] |             128 | e8466421
+encoder2.1.bn2.running_var             |                     [128] |             128 | 53890644
+encoder2.2.conv1.weight                |          [128, 128, 3, 3] |         147,456 | 03bb562e
+encoder2.2.bn1.weight                  |                     [128] |             128 | 9373c8e6
+encoder2.2.bn1.bias                    |                     [128] |             128 | 86eb3546
+encoder2.2.bn1.running_mean            |                     [128] |             128 | 20374d33
+encoder2.2.bn1.running_var             |                     [128] |             128 | f95d9f06
+encoder2.2.conv2.weight                |          [128, 128, 3, 3] |         147,456 | c0d62623
+encoder2.2.bn2.weight                  |                     [128] |             128 | 4b401e62
+encoder2.2.bn2.bias                    |                     [128] |             128 | b232b830
+encoder2.2.bn2.running_mean            |                     [128] |             128 | abd93225
+encoder2.2.bn2.running_var             |                     [128] |             128 | f6429ef9
+encoder2.3.conv1.weight                |          [128, 128, 3, 3] |         147,456 | c8fc3409
+encoder2.3.bn1.weight                  |                     [128] |             128 | e8472943
+encoder2.3.bn1.bias                    |                     [128] |             128 | 42de4c8b
+encoder2.3.bn1.running_mean            |                     [128] |             128 | d8e6c3f8
+encoder2.3.bn1.running_var             |                     [128] |             128 | a3763968
+encoder2.3.conv2.weight                |          [128, 128, 3, 3] |         147,456 | a5bf9593
+encoder2.3.bn2.weight                  |                     [128] |             128 | 3dd798b2
+encoder2.3.bn2.bias                    |                     [128] |             128 | 34635c41
+encoder2.3.bn2.running_mean            |                     [128] |             128 | cb7524c4
+encoder2.3.bn2.running_var             |                     [128] |             128 | d77bbba2
+encoder3.0.conv1.weight                |          [256, 128, 3, 3] |         294,912 | fac125c8
+encoder3.0.bn1.weight                  |                     [256] |             256 | 384032cf
+encoder3.0.bn1.bias                    |                     [256] |             256 | dad64a4a
+encoder3.0.bn1.running_mean            |                     [256] |             256 | 6227edd3
+encoder3.0.bn1.running_var             |                     [256] |             256 | 03c034f8
+encoder3.0.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 47839a3a
+encoder3.0.bn2.weight                  |                     [256] |             256 | 87192746
+encoder3.0.bn2.bias                    |                     [256] |             256 | 438bd36b
+encoder3.0.bn2.running_mean            |                     [256] |             256 | 091891ce
+encoder3.0.bn2.running_var             |                     [256] |             256 | a4376be4
+encoder3.0.downsample.0.weight         |          [256, 128, 1, 1] |          32,768 | ed56e240
+encoder3.0.downsample.1.weight         |                     [256] |             256 | 0991cf5e
+encoder3.0.downsample.1.bias           |                     [256] |             256 | 438bd36b
+encoder3.0.downsample.1.running_mean   |                     [256] |             256 | a8d869ba
+encoder3.0.downsample.1.running_var    |                     [256] |             256 | b517001b
+encoder3.1.conv1.weight                |          [256, 256, 3, 3] |         589,824 | 73d7d249
+encoder3.1.bn1.weight                  |                     [256] |             256 | 60d498ea
+encoder3.1.bn1.bias                    |                     [256] |             256 | 641badb3
+encoder3.1.bn1.running_mean            |                     [256] |             256 | bed4ab0f
+encoder3.1.bn1.running_var             |                     [256] |             256 | d1df6b16
+encoder3.1.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 8c06104b
+encoder3.1.bn2.weight                  |                     [256] |             256 | 2b91db0d
+encoder3.1.bn2.bias                    |                     [256] |             256 | 5047eaf0
+encoder3.1.bn2.running_mean            |                     [256] |             256 | 4a2a5be4
+encoder3.1.bn2.running_var             |                     [256] |             256 | 25cd8e43
+encoder3.2.conv1.weight                |          [256, 256, 3, 3] |         589,824 | 2dcc050a
+encoder3.2.bn1.weight                  |                     [256] |             256 | b41e2dfa
+encoder3.2.bn1.bias                    |                     [256] |             256 | d245b4c2
+encoder3.2.bn1.running_mean            |                     [256] |             256 | 438562a2
+encoder3.2.bn1.running_var             |                     [256] |             256 | fda028f4
+encoder3.2.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 63905df3
+encoder3.2.bn2.weight                  |                     [256] |             256 | 06445998
+encoder3.2.bn2.bias                    |                     [256] |             256 | 00b70a91
+encoder3.2.bn2.running_mean            |                     [256] |             256 | b480d1a8
+encoder3.2.bn2.running_var             |                     [256] |             256 | 8aa3dea4
+encoder3.3.conv1.weight                |          [256, 256, 3, 3] |         589,824 | 60742463
+encoder3.3.bn1.weight                  |                     [256] |             256 | e10b546b
+encoder3.3.bn1.bias                    |                     [256] |             256 | d2594206
+encoder3.3.bn1.running_mean            |                     [256] |             256 | 13d28b87
+encoder3.3.bn1.running_var             |                     [256] |             256 | 842290aa
+encoder3.3.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 139e1b32
+encoder3.3.bn2.weight                  |                     [256] |             256 | e22394d1
+encoder3.3.bn2.bias                    |                     [256] |             256 | 00ad4197
+encoder3.3.bn2.running_mean            |                     [256] |             256 | c94566fa
+encoder3.3.bn2.running_var             |                     [256] |             256 | fba1684d
+encoder3.4.conv1.weight                |          [256, 256, 3, 3] |         589,824 | 361bbf79
+encoder3.4.bn1.weight                  |                     [256] |             256 | 26381a02
+encoder3.4.bn1.bias                    |                     [256] |             256 | 055f26b8
+encoder3.4.bn1.running_mean            |                     [256] |             256 | eca03556
+encoder3.4.bn1.running_var             |                     [256] |             256 | 6e701d32
+encoder3.4.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 8869189d
+encoder3.4.bn2.weight                  |                     [256] |             256 | 0a36590a
+encoder3.4.bn2.bias                    |                     [256] |             256 | e044ab30
+encoder3.4.bn2.running_mean            |                     [256] |             256 | 82de948d
+encoder3.4.bn2.running_var             |                     [256] |             256 | e11e49a3
+encoder3.5.conv1.weight                |          [256, 256, 3, 3] |         589,824 | 54d44fc7
+encoder3.5.bn1.weight                  |                     [256] |             256 | 848aebbd
+encoder3.5.bn1.bias                    |                     [256] |             256 | 2a5054b4
+encoder3.5.bn1.running_mean            |                     [256] |             256 | 81bbc660
+encoder3.5.bn1.running_var             |                     [256] |             256 | 6a209011
+encoder3.5.conv2.weight                |          [256, 256, 3, 3] |         589,824 | 8487ddce
+encoder3.5.bn2.weight                  |                     [256] |             256 | 3643458a
+encoder3.5.bn2.bias                    |                     [256] |             256 | 23d0b169
+encoder3.5.bn2.running_mean            |                     [256] |             256 | 75d36d0e
+encoder3.5.bn2.running_var             |                     [256] |             256 | c082c3ff
+encoder4.0.conv1.weight                |          [512, 256, 3, 3] |       1,179,648 | d128dcb4
+encoder4.0.bn1.weight                  |                     [512] |             512 | c4820b36
+encoder4.0.bn1.bias                    |                     [512] |             512 | 4cc642d7
+encoder4.0.bn1.running_mean            |                     [512] |             512 | ae9b4cf7
+encoder4.0.bn1.running_var             |                     [512] |             512 | 1b8d0cab
+encoder4.0.conv2.weight                |          [512, 512, 3, 3] |       2,359,296 | b872ecaf
+encoder4.0.bn2.weight                  |                     [512] |             512 | f040043b
+encoder4.0.bn2.bias                    |                     [512] |             512 | b167c306
+encoder4.0.bn2.running_mean            |                     [512] |             512 | 06865874
+encoder4.0.bn2.running_var             |                     [512] |             512 | 2718a16b
+encoder4.0.downsample.0.weight         |          [512, 256, 1, 1] |         131,072 | d136e27d
+encoder4.0.downsample.1.weight         |                     [512] |             512 | 43d5a5dd
+encoder4.0.downsample.1.bias           |                     [512] |             512 | b167c306
+encoder4.0.downsample.1.running_mean   |                     [512] |             512 | 9eaf5c31
+encoder4.0.downsample.1.running_var    |                     [512] |             512 | c85f7068
+encoder4.1.conv1.weight                |          [512, 512, 3, 3] |       2,359,296 | beb193dd
+encoder4.1.bn1.weight                  |                     [512] |             512 | e71fc99f
+encoder4.1.bn1.bias                    |                     [512] |             512 | 71eb90f1
+encoder4.1.bn1.running_mean            |                     [512] |             512 | d70e01be
+encoder4.1.bn1.running_var             |                     [512] |             512 | f0ac5dca
+encoder4.1.conv2.weight                |          [512, 512, 3, 3] |       2,359,296 | 6823f04e
+encoder4.1.bn2.weight                  |                     [512] |             512 | af2a0e83
+encoder4.1.bn2.bias                    |                     [512] |             512 | 7ec05f36
+encoder4.1.bn2.running_mean            |                     [512] |             512 | 732cc0b4
+encoder4.1.bn2.running_var             |                     [512] |             512 | d0830b2a
+encoder4.2.conv1.weight                |          [512, 512, 3, 3] |       2,359,296 | bb5e9091
+encoder4.2.bn1.weight                  |                     [512] |             512 | 95957947
+encoder4.2.bn1.bias                    |                     [512] |             512 | 8d59917a
+encoder4.2.bn1.running_mean            |                     [512] |             512 | 89c07582
+encoder4.2.bn1.running_var             |                     [512] |             512 | 307e0ca2
+encoder4.2.conv2.weight                |          [512, 512, 3, 3] |       2,359,296 | fc60773d
+encoder4.2.bn2.weight                  |                     [512] |             512 | 715966c8
+encoder4.2.bn2.bias                    |                     [512] |             512 | ce27ff28
+encoder4.2.bn2.running_mean            |                     [512] |             512 | 7e7abbcf
+encoder4.2.bn2.running_var             |                     [512] |             512 | a8ee3738
+resb5_1.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | e04f83b9
+resb5_1.bn1.weight                     |                     [512] |             512 | cb5b3956
+resb5_1.bn1.bias                       |                     [512] |             512 | b022d9fe
+resb5_1.bn1.running_mean               |                     [512] |             512 | 24ab707c
+resb5_1.bn1.running_var                |                     [512] |             512 | 73ca3a7a
+resb5_1.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | 33e2cd05
+resb5_1.bn2.weight                     |                     [512] |             512 | 1a0caffe
+resb5_1.bn2.bias                       |                     [512] |             512 | ee1fabb9
+resb5_1.bn2.running_mean               |                     [512] |             512 | ac30b628
+resb5_1.bn2.running_var                |                     [512] |             512 | 3d843819
+resb5_2.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | 26fc8486
+resb5_2.bn1.weight                     |                     [512] |             512 | 7786dd59
+resb5_2.bn1.bias                       |                     [512] |             512 | 5bb58a49
+resb5_2.bn1.running_mean               |                     [512] |             512 | 45c2a92c
+resb5_2.bn1.running_var                |                     [512] |             512 | 10f5697e
+resb5_2.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | 4e48f4a8
+resb5_2.bn2.weight                     |                     [512] |             512 | 8273ae3c
+resb5_2.bn2.bias                       |                     [512] |             512 | 9fe2b65b
+resb5_2.bn2.running_mean               |                     [512] |             512 | 3c6d5931
+resb5_2.bn2.running_var                |                     [512] |             512 | adedd480
+resb5_3.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | 9ed4753c
+resb5_3.bn1.weight                     |                     [512] |             512 | 226182b7
+resb5_3.bn1.bias                       |                     [512] |             512 | af07d8a4
+resb5_3.bn1.running_mean               |                     [512] |             512 | 4d1244f7
+resb5_3.bn1.running_var                |                     [512] |             512 | 0fafde56
+resb5_3.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | 7dc9258a
+resb5_3.bn2.weight                     |                     [512] |             512 | ca4ff456
+resb5_3.bn2.bias                       |                     [512] |             512 | 909b9101
+resb5_3.bn2.running_mean               |                     [512] |             512 | d92281b6
+resb5_3.bn2.running_var                |                     [512] |             512 | c6427316
+resb6_1.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | dd6167b6
+resb6_1.bn1.weight                     |                     [512] |             512 | 02f2c1c8
+resb6_1.bn1.bias                       |                     [512] |             512 | 03394f03
+resb6_1.bn1.running_mean               |                     [512] |             512 | c81cbb18
+resb6_1.bn1.running_var                |                     [512] |             512 | 13d5c102
+resb6_1.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | 6df83265
+resb6_1.bn2.weight                     |                     [512] |             512 | 9ba70505
+resb6_1.bn2.bias                       |                     [512] |             512 | acd267d0
+resb6_1.bn2.running_mean               |                     [512] |             512 | d539b3a6
+resb6_1.bn2.running_var                |                     [512] |             512 | c3c989f7
+resb6_2.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | e87af25c
+resb6_2.bn1.weight                     |                     [512] |             512 | 365358cf
+resb6_2.bn1.bias                       |                     [512] |             512 | 6eb6ebeb
+resb6_2.bn1.running_mean               |                     [512] |             512 | 074a3426
+resb6_2.bn1.running_var                |                     [512] |             512 | 64b83969
+resb6_2.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | cd3df833
+resb6_2.bn2.weight                     |                     [512] |             512 | 3c85598a
+resb6_2.bn2.bias                       |                     [512] |             512 | c8c47be1
+resb6_2.bn2.running_mean               |                     [512] |             512 | b2fdcf75
+resb6_2.bn2.running_var                |                     [512] |             512 | f14cacdf
+resb6_3.conv1.weight                   |          [512, 512, 3, 3] |       2,359,296 | 71569dbe
+resb6_3.bn1.weight                     |                     [512] |             512 | a56dd497
+resb6_3.bn1.bias                       |                     [512] |             512 | 4131bd8d
+resb6_3.bn1.running_mean               |                     [512] |             512 | c01f706c
+resb6_3.bn1.running_var                |                     [512] |             512 | facb7f57
+resb6_3.conv2.weight                   |          [512, 512, 3, 3] |       2,359,296 | da642941
+resb6_3.bn2.weight                     |                     [512] |             512 | 2f079666
+resb6_3.bn2.bias                       |                     [512] |             512 | f26c31e8
+resb6_3.bn2.running_mean               |                     [512] |             512 | 158c1f4b
+resb6_3.bn2.running_var                |                     [512] |             512 | ad2f23f1
+convbg_1.weight                        |          [512, 512, 3, 3] |       2,359,296 | 6c4bbdf1
+convbg_1.bias                          |                     [512] |             512 | 845bf89e
+bnbg_1.weight                          |                     [512] |             512 | ca651574
+bnbg_1.bias                            |                     [512] |             512 | 1d0b29d6
+bnbg_1.running_mean                    |                     [512] |             512 | 1c9818e0
+bnbg_1.running_var                     |                     [512] |             512 | a9ae35c2
+convbg_m.weight                        |          [512, 512, 3, 3] |       2,359,296 | a3cdf130
+convbg_m.bias                          |                     [512] |             512 | b18e46cc
+bnbg_m.weight                          |                     [512] |             512 | abbff2f2
+bnbg_m.bias                            |                     [512] |             512 | b833291b
+bnbg_m.running_mean                    |                     [512] |             512 | db3c70d9
+bnbg_m.running_var                     |                     [512] |             512 | 3f70cf9d
+convbg_2.weight                        |          [512, 512, 3, 3] |       2,359,296 | 9f8b67bc
+convbg_2.bias                          |                     [512] |             512 | 98f66f6a
+bnbg_2.weight                          |                     [512] |             512 | fd733521
+bnbg_2.bias                            |                     [512] |             512 | e5ad9e82
+bnbg_2.running_mean                    |                     [512] |             512 | e12b5b1c
+bnbg_2.running_var                     |                     [512] |             512 | 4152418a
+conv6d_1.weight                        |         [512, 1024, 3, 3] |       4,718,592 | b4763589
+conv6d_1.bias                          |                     [512] |             512 | 05b4e2bf
+bn6d_1.weight                          |                     [512] |             512 | 93bf9528
+bn6d_1.bias                            |                     [512] |             512 | 785e91c1
+bn6d_1.running_mean                    |                     [512] |             512 | 413128f4
+bn6d_1.running_var                     |                     [512] |             512 | 72156e2f
+conv6d_m.weight                        |          [512, 512, 3, 3] |       2,359,296 | 934c4194
+conv6d_m.bias                          |                     [512] |             512 | 260dd382
+bn6d_m.weight                          |                     [512] |             512 | 10789b23
+bn6d_m.bias                            |                     [512] |             512 | 5144bd2a
+bn6d_m.running_mean                    |                     [512] |             512 | 862c9168
+bn6d_m.running_var                     |                     [512] |             512 | f4eba967
+conv6d_2.weight                        |          [512, 512, 3, 3] |       2,359,296 | acb90fd2
+conv6d_2.bias                          |                     [512] |             512 | 0bbe4791
+bn6d_2.weight                          |                     [512] |             512 | 7981ee1f
+bn6d_2.bias                            |                     [512] |             512 | a8456c83
+bn6d_2.running_mean                    |                     [512] |             512 | 9eff04ae
+bn6d_2.running_var                     |                     [512] |             512 | b5f75daf
+conv5d_1.weight                        |         [512, 1024, 3, 3] |       4,718,592 | 13c64458
+conv5d_1.bias                          |                     [512] |             512 | 2436645e
+bn5d_1.weight                          |                     [512] |             512 | 614bdeea
+bn5d_1.bias                            |                     [512] |             512 | d36e6b1c
+bn5d_1.running_mean                    |                     [512] |             512 | c24c5f76
+bn5d_1.running_var                     |                     [512] |             512 | 0de9dc90
+conv5d_m.weight                        |          [512, 512, 3, 3] |       2,359,296 | 4292d34b
+conv5d_m.bias                          |                     [512] |             512 | 7af08a42
+bn5d_m.weight                          |                     [512] |             512 | b1f92439
+bn5d_m.bias                            |                     [512] |             512 | c741b6c7
+bn5d_m.running_mean                    |                     [512] |             512 | d99ebd1b
+bn5d_m.running_var                     |                     [512] |             512 | 3beb1ba0
+conv5d_2.weight                        |          [512, 512, 3, 3] |       2,359,296 | 70c18324
+conv5d_2.bias                          |                     [512] |             512 | c12a90d5
+bn5d_2.weight                          |                     [512] |             512 | 7981ee1f
+bn5d_2.bias                            |                     [512] |             512 | a8456c83
+bn5d_2.running_mean                    |                     [512] |             512 | 9eff04ae
+bn5d_2.running_var                     |                     [512] |             512 | b5f75daf
+conv4d_1.weight                        |         [512, 1024, 3, 3] |       4,718,592 | 5851fb72
+conv4d_1.bias                          |                     [512] |             512 | 9d3b0b42
+bn4d_1.weight                          |                     [512] |             512 | 2a21ec6b
+bn4d_1.bias                            |                     [512] |             512 | 9d9785bd
+bn4d_1.running_mean                    |                     [512] |             512 | 9dac96bf
+bn4d_1.running_var                     |                     [512] |             512 | 004c2121
+conv4d_m.weight                        |          [512, 512, 3, 3] |       2,359,296 | d4191c2e
+conv4d_m.bias                          |                     [512] |             512 | c2197507
+bn4d_m.weight                          |                     [512] |             512 | 81d75492
+bn4d_m.bias                            |                     [512] |             512 | 86402605
+bn4d_m.running_mean                    |                     [512] |             512 | af5a990b
+bn4d_m.running_var                     |                     [512] |             512 | 4ff663e2
+conv4d_2.weight                        |          [256, 512, 3, 3] |       1,179,648 | 3541bf56
+conv4d_2.bias                          |                     [256] |             256 | 1921c080
+bn4d_2.weight                          |                     [256] |             256 | 8f2d4f3f
+bn4d_2.bias                            |                     [256] |             256 | 2b23c376
+bn4d_2.running_mean                    |                     [256] |             256 | 5fd1973a
+bn4d_2.running_var                     |                     [256] |             256 | 410ed2c2
+conv3d_1.weight                        |          [256, 512, 3, 3] |       1,179,648 | dea26741
+conv3d_1.bias                          |                     [256] |             256 | cbdf4d09
+bn3d_1.weight                          |                     [256] |             256 | cdaf63fd
+bn3d_1.bias                            |                     [256] |             256 | a7281456
+bn3d_1.running_mean                    |                     [256] |             256 | 95c06169
+bn3d_1.running_var                     |                     [256] |             256 | e43774e0
+conv3d_m.weight                        |          [256, 256, 3, 3] |         589,824 | b96cb75d
+conv3d_m.bias                          |                     [256] |             256 | fb54a69b
+bn3d_m.weight                          |                     [256] |             256 | 72251e2a
+bn3d_m.bias                            |                     [256] |             256 | 2a9a591b
+bn3d_m.running_mean                    |                     [256] |             256 | 1cc9ac73
+bn3d_m.running_var                     |                     [256] |             256 | d3c2edd6
+conv3d_2.weight                        |          [128, 256, 3, 3] |         294,912 | b4b89952
+conv3d_2.bias                          |                     [128] |             128 | 07b4b9f9
+bn3d_2.weight                          |                     [128] |             128 | 4a8d4e5a
+bn3d_2.bias                            |                     [128] |             128 | 7c04ea20
+bn3d_2.running_mean                    |                     [128] |             128 | 4d6b38d7
+bn3d_2.running_var                     |                     [128] |             128 | 40ece2bd
+conv2d_1.weight                        |          [128, 256, 3, 3] |         294,912 | b206d073
+conv2d_1.bias                          |                     [128] |             128 | 57c5e6ac
+bn2d_1.weight                          |                     [128] |             128 | 8c252707
+bn2d_1.bias                            |                     [128] |             128 | 8c65bdc4
+bn2d_1.running_mean                    |                     [128] |             128 | 261c95cc
+bn2d_1.running_var                     |                     [128] |             128 | 5e2a4596
+conv2d_m.weight                        |          [128, 128, 3, 3] |         147,456 | 6d019518
+conv2d_m.bias                          |                     [128] |             128 | 51847516
+bn2d_m.weight                          |                     [128] |             128 | bdeb1cf5
+bn2d_m.bias                            |                     [128] |             128 | f0894bba
+bn2d_m.running_mean                    |                     [128] |             128 | 367b07ba
+bn2d_m.running_var                     |                     [128] |             128 | 328e9eae
+conv2d_2.weight                        |           [64, 128, 3, 3] |          73,728 | 274fcc12
+conv2d_2.bias                          |                      [64] |              64 | 3f740aa7
+bn2d_2.weight                          |                      [64] |              64 | dea19368
+bn2d_2.bias                            |                      [64] |              64 | d778661e
+bn2d_2.running_mean                    |                      [64] |              64 | a9b17814
+bn2d_2.running_var                     |                      [64] |              64 | 03c18762
+conv1d_1.weight                        |           [64, 128, 3, 3] |          73,728 | c11f7bf5
+conv1d_1.bias                          |                      [64] |              64 | 691a812b
+bn1d_1.weight                          |                      [64] |              64 | d568d54b
+bn1d_1.bias                            |                      [64] |              64 | a88528f2
+bn1d_1.running_mean                    |                      [64] |              64 | b89591e7
+bn1d_1.running_var                     |                      [64] |              64 | e3ce76e3
+conv1d_m.weight                        |            [64, 64, 3, 3] |          36,864 | 98cad197
+conv1d_m.bias                          |                      [64] |              64 | e509c9dc
+bn1d_m.weight                          |                      [64] |              64 | d9cd77a1
+bn1d_m.bias                            |                      [64] |              64 | 3651982a
+bn1d_m.running_mean                    |                      [64] |              64 | 42265bc2
+bn1d_m.running_var                     |                      [64] |              64 | baccb586
+conv1d_2.weight                        |            [64, 64, 3, 3] |          36,864 | 246444df
+conv1d_2.bias                          |                      [64] |              64 | 8d6b2e71
+bn1d_2.weight                          |                      [64] |              64 | aa07be85
+bn1d_2.bias                            |                      [64] |              64 | d0b25960
+bn1d_2.running_mean                    |                      [64] |              64 | 15afef69
+bn1d_2.running_var                     |                      [64] |              64 | 31c9abd2
+outconvb.weight                        |            [1, 512, 3, 3] |           4,608 | 9c60d9b3
+outconvb.bias                          |                       [1] |               1 | 177f9888
+outconv6.weight                        |            [1, 512, 3, 3] |           4,608 | 0c2b6d5f
+outconv6.bias                          |                       [1] |               1 | f1b3eafa
+outconv5.weight                        |            [1, 512, 3, 3] |           4,608 | 34fb9dc4
+outconv5.bias                          |                       [1] |               1 | 2901a3b7
+outconv4.weight                        |            [1, 256, 3, 3] |           2,304 | 62a6c2df
+outconv4.bias                          |                       [1] |               1 | 516e349a
+outconv3.weight                        |            [1, 128, 3, 3] |           1,152 | ac70a045
+outconv3.bias                          |                       [1] |               1 | 133e2796
+outconv2.weight                        |             [1, 64, 3, 3] |             576 | 563d5a08
+outconv2.bias                          |                       [1] |               1 | 9bc60f47
+outconv1.weight                        |             [1, 64, 3, 3] |             576 | 4cb326cb
+outconv1.bias                          |                       [1] |               1 | 19095e61
+refunet.conv0.weight                   |             [64, 1, 3, 3] |             576 | b35e70b8
+refunet.conv0.bias                     |                      [64] |              64 | 4d2e7ed1
+refunet.conv1.weight                   |            [64, 64, 3, 3] |          36,864 | b6fd9e73
+refunet.conv1.bias                     |                      [64] |              64 | 62fdb36e
+refunet.bn1.weight                     |                      [64] |              64 | 4fb2ddbb
+refunet.bn1.bias                       |                      [64] |              64 | 69fe4bd6
+refunet.bn1.running_mean               |                      [64] |              64 | 608df887
+refunet.bn1.running_var                |                      [64] |              64 | 3aee1d8a
+refunet.conv2.weight                   |            [64, 64, 3, 3] |          36,864 | d4dabbc3
+refunet.conv2.bias                     |                      [64] |              64 | 6b61b2b1
+refunet.bn2.weight                     |                      [64] |              64 | abcc0a16
+refunet.bn2.bias                       |                      [64] |              64 | 67140663
+refunet.bn2.running_mean               |                      [64] |              64 | fe3e8589
+refunet.bn2.running_var                |                      [64] |              64 | cb296608
+refunet.conv3.weight                   |            [64, 64, 3, 3] |          36,864 | 24377856
+refunet.conv3.bias                     |                      [64] |              64 | 84d8cf21
+refunet.bn3.weight                     |                      [64] |              64 | 7bd4a20d
+refunet.bn3.bias                       |                      [64] |              64 | bde54028
+refunet.bn3.running_mean               |                      [64] |              64 | 26689e78
+refunet.bn3.running_var                |                      [64] |              64 | 71f37c2a
+refunet.conv4.weight                   |            [64, 64, 3, 3] |          36,864 | 5a3dd73a
+refunet.conv4.bias                     |                      [64] |              64 | 7e1bdcda
+refunet.bn4.weight                     |                      [64] |              64 | ce6a60f6
+refunet.bn4.bias                       |                      [64] |              64 | 4ca24db2
+refunet.bn4.running_mean               |                      [64] |              64 | 3faa8c6a
+refunet.bn4.running_var                |                      [64] |              64 | cba60794
+refunet.conv5.weight                   |            [64, 64, 3, 3] |          36,864 | b52ee670
+refunet.conv5.bias                     |                      [64] |              64 | 903b4064
+refunet.bn5.weight                     |                      [64] |              64 | d042ecb8
+refunet.bn5.bias                       |                      [64] |              64 | c8f6f889
+refunet.bn5.running_mean               |                      [64] |              64 | 6b484d8f
+refunet.bn5.running_var                |                      [64] |              64 | d4e949eb
+refunet.conv_d4.weight                 |           [64, 128, 3, 3] |          73,728 | 2e2046f2
+refunet.conv_d4.bias                   |                      [64] |              64 | e21bb26d
+refunet.bn_d4.weight                   |                      [64] |              64 | 81d331fd
+refunet.bn_d4.bias                     |                      [64] |              64 | f382c9ea
+refunet.bn_d4.running_mean             |                      [64] |              64 | f89447ad
+refunet.bn_d4.running_var              |                      [64] |              64 | 66e56e21
+refunet.conv_d3.weight                 |           [64, 128, 3, 3] |          73,728 | 9e2e6a95
+refunet.conv_d3.bias                   |                      [64] |              64 | 15fda6a1
+refunet.bn_d3.weight                   |                      [64] |              64 | 474b5c8d
+refunet.bn_d3.bias                     |                      [64] |              64 | f6b4c0c7
+refunet.bn_d3.running_mean             |                      [64] |              64 | 18916ad4
+refunet.bn_d3.running_var              |                      [64] |              64 | 75969613
+refunet.conv_d2.weight                 |           [64, 128, 3, 3] |          73,728 | 726e390a
+refunet.conv_d2.bias                   |                      [64] |              64 | ce493a15
+refunet.bn_d2.weight                   |                      [64] |              64 | 1ddadcc1
+refunet.bn_d2.bias                     |                      [64] |              64 | e17ed0c2
+refunet.bn_d2.running_mean             |                      [64] |              64 | 703703dd
+refunet.bn_d2.running_var              |                      [64] |              64 | 744b21cb
+refunet.conv_d1.weight                 |           [64, 128, 3, 3] |          73,728 | 4b9ef3fe
+refunet.conv_d1.bias                   |                      [64] |              64 | 85300f38
+refunet.bn_d1.weight                   |                      [64] |              64 | 952dece5
+refunet.bn_d1.bias                     |                      [64] |              64 | 97494e02
+refunet.bn_d1.running_mean             |                      [64] |              64 | 26518534
+refunet.bn_d1.running_var              |                      [64] |              64 | 1dd76bfc
+refunet.conv_d0.weight                 |             [1, 64, 3, 3] |             576 | cc28d490
+refunet.conv_d0.bias                   |                       [1] |               1 | 78b8eb0b
+-----------------------------------------------------------------------------------------------------
+Total                                  |                           |      87,104,904 |

@@ -755,5 +755,36 @@
         "dtype": "float32",
         "file_t": "safetensors",
         "dataset": "DIS5K, HRSOD"
+    },
+    #
+    # BASNet model
+    #
+    "BASNET Base": {
+        "name": "Base",
+        "url": "https://huggingface.co/creative-graphic-design/BASNet-checkpoints/resolve/main/basnet.pth",
+        "file_name": null,
+        "train_w": 256,
+        "train_h": 256,
+        "model_t": "BASNet",
+        "size": "333 MiB",
+        "ops_name": "Base DUTS (333 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "DUTS"
+    },
+    "BASNET GDI": {
+        "name": "GDI",
+        "url": "https://huggingface.co/creative-graphic-design/BASNet-checkpoints/resolve/main/gdi-basnet.pth",
+        "file_name": null,
+        "train_w": 256,
+        "train_h": 256,
+        "model_t": "BASNet",
+        "size": "333 MiB",
+        "ops_name": "GDI (333 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "pytorch",
+        "dataset": "GDI"
     }
 }

@@ -335,6 +335,13 @@ class AutoDownloadBADISModel(AutoDownloadBiRefNetModel):
 AutoDownloadBADISModel.fill_description()
 
 
+class AutoDownloadBASNetModel(AutoDownloadBiRefNetModel):
+    model_type = 'BASNet'
+
+
+AutoDownloadBASNetModel.fill_description()
+
+
 class GetMaskLow(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:

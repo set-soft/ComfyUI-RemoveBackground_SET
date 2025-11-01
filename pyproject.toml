@@ -7,9 +7,9 @@ Low dependencies, not heavy packages needed.
 Supports a lot of models including the populars:
 BiRefNet, BEN1/2 (MVANet), InSPyReNet
 Some older models:
-U-2-Net and IS-Net
+BASNet, U-2-Net and IS-Net
 And some modern approaches:
-PDFNet, MODNet and DiffDIS.
+PDFNet, MODNet, BADIS and DiffDIS.
 Also supports the models trained by BRIA.
 Support for Approximate Fast Foreground Colour Estimation
 for smooth background replacement.

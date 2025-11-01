@@ -13,7 +13,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 
 &#x2705; Warnings and errors visible in the browser, configurable debug information in the console
 
-&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS
+&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS, BASNet
 
 &#x2705; Automatic model download (Only the SD Turbo VAE might be needed for DiffDIS)
 
@@ -420,7 +420,8 @@ Also note that IS-Net models are much faster and needs much less memory than the
 - Good part of the initial code and this README was generated using Gemini 2.5 Pro.
 - I took various ideas from [ComfyUI_BiRefNet_ll](https://github.com/lldacing/ComfyUI_BiRefNet_ll)
 - These nodes contains the inference code for the models:
-  - [BADIS](https://github.com/m0ho/Boundary-Aware-Dichotomous-Image-Segmentation): Xuebin Qin, Deng-Ping Fan, Chenyang Huang, Cyril Diagne, Zichen Zhang, Adrià Cabeza Sant'Anna, Albert Suàrez, Martin Jagersand, Ling Shao
+  - [BADIS](https://github.com/m0ho/Boundary-Aware-Dichotomous-Image-Segmentation): Haonan Tang, Shuhan Chen, Yang Liu, Shiyu Wang, Zeyu Chen & Xuelong Hu
+  - [BASNet](https://github.com/xuebinqin/BASNet): Xuebin Qin, Deng-Ping Fan, Chenyang Huang, Cyril Diagne, Zichen Zhang, Adrià Cabeza Sant'Anna, Albert Suàrez, Martin Jagersand, Ling Shao
   - [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet): Peng Zheng, Dehong Gao, Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang, Nicu Sebe
   - [Depth Anything](https://github.com/DepthAnything/Depth-Anything-V2): Lihe Yang, Bingyi Kang, Zilong Huang, Zhen Zhao, Xiaogang Xu, Jiashi Feng, Hengshuang Zhao (HKU/TikTok)
   - [DiffDIS](https://github.com/qianyu-dlut/DiffDIS): Qian Yu, Peng-Tao Jiang, Hao Zhang, Jinwei Chen, Bo Li, Lihe Zhang, Huchuan Lu
