@@ -786,5 +786,36 @@
         "dtype": "float32",
         "file_t": "pytorch",
         "dataset": "GDI"
+    },
+    #
+    # PGNet model
+    #
+    "PGNet DUT+HRSOD F16": {
+        "name": "DUT+HRSOD F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/PGNet/PGNet_DUT_HRSOD_F16.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "PGNet",
+        "size": "140 MiB",
+        "ops_name": "DUT+HRSOD F16 (140 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DUT+HRSOD"
+    },
+    "PGNet DUT+HRSOD": {
+        "name": "DUT+HRSOD",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/PGNet/PGNet_DUT_HRSOD_F32.safetensors",
+        "file_name": null,
+        "train_w": 1024,
+        "train_h": 1024,
+        "model_t": "PGNet",
+        "size": "279 MiB",
+        "ops_name": "DUT+HRSOD (279 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "DUT+HRSOD"
     }
 }

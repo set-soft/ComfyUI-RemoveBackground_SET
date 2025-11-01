@@ -342,6 +342,13 @@ class AutoDownloadBASNetModel(AutoDownloadBiRefNetModel):
 AutoDownloadBASNetModel.fill_description()
 
 
+class AutoDownloadPGNetModel(AutoDownloadBiRefNetModel):
+    model_type = 'PGNet'
+
+
+AutoDownloadPGNetModel.fill_description()
+
+
 class GetMaskLow(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:

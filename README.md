@@ -13,7 +13,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 
 &#x2705; Warnings and errors visible in the browser, configurable debug information in the console
 
-&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS, BASNet
+&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS, BASNet, PGNet
 
 &#x2705; Automatic model download (Only the SD Turbo VAE might be needed for DiffDIS)
 
@@ -432,6 +432,7 @@ Also note that IS-Net models are much faster and needs much less memory than the
   - [MVANet](https://github.com/qianyu-dlut/MVANet/): Qian Yu, Xiaoqi Zhao, Youwei Pang, Lihe Zhang, Huchuan Lu
     - [BEN](https://huggingface.co/PramaLLC/BEN2): Maxwell Meyer and Jack Spruyt
   - [PDFNet](https://github.com/Tennine2077/PDFNet): Xianjie Liu, Keren Fu, Qijun Zhao
+  - [PGNet](https://github.com/iCVTEAM/PGNet/): Chenxi Xie, Changqun Xia, Mingcan Ma, Zhirui Zhao, Xiaowu Chen, Jia Li
   - [Swin](https://github.com/microsoft/Swin-Transformer): Ze Liu, Yutong Lin, Yixuan Wei
   - [U-2-Net](https://github.com/xuebinqin/U-2-Net): Xuebin Qin, Zichen Zhang, Chenyang Huang, Masood Dehghan, Osmar R. Zaiane and Martin Jagersand
     - [IS-Net](https://github.com/xuebinqin/DIS): Xuebin Qin, Hang Dai, Xiaobin Hu, Deng-Ping Fan, Ling Shao, Luc Van Gool

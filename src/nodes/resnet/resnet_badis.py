@@ -20,14 +20,14 @@ from .resnet import conv1x1, BasicBlock
 
 
 class ResNet(nn.Module):
-    def __init__(self):
+    def __init__(self, with_maxpool=False):
         super().__init__()
 
         self.inplanes = 64
         self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
-        # self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)  Removed
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1) if with_maxpool else None
         self.layer1 = self._make_layer(64)
         self.layer2 = self._make_layer(128, stride=2)
         self.layer3 = self._make_layer(256, stride=2)
@@ -51,14 +51,17 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        out2 = self.layer1(F.relu(self.bn1(self.conv1(x)), inplace=True))
+        if self.maxpool is None:
+            out2 = self.layer1(F.relu(self.bn1(self.conv1(x)), inplace=True))
+        else:
+            out2 = self.layer1(self.maxpool(F.relu(self.bn1(self.conv1(x)), inplace=True)))
         out3 = self.layer2(out2)
         out4 = self.layer3(out3)
         out5 = self.layer4(out4)
         return out2, out3, out4, out5  # All layer outputs are returned
 
 
-def resnet18():
+def resnet18(with_maxpool=False):
     r"""ResNet-18 model from
     `Deep Residual Learning for Image Recognition <https://arxiv.org/pdf/1512.03385.pdf>`_
 
@@ -66,4 +69,4 @@ def resnet18():
         pretrained (bool): If True, returns a model pre-trained on ImageNet
         progress (bool): If True, displays a progress bar of the download to stderr
     """
-    return ResNet()
+    return ResNet(with_maxpool=with_maxpool)

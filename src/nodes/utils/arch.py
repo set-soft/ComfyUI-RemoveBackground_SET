@@ -36,6 +36,7 @@ from ..diffdis.diffdis_pipeline import DiffDISPipeline, DiffDIS
 from ..dan import BASE_MODEL_NAME, load_dan, dan_low
 from ..badis_v2.BADIS import BADIS
 from ..basnet.BASNet import BASNet
+from ..pgnet.PGNet import PGNet
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -232,7 +233,9 @@ class RemBg(object):
                     return
                 assert self.bb_prefix == 'backbone'
         elif self.bb == 'swin_v1_badis':
-            if not self.is_badis_v2(state_dict):
+            if self.is_badis_v2(state_dict):
+                pass
+            elif not self.is_pgnet(state_dict):
                 # Don't know about it
                 self.why = 'Unknown 3 layers Swin variant model'
                 return
@@ -248,6 +251,18 @@ class RemBg(object):
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
+
+    def is_pgnet(self, state_dict):
+        layer = 'decoder.sqz_s2.0.weight'
+        if layer not in state_dict:
+            return False
+        self.model_type = 'PGNet'
+        self.dtype = state_dict[layer].dtype
+        if "swin.norm.bias" in state_dict:
+            del state_dict["swin.norm.bias"]
+        if "swin.norm.weight" in state_dict:
+            del state_dict["swin.norm.weight"]
+        return True
 
     def is_badis_v2(self, state_dict):
         layer = 'myFPSA.sqz512.0.weight'
@@ -485,7 +500,7 @@ class RemBg(object):
         if not self.bb.startswith('swin'):
             # We just messed with Swin V1
             return
-        if self.model_type == 'BADIS':
+        if self.model_type == 'BADIS' or self.model_type == 'PGNet':
             return  # Currently using a local copy of Swin
         start_key = self.bb_prefix + '.norm'
         start_key_l = len(start_key)
@@ -518,6 +533,8 @@ class RemBg(object):
             model = BADIS()
         elif self.model_type == 'BASNet':
             model = BASNet()
+        elif self.model_type == 'PGNet':
+            model = PGNet()
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
