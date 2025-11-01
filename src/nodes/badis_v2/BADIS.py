@@ -14,7 +14,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .resnet_modif import resnet18
+from ..resnet.resnet_badis import resnet18
 from ..swin.swin_badis import SwinTransformer
 
 
