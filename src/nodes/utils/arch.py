@@ -37,6 +37,7 @@ from ..dan import BASE_MODEL_NAME, load_dan, dan_low
 from ..badis_v2.BADIS import BADIS
 from ..basnet.BASNet import BASNet
 from ..pgnet.PGNet import PGNet
+from ..rmformer.RMFormer import RMF
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -54,7 +55,8 @@ MVANET_RENAME = {
 }
 FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1.Residual_1.WindowAttention.WindowSDPA.'
                       'rpb.relative_position_bias_table')
-
+RMFORMER_BOGUS = ["lr_branch.norm_up.weight", "lr_branch.norm_up.bias", "rrs1.swinlayers.norm_up.weight",
+                  "rrs1.swinlayers.norm_up.bias", "rrs2.swinlayers.norm_up.weight", "rrs2.swinlayers.norm_up.bias"]
 ENABLE_TORCH_SCRIPT = False
 ENABLE_TORCH_COMPILE = False
 
@@ -101,7 +103,7 @@ def filter_mask(mask, threshold=4e-3):
 
 
 class RemBg(object):
-    def __init__(self, state_dict, logger, fname, vae=None, positive=None):
+    def __init__(self, state_dict, logger, fname, vae=None, positive=None, model_path=None, metadata=None):
         super().__init__()
         self.ok = False
         self.bb_ok = False
@@ -114,6 +116,8 @@ class RemBg(object):
         self.positive = positive
         self.da_model = None
         self.sub_type = None
+        self.model_path = model_path
+        self.metadata = metadata
         # mean and standard deviation of the entire ImageNet dataset
         self.img_mean = [0.485, 0.456, 0.406]
         self.img_std = [0.229, 0.224, 0.225]
@@ -211,7 +215,7 @@ class RemBg(object):
             if FINEGRAIN_SWIN_KEY in state_dict:
                 state_dict = finegrain_convert(state_dict)
 
-            bb_name = self.is_swin(['bb', 'backbone', 'encoder', 'swin'], state_dict)
+            bb_name = self.is_swin(['bb', 'backbone', 'encoder', 'swin', 'lr_branch'], state_dict)
             if bb_name is None:
                 return
             if not bb_name:
@@ -227,11 +231,16 @@ class RemBg(object):
         elif self.bb == 'swin_v1_b':
             if not self.is_pdfnet(state_dict):
                 # BEN, InSPyReNet and MVANet?
-                if not self.is_mvanet(state_dict) and not self.is_inspyrenet(state_dict, lower_case_fname):
+                if self.bb_prefix == 'backbone' and (self.is_mvanet(state_dict) or
+                                                     self.is_inspyrenet(state_dict, lower_case_fname)):
+                    pass
+                # RMFormer?
+                elif self.bb_prefix == 'lr_branch' and self.is_rmformer(state_dict):
+                    pass
+                else:
                     # Don't know about it
                     self.why = 'Unknown Swin B variant model'
                     return
-                assert self.bb_prefix == 'backbone'
         elif self.bb == 'swin_v1_badis':
             if self.is_badis_v2(state_dict):
                 pass
@@ -252,6 +261,20 @@ class RemBg(object):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
 
+    # RMFormer
+    def is_rmformer(self, state_dict):
+        layer = 'rrs1.patch_embed1.proj.weight'
+        if layer not in state_dict:
+            return False
+        self.model_type = 'RMFormer'
+        self.dtype = state_dict[layer].dtype
+        self.w = self.h = 1536
+        for la in RMFORMER_BOGUS:
+            if la in state_dict:
+                del state_dict[la]
+        return True
+
+    # PGNet
     def is_pgnet(self, state_dict):
         layer = 'decoder.sqz_s2.0.weight'
         if layer not in state_dict:
@@ -264,6 +287,7 @@ class RemBg(object):
             del state_dict["swin.norm.weight"]
         return True
 
+    # BADIS v2
     def is_badis_v2(self, state_dict):
         layer = 'myFPSA.sqz512.0.weight'
         if layer not in state_dict:
@@ -500,7 +524,7 @@ class RemBg(object):
         if not self.bb.startswith('swin'):
             # We just messed with Swin V1
             return
-        if self.model_type == 'BADIS' or self.model_type == 'PGNet':
+        if self.model_type == 'BADIS' or self.model_type == 'PGNet' or self.model_type == 'RMFormer':
             return  # Currently using a local copy of Swin
         start_key = self.bb_prefix + '.norm'
         start_key_l = len(start_key)
@@ -535,6 +559,8 @@ class RemBg(object):
             model = BASNet()
         elif self.model_type == 'PGNet':
             model = PGNet()
+        elif self.model_type == 'RMFormer':
+            model = RMF()
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
@@ -542,7 +568,25 @@ class RemBg(object):
         self.target_device = self.model.target_device = torch.device(device)
         self.target_dtype = dtype
         self.adapt_state_dict(state_dict)
-        model.load_state_dict(state_dict)
+        if self.model_type == 'RMFormer' and self.model_path and self.model_path.endswith('safetensors'):
+            # This is a particular case, the model is 265 Mp, but their 3 main modules share the core logic so
+            # the weights are for a 88 Mp model.
+            # When loading from a PTH we get multiple keys sharing the same buffers, but this isn't the case of
+            # a safetensor. So we save the unique keys and then we tolerate missing keys.
+            missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+            if unexpected_keys:
+                # Strict here
+                raise ValueError("The model contains extra keys: "+str(unexpected_keys))
+            if self.metadata:
+                # Check that all the missing keys are mentioned in the metadata
+                really_missing = []
+                for k in missing_keys:
+                    if k not in self.metadata:
+                        really_missing.append(k)
+                if really_missing:
+                    raise ValueError("Missing keys: "+str(really_missing))
+        else:
+            model.load_state_dict(state_dict)
         model.to(dtype=dtype)
         model.eval()
 

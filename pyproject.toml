@@ -9,7 +9,7 @@ BiRefNet, BEN1/2 (MVANet), InSPyReNet
 Some older models:
 BASNet, U-2-Net and IS-Net
 And some modern approaches:
-PDFNet, MODNet, BADIS, PGNet and DiffDIS.
+RMFormer, PDFNet, MODNet, BADIS, PGNet and DiffDIS.
 Also supports the models trained by BRIA.
 Support for Approximate Fast Foreground Colour Estimation
 for smooth background replacement.

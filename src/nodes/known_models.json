@@ -802,7 +802,7 @@
         "no_commercial": false,
         "dtype": "float16",
         "file_t": "safetensors",
-        "dataset": "DUT+HRSOD"
+        "dataset": "DUT, HRSOD"
     },
     "PGNet DUT+HRSOD": {
         "name": "DUT+HRSOD",
@@ -816,6 +816,65 @@
         "no_commercial": false,
         "dtype": "float32",
         "file_t": "safetensors",
-        "dataset": "DUT+HRSOD"
+        "dataset": "DUT, HRSOD"
+    },
+    #
+    # RMFormer model
+    #
+    "RMFormer KUH F16": {
+        "name": "KUH F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/RMFormer/RMFormer_KUH_F16.safetensors",
+        "file_name": null,
+        "train_w": 1536,
+        "train_h": 1536,
+        "model_t": "RMFormer",
+        "size": "172 MiB",
+        "ops_name": "KUH F16 (172 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "HRS10K, UHRSD, HRSOD"
+    },
+    "RMFormer KUH": {
+        "name": "KUH",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/RMFormer/RMFormer_KUH_F32.safetensors",
+        "file_name": null,
+        "train_w": 1536,
+        "train_h": 1536,
+        "model_t": "RMFormer",
+        "size": "339 MiB",
+        "ops_name": "KUH (339 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "file_t": "safetensors",
+        "dataset": "HRS10K, UHRSD, HRSOD"
+    },
+    "RMFormer UH F16": {
+        "name": "UH F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/RMFormer/RMFormer_UH_F16.safetensors",
+        "file_name": null,
+        "train_w": 1536,
+        "train_h": 1536,
+        "model_t": "RMFormer",
+        "size": "172 MiB",
+        "ops_name": "UH F16 (172 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "UHRSD, HRSOD"
+    },
+    "RMFormer DH F16": {
+        "name": "DH F16",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/RMFormer/RMFormer_DH_F16.safetensors",
+        "file_name": null,
+        "train_w": 1536,
+        "train_h": 1536,
+        "model_t": "RMFormer",
+        "size": "172 MiB",
+        "ops_name": "DH F16 (172 MiB)",
+        "no_commercial": false,
+        "dtype": "float16",
+        "file_t": "safetensors",
+        "dataset": "DUTS, HRSOD"
     }
 }

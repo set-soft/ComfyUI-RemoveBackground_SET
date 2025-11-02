@@ -182,12 +182,16 @@ class LoadModel(io.ComfyNode):
 
         # Load the state dict
         logger.debug(f"Loading model weights from {model_path}")
+        loaded_metadata = None
         if model_path.endswith(".safetensors"):
             # Try to get the metadata
             with safe_open(model_path, framework="pt", device="cpu") as f:
                 loaded_metadata = f.metadata()
                 if loaded_metadata:
                     for key, value in loaded_metadata.items():
+                        if key.startswith('rrs'):
+                            # Used in RMFormer to mention shared weights
+                            continue
                         logger.debug(f"  - {key}: {value}")
             # Load the weights
             state_dict = safetensors.torch.load_file(model_path, device="cpu")
@@ -201,7 +205,7 @@ class LoadModel(io.ComfyNode):
                 state_dict = state_dict['net']
 
         # Check this is valid for a known model
-        arch = RemBg(state_dict, logger, model, vae, positive)
+        arch = RemBg(state_dict, logger, model, vae, positive, model_path=model_path, metadata=loaded_metadata)
         arch.check()
         target_device = get_canonical_device(auto_device_type if device == "AUTO" else device)
         logger.debug(f"Using {target_device} device")
@@ -347,6 +351,13 @@ class AutoDownloadPGNetModel(AutoDownloadBiRefNetModel):
 
 
 AutoDownloadPGNetModel.fill_description()
+
+
+class AutoDownloadRMFormerModel(AutoDownloadBiRefNetModel):
+    model_type = 'RMFormer'
+
+
+AutoDownloadRMFormerModel.fill_description()
 
 
 class GetMaskLow(io.ComfyNode):
