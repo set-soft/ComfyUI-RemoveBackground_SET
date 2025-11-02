@@ -17,7 +17,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from ..badis_v2.blocks import DB1, DB2
 from ..resnet.resnet_badis import resnet18
-from ..swin.swin_badis import SwinTransformer
+from ..swin.swin_fixed_size import SwinTransformer
 
 
 class Grafting(nn.Module):

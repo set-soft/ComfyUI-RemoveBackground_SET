@@ -16,7 +16,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from .blocks import DB1, DB2
 from ..resnet.resnet_badis import resnet18
-from ..swin.swin_badis import SwinTransformer
+from ..swin.swin_fixed_size import SwinTransformer
 
 
 class BasicConv2d(nn.Module):

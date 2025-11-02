@@ -30,7 +30,7 @@ class SwinTransformerBlock(nn.Module):
         shift_size (int): Shift size for SW-MSA.
     """
 
-    def __init__(self, dim, input_resolution, num_heads, window_size=7, shift_size=0):
+    def __init__(self, dim, input_resolution, num_heads, window_size=7, shift_size=0, save_atten_mask=True):
         super().__init__()
         self.dim = dim
         self.input_resolution = input_resolution
@@ -73,7 +73,17 @@ class SwinTransformerBlock(nn.Module):
         else:
             atten_mask = None
 
-        self.register_buffer("atten_mask", atten_mask)
+        if save_atten_mask:
+            # BADIS and PGNet save the atten_mask to disk
+            # Good because to() includes it
+            # Bad because it is computed anyways
+            self.register_buffer("atten_mask", atten_mask)
+        else:
+            # RMFormer doesn't include it, computes the masks on the fly
+            # I changed it to compute them once, but then I must move them to the device
+            # BTW: RMFormer hardcoded .cuda()!
+            self.atten_mask = atten_mask
+        self.atten_mask_is_buffer = save_atten_mask
 
     def forward(self, x):
         H = W = self.input_resolution
@@ -95,7 +105,12 @@ class SwinTransformerBlock(nn.Module):
         x_windows = x_windows.view(-1, self.window_size * self.window_size, C)  # nW*B, window_size*window_size, C
 
         # W-MSA/SW-MSA
-        attn_windows = self.attn(x_windows, mask=self.atten_mask)  # nW*B, window_size*window_size, C
+        if not self.atten_mask_is_buffer and self.atten_mask is not None:
+            # Move the mask to the target device
+            atten_mask = self.atten_mask.to(device=x.device, dtype=x.dtype)
+        else:
+            atten_mask = self.atten_mask
+        attn_windows = self.attn(x_windows, mask=atten_mask)  # nW*B, window_size*window_size, C
 
         # merge windows
         attn_windows = attn_windows.view(-1, self.window_size, self.window_size, C)
@@ -125,23 +140,27 @@ class BasicLayer(nn.Module):
         num_heads (int): Number of attention heads.
         window_size (int): Local window size.
         downsample (nn.Module | None, optional): Downsample layer at the end of the layer. Default: None
+        save_atten_mask (bool): Include pre-computed attention masks in the model. Default: True
+                                Note that this is possible because the input size is fixed.
     """
 
-    def __init__(self, dim, input_resolution, depth, num_heads, window_size, downsample=None):
+    def __init__(self, dim, input_resolution, depth, num_heads, window_size, downsample=None, save_atten_mask=True):
 
         super().__init__()
         self.dim = dim
         self.input_resolution = input_resolution
 
         # build blocks
-        self.blocks = nn.ModuleList()
-        for i in range(depth):
-            self.blocks.append(SwinTransformerBlock(
+        self.blocks = nn.ModuleList([
+            SwinTransformerBlock(
                 dim=dim,
                 input_resolution=input_resolution,
                 num_heads=num_heads,
                 window_size=window_size,
-                shift_size=0 if (i % 2 == 0) else window_size // 2))
+                # Two adjacent trans blocks, one shifted, the other not.
+                shift_size=0 if (i % 2 == 0) else window_size // 2,
+                save_atten_mask=save_atten_mask)
+            for i in range(depth)])
 
         # patch merging layer
         if downsample is not None:
