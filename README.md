@@ -13,7 +13,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
 
 &#x2705; Warnings and errors visible in the browser, configurable debug information in the console
 
-&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS, BASNet, PGNet, RMFormer
+&#x2705; Support for BEN1/2, BiRefNet, BRIA 1.4/2, Depth Anything V2, DiffDIS, InSPyReNet, MODNet, MVANet, PDFNet, U-2-Net, IS-Net, BADIS, BASNet, PGNet, RMFormer, ESNet
 
 &#x2705; Automatic model download (Only the SD Turbo VAE might be needed for DiffDIS)
 
@@ -82,7 +82,7 @@ In addition we have automatic downloaders for each supported model family.
    - **Display Name:** `Load XXXXXX model by name`
    - **Internal Name:** `AutoDownloadXXXXXXModel_SET`
    - **Category:** `RemBG_SET/Load`
-   - **Description:** Load a model of the XXXXXX family, if the model isn't on disk this is automatically downloaded. XXXXXX is one of the supported families (i.e. 'BiRefNet', 'MVANet/BEN', 'InSPyReNet', 'U-2-Net', 'IS-Net', 'MODNet', 'PDFNet', 'DiffDIS')
+   - **Description:** Load a model of the XXXXXX family, if the model isn't on disk this is automatically downloaded. XXXXXX is one of the supported families (i.e. 'BiRefNet', 'MVANet/BEN', 'InSPyReNet', 'U-2-Net', 'IS-Net', 'MODNet', 'PDFNet', 'DiffDIS', 'BADIS', 'BASNet', 'PGNet', 'RMFormer', 'ESNet')
    - **Purpose:** Download from internet and load to memory a model for background removal. The names are descriptive and says how big is the file.
    - **Inputs:**
      - `model` (`FILENAME`): The descriptive name of the model
@@ -328,7 +328,7 @@ I don't pretend to define them strictly, just to give you an idea of their meani
 - DIS stands for Dichotomous Image Segmentation, is a technical term used for tasks where you separate an image in two different things, in particular the foreground and background.
   There are some specialized DIS tasks like COD and HRSOD
   - SOD (Salient Object Detection) a term also used for this task, we want to separate the object in the foreground, the one that is "salient"
-  - HRSOD (High Resolution SOD) used when we want to get a highly detailed separation, preserving high detail of the boundary
+  - HRSOD (High Resolution SOD) used when we want to get a highly detailed separation, preserving high detail of the boundary. Used in contrast to NRSOD: Normal Resolution SOD
   - COD (Camouflage Object Detection) as its name implies here the object is camouflaged, making the task harder
   - Matte: this term is used when we want to separate translucent objects, getting a mask that shows how much of the background is blended with the foreground
   - Portrait: refers to human portraits, used for the task to separate a human from the background
@@ -423,10 +423,12 @@ Also note that IS-Net models are much faster and needs much less memory than the
   - [BADIS](https://github.com/m0ho/Boundary-Aware-Dichotomous-Image-Segmentation): Haonan Tang, Shuhan Chen, Yang Liu, Shiyu Wang, Zeyu Chen & Xuelong Hu
   - [BASNet](https://github.com/xuebinqin/BASNet): Xuebin Qin, Deng-Ping Fan, Chenyang Huang, Cyril Diagne, Zichen Zhang, Adrià Cabeza Sant'Anna, Albert Suàrez, Martin Jagersand, Ling Shao
   - [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet): Peng Zheng, Dehong Gao, Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang, Nicu Sebe
+  - [CTDNet](https://github.com/zhaozhirui/CTDNet): Zhirui Zhao, Changqun Xia, Chenxi Xie, Jia Li
   - [Depth Anything](https://github.com/DepthAnything/Depth-Anything-V2): Lihe Yang, Bingyi Kang, Zilong Huang, Zhen Zhao, Xiaogang Xu, Jiashi Feng, Hengshuang Zhao (HKU/TikTok)
   - [DiffDIS](https://github.com/qianyu-dlut/DiffDIS): Qian Yu, Peng-Tao Jiang, Hao Zhang, Jinwei Chen, Bo Li, Lihe Zhang, Huchuan Lu
   - [Diffusers](https://huggingface.co/docs/diffusers/index): The HuggingFace Team
   - [DINO](https://github.com/facebookresearch/dinov2): Meta AI Research
+  - [ESNet](https://github.com/big-feather/ESNet_ICML24): Hongyu Liu, Runmin Cong, Hua Li, Qianqian Xu, Qingming Huang, Wei Zhang
   - [InSPyReNet](https://github.com/plemeri/InSPyReNet): Taehun Kim, Kunhee Kim, Joonyeong Lee, Dongmin Cha, Jiho Lee, Daijin Kim
   - [MODNet](https://github.com/ZHKKKe/MODNet): Zhanghan Ke, Jiayu Sun, Kaican Li, Qiong Yan, Rynson W.H. Lau
   - [MVANet](https://github.com/qianyu-dlut/MVANet/): Qian Yu, Xiaoqi Zhao, Youwei Pang, Lihe Zhang, Huchuan Lu

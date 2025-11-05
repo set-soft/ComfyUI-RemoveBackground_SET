@@ -16,7 +16,7 @@
 #
 import torch.nn as nn
 import torch.nn.functional as F
-from .resnet import conv1x1, BasicBlock
+from .resnet import conv1x1, BasicBlock, Bottleneck
 
 
 class ResNet(nn.Module):
@@ -70,3 +70,35 @@ def resnet18(with_maxpool=False):
         progress (bool): If True, displays a progress bar of the download to stderr
     """
     return ResNet(with_maxpool=with_maxpool)
+
+
+# ESNet:
+class resnet50(nn.Module):  # Resnet50
+    def __init__(self):
+        super().__init__()
+        self.inplanes = 64
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.layer1 = self.make_layer(64, 3, stride=1, dilation=1)
+        self.layer2 = self.make_layer(128, 4, stride=2, dilation=1)
+        self.layer3 = self.make_layer(256, 6, stride=2, dilation=1)
+        self.layer4 = self.make_layer(512, 3, stride=2, dilation=1)
+
+    def make_layer(self, planes, blocks, stride, dilation):
+        downsample = nn.Sequential(
+            nn.Conv2d(self.inplanes, planes*4, kernel_size=1, stride=stride, bias=False),
+            nn.BatchNorm2d(planes*4))
+        layers = [Bottleneck(self.inplanes, planes, stride, downsample)]
+        self.inplanes = planes*4
+        for _ in range(1, blocks):
+            layers.append(Bottleneck(self.inplanes, planes))
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        out1 = F.relu(self.bn1(self.conv1(x)), inplace=True)
+        out1 = F.max_pool2d(out1, kernel_size=3, stride=2, padding=1)
+        out2 = self.layer1(out1)
+        out3 = self.layer2(out2)
+        out4 = self.layer3(out3)
+        out5 = self.layer4(out4)
+        return out1, out2, out3, out4, out5

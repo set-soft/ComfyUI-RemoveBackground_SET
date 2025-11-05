@@ -360,6 +360,13 @@ class AutoDownloadRMFormerModel(AutoDownloadBiRefNetModel):
 AutoDownloadRMFormerModel.fill_description()
 
 
+class AutoDownloadESNetModel(AutoDownloadBiRefNetModel):
+    model_type = 'ESNet'
+
+
+AutoDownloadESNetModel.fill_description()
+
+
 class GetMaskLow(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:

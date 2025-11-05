@@ -38,6 +38,8 @@ from ..badis_v2.BADIS import BADIS
 from ..basnet.BASNet import BASNet
 from ..pgnet.PGNet import PGNet
 from ..rmformer.RMFormer import RMF
+from ..esnet.ESNet_first import ESNet_first
+from ..esnet.ESNet import ESNet
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -57,6 +59,7 @@ FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1
                       'rpb.relative_position_bias_table')
 RMFORMER_BOGUS = ["lr_branch.norm_up.weight", "lr_branch.norm_up.bias", "rrs1.swinlayers.norm_up.weight",
                   "rrs1.swinlayers.norm_up.bias", "rrs2.swinlayers.norm_up.weight", "rrs2.swinlayers.norm_up.bias"]
+ESNET_ATTN = re.compile(r'(.*).attn_mask$')
 ENABLE_TORCH_SCRIPT = False
 ENABLE_TORCH_COMPILE = False
 
@@ -202,12 +205,29 @@ class RemBg(object):
             logger.debug(f"Model type: {self.model_type}")
             return
 
-        #
-        # Models with Swin/Res2Net as backbone
-        #
+        # ESNet_second (succession stage HrRM)
+        layer = 'd_diff1.fuse3.conv_1.weight'
+        if layer in state_dict:
+            # This can't be used alone
+            self.model_type = 'ESNet_second'
+            self.dtype = state_dict[layer].dtype
+            self.ok = True
+            self.bb = 'None'  # No backbone
+            self.bb_ok = True
+            logger.debug(f"Model type: {self.model_type}")
+            return
+
+        # #########################################################################################
+        # Models with Swin/Res2Net/ResNet as backbone
+        # #########################################################################################
         bb_name = self.is_res2net(['backbone'], state_dict)
         if bb_name is None:
             return
+
+        if not bb_name:
+            bb_name = self.is_resnet(['bkbone', 'first.bkbone'], state_dict)
+            if bb_name is None:
+                return
 
         if not bb_name:
             # Try Swin Transformer
@@ -215,7 +235,7 @@ class RemBg(object):
             if FINEGRAIN_SWIN_KEY in state_dict:
                 state_dict = finegrain_convert(state_dict)
 
-            bb_name = self.is_swin(['bb', 'backbone', 'encoder', 'swin', 'lr_branch'], state_dict)
+            bb_name = self.is_swin(['bb', 'backbone', 'encoder', 'swin', 'lr_branch', 'bkbone', 'first.bkbone'], state_dict)
             if bb_name is None:
                 return
             if not bb_name:
@@ -224,23 +244,32 @@ class RemBg(object):
 
         logger.debug(f"Model backbone: {self.bb}")
 
-        if self.bb == 'res2net50_v1b_26w_4s':
+        if self.bb == 'resnet50':
+            if not self.is_esnet(state_dict):
+                self.why = 'Unknown ResNet variant model'
+                return
+        elif self.bb == 'res2net50_v1b_26w_4s':
             if not self.is_inspyrenet(state_dict, lower_case_fname):
                 self.why = 'Unknown Res2Net variant model'
                 return
         elif self.bb == 'swin_v1_b':
-            if not self.is_pdfnet(state_dict):
-                # BEN, InSPyReNet and MVANet?
-                if self.bb_prefix == 'backbone' and (self.is_mvanet(state_dict) or
-                                                     self.is_inspyrenet(state_dict, lower_case_fname)):
-                    pass
-                # RMFormer?
-                elif self.bb_prefix == 'lr_branch' and self.is_rmformer(state_dict):
-                    pass
-                else:
-                    # Don't know about it
-                    self.why = 'Unknown Swin B variant model'
-                    return
+            # PDFNet?
+            if self.is_pdfnet(state_dict):
+                pass
+            # BEN, InSPyReNet and MVANet?
+            elif self.bb_prefix == 'backbone' and (self.is_mvanet(state_dict) or
+                                                   self.is_inspyrenet(state_dict, lower_case_fname)):
+                pass
+            # RMFormer?
+            elif self.bb_prefix == 'lr_branch' and self.is_rmformer(state_dict):
+                pass
+            # ESNet?
+            elif self.is_esnet(state_dict):
+                pass
+            else:
+                # Don't know about it
+                self.why = 'Unknown Swin B variant model'
+                return
         elif self.bb == 'swin_v1_badis':
             if self.is_badis_v2(state_dict):
                 pass
@@ -260,6 +289,37 @@ class RemBg(object):
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
+
+    # ESNet
+    def is_esnet(self, state_dict):
+        if self.bb_prefix == 'bkbone':
+            # This is the LrLM alone
+            layer = 'path1_1.0.weight'
+            if layer not in state_dict:
+                return False
+            self.model_type = 'ESNet_first'
+            if self.bb == 'resnet50':
+                self.w = self.h = 352
+            else:
+                self.w = self.h = 384
+        else:  # first.bkbone
+            # This is the LrLM+HrRM
+            layer = 'second.d_diff.path3.1.weight'
+            if layer not in state_dict:
+                return False
+            self.model_type = 'ESNet'
+            self.w = self.h = 1280
+        if self.bb == 'swin_v1_b':
+            # The Swin Transformer is quite known, but the version for fixed size has infinite variations
+            for k, v in list(state_dict.items()):
+                res = ESNET_ATTN.match(k)
+                if res:
+                    state_dict[res.group(1)+'.atten_mask'] = state_dict.pop(k)
+        # Slightly different, I guess they adjusted it to the extended dataset
+        self.img_mean = [0.4884, 0.4663, 0.4037]
+        self.img_std = [0.2226, 0.2195, 0.2255]
+        self.dtype = state_dict[layer].dtype
+        return True
 
     # RMFormer
     def is_rmformer(self, state_dict):
@@ -390,6 +450,7 @@ class RemBg(object):
         self.model_type = 'BiRefNet'
         return True
 
+    # Swin Transformer foundation model
     def is_swin(self, names, state_dict):
         """ Do we have a Swin Transformer backbone? """
         for n in names:
@@ -451,6 +512,7 @@ class RemBg(object):
         self.bb_ok = True
         return True
 
+    # Res2Net foundation model
     def is_res2net(self, names, state_dict):
         for n in names:
             tensor = state_dict.get(n+".layer1.0.bns.0.weight")
@@ -490,6 +552,43 @@ class RemBg(object):
 
         self.bb_ok = True
         return True
+
+    # ResNet foundation model
+    def is_resnet(self, names, state_dict):
+        for n in names:
+            tensor = state_dict.get(n+".layer1.0.conv1.weight")
+            if tensor is not None:
+                break
+        else:
+            return False
+
+        self.bb_prefix = n
+        self.layers = 0
+        self.layer_blocks = []
+        while f'{n}.layer{self.layers+1}.0.conv1.weight' in state_dict:
+            # Analyze the blocks for this layer
+            blocks = 0
+            while f'{n}.layer{self.layers+1}.{blocks}.conv1.weight' in state_dict:
+                blocks += 1
+            self.layer_blocks.append(blocks)
+            # One more layer
+            self.layers += 1
+        if not self.layers:
+            return False
+
+        self.logger.debug(f"ResNet: Layers: {self.layer_blocks}")
+
+        if self.matches_rn(layers=[3, 4, 6, 3]):
+            self.bb = 'resnet50'
+        else:
+            self.why = 'unknown geometry'
+            return None
+
+        self.bb_ok = True
+        return True
+
+    def matches_rn(self, layers):
+        return layers == self.layer_blocks
 
     def matches_r2n(self, base_width, layers, scale):
         return self.base_width == base_width and layers == self.layer_blocks and self.scale == scale
@@ -561,6 +660,12 @@ class RemBg(object):
             model = PGNet()
         elif self.model_type == 'RMFormer':
             model = RMF()
+        elif self.model_type == 'ESNet_first':
+            model = ESNet_first(self.bb)
+        elif self.model_type == 'ESNet_second':
+            raise ValueError("You can't use the second half of ESNet alone")
+        elif self.model_type == 'ESNet':
+            model = ESNet(self.bb)
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
@@ -607,17 +712,19 @@ class RemBg(object):
         # Some debug information about what we are doing
         logger = self.logger
         debug_level = get_debug_level(logger)
-        if debug_level >= 1:
-            logger.debug(f"Starting Remove Background inference: {self.model.__class__.__name__}")
-            if debug_level >= 2:
-                logger.debug(f"- Model: {self.model.target_device}/{self.target_dtype} with_edges {self.with_edges}")
-                logger.debug(f"- Input: {image.shape} {image.device}/{image.dtype} "
-                             f"iterations: {len(self.batched_iterator)}")
-                if depths is None:
-                    logger.debug("- Depths: None")
-                else:
-                    logger.debug(f"- Depths: {depths.shape} {depths.device}/{depths.dtype}")
-                logger.debug(f"- Output: cpu/{self.out_dtype}")
+        if debug_level < 1:
+            return
+        logger.debug(f"Starting Remove Background inference: {self.model.__class__.__name__}")
+        if debug_level < 2:
+            return
+        logger.debug(f"- Model: {self.model.target_device}/{self.target_dtype} with_edges {self.with_edges}")
+        logger.debug(f"- Input: {image.shape} {image.device}/{image.dtype} "
+                     f"iterations: {len(self.batched_iterator)}")
+        if depths is None:
+            logger.debug("- Depths: None")
+        else:
+            logger.debug(f"- Depths: {depths.shape} {depths.device}/{depths.dtype}")
+        logger.debug(f"- Output: cpu/{self.out_dtype}")
 
     def init_depths(self, depths_bhw, batch_size, keep_depths):
         self.keep_depths = keep_depths
@@ -802,20 +909,31 @@ class RemBg(object):
         # The first two are only used to compose an output image, otherwise they are None
         return images_bchw_pre, masks_bchw_scaled, masks_bchw
 
+    def show_masks_info(self, masks):
+        # Some debug information about what we are doing
+        logger = self.logger
+        debug_level = get_debug_level(logger)
+        if debug_level < 2:
+            return
+        B, H, W = masks.shape
+        logger.debug(f"Generated {B} masks of {W}x{H}:")
+        for i, mask in enumerate(masks):
+            logger.debug(f"- {i} [{torch.min(mask)}, {torch.max(mask)}]")
+
     def run_inference(self, images_bhwc, depths_bhw, batch_size,
                       model_w=0, model_h=0, scale_method=DEFAULT_UPSCALE, preproc_img=False,  # Optional scale to model
                       mask_threshold=0.000,  # Optional mask threshold
                       image_compose=None,    # Optional image composition function
                       keep_depths=True, keep_edges=True, keep_masks=True, out_dtype=None):
-        profiler = TorchProfile(self.logger, 2, f"profile for `{self.get_name()}` ({self.target_dtype})", self.target_device)
 
         self.init_images(images_bhwc, batch_size, preproc_img, model_w, model_h, scale_method, out_dtype)
         self.init_depths(depths_bhw, batch_size, keep_depths)
         self.init_masks(keep_masks, mask_threshold)
         self.init_edges(keep_edges)
         self.init_outs(image_compose)
-
         self.show_inference_info(images_bhwc, depths_bhw)
+
+        profiler = TorchProfile(self.logger, 2, f"profile for `{self.get_name()}` ({self.target_dtype})", self.target_device)
 
         with model_to_target(self.logger, self.model):
             with self.get_depths_context():
@@ -827,8 +945,10 @@ class RemBg(object):
                         del images_bchw
                         del masks_bchw_scaled
                     del masks_bchw
-        outs, masks, depths, edges = (self.get_outs(), self.get_masks(), self.get_all_depths(), self.get_edges())
 
         profiler.end()
+
+        outs, masks, depths, edges = (self.get_outs(), self.get_masks(), self.get_all_depths(), self.get_edges())
+        self.show_masks_info(masks)
 
         return outs, masks, depths, edges

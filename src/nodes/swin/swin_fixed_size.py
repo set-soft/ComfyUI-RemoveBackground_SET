@@ -75,6 +75,7 @@ class SwinTransformerBlock(nn.Module):
 
         if save_atten_mask:
             # BADIS and PGNet save the atten_mask to disk
+            # ESNet also uses it, but named attn_mask ...
             # Good because to() includes it
             # Bad because it is computed anyways
             self.register_buffer("atten_mask", atten_mask)

@@ -1,0 +1,514 @@
+Analyzing: models/ESNet_fir.pth
+
+--- PyTorch Model State Dict ---
+Key                                                |                     Shape |    Num Elements | SHA256 (start)
+-----------------------------------------------------------------------------------------------------------------
+bkbone.conv1.weight                                |             [64, 3, 7, 7] |           9,408 | 6a906b33
+bkbone.bn1.weight                                  |                      [64] |              64 | d9196f8c
+bkbone.bn1.bias                                    |                      [64] |              64 | 689884d8
+bkbone.bn1.running_mean                            |                      [64] |              64 | 0ad26245
+bkbone.bn1.running_var                             |                      [64] |              64 | 8235d6fa
+bkbone.bn1.num_batches_tracked                     |                        [] |               1 | 441f0ce6
+bkbone.layer1.0.conv1.weight                       |            [64, 64, 1, 1] |           4,096 | 6fb109d5
+bkbone.layer1.0.bn1.weight                         |                      [64] |              64 | ba31ea73
+bkbone.layer1.0.bn1.bias                           |                      [64] |              64 | 72ffad3b
+bkbone.layer1.0.bn1.running_mean                   |                      [64] |              64 | 24eadbca
+bkbone.layer1.0.bn1.running_var                    |                      [64] |              64 | 29f5870e
+bkbone.layer1.0.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.0.conv2.weight                       |            [64, 64, 3, 3] |          36,864 | 34d61c40
+bkbone.layer1.0.bn2.weight                         |                      [64] |              64 | 5365ad28
+bkbone.layer1.0.bn2.bias                           |                      [64] |              64 | f056ed40
+bkbone.layer1.0.bn2.running_mean                   |                      [64] |              64 | 0534d593
+bkbone.layer1.0.bn2.running_var                    |                      [64] |              64 | 2105b5a9
+bkbone.layer1.0.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.0.conv3.weight                       |           [256, 64, 1, 1] |          16,384 | 30ef3438
+bkbone.layer1.0.bn3.weight                         |                     [256] |             256 | 6ba6963b
+bkbone.layer1.0.bn3.bias                           |                     [256] |             256 | 4092f583
+bkbone.layer1.0.bn3.running_mean                   |                     [256] |             256 | bc624259
+bkbone.layer1.0.bn3.running_var                    |                     [256] |             256 | cc69e0a2
+bkbone.layer1.0.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.0.downsample.0.weight                |           [256, 64, 1, 1] |          16,384 | 86339688
+bkbone.layer1.0.downsample.1.weight                |                     [256] |             256 | 619ca19b
+bkbone.layer1.0.downsample.1.bias                  |                     [256] |             256 | 4092f583
+bkbone.layer1.0.downsample.1.running_mean          |                     [256] |             256 | 3a7e51b6
+bkbone.layer1.0.downsample.1.running_var           |                     [256] |             256 | 05dcd0f6
+bkbone.layer1.0.downsample.1.num_batches_tracked   |                        [] |               1 | 441f0ce6
+bkbone.layer1.1.conv1.weight                       |           [64, 256, 1, 1] |          16,384 | a88337d8
+bkbone.layer1.1.bn1.weight                         |                      [64] |              64 | 6428d414
+bkbone.layer1.1.bn1.bias                           |                      [64] |              64 | 6404fd4b
+bkbone.layer1.1.bn1.running_mean                   |                      [64] |              64 | 223523f7
+bkbone.layer1.1.bn1.running_var                    |                      [64] |              64 | 243cbca1
+bkbone.layer1.1.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.1.conv2.weight                       |            [64, 64, 3, 3] |          36,864 | 1fdd4ac9
+bkbone.layer1.1.bn2.weight                         |                      [64] |              64 | 65eae834
+bkbone.layer1.1.bn2.bias                           |                      [64] |              64 | b52fb74d
+bkbone.layer1.1.bn2.running_mean                   |                      [64] |              64 | 9659e7f3
+bkbone.layer1.1.bn2.running_var                    |                      [64] |              64 | f142c6eb
+bkbone.layer1.1.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.1.conv3.weight                       |           [256, 64, 1, 1] |          16,384 | 6a752e89
+bkbone.layer1.1.bn3.weight                         |                     [256] |             256 | ca3cc998
+bkbone.layer1.1.bn3.bias                           |                     [256] |             256 | 6ea90cb2
+bkbone.layer1.1.bn3.running_mean                   |                     [256] |             256 | 46b56b51
+bkbone.layer1.1.bn3.running_var                    |                     [256] |             256 | 3a04ab11
+bkbone.layer1.1.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.2.conv1.weight                       |           [64, 256, 1, 1] |          16,384 | a8dfc1eb
+bkbone.layer1.2.bn1.weight                         |                      [64] |              64 | 99b8d812
+bkbone.layer1.2.bn1.bias                           |                      [64] |              64 | 5a2438ef
+bkbone.layer1.2.bn1.running_mean                   |                      [64] |              64 | 8b9ac6e2
+bkbone.layer1.2.bn1.running_var                    |                      [64] |              64 | a23a7220
+bkbone.layer1.2.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.2.conv2.weight                       |            [64, 64, 3, 3] |          36,864 | feadebe6
+bkbone.layer1.2.bn2.weight                         |                      [64] |              64 | 57159e8e
+bkbone.layer1.2.bn2.bias                           |                      [64] |              64 | d72abca8
+bkbone.layer1.2.bn2.running_mean                   |                      [64] |              64 | 415803a2
+bkbone.layer1.2.bn2.running_var                    |                      [64] |              64 | c2509a10
+bkbone.layer1.2.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer1.2.conv3.weight                       |           [256, 64, 1, 1] |          16,384 | 570c0a62
+bkbone.layer1.2.bn3.weight                         |                     [256] |             256 | fb2037c4
+bkbone.layer1.2.bn3.bias                           |                     [256] |             256 | 13fb3d65
+bkbone.layer1.2.bn3.running_mean                   |                     [256] |             256 | 1b8fe422
+bkbone.layer1.2.bn3.running_var                    |                     [256] |             256 | 97012876
+bkbone.layer1.2.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.0.conv1.weight                       |          [128, 256, 1, 1] |          32,768 | 16e07d6d
+bkbone.layer2.0.bn1.weight                         |                     [128] |             128 | e8421c50
+bkbone.layer2.0.bn1.bias                           |                     [128] |             128 | e88767fe
+bkbone.layer2.0.bn1.running_mean                   |                     [128] |             128 | 05fd6872
+bkbone.layer2.0.bn1.running_var                    |                     [128] |             128 | ed8f193a
+bkbone.layer2.0.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.0.conv2.weight                       |          [128, 128, 3, 3] |         147,456 | a3a87a46
+bkbone.layer2.0.bn2.weight                         |                     [128] |             128 | 7183021b
+bkbone.layer2.0.bn2.bias                           |                     [128] |             128 | e1593350
+bkbone.layer2.0.bn2.running_mean                   |                     [128] |             128 | c677d1f8
+bkbone.layer2.0.bn2.running_var                    |                     [128] |             128 | 129b7114
+bkbone.layer2.0.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.0.conv3.weight                       |          [512, 128, 1, 1] |          65,536 | e43a11e8
+bkbone.layer2.0.bn3.weight                         |                     [512] |             512 | 117c57f6
+bkbone.layer2.0.bn3.bias                           |                     [512] |             512 | b257176f
+bkbone.layer2.0.bn3.running_mean                   |                     [512] |             512 | b6055583
+bkbone.layer2.0.bn3.running_var                    |                     [512] |             512 | 86d536b4
+bkbone.layer2.0.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.0.downsample.0.weight                |          [512, 256, 1, 1] |         131,072 | 92035ab7
+bkbone.layer2.0.downsample.1.weight                |                     [512] |             512 | e1173629
+bkbone.layer2.0.downsample.1.bias                  |                     [512] |             512 | b257176f
+bkbone.layer2.0.downsample.1.running_mean          |                     [512] |             512 | f2696d03
+bkbone.layer2.0.downsample.1.running_var           |                     [512] |             512 | 327f4b9c
+bkbone.layer2.0.downsample.1.num_batches_tracked   |                        [] |               1 | 441f0ce6
+bkbone.layer2.1.conv1.weight                       |          [128, 512, 1, 1] |          65,536 | 2e960c9c
+bkbone.layer2.1.bn1.weight                         |                     [128] |             128 | b749e8b0
+bkbone.layer2.1.bn1.bias                           |                     [128] |             128 | 0f155a44
+bkbone.layer2.1.bn1.running_mean                   |                     [128] |             128 | a2969f5e
+bkbone.layer2.1.bn1.running_var                    |                     [128] |             128 | 2beca732
+bkbone.layer2.1.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.1.conv2.weight                       |          [128, 128, 3, 3] |         147,456 | 1bda429e
+bkbone.layer2.1.bn2.weight                         |                     [128] |             128 | ba9bef87
+bkbone.layer2.1.bn2.bias                           |                     [128] |             128 | 4da97182
+bkbone.layer2.1.bn2.running_mean                   |                     [128] |             128 | cc6b4896
+bkbone.layer2.1.bn2.running_var                    |                     [128] |             128 | 74be6cf2
+bkbone.layer2.1.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.1.conv3.weight                       |          [512, 128, 1, 1] |          65,536 | 7cefb56c
+bkbone.layer2.1.bn3.weight                         |                     [512] |             512 | 9bb048bf
+bkbone.layer2.1.bn3.bias                           |                     [512] |             512 | b96843b9
+bkbone.layer2.1.bn3.running_mean                   |                     [512] |             512 | 1810af00
+bkbone.layer2.1.bn3.running_var                    |                     [512] |             512 | 4425081c
+bkbone.layer2.1.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.2.conv1.weight                       |          [128, 512, 1, 1] |          65,536 | b7f0d864
+bkbone.layer2.2.bn1.weight                         |                     [128] |             128 | 99dbfa16
+bkbone.layer2.2.bn1.bias                           |                     [128] |             128 | 6d3b172a
+bkbone.layer2.2.bn1.running_mean                   |                     [128] |             128 | cd3476ac
+bkbone.layer2.2.bn1.running_var                    |                     [128] |             128 | 8eb86719
+bkbone.layer2.2.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.2.conv2.weight                       |          [128, 128, 3, 3] |         147,456 | 28145348
+bkbone.layer2.2.bn2.weight                         |                     [128] |             128 | 0995fca5
+bkbone.layer2.2.bn2.bias                           |                     [128] |             128 | 0b54fb54
+bkbone.layer2.2.bn2.running_mean                   |                     [128] |             128 | 0b4d9aa3
+bkbone.layer2.2.bn2.running_var                    |                     [128] |             128 | 41d80796
+bkbone.layer2.2.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.2.conv3.weight                       |          [512, 128, 1, 1] |          65,536 | a107312c
+bkbone.layer2.2.bn3.weight                         |                     [512] |             512 | 69b31745
+bkbone.layer2.2.bn3.bias                           |                     [512] |             512 | 49b5604f
+bkbone.layer2.2.bn3.running_mean                   |                     [512] |             512 | f198f4d4
+bkbone.layer2.2.bn3.running_var                    |                     [512] |             512 | 04a8c1a4
+bkbone.layer2.2.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.3.conv1.weight                       |          [128, 512, 1, 1] |          65,536 | f116abd8
+bkbone.layer2.3.bn1.weight                         |                     [128] |             128 | 2377d2e8
+bkbone.layer2.3.bn1.bias                           |                     [128] |             128 | 01dfac9d
+bkbone.layer2.3.bn1.running_mean                   |                     [128] |             128 | 09559fd5
+bkbone.layer2.3.bn1.running_var                    |                     [128] |             128 | de4483fa
+bkbone.layer2.3.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.3.conv2.weight                       |          [128, 128, 3, 3] |         147,456 | 2e375f4a
+bkbone.layer2.3.bn2.weight                         |                     [128] |             128 | 02d05f1e
+bkbone.layer2.3.bn2.bias                           |                     [128] |             128 | 25f633d7
+bkbone.layer2.3.bn2.running_mean                   |                     [128] |             128 | 49af9d1f
+bkbone.layer2.3.bn2.running_var                    |                     [128] |             128 | 547684f5
+bkbone.layer2.3.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer2.3.conv3.weight                       |          [512, 128, 1, 1] |          65,536 | 1c6cf244
+bkbone.layer2.3.bn3.weight                         |                     [512] |             512 | e54bab90
+bkbone.layer2.3.bn3.bias                           |                     [512] |             512 | cdb0e493
+bkbone.layer2.3.bn3.running_mean                   |                     [512] |             512 | 62cf3c7f
+bkbone.layer2.3.bn3.running_var                    |                     [512] |             512 | 2fc6d86a
+bkbone.layer2.3.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.0.conv1.weight                       |          [256, 512, 1, 1] |         131,072 | a01e1676
+bkbone.layer3.0.bn1.weight                         |                     [256] |             256 | 53859546
+bkbone.layer3.0.bn1.bias                           |                     [256] |             256 | 4a61f8b8
+bkbone.layer3.0.bn1.running_mean                   |                     [256] |             256 | b4cac00d
+bkbone.layer3.0.bn1.running_var                    |                     [256] |             256 | 1b662ac6
+bkbone.layer3.0.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.0.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | ab21b3fa
+bkbone.layer3.0.bn2.weight                         |                     [256] |             256 | bf2875ef
+bkbone.layer3.0.bn2.bias                           |                     [256] |             256 | 4e0d81ff
+bkbone.layer3.0.bn2.running_mean                   |                     [256] |             256 | c3c32c2f
+bkbone.layer3.0.bn2.running_var                    |                     [256] |             256 | 3844573c
+bkbone.layer3.0.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.0.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | dea0a8c4
+bkbone.layer3.0.bn3.weight                         |                    [1024] |           1,024 | 947bd73a
+bkbone.layer3.0.bn3.bias                           |                    [1024] |           1,024 | f0563188
+bkbone.layer3.0.bn3.running_mean                   |                    [1024] |           1,024 | 144a2da3
+bkbone.layer3.0.bn3.running_var                    |                    [1024] |           1,024 | 9f159604
+bkbone.layer3.0.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.0.downsample.0.weight                |         [1024, 512, 1, 1] |         524,288 | 26604101
+bkbone.layer3.0.downsample.1.weight                |                    [1024] |           1,024 | df9ce8ad
+bkbone.layer3.0.downsample.1.bias                  |                    [1024] |           1,024 | f0563188
+bkbone.layer3.0.downsample.1.running_mean          |                    [1024] |           1,024 | 57f675af
+bkbone.layer3.0.downsample.1.running_var           |                    [1024] |           1,024 | 0906e587
+bkbone.layer3.0.downsample.1.num_batches_tracked   |                        [] |               1 | 441f0ce6
+bkbone.layer3.1.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | 2d802207
+bkbone.layer3.1.bn1.weight                         |                     [256] |             256 | 04d4c4b0
+bkbone.layer3.1.bn1.bias                           |                     [256] |             256 | fa27ddfd
+bkbone.layer3.1.bn1.running_mean                   |                     [256] |             256 | e9bb0cb4
+bkbone.layer3.1.bn1.running_var                    |                     [256] |             256 | 8f6b6092
+bkbone.layer3.1.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.1.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 9fe4f28e
+bkbone.layer3.1.bn2.weight                         |                     [256] |             256 | c7118c29
+bkbone.layer3.1.bn2.bias                           |                     [256] |             256 | f39f0725
+bkbone.layer3.1.bn2.running_mean                   |                     [256] |             256 | 03e7bad8
+bkbone.layer3.1.bn2.running_var                    |                     [256] |             256 | 9dab64a2
+bkbone.layer3.1.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.1.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 0d98f7b9
+bkbone.layer3.1.bn3.weight                         |                    [1024] |           1,024 | 73d93846
+bkbone.layer3.1.bn3.bias                           |                    [1024] |           1,024 | e28994bd
+bkbone.layer3.1.bn3.running_mean                   |                    [1024] |           1,024 | 269f2a0b
+bkbone.layer3.1.bn3.running_var                    |                    [1024] |           1,024 | fa202251
+bkbone.layer3.1.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.2.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | 7fbf3abf
+bkbone.layer3.2.bn1.weight                         |                     [256] |             256 | 6c95c30c
+bkbone.layer3.2.bn1.bias                           |                     [256] |             256 | 4e38cd4a
+bkbone.layer3.2.bn1.running_mean                   |                     [256] |             256 | a797b429
+bkbone.layer3.2.bn1.running_var                    |                     [256] |             256 | dcb29eca
+bkbone.layer3.2.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.2.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 1f5cab33
+bkbone.layer3.2.bn2.weight                         |                     [256] |             256 | 1fa73827
+bkbone.layer3.2.bn2.bias                           |                     [256] |             256 | 4d8119bf
+bkbone.layer3.2.bn2.running_mean                   |                     [256] |             256 | 098e96a8
+bkbone.layer3.2.bn2.running_var                    |                     [256] |             256 | 64ce63c2
+bkbone.layer3.2.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.2.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 6c13fda4
+bkbone.layer3.2.bn3.weight                         |                    [1024] |           1,024 | 9b6305ac
+bkbone.layer3.2.bn3.bias                           |                    [1024] |           1,024 | e5ee5d57
+bkbone.layer3.2.bn3.running_mean                   |                    [1024] |           1,024 | ebe8ffac
+bkbone.layer3.2.bn3.running_var                    |                    [1024] |           1,024 | a9f31a3f
+bkbone.layer3.2.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.3.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | b57aed16
+bkbone.layer3.3.bn1.weight                         |                     [256] |             256 | cf9d6dd7
+bkbone.layer3.3.bn1.bias                           |                     [256] |             256 | 8c1e13ea
+bkbone.layer3.3.bn1.running_mean                   |                     [256] |             256 | adcbd699
+bkbone.layer3.3.bn1.running_var                    |                     [256] |             256 | 0cb6ffc7
+bkbone.layer3.3.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.3.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | eab35e48
+bkbone.layer3.3.bn2.weight                         |                     [256] |             256 | ca99e35d
+bkbone.layer3.3.bn2.bias                           |                     [256] |             256 | cb780f2e
+bkbone.layer3.3.bn2.running_mean                   |                     [256] |             256 | cde6e977
+bkbone.layer3.3.bn2.running_var                    |                     [256] |             256 | 6a021c9b
+bkbone.layer3.3.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.3.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | e85e6bfc
+bkbone.layer3.3.bn3.weight                         |                    [1024] |           1,024 | 30f8bedd
+bkbone.layer3.3.bn3.bias                           |                    [1024] |           1,024 | 734416fc
+bkbone.layer3.3.bn3.running_mean                   |                    [1024] |           1,024 | d25a0c97
+bkbone.layer3.3.bn3.running_var                    |                    [1024] |           1,024 | d2e6f4ce
+bkbone.layer3.3.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.4.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | b4c35850
+bkbone.layer3.4.bn1.weight                         |                     [256] |             256 | 7ef4828f
+bkbone.layer3.4.bn1.bias                           |                     [256] |             256 | 75e39fd2
+bkbone.layer3.4.bn1.running_mean                   |                     [256] |             256 | cb0786bb
+bkbone.layer3.4.bn1.running_var                    |                     [256] |             256 | f2c6d05a
+bkbone.layer3.4.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.4.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 48450d17
+bkbone.layer3.4.bn2.weight                         |                     [256] |             256 | 033b38ce
+bkbone.layer3.4.bn2.bias                           |                     [256] |             256 | 29da2d2d
+bkbone.layer3.4.bn2.running_mean                   |                     [256] |             256 | cc9e20b1
+bkbone.layer3.4.bn2.running_var                    |                     [256] |             256 | 55552431
+bkbone.layer3.4.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.4.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | cddfaab2
+bkbone.layer3.4.bn3.weight                         |                    [1024] |           1,024 | 184e04bf
+bkbone.layer3.4.bn3.bias                           |                    [1024] |           1,024 | 8a4a989a
+bkbone.layer3.4.bn3.running_mean                   |                    [1024] |           1,024 | c2fcfb49
+bkbone.layer3.4.bn3.running_var                    |                    [1024] |           1,024 | 921e56c0
+bkbone.layer3.4.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.5.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | 127ce0dc
+bkbone.layer3.5.bn1.weight                         |                     [256] |             256 | 7a3bbab9
+bkbone.layer3.5.bn1.bias                           |                     [256] |             256 | 637ebcf7
+bkbone.layer3.5.bn1.running_mean                   |                     [256] |             256 | 6a8eaaa8
+bkbone.layer3.5.bn1.running_var                    |                     [256] |             256 | f8550438
+bkbone.layer3.5.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.5.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 0dff4f83
+bkbone.layer3.5.bn2.weight                         |                     [256] |             256 | b04418d7
+bkbone.layer3.5.bn2.bias                           |                     [256] |             256 | 2444a106
+bkbone.layer3.5.bn2.running_mean                   |                     [256] |             256 | af7db7ec
+bkbone.layer3.5.bn2.running_var                    |                     [256] |             256 | 33fb908c
+bkbone.layer3.5.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer3.5.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | ef5ba5ef
+bkbone.layer3.5.bn3.weight                         |                    [1024] |           1,024 | 46705b30
+bkbone.layer3.5.bn3.bias                           |                    [1024] |           1,024 | 6523309a
+bkbone.layer3.5.bn3.running_mean                   |                    [1024] |           1,024 | 106dc595
+bkbone.layer3.5.bn3.running_var                    |                    [1024] |           1,024 | 91b92dba
+bkbone.layer3.5.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.0.conv1.weight                       |         [512, 1024, 1, 1] |         524,288 | 9e0c3cd3
+bkbone.layer4.0.bn1.weight                         |                     [512] |             512 | 36ca97d7
+bkbone.layer4.0.bn1.bias                           |                     [512] |             512 | e928c885
+bkbone.layer4.0.bn1.running_mean                   |                     [512] |             512 | 2dd9f02b
+bkbone.layer4.0.bn1.running_var                    |                     [512] |             512 | 4f7c3f62
+bkbone.layer4.0.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.0.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | 7118f893
+bkbone.layer4.0.bn2.weight                         |                     [512] |             512 | 0c703775
+bkbone.layer4.0.bn2.bias                           |                     [512] |             512 | a788fbf7
+bkbone.layer4.0.bn2.running_mean                   |                     [512] |             512 | 71fecfcc
+bkbone.layer4.0.bn2.running_var                    |                     [512] |             512 | 0128ad02
+bkbone.layer4.0.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.0.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | f1c30d48
+bkbone.layer4.0.bn3.weight                         |                    [2048] |           2,048 | 75ac3cc7
+bkbone.layer4.0.bn3.bias                           |                    [2048] |           2,048 | f46f14fa
+bkbone.layer4.0.bn3.running_mean                   |                    [2048] |           2,048 | d59d525d
+bkbone.layer4.0.bn3.running_var                    |                    [2048] |           2,048 | 12fe2cd0
+bkbone.layer4.0.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.0.downsample.0.weight                |        [2048, 1024, 1, 1] |       2,097,152 | fcdf5ba2
+bkbone.layer4.0.downsample.1.weight                |                    [2048] |           2,048 | 328a9c82
+bkbone.layer4.0.downsample.1.bias                  |                    [2048] |           2,048 | f46f14fa
+bkbone.layer4.0.downsample.1.running_mean          |                    [2048] |           2,048 | beb38ce7
+bkbone.layer4.0.downsample.1.running_var           |                    [2048] |           2,048 | 7ac733eb
+bkbone.layer4.0.downsample.1.num_batches_tracked   |                        [] |               1 | 441f0ce6
+bkbone.layer4.1.conv1.weight                       |         [512, 2048, 1, 1] |       1,048,576 | b95ae574
+bkbone.layer4.1.bn1.weight                         |                     [512] |             512 | 5b4185f6
+bkbone.layer4.1.bn1.bias                           |                     [512] |             512 | 0ea7ba68
+bkbone.layer4.1.bn1.running_mean                   |                     [512] |             512 | 3027b52c
+bkbone.layer4.1.bn1.running_var                    |                     [512] |             512 | da5a40f8
+bkbone.layer4.1.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.1.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | 3f83d8b2
+bkbone.layer4.1.bn2.weight                         |                     [512] |             512 | e84fb79c
+bkbone.layer4.1.bn2.bias                           |                     [512] |             512 | 1d4a8c03
+bkbone.layer4.1.bn2.running_mean                   |                     [512] |             512 | 81975ee4
+bkbone.layer4.1.bn2.running_var                    |                     [512] |             512 | ce7aafee
+bkbone.layer4.1.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.1.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | 188d673a
+bkbone.layer4.1.bn3.weight                         |                    [2048] |           2,048 | 7dcfc1ae
+bkbone.layer4.1.bn3.bias                           |                    [2048] |           2,048 | 47edd22a
+bkbone.layer4.1.bn3.running_mean                   |                    [2048] |           2,048 | 9a1d06a1
+bkbone.layer4.1.bn3.running_var                    |                    [2048] |           2,048 | 5382cc42
+bkbone.layer4.1.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.2.conv1.weight                       |         [512, 2048, 1, 1] |       1,048,576 | 9cd88cf8
+bkbone.layer4.2.bn1.weight                         |                     [512] |             512 | 1de88907
+bkbone.layer4.2.bn1.bias                           |                     [512] |             512 | eba2fe70
+bkbone.layer4.2.bn1.running_mean                   |                     [512] |             512 | 04d19ef1
+bkbone.layer4.2.bn1.running_var                    |                     [512] |             512 | 122dbb5c
+bkbone.layer4.2.bn1.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.2.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | c43bae25
+bkbone.layer4.2.bn2.weight                         |                     [512] |             512 | 76d2990b
+bkbone.layer4.2.bn2.bias                           |                     [512] |             512 | 2bfde1a0
+bkbone.layer4.2.bn2.running_mean                   |                     [512] |             512 | 418b0edc
+bkbone.layer4.2.bn2.running_var                    |                     [512] |             512 | 5c07cccc
+bkbone.layer4.2.bn2.num_batches_tracked            |                        [] |               1 | 441f0ce6
+bkbone.layer4.2.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | f26a67ba
+bkbone.layer4.2.bn3.weight                         |                    [2048] |           2,048 | fff6eeaf
+bkbone.layer4.2.bn3.bias                           |                    [2048] |           2,048 | 530fb39c
+bkbone.layer4.2.bn3.running_mean                   |                    [2048] |           2,048 | e2b2ed77
+bkbone.layer4.2.bn3.running_var                    |                    [2048] |           2,048 | 3d27108f
+bkbone.layer4.2.bn3.num_batches_tracked            |                        [] |               1 | 441f0ce6
+path1_1.0.weight                                   |          [64, 2048, 1, 1] |         131,072 | 7b784586
+path1_1.1.weight                                   |                      [64] |              64 | d51a96a5
+path1_1.1.bias                                     |                      [64] |              64 | 73f2776b
+path1_1.1.running_mean                             |                      [64] |              64 | 267ea4df
+path1_1.1.running_var                              |                      [64] |              64 | b115451d
+path1_1.1.num_batches_tracked                      |                        [] |               1 | 441f0ce6
+path1_2.0.weight                                   |          [64, 2048, 1, 1] |         131,072 | fb3fc993
+path1_2.1.weight                                   |                      [64] |              64 | 07534b7b
+path1_2.1.bias                                     |                      [64] |              64 | 58e24991
+path1_2.1.running_mean                             |                      [64] |              64 | ec39a447
+path1_2.1.running_var                              |                      [64] |              64 | a9b42141
+path1_2.1.num_batches_tracked                      |                        [] |               1 | 441f0ce6
+path1_3.0.weight                                   |          [64, 1024, 1, 1] |          65,536 | 75bf18eb
+path1_3.1.weight                                   |                      [64] |              64 | ab1de962
+path1_3.1.bias                                     |                      [64] |              64 | 8c801592
+path1_3.1.running_mean                             |                      [64] |              64 | 0d32d294
+path1_3.1.running_var                              |                      [64] |              64 | e73f6af3
+path1_3.1.num_batches_tracked                      |                        [] |               1 | 441f0ce6
+path2.conv_atten.weight                            |              [1, 2, 3, 3] |              18 | 9e5e7fc3
+path2.conv.weight                                  |           [64, 512, 3, 3] |         294,912 | 6a75e190
+path2.bn.weight                                    |                      [64] |              64 | cdef80aa
+path2.bn.bias                                      |                      [64] |              64 | 86f80256
+path2.bn.running_mean                              |                      [64] |              64 | 31480ebd
+path2.bn.running_var                               |                      [64] |              64 | 90c16322
+path2.bn.num_batches_tracked                       |                        [] |               1 | 441f0ce6
+path3.0.weight                                     |           [64, 256, 1, 1] |          16,384 | cefe8e9b
+path3.1.weight                                     |                      [64] |              64 | 9c2b4c7c
+path3.1.bias                                       |                      [64] |              64 | c2d4dbe1
+path3.1.running_mean                               |                      [64] |              64 | 13067083
+path3.1.running_var                                |                      [64] |              64 | b51739f3
+path3.1.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+fuse1_1.conv_1.weight                              |            [64, 64, 3, 3] |          36,864 | 01683cb0
+fuse1_1.bn_1.weight                                |                      [64] |              64 | 01479130
+fuse1_1.bn_1.bias                                  |                      [64] |              64 | 40cc3c49
+fuse1_1.bn_1.running_mean                          |                      [64] |              64 | c964ae6f
+fuse1_1.bn_1.running_var                           |                      [64] |              64 | 6efe82b5
+fuse1_1.bn_1.num_batches_tracked                   |                        [] |               1 | 441f0ce6
+fuse1_1.conv_2.weight                              |            [64, 64, 3, 3] |          36,864 | ca3e3648
+fuse1_1.bn_2.weight                                |                      [64] |              64 | 6a670992
+fuse1_1.bn_2.bias                                  |                      [64] |              64 | 2c06f210
+fuse1_1.bn_2.running_mean                          |                      [64] |              64 | 3eca3bb9
+fuse1_1.bn_2.running_var                           |                      [64] |              64 | 77dfdcc8
+fuse1_1.bn_2.num_batches_tracked                   |                        [] |               1 | 441f0ce6
+fuse1_2.conv_1.weight                              |            [64, 64, 3, 3] |          36,864 | 44f25e6d
+fuse1_2.bn_1.weight                                |                      [64] |              64 | 69812759
+fuse1_2.bn_1.bias                                  |                      [64] |              64 | 37f288d3
+fuse1_2.bn_1.running_mean                          |                      [64] |              64 | 92fd653c
+fuse1_2.bn_1.running_var                           |                      [64] |              64 | 97dbad70
+fuse1_2.bn_1.num_batches_tracked                   |                        [] |               1 | 441f0ce6
+fuse1_2.conv_2.weight                              |            [64, 64, 3, 3] |          36,864 | ef2d389d
+fuse1_2.bn_2.weight                                |                      [64] |              64 | ed361413
+fuse1_2.bn_2.bias                                  |                      [64] |              64 | 186c36af
+fuse1_2.bn_2.running_mean                          |                      [64] |              64 | 67ea1128
+fuse1_2.bn_2.running_var                           |                      [64] |              64 | bbd1ae78
+fuse1_2.bn_2.num_batches_tracked                   |                        [] |               1 | 441f0ce6
+fuse12.down.0.weight                               |            [64, 64, 3, 3] |          36,864 | 385a77f4
+fuse12.down.1.weight                               |                      [64] |              64 | 00be475e
+fuse12.down.1.bias                                 |                      [64] |              64 | e1f5231f
+fuse12.down.1.running_mean                         |                      [64] |              64 | d42978df
+fuse12.down.1.running_var                          |                      [64] |              64 | 942f0e53
+fuse12.down.1.num_batches_tracked                  |                        [] |               1 | 441f0ce6
+fuse12.conv_1.weight                               |            [64, 64, 3, 3] |          36,864 | b3986519
+fuse12.bn_1.weight                                 |                      [64] |              64 | 3539b1ad
+fuse12.bn_1.bias                                   |                      [64] |              64 | 2e5206ac
+fuse12.bn_1.running_mean                           |                      [64] |              64 | 7b1c040c
+fuse12.bn_1.running_var                            |                      [64] |              64 | f7d2e11a
+fuse12.bn_1.num_batches_tracked                    |                        [] |               1 | 441f0ce6
+fuse12.conv_2.weight                               |            [64, 64, 3, 3] |          36,864 | 778383e5
+fuse12.bn_2.weight                                 |                      [64] |              64 | 50cda54c
+fuse12.bn_2.bias                                   |                      [64] |              64 | f18b1a04
+fuse12.bn_2.running_mean                           |                      [64] |              64 | f04d6cde
+fuse12.bn_2.running_var                            |                      [64] |              64 | 8b7de8e9
+fuse12.bn_2.num_batches_tracked                    |                        [] |               1 | 441f0ce6
+fuse12.mul.conv_1.weight                           |            [64, 64, 3, 3] |          36,864 | c475b222
+fuse12.mul.bn_1.weight                             |                      [64] |              64 | 8b1b8a7d
+fuse12.mul.bn_1.bias                               |                      [64] |              64 | c0670608
+fuse12.mul.bn_1.running_mean                       |                      [64] |              64 | 73b7bbb3
+fuse12.mul.bn_1.running_var                        |                      [64] |              64 | 09d69cc3
+fuse12.mul.bn_1.num_batches_tracked                |                        [] |               1 | 441f0ce6
+fuse12.mul.conv_2.weight                           |            [64, 64, 3, 3] |          36,864 | 49a02c5d
+fuse12.mul.bn_2.weight                             |                      [64] |              64 | ee53086e
+fuse12.mul.bn_2.bias                               |                      [64] |              64 | d3327c76
+fuse12.mul.bn_2.running_mean                       |                      [64] |              64 | 0424d0bd
+fuse12.mul.bn_2.running_var                        |                      [64] |              64 | 295c8438
+fuse12.mul.bn_2.num_batches_tracked                |                        [] |               1 | 441f0ce6
+fuse3.conv_1.weight                                |            [64, 64, 3, 3] |          36,864 | e730a377
+fuse3.bn_1.weight                                  |                      [64] |              64 | 0d538e32
+fuse3.bn_1.bias                                    |                      [64] |              64 | 5723872e
+fuse3.bn_1.running_mean                            |                      [64] |              64 | 0b386e95
+fuse3.bn_1.running_var                             |                      [64] |              64 | c014cb3a
+fuse3.bn_1.num_batches_tracked                     |                        [] |               1 | 441f0ce6
+fuse3.conv_2.weight                                |            [64, 64, 3, 3] |          36,864 | be244eac
+fuse3.bn_2.weight                                  |                      [64] |              64 | b985cd0b
+fuse3.bn_2.bias                                    |                      [64] |              64 | 747e0b2a
+fuse3.bn_2.running_mean                            |                      [64] |              64 | 5741f522
+fuse3.bn_2.running_var                             |                      [64] |              64 | 43b8b6d6
+fuse3.bn_2.num_batches_tracked                     |                        [] |               1 | 441f0ce6
+fuse23.conv_atten.weight                           |            [64, 64, 1, 1] |           4,096 | aa046467
+fuse23.conv_1.weight                               |            [64, 64, 3, 3] |          36,864 | a381bb54
+fuse23.bn_1.weight                                 |                      [64] |              64 | ebe6cd89
+fuse23.bn_1.bias                                   |                      [64] |              64 | 22f2b812
+fuse23.bn_1.running_mean                           |                      [64] |              64 | 23d6b9a1
+fuse23.bn_1.running_var                            |                      [64] |              64 | ebdb2462
+fuse23.bn_1.num_batches_tracked                    |                        [] |               1 | 441f0ce6
+fuse23.conv_2.weight                               |            [64, 64, 3, 3] |          36,864 | f9afc7d1
+fuse23.bn_2.weight                                 |                      [64] |              64 | 780d49eb
+fuse23.bn_2.bias                                   |                      [64] |              64 | e6d655c0
+fuse23.bn_2.running_mean                           |                      [64] |              64 | c0cebaa2
+fuse23.bn_2.running_var                            |                      [64] |              64 | a07ae1c7
+fuse23.bn_2.num_batches_tracked                    |                        [] |               1 | 441f0ce6
+head_1.weight                                      |             [1, 64, 3, 3] |             576 | f3e1b2be
+head_1.bias                                        |                       [1] |               1 | 59c651cc
+head_2.weight                                      |             [1, 64, 3, 3] |             576 | 675f295e
+head_2.bias                                        |                       [1] |               1 | f34868e5
+head_3.weight                                      |             [1, 64, 3, 3] |             576 | 916d665e
+head_3.bias                                        |                       [1] |               1 | 953dcf50
+head_4.weight                                      |             [1, 64, 3, 3] |             576 | 75f1703d
+head_4.bias                                        |                       [1] |               1 | 3ee4e8f3
+head_5.weight                                      |             [1, 64, 3, 3] |             576 | 569adb4e
+head_5.bias                                        |                       [1] |               1 | 9d6ce62e
+head_edge.weight                                   |             [1, 64, 3, 3] |             576 | 573183fa
+head_edge.bias                                     |                       [1] |               1 | ba76a4de
+r0.guass.weight                                    |              [1, 1, 3, 3] |               9 | 0dd626c5
+r1.guass.weight                                    |              [1, 1, 3, 3] |               9 | 8a3974d7
+r2.guass.weight                                    |              [1, 1, 5, 5] |              25 | c842fb56
+r3.guass.weight                                    |              [1, 1, 9, 9] |              81 | 14274214
+r4.guass.weight                                    |            [1, 1, 13, 13] |             169 | 034e02c6
+d0.conv_1.weight                                   |             [1, 64, 3, 3] |             576 | e07694b5
+d0.bn_1.weight                                     |                       [1] |               1 | d064e45b
+d0.bn_1.bias                                       |                       [1] |               1 | 0959e564
+d0.bn_1.running_mean                               |                       [1] |               1 | a4f005cd
+d0.bn_1.running_var                                |                       [1] |               1 | 817cad96
+d0.bn_1.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d0.conv_2.weight                                   |             [1, 64, 3, 3] |             576 | b6ecc573
+d0.bn_2.weight                                     |                       [1] |               1 | 14972589
+d0.bn_2.bias                                       |                       [1] |               1 | b10e2bd4
+d0.bn_2.running_mean                               |                       [1] |               1 | 7559880d
+d0.bn_2.running_var                                |                       [1] |               1 | 553e53db
+d0.bn_2.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d0.out.weight                                      |              [1, 1, 3, 3] |               9 | 4db2521a
+d0.out.bias                                        |                       [1] |               1 | f53161b2
+d1.conv_1.weight                                   |             [1, 64, 3, 3] |             576 | c6dbd798
+d1.bn_1.weight                                     |                       [1] |               1 | bccb3e95
+d1.bn_1.bias                                       |                       [1] |               1 | 64adfa70
+d1.bn_1.running_mean                               |                       [1] |               1 | cb87d6df
+d1.bn_1.running_var                                |                       [1] |               1 | 9c249277
+d1.bn_1.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d1.conv_2.weight                                   |             [1, 64, 3, 3] |             576 | 5081b2d3
+d1.bn_2.weight                                     |                       [1] |               1 | cb291af5
+d1.bn_2.bias                                       |                       [1] |               1 | 470beccf
+d1.bn_2.running_mean                               |                       [1] |               1 | 0ddc15d6
+d1.bn_2.running_var                                |                       [1] |               1 | 35627fd3
+d1.bn_2.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d1.out.weight                                      |              [1, 1, 3, 3] |               9 | b6beaccd
+d1.out.bias                                        |                       [1] |               1 | e211e062
+d2.conv_1.weight                                   |             [1, 64, 3, 3] |             576 | 8d84600c
+d2.bn_1.weight                                     |                       [1] |               1 | 0c71b40f
+d2.bn_1.bias                                       |                       [1] |               1 | f9466a27
+d2.bn_1.running_mean                               |                       [1] |               1 | 389661ba
+d2.bn_1.running_var                                |                       [1] |               1 | e0a488b8
+d2.bn_1.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d2.conv_2.weight                                   |             [1, 64, 3, 3] |             576 | a67c2f1e
+d2.bn_2.weight                                     |                       [1] |               1 | e2149952
+d2.bn_2.bias                                       |                       [1] |               1 | 7961b836
+d2.bn_2.running_mean                               |                       [1] |               1 | 27b08bcd
+d2.bn_2.running_var                                |                       [1] |               1 | 50ce5563
+d2.bn_2.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d2.out.weight                                      |              [1, 1, 3, 3] |               9 | 5cea8e7f
+d2.out.bias                                        |                       [1] |               1 | dc80f3ce
+d3.conv_1.weight                                   |             [1, 64, 3, 3] |             576 | 103b9e65
+d3.bn_1.weight                                     |                       [1] |               1 | fd8675fd
+d3.bn_1.bias                                       |                       [1] |               1 | f5afb915
+d3.bn_1.running_mean                               |                       [1] |               1 | 4dcde73a
+d3.bn_1.running_var                                |                       [1] |               1 | 1e0a6687
+d3.bn_1.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d3.conv_2.weight                                   |             [1, 64, 3, 3] |             576 | 75bc9215
+d3.bn_2.weight                                     |                       [1] |               1 | 4ac57363
+d3.bn_2.bias                                       |                       [1] |               1 | 772f6dc7
+d3.bn_2.running_mean                               |                       [1] |               1 | 911e4462
+d3.bn_2.running_var                                |                       [1] |               1 | 4a7e692c
+d3.bn_2.num_batches_tracked                        |                        [] |               1 | 441f0ce6
+d3.out.weight                                      |              [1, 1, 3, 3] |               9 | 6997d4d5
+d3.out.bias                                        |                       [1] |               1 | 54560fab
+-----------------------------------------------------------------------------------------------------------------
+Total                                              |                           |      24,696,596 |
+[DEBUG] ResNet: Layers: [3, 4, 6, 3] (RemoveBackground_SET - arch.py:541)
+[DEBUG] Model backbone: resnet50 (RemoveBackground_SET - arch.py:231)
+[DEBUG] Model type: ESNet (RemoveBackground_SET - arch.py:268)
+Model type: ESNet (torch.float32)
+Back bone type: resnet50
+Model version: 1
