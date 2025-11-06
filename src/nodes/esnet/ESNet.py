@@ -9,11 +9,11 @@
 # Author: Salvador E. Tropea
 # This is the glue between ESNet_first and ESNet_second, based on the test example.
 #
+from seconohe.tensor import sigmoid_and_batched_min_max_norm
 import torch.nn as nn
 import torch.nn.functional as F
 from .ESNet_first import ESNet_first
 from .ESNet_second import ESNet_second
-from ..utils.misc import sigmoid_and_batched_min_max_norm
 
 
 class ESNet(nn.Module):

@@ -8,6 +8,7 @@
 #
 # Adapted by Salvador E. Tropea
 #
+from seconohe.tensor import sigmoid_and_batched_min_max_norm
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -16,7 +17,6 @@ from ..resnet.resnet_badis import resnet50
 from ..swin.swin_esnet import SwinTransformer
 from .utils import get_gaussian_kernel
 from ..ctdnet.ctdnet import CTDNet
-from ..utils.misc import sigmoid_and_batched_min_max_norm
 
 
 class revo(nn.Module):
