@@ -82,6 +82,7 @@ IMG_READY_TOOLTIP = ("One or more images to process, they must be normalized to 
 IMG_TOOLTIP = "One or more images to process, will be scaled to a size that is good for the model."
 SETRemBG = io.Custom("SET_REMBG")
 NormParams = io.Custom("NORM_PARAMS")
+DICT = io.Custom("DICT")
 
 
 def dtype_str_to_torch(dtype: str) -> torch.dtype:
@@ -95,6 +96,7 @@ class ModelInfo:
     """
     def __init__(self, data: dict):
         self.no_commercial = False
+        self.as_dict = data
         # Iterate through the dictionary and set attributes on the instance
         for key, value in data.items():
             setattr(self, key, value)
@@ -133,6 +135,7 @@ class KnownModelsLoader:
         # Iterate through the top-level dictionary from the JSON
         for model_name, model_data in data.items():
             # Create a ModelInfo instance and store it
+            model_data['id'] = model_name
             self.models[model_name] = ModelInfo(model_data)
 
 
@@ -244,7 +247,8 @@ class AutoDownloadBiRefNetModel(io.ComfyNode):
                      NormParams.Output(display_name="norm_params", tooltip="Normalization parameters for the input images. "
                                        "This is needed only for advanced use when you want "
                                        "to manually pre-process the images. The `Arbitrary Normalize` node from "
-                                       "`Image Misc` can use these parameters to apply the correct normalization.")]
+                                       "`Image Misc` can use these parameters to apply the correct normalization."),
+                     DICT.Output(display_name="info", tooltip="A dict containing information about the model")]
         )
 
     @classmethod
@@ -273,7 +277,7 @@ class AutoDownloadBiRefNetModel(io.ComfyNode):
         arch.sub_type = m.name
         if m.no_commercial:
             logger.warning(f"`{arch.get_name()}` model isn't for commercial use!")
-        return io.NodeOutput(arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std})
+        return io.NodeOutput(arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std}, m.as_dict)
 
 
 # BiRefNet is de default
