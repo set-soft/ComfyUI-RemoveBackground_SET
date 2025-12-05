@@ -47,6 +47,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
    - [Resources comparison](#resources-comparison)
    - [Resize and aspect ratio](#resize-and-aspect-ratio)
    - [Floating point resolution](#floating-point-resolution)
+   - [Resize method](#resize-method)
    - [Debug](#debug)
 - &#x0001F4DC; [Project History](#-project-history)
 - &#x2696;&#xFE0F; [License](#&#xFE0F;-license)
@@ -448,6 +449,22 @@ The only supported model that was trained using variable size for input images i
 Other models were trained using fixed size.
 
 
+### Resize method
+
+As the image must be resized to the training size, and the resulting mask scaled to the original size, you'll need to use some scale method.
+
+In most models the method used for evaluation is *bilinear* and you'll notice that my nodes defaults to *bicubic*.
+So the question is: does it have any impact?
+
+I tested "BiRefNet General" using the DIS5K-TE3 and DIS5K-TE4 with different upscale methods and the results are simple: better scale
+mechanism provides better results.
+
+This means that using *bicubic* is better than using *bilinear* and that using *lanczos* is better than using *bicubic*.
+Of course the process is slower.
+
+Note that in my evaluations I don't scale the *ground truth*, the metrics are computed using the masks as-is.
+
+
 ### Floating point resolution
 
 Models are trained using 32 bits floating point (F32), but using the weights reduced to 16 bits (F16) is usually enough.
@@ -462,6 +479,7 @@ The BEN2 (MVANet) model behaves exactly the same.
 
 So I recommend always trying with the F16 version. A few models doesn't work when using F16 and this is why they don't have F16 versions
 (i.e. "U-2-Net Base (u2net)"). In other cases is just that nobody resized the weights (i.e. "BiRefNet BRIA v2.0").
+
 
 ### Debug
 
