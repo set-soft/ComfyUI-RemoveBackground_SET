@@ -45,6 +45,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
    - [Why so many models?](#why-so-many-models)
    - [Notes about the architectures](#notes-about-the-architectures)
    - [Resources comparison](#resources-comparison)
+   - [Resize and aspect ratio](#resize-and-aspect-ratio)
    - [Debug](#debug)
 - &#x0001F4DC; [Project History](#-project-history)
 - &#x2696;&#xFE0F; [License](#&#xFE0F;-license)
@@ -397,6 +398,40 @@ The 16 bits weights runs twice faster using half the memory.
 In the DiffDIS this difference is not maintained and, for some reason, the 16 bits weights needs more memory, not sure why.
 
 Also note that IS-Net models are much faster and needs much less memory than the rest, even when using a 1024x1024 image size.
+
+
+### Resize and aspect ratio
+
+Most models has some degree of flexibility in the input size, here is table of the size restriction:
+
+| Model        | Trained sizes                              | Multiple |
+|:-------------|:------------------------------------------:|---------:|
+| BADIS        |  1024x1024                                 |        1 |
+| BASNet       |  256x256                                   |       32 |
+| BEN (MVANet) |  1024x1024                                 |      128 |
+| BiRefNet     |  512x512, 1024x1024, 2048x2048, 2560x1440  |       32 |
+| DiffDIS      |  1024x1024                                 |       64 |
+| ESNet        |  1280x1280                                 |        4 |
+| IS-Net       |  1024x1024                                 |        1 |
+| InSPyReNet   |  1024x1024                                 |        4 |
+| MODNet       |  512x512                                   |       32 |
+| PDFNet       |  1024x1024                                 |       32 |
+| PGNet        |  1024x1024                                 |        1 |
+| RMFormer     |  1536x1536                                 |        1 |
+| U-2-Net      |  320x320                                   |        1 |
+
+In this table if the `Multiple` is 32 it means the size of the image must be a multiple of 32.
+
+But in general is advised to resize the image to the size of the images used during training.
+It doesn't matter if the aspect ratio is invalid, the model:
+
+- Was trained for this
+- All the input matrix contains information
+
+I tested the "BiRefNet General" model using the whole "DIS5K-TE" dataset and you consistently get better results deforming the image to 1024x1024 instead of padding with black stripes to keep the aspect ratio.
+
+The only supported model that was trained using variable size for input images is "BiRefNet General dynamic res", which was trained using image sizes from 256x256 to 2304x2304.
+Other models were trained using fixed size.
 
 ### Debug
 

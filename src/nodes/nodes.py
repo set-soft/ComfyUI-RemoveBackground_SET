@@ -155,7 +155,7 @@ def add_inspyrenet_models():
             continue
         KNOWN_MODELS[name] = ModelInfo({'url': m.url, 'file_name': m.ckpt_name, 'train_w': m.base_size[0],
                                         'train_h': m.base_size[1], 'model_t': model_t, 'ops_name': ops_name,
-                                        'name': m.name, 'file_t': 'pytorch', 'dtype': 'float32'})
+                                        'name': m.name, 'file_t': 'pytorch', 'dtype': 'float32', 'size_divisor': 4})
 
 
 add_inspyrenet_models()
@@ -275,6 +275,7 @@ class AutoDownloadBiRefNetModel(io.ComfyNode):
         arch.w = m.train_w
         arch.h = m.train_h
         arch.sub_type = m.name
+        arch.size_divisor = m.size_divisor
         if m.no_commercial:
             logger.warning(f"`{arch.get_name()}` model isn't for commercial use!")
         return io.NodeOutput(arch, m.train_w, m.train_h, {"mean": arch.img_mean, "std": arch.img_std}, m.as_dict)

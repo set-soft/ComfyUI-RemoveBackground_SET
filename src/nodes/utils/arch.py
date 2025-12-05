@@ -141,6 +141,7 @@ class RemBg(object):
             self.img_std = [0.5, 0.5, 0.5]
             self.model_type = 'DiffDIS'
             self.dtype = tensor.dtype
+            self.size_divisor = 64
             self.ok = True
             return
 
@@ -149,6 +150,7 @@ class RemBg(object):
         if layer in state_dict:
             self.bb = 'None'  # No backbone
             self.bb_ok = True
+            self.size_divisor = 1
 
             if 'outconv.weight' in state_dict:
                 # U2Net: u2net.pth and u2netp.pth
@@ -185,6 +187,7 @@ class RemBg(object):
                 self.why = 'No model features'
                 return
             self.model_type = 'MODNet'
+            self.size_divisor = 32
             self.w = self.h = 512
             self.img_mean = [0.5, 0.5, 0.5]
             self.img_std = [0.5, 0.5, 0.5]
@@ -199,6 +202,7 @@ class RemBg(object):
             self.model_type = 'BASNet'
             self.dtype = state_dict[layer].dtype
             self.w = self.h = 256
+            self.size_divisor = 32
             self.ok = True
             self.bb = 'None'  # No backbone
             self.bb_ok = True
@@ -309,6 +313,7 @@ class RemBg(object):
                 return False
             self.model_type = 'ESNet'
             self.w = self.h = 1280
+            self.size_divisor = 4
         if self.bb == 'swin_v1_b':
             # The Swin Transformer is quite known, but the version for fixed size has infinite variations
             for k, v in list(state_dict.items()):
@@ -329,6 +334,7 @@ class RemBg(object):
         self.model_type = 'RMFormer'
         self.dtype = state_dict[layer].dtype
         self.w = self.h = 1536
+        self.size_divisor = 1
         for la in RMFORMER_BOGUS:
             if la in state_dict:
                 del state_dict[la]
@@ -340,6 +346,7 @@ class RemBg(object):
         if layer not in state_dict:
             return False
         self.model_type = 'PGNet'
+        self.size_divisor = 1
         self.dtype = state_dict[layer].dtype
         if "swin.norm.bias" in state_dict:
             del state_dict["swin.norm.bias"]
@@ -354,6 +361,7 @@ class RemBg(object):
             return False
         self.model_type = 'BADIS'
         self.version = 2
+        self.size_divisor = 1
         self.dtype = state_dict[layer].dtype
         if "swin.norm.bias" in state_dict:
             del state_dict["swin.norm.bias"]
@@ -367,6 +375,7 @@ class RemBg(object):
         if 'context1.branch0.conv.weight' not in state_dict:
             return False
         self.model_type = 'InSPyReNet'
+        self.size_divisor = 4
         self.dtype = state_dict['context1.branch0.conv.weight'].dtype
         # This information is in the YAML file, but this doesn't map to loading a standalone file
         if self.bb == 'res2net50_v1b_26w_4s' or 'fast' in lower_case_fname:
@@ -389,6 +398,7 @@ class RemBg(object):
         self.img_mean = [0.0, 0.0, 0.0]
         self.img_std = [1.0, 1.0, 1.0]
         self.model_type = 'PDFNet'
+        self.size_divisor = 32
         self.needs_map = True
         self.dtype = tensor.dtype
         # Remove training layers we don't use
@@ -405,6 +415,7 @@ class RemBg(object):
             return False
         # MVANet
         self.model_type = 'MVANet'
+        self.size_divisor = 128
         if 'conv1.1.weight' in state_dict:
             # MVANet original and messy
             # Note: this difference is triggered by the use of BatchNorm2d instead of InstanceNorm2d in make_cbr
@@ -448,6 +459,7 @@ class RemBg(object):
             # self.img_std = [1.0, 1.0, 1.0]
             # But I couldn't find any reference to it in the original code
         self.model_type = 'BiRefNet'
+        self.size_divisor = 32
         return True
 
     # Swin Transformer foundation model
@@ -857,11 +869,10 @@ class RemBg(object):
         self.model_h = model_h or h
         self.scale_method = scale_method
         self.needs_scale = preproc_img
-        # TODO: more elaborate check depending on the model
         img_w = self.model_w if preproc_img else w
         img_h = self.model_h if preproc_img else h
-        if img_h % 32 or img_w % 32:
-            raise ValueError(f"Image size must be a multiple of 32 (not {img_w}x{img_h})")
+        if img_h % self.size_divisor or img_w % self.size_divisor:
+            raise ValueError(f"Image size must be a multiple of {self.size_divisor} (not {img_w}x{img_h})")
         if preproc_img:
             self.image_preproc = ImagePreprocessor(self.img_mean, self.img_std, resolution=(self.model_h, self.model_w),
                                                    upscale_method=scale_method)
