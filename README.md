@@ -378,26 +378,39 @@ Some random notes you might find interesting:
 
 This is not a formal benchmark, is just the result of a few tests using an RTX3060 with 12 GiB of VRAM on a system with 32 GiB of RAM.
 
-| Model | Time (ms) | Memory (MiB) | Image Size |
-|:---|---:|---:|---:|
-| MODNet Photo portrait | 60 | 175 | 512 |
-| U-2-Net Base | 147 | 371 | 320 |
-| IS-Net Base | 196 | 776 | 1024 |
-| IS-Net BRIA v1.4 | 200 | 776 | 1024 |
-| MVANet General BEN2 F16 | 421 | 1605 | 1024 |
-| BiRefNet General F16 | 516 | 1592 | 1024 |
-| InSPyReNet Base 1.2.12 | 661 | 2910 | 1024 |
-| BiRefNet BRIA v2.0 | 1029 | 3181 | 1024 |
-| PDFNet Base | 1684 | 3551 | 1024 |
-| DiffDIS Base F16 | 3109 | 6102 | 1024 |
-| DiffDIS Base F32 | 5249 | 5674 | 1024 |
+| Model                   | Time (ms) | Memory (MiB) | Image Size |
+|:------------------------|----------:|-------------:|-----------:|
+| MODNet Photo portrait   |        60 |          175 |        512 |
+| U-2-Net Small           |       104 |          207 |        320 |
+| ESNet ResNet50 F16      |       120 |          354 |       1280 |
+| U-2-Net Base            |       147 |          371 |        320 |
+| PGNet DUT+HRSOD F16     |       150 |          233 |       1024 |
+| ESNet Swin384 F16       |       182 |          458 |       1280 |
+| PGNet DUT+HRSOD F32     |       192 |          433 |       1024 |
+| IS-Net Base             |       196 |          776 |       1024 |
+| IS-Net BRIA v1.4        |       200 |          776 |       1024 |
+| BADIS F16               |       210 |          479 |       1024 |
+| BASNet                  |       269 |          527 |        256 |
+| RMFormer KUH F16        |       283 |          737 |       1536 |
+| ESNet Swin384           |       289 |          912 |       1280 |
+| BADIS                   |       307 |          894 |       1024 |
+| RMFormer KUH            |       375 |         1383 |       1536 |
+| InSPyReNet SwinB DHU LR |       383 |          710 |        384 |
+| MVANet General BEN2 F16 |       421 |         1605 |       1024 |
+| BiRefNet General F16    |       516 |         1592 |       1024 |
+| InSPyReNet Base 1.2.12  |       661 |         2910 |       1024 |
+| BiRefNet BRIA v2.0      |      1029 |         3181 |       1024 |
+| PDFNet Base             |      1684 |         3551 |       1024 |
+| DiffDIS Base F16        |      3109 |         6102 |       1024 |
+| DiffDIS Base F32        |      5249 |         5674 |       1024 |
 
-Note that `BRIA v2` and `BiRefNet General F16` are the same architecture, but one is working on 32 bits and the other on 16 bits. The impact in speed and memory is very important.
-The 16 bits weights runs twice faster using half the memory.
+Note that `BRIA v2` and `BiRefNet General F16` are the same architecture, but one is working on 32 bits and the other on 16 bits.
+The impact in speed and memory is very important. The 16 bits weights runs twice faster using half the memory.
 
 In the DiffDIS this difference is not maintained and, for some reason, the 16 bits weights needs more memory, not sure why.
 
-Also note that IS-Net models are much faster and needs much less memory than the rest, even when using a 1024x1024 image size.
+Also note that IS-Net models are much faster and needs much less memory than other models using 1024x1024 image size.
+And you can see than recent approaches, like PGNet, ESNet and RMFormer are quite fast, even at higher resolutions.
 
 
 ### Resize and aspect ratio
