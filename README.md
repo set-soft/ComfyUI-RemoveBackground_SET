@@ -46,6 +46,7 @@ This repository provides a set of custom nodes for ComfyUI focused on background
    - [Notes about the architectures](#notes-about-the-architectures)
    - [Resources comparison](#resources-comparison)
    - [Resize and aspect ratio](#resize-and-aspect-ratio)
+   - [Floating point resolution](#floating-point-resolution)
    - [Debug](#debug)
 - &#x0001F4DC; [Project History](#-project-history)
 - &#x2696;&#xFE0F; [License](#&#xFE0F;-license)
@@ -445,6 +446,22 @@ I tested the "BiRefNet General" model using the whole "DIS5K-TE" dataset and you
 
 The only supported model that was trained using variable size for input images is "BiRefNet General dynamic res", which was trained using image sizes from 256x256 to 2304x2304.
 Other models were trained using fixed size.
+
+
+### Floating point resolution
+
+Models are trained using 32 bits floating point (F32), but using the weights reduced to 16 bits (F16) is usually enough.
+
+If you take a look at the [time and memory used](#resources-comparison) you'll notice that for an RTX3060 using 16 bits is always faster,
+and in almost all the cases consumes much less memory.
+
+The question is how much of the learned information is lost. In general these models doesn't loose much.
+
+In fact the F16 version of BADIS and PGNet performs slightly better than the F32 versions! (don't know why).
+The BEN2 (MVANet) model behaves exactly the same.
+
+So I recommend always trying with the F16 version. A few models doesn't work when using F16 and this is why they don't have F16 versions
+(i.e. "U-2-Net Base (u2net)"). In other cases is just that nobody resized the weights (i.e. "BiRefNet BRIA v2.0").
 
 ### Debug
 
