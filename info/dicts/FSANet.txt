@@ -1,0 +1,1146 @@
+Analyzing: models/FSANet-100.pth
+
+--- PyTorch Model State Dict ---
+Key                                                           |                     Shape |    Num Elements | SHA256 (start)
+----------------------------------------------------------------------------------------------------------------------------
+module.sff.sea.local_att.0.weight                             |            [16, 64, 1, 1] |           1,024 | eff39fce
+module.sff.sea.local_att.0.bias                               |                      [16] |              16 | 1d5748f3
+module.sff.sea.local_att.1.weight                             |                      [16] |              16 | 6644b0c8
+module.sff.sea.local_att.1.bias                               |                      [16] |              16 | 4cb11255
+module.sff.sea.local_att.1.running_mean                       |                      [16] |              16 | 2463c05b
+module.sff.sea.local_att.1.running_var                        |                      [16] |              16 | 4dafad57
+module.sff.sea.local_att.1.num_batches_tracked                |                        [] |               1 | c308ef0e
+module.sff.sea.local_att.3.weight                             |            [64, 16, 1, 1] |           1,024 | fa093e00
+module.sff.sea.local_att.3.bias                               |                      [64] |              64 | 38545660
+module.sff.sea.local_att.4.weight                             |                      [64] |              64 | dca2aef6
+module.sff.sea.local_att.4.bias                               |                      [64] |              64 | 4034581a
+module.sff.sea.local_att.4.running_mean                       |                      [64] |              64 | 6071b406
+module.sff.sea.local_att.4.running_var                        |                      [64] |              64 | 462e4e7c
+module.sff.sea.local_att.4.num_batches_tracked                |                        [] |               1 | c308ef0e
+module.sff.sea.global_att.1.weight                            |            [16, 64, 1, 1] |           1,024 | abaa3b1a
+module.sff.sea.global_att.1.bias                              |                      [16] |              16 | 415005d1
+module.sff.sea.global_att.2.weight                            |                      [16] |              16 | c8ba0b28
+module.sff.sea.global_att.2.bias                              |                      [16] |              16 | de1d8941
+module.sff.sea.global_att.2.running_mean                      |                      [16] |              16 | 1789e2b7
+module.sff.sea.global_att.2.running_var                       |                      [16] |              16 | a395e4b3
+module.sff.sea.global_att.2.num_batches_tracked               |                        [] |               1 | c308ef0e
+module.sff.sea.global_att.4.weight                            |            [64, 16, 1, 1] |           1,024 | ad0dc5ca
+module.sff.sea.global_att.4.bias                              |                      [64] |              64 | 3a48b562
+module.sff.sea.global_att.5.weight                            |                      [64] |              64 | e5ccff7d
+module.sff.sea.global_att.5.bias                              |                      [64] |              64 | 09baa20e
+module.sff.sea.global_att.5.running_mean                      |                      [64] |              64 | e449f635
+module.sff.sea.global_att.5.running_var                       |                      [64] |              64 | 98cd2417
+module.sff.sea.global_att.5.num_batches_tracked               |                        [] |               1 | c308ef0e
+module.sff.sea.channel_att.0.weight                           |            [16, 64, 1, 1] |           1,024 | 904e9333
+module.sff.sea.channel_att.0.bias                             |                      [16] |              16 | 945b3a41
+module.sff.sea.channel_att.1.weight                           |                      [16] |              16 | c27c812f
+module.sff.sea.channel_att.1.bias                             |                      [16] |              16 | b79e7ee6
+module.sff.sea.channel_att.1.running_mean                     |                      [16] |              16 | 8cb9f932
+module.sff.sea.channel_att.1.running_var                      |                      [16] |              16 | 0f5a8033
+module.sff.sea.channel_att.1.num_batches_tracked              |                        [] |               1 | c308ef0e
+module.sff.sea.channel_att.3.weight                           |            [64, 16, 1, 1] |           1,024 | 1fefd2af
+module.sff.sea.channel_att.3.bias                             |                      [64] |              64 | 061f8d90
+module.sff.sea.channel_att.4.weight                           |                      [64] |              64 | fd210ceb
+module.sff.sea.channel_att.4.bias                             |                      [64] |              64 | 705e751d
+module.sff.sea.channel_att.4.running_mean                     |                      [64] |              64 | 9c496d3a
+module.sff.sea.channel_att.4.running_var                      |                      [64] |              64 | a8e482f2
+module.sff.sea.channel_att.4.num_batches_tracked              |                        [] |               1 | c308ef0e
+module.sff.conv_xy.weight                                     |          [128, 128, 3, 3] |         147,456 | 2407f4da
+module.sff.bn_xy.weight                                       |                     [128] |             128 | 248cd0fa
+module.sff.bn_xy.bias                                         |                     [128] |             128 | 31421d4b
+module.sff.bn_xy.running_mean                                 |                     [128] |             128 | 986edc4a
+module.sff.bn_xy.running_var                                  |                     [128] |             128 | ca835955
+module.sff.bn_xy.num_batches_tracked                          |                        [] |               1 | c308ef0e
+module.sff.conv_gate.weight                                   |          [128, 128, 3, 3] |         147,456 | 366d1aba
+module.sff.bn_gate.weight                                     |                     [128] |             128 | 5487a556
+module.sff.bn_gate.bias                                       |                     [128] |             128 | 9d212b74
+module.sff.bn_gate.running_mean                               |                     [128] |             128 | 96115814
+module.sff.bn_gate.running_var                                |                     [128] |             128 | b60f4afb
+module.sff.bn_gate.num_batches_tracked                        |                        [] |               1 | c308ef0e
+module.sff.conv_out.weight                                    |           [64, 128, 3, 3] |          73,728 | aa17a46f
+module.sff.bn_out.weight                                      |                      [64] |              64 | 2f20cd03
+module.sff.bn_out.bias                                        |                      [64] |              64 | 5341e6b2
+module.sff.bn_out.running_mean                                |                      [64] |              64 | 5341e6b2
+module.sff.bn_out.running_var                                 |                      [64] |              64 | 2f20cd03
+module.sff.bn_out.num_batches_tracked                         |                        [] |               1 | af5570f5
+module.frequency.radius                                       |                       [1] |               1 | 2238f30d
+module.backbone.patch_embed1.proj.weight                      |             [64, 3, 7, 7] |           9,408 | ffd4a78b
+module.backbone.patch_embed1.proj.bias                        |                      [64] |              64 | 201c8eb2
+module.backbone.patch_embed1.norm.weight                      |                      [64] |              64 | 9c4fc9f1
+module.backbone.patch_embed1.norm.bias                        |                      [64] |              64 | 3c242083
+module.backbone.patch_embed2.proj.weight                      |           [128, 64, 3, 3] |          73,728 | d1cfda9e
+module.backbone.patch_embed2.proj.bias                        |                     [128] |             128 | b3fdcf7d
+module.backbone.patch_embed2.norm.weight                      |                     [128] |             128 | 247a69f2
+module.backbone.patch_embed2.norm.bias                        |                     [128] |             128 | 4843ec7b
+module.backbone.patch_embed3.proj.weight                      |          [320, 128, 3, 3] |         368,640 | 1301dce8
+module.backbone.patch_embed3.proj.bias                        |                     [320] |             320 | d23d4caf
+module.backbone.patch_embed3.norm.weight                      |                     [320] |             320 | 65ac6e6c
+module.backbone.patch_embed3.norm.bias                        |                     [320] |             320 | ae3f3c91
+module.backbone.patch_embed4.proj.weight                      |          [512, 320, 3, 3] |       1,474,560 | 2c22578c
+module.backbone.patch_embed4.proj.bias                        |                     [512] |             512 | ea98c24f
+module.backbone.patch_embed4.norm.weight                      |                     [512] |             512 | 7dcf1dc3
+module.backbone.patch_embed4.norm.bias                        |                     [512] |             512 | 156de2d4
+module.backbone.block1.0.norm1.weight                         |                      [64] |              64 | 54572c8b
+module.backbone.block1.0.norm1.bias                           |                      [64] |              64 | 8480fb28
+module.backbone.block1.0.attn.q.weight                        |                  [64, 64] |           4,096 | 1bcefd4a
+module.backbone.block1.0.attn.q.bias                          |                      [64] |              64 | e0c2470a
+module.backbone.block1.0.attn.kv.weight                       |                 [128, 64] |           8,192 | 760ed538
+module.backbone.block1.0.attn.kv.bias                         |                     [128] |             128 | 16eea9bc
+module.backbone.block1.0.attn.proj.weight                     |                  [64, 64] |           4,096 | d4254563
+module.backbone.block1.0.attn.proj.bias                       |                      [64] |              64 | 40088199
+module.backbone.block1.0.attn.sr.weight                       |            [64, 64, 8, 8] |         262,144 | a7eaeca4
+module.backbone.block1.0.attn.sr.bias                         |                      [64] |              64 | 00df948c
+module.backbone.block1.0.attn.norm.weight                     |                      [64] |              64 | c0aa1d3e
+module.backbone.block1.0.attn.norm.bias                       |                      [64] |              64 | 04f5729b
+module.backbone.block1.0.norm2.weight                         |                      [64] |              64 | 7594366e
+module.backbone.block1.0.norm2.bias                           |                      [64] |              64 | b99e5ecc
+module.backbone.block1.0.mlp.fc1.weight                       |                 [512, 64] |          32,768 | cc0fff97
+module.backbone.block1.0.mlp.fc1.bias                         |                     [512] |             512 | 6b36ad2a
+module.backbone.block1.0.mlp.dwconv.dwconv.weight             |            [512, 1, 3, 3] |           4,608 | c88d890a
+module.backbone.block1.0.mlp.dwconv.dwconv.bias               |                     [512] |             512 | a97f0309
+module.backbone.block1.0.mlp.fc2.weight                       |                 [64, 512] |          32,768 | e440c201
+module.backbone.block1.0.mlp.fc2.bias                         |                      [64] |              64 | 079cad99
+module.backbone.block1.1.norm1.weight                         |                      [64] |              64 | 15f0214f
+module.backbone.block1.1.norm1.bias                           |                      [64] |              64 | f285874b
+module.backbone.block1.1.attn.q.weight                        |                  [64, 64] |           4,096 | c337f9c7
+module.backbone.block1.1.attn.q.bias                          |                      [64] |              64 | d03abe2e
+module.backbone.block1.1.attn.kv.weight                       |                 [128, 64] |           8,192 | 7aaaefd8
+module.backbone.block1.1.attn.kv.bias                         |                     [128] |             128 | a37d51e1
+module.backbone.block1.1.attn.proj.weight                     |                  [64, 64] |           4,096 | 1ede96c9
+module.backbone.block1.1.attn.proj.bias                       |                      [64] |              64 | 63d04820
+module.backbone.block1.1.attn.sr.weight                       |            [64, 64, 8, 8] |         262,144 | 9bb3d729
+module.backbone.block1.1.attn.sr.bias                         |                      [64] |              64 | 96645b83
+module.backbone.block1.1.attn.norm.weight                     |                      [64] |              64 | 2443120b
+module.backbone.block1.1.attn.norm.bias                       |                      [64] |              64 | 470bd069
+module.backbone.block1.1.norm2.weight                         |                      [64] |              64 | 01898b0d
+module.backbone.block1.1.norm2.bias                           |                      [64] |              64 | 3b9ed8c0
+module.backbone.block1.1.mlp.fc1.weight                       |                 [512, 64] |          32,768 | cafaa278
+module.backbone.block1.1.mlp.fc1.bias                         |                     [512] |             512 | 792b58ac
+module.backbone.block1.1.mlp.dwconv.dwconv.weight             |            [512, 1, 3, 3] |           4,608 | 5e33f8af
+module.backbone.block1.1.mlp.dwconv.dwconv.bias               |                     [512] |             512 | 966f0f47
+module.backbone.block1.1.mlp.fc2.weight                       |                 [64, 512] |          32,768 | 94de4870
+module.backbone.block1.1.mlp.fc2.bias                         |                      [64] |              64 | ffa31d44
+module.backbone.block1.2.norm1.weight                         |                      [64] |              64 | 2aaa4257
+module.backbone.block1.2.norm1.bias                           |                      [64] |              64 | 8b98a6e5
+module.backbone.block1.2.attn.q.weight                        |                  [64, 64] |           4,096 | 5c3ad408
+module.backbone.block1.2.attn.q.bias                          |                      [64] |              64 | 004c8890
+module.backbone.block1.2.attn.kv.weight                       |                 [128, 64] |           8,192 | e5ecb4ed
+module.backbone.block1.2.attn.kv.bias                         |                     [128] |             128 | 0ddc6684
+module.backbone.block1.2.attn.proj.weight                     |                  [64, 64] |           4,096 | 2fd82ee5
+module.backbone.block1.2.attn.proj.bias                       |                      [64] |              64 | a6c018e2
+module.backbone.block1.2.attn.sr.weight                       |            [64, 64, 8, 8] |         262,144 | 93f2d176
+module.backbone.block1.2.attn.sr.bias                         |                      [64] |              64 | b9776994
+module.backbone.block1.2.attn.norm.weight                     |                      [64] |              64 | 6df91f01
+module.backbone.block1.2.attn.norm.bias                       |                      [64] |              64 | 0766f41d
+module.backbone.block1.2.norm2.weight                         |                      [64] |              64 | 99d5a92d
+module.backbone.block1.2.norm2.bias                           |                      [64] |              64 | a8ad527f
+module.backbone.block1.2.mlp.fc1.weight                       |                 [512, 64] |          32,768 | 71075174
+module.backbone.block1.2.mlp.fc1.bias                         |                     [512] |             512 | 5e261926
+module.backbone.block1.2.mlp.dwconv.dwconv.weight             |            [512, 1, 3, 3] |           4,608 | b155b5bb
+module.backbone.block1.2.mlp.dwconv.dwconv.bias               |                     [512] |             512 | 1d40d869
+module.backbone.block1.2.mlp.fc2.weight                       |                 [64, 512] |          32,768 | f9507f67
+module.backbone.block1.2.mlp.fc2.bias                         |                      [64] |              64 | a8b077e7
+module.backbone.norm1.weight                                  |                      [64] |              64 | de6cdbb9
+module.backbone.norm1.bias                                    |                      [64] |              64 | afe40932
+module.backbone.block2.0.norm1.weight                         |                     [128] |             128 | 97a33d0d
+module.backbone.block2.0.norm1.bias                           |                     [128] |             128 | 336baf6d
+module.backbone.block2.0.attn.q.weight                        |                [128, 128] |          16,384 | d880af22
+module.backbone.block2.0.attn.q.bias                          |                     [128] |             128 | bde352eb
+module.backbone.block2.0.attn.kv.weight                       |                [256, 128] |          32,768 | 0890c5a3
+module.backbone.block2.0.attn.kv.bias                         |                     [256] |             256 | 4641dfe7
+module.backbone.block2.0.attn.proj.weight                     |                [128, 128] |          16,384 | 87539552
+module.backbone.block2.0.attn.proj.bias                       |                     [128] |             128 | 15590e01
+module.backbone.block2.0.attn.sr.weight                       |          [128, 128, 4, 4] |         262,144 | f5c82ba2
+module.backbone.block2.0.attn.sr.bias                         |                     [128] |             128 | 8eabb67d
+module.backbone.block2.0.attn.norm.weight                     |                     [128] |             128 | 5bcbdc7b
+module.backbone.block2.0.attn.norm.bias                       |                     [128] |             128 | 2adc6151
+module.backbone.block2.0.norm2.weight                         |                     [128] |             128 | cff1bb11
+module.backbone.block2.0.norm2.bias                           |                     [128] |             128 | 7abadbae
+module.backbone.block2.0.mlp.fc1.weight                       |               [1024, 128] |         131,072 | 1e7fd02d
+module.backbone.block2.0.mlp.fc1.bias                         |                    [1024] |           1,024 | 3fe8c73c
+module.backbone.block2.0.mlp.dwconv.dwconv.weight             |           [1024, 1, 3, 3] |           9,216 | e52d4be0
+module.backbone.block2.0.mlp.dwconv.dwconv.bias               |                    [1024] |           1,024 | 981b04ae
+module.backbone.block2.0.mlp.fc2.weight                       |               [128, 1024] |         131,072 | 494f541a
+module.backbone.block2.0.mlp.fc2.bias                         |                     [128] |             128 | 39b4625b
+module.backbone.block2.1.norm1.weight                         |                     [128] |             128 | a9dc557f
+module.backbone.block2.1.norm1.bias                           |                     [128] |             128 | cbd48ad1
+module.backbone.block2.1.attn.q.weight                        |                [128, 128] |          16,384 | e21ff22b
+module.backbone.block2.1.attn.q.bias                          |                     [128] |             128 | eb786da8
+module.backbone.block2.1.attn.kv.weight                       |                [256, 128] |          32,768 | 15562e8d
+module.backbone.block2.1.attn.kv.bias                         |                     [256] |             256 | 11e4aec9
+module.backbone.block2.1.attn.proj.weight                     |                [128, 128] |          16,384 | f10dd8f4
+module.backbone.block2.1.attn.proj.bias                       |                     [128] |             128 | 54b4183a
+module.backbone.block2.1.attn.sr.weight                       |          [128, 128, 4, 4] |         262,144 | cd9885c0
+module.backbone.block2.1.attn.sr.bias                         |                     [128] |             128 | 939cec8f
+module.backbone.block2.1.attn.norm.weight                     |                     [128] |             128 | 8034dfef
+module.backbone.block2.1.attn.norm.bias                       |                     [128] |             128 | 589dbc73
+module.backbone.block2.1.norm2.weight                         |                     [128] |             128 | c7722676
+module.backbone.block2.1.norm2.bias                           |                     [128] |             128 | bc707fdc
+module.backbone.block2.1.mlp.fc1.weight                       |               [1024, 128] |         131,072 | 7fa8ae71
+module.backbone.block2.1.mlp.fc1.bias                         |                    [1024] |           1,024 | 9501a3b9
+module.backbone.block2.1.mlp.dwconv.dwconv.weight             |           [1024, 1, 3, 3] |           9,216 | c44b9377
+module.backbone.block2.1.mlp.dwconv.dwconv.bias               |                    [1024] |           1,024 | 888b48db
+module.backbone.block2.1.mlp.fc2.weight                       |               [128, 1024] |         131,072 | ec04d51a
+module.backbone.block2.1.mlp.fc2.bias                         |                     [128] |             128 | e532a77d
+module.backbone.block2.2.norm1.weight                         |                     [128] |             128 | 82ccfa27
+module.backbone.block2.2.norm1.bias                           |                     [128] |             128 | 8d58ea4d
+module.backbone.block2.2.attn.q.weight                        |                [128, 128] |          16,384 | 44c1163b
+module.backbone.block2.2.attn.q.bias                          |                     [128] |             128 | bba84809
+module.backbone.block2.2.attn.kv.weight                       |                [256, 128] |          32,768 | 535e4afa
+module.backbone.block2.2.attn.kv.bias                         |                     [256] |             256 | 74cc41ff
+module.backbone.block2.2.attn.proj.weight                     |                [128, 128] |          16,384 | 42b17052
+module.backbone.block2.2.attn.proj.bias                       |                     [128] |             128 | 0e7280cc
+module.backbone.block2.2.attn.sr.weight                       |          [128, 128, 4, 4] |         262,144 | d3b03da7
+module.backbone.block2.2.attn.sr.bias                         |                     [128] |             128 | abd6d4c9
+module.backbone.block2.2.attn.norm.weight                     |                     [128] |             128 | c9aad951
+module.backbone.block2.2.attn.norm.bias                       |                     [128] |             128 | 8f76dcbd
+module.backbone.block2.2.norm2.weight                         |                     [128] |             128 | 4dd9f5a6
+module.backbone.block2.2.norm2.bias                           |                     [128] |             128 | 4539860b
+module.backbone.block2.2.mlp.fc1.weight                       |               [1024, 128] |         131,072 | 61805acb
+module.backbone.block2.2.mlp.fc1.bias                         |                    [1024] |           1,024 | 121dd970
+module.backbone.block2.2.mlp.dwconv.dwconv.weight             |           [1024, 1, 3, 3] |           9,216 | 3767a649
+module.backbone.block2.2.mlp.dwconv.dwconv.bias               |                    [1024] |           1,024 | 59b24341
+module.backbone.block2.2.mlp.fc2.weight                       |               [128, 1024] |         131,072 | 35707210
+module.backbone.block2.2.mlp.fc2.bias                         |                     [128] |             128 | c3f438e4
+module.backbone.block2.3.norm1.weight                         |                     [128] |             128 | 93679276
+module.backbone.block2.3.norm1.bias                           |                     [128] |             128 | daae36b9
+module.backbone.block2.3.attn.q.weight                        |                [128, 128] |          16,384 | a578fc0f
+module.backbone.block2.3.attn.q.bias                          |                     [128] |             128 | 6a4ce3e0
+module.backbone.block2.3.attn.kv.weight                       |                [256, 128] |          32,768 | f470297f
+module.backbone.block2.3.attn.kv.bias                         |                     [256] |             256 | 931e9668
+module.backbone.block2.3.attn.proj.weight                     |                [128, 128] |          16,384 | 9da123a8
+module.backbone.block2.3.attn.proj.bias                       |                     [128] |             128 | 2508b568
+module.backbone.block2.3.attn.sr.weight                       |          [128, 128, 4, 4] |         262,144 | 1c1955a4
+module.backbone.block2.3.attn.sr.bias                         |                     [128] |             128 | 519ee64e
+module.backbone.block2.3.attn.norm.weight                     |                     [128] |             128 | ff5883f2
+module.backbone.block2.3.attn.norm.bias                       |                     [128] |             128 | 054e36b1
+module.backbone.block2.3.norm2.weight                         |                     [128] |             128 | 2f37b387
+module.backbone.block2.3.norm2.bias                           |                     [128] |             128 | 6d3b88a7
+module.backbone.block2.3.mlp.fc1.weight                       |               [1024, 128] |         131,072 | a40bd7a3
+module.backbone.block2.3.mlp.fc1.bias                         |                    [1024] |           1,024 | 23ec9ec1
+module.backbone.block2.3.mlp.dwconv.dwconv.weight             |           [1024, 1, 3, 3] |           9,216 | 4df30b86
+module.backbone.block2.3.mlp.dwconv.dwconv.bias               |                    [1024] |           1,024 | e39ff9bf
+module.backbone.block2.3.mlp.fc2.weight                       |               [128, 1024] |         131,072 | 87aad956
+module.backbone.block2.3.mlp.fc2.bias                         |                     [128] |             128 | 55db3aec
+module.backbone.norm2.weight                                  |                     [128] |             128 | 876d89d9
+module.backbone.norm2.bias                                    |                     [128] |             128 | 11d6d02e
+module.backbone.block3.0.norm1.weight                         |                     [320] |             320 | dde4f063
+module.backbone.block3.0.norm1.bias                           |                     [320] |             320 | f87b2d71
+module.backbone.block3.0.attn.q.weight                        |                [320, 320] |         102,400 | 916f7669
+module.backbone.block3.0.attn.q.bias                          |                     [320] |             320 | 7ef08c16
+module.backbone.block3.0.attn.kv.weight                       |                [640, 320] |         204,800 | 647982a6
+module.backbone.block3.0.attn.kv.bias                         |                     [640] |             640 | 45d7e0a1
+module.backbone.block3.0.attn.proj.weight                     |                [320, 320] |         102,400 | f616ee6f
+module.backbone.block3.0.attn.proj.bias                       |                     [320] |             320 | 07aaf9c0
+module.backbone.block3.0.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | f9956670
+module.backbone.block3.0.attn.sr.bias                         |                     [320] |             320 | d90a338e
+module.backbone.block3.0.attn.norm.weight                     |                     [320] |             320 | 931aca88
+module.backbone.block3.0.attn.norm.bias                       |                     [320] |             320 | 06dc6706
+module.backbone.block3.0.norm2.weight                         |                     [320] |             320 | 6b53f361
+module.backbone.block3.0.norm2.bias                           |                     [320] |             320 | 53949240
+module.backbone.block3.0.mlp.fc1.weight                       |               [1280, 320] |         409,600 | 39d397af
+module.backbone.block3.0.mlp.fc1.bias                         |                    [1280] |           1,280 | a7503fe6
+module.backbone.block3.0.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | cd6b3758
+module.backbone.block3.0.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | e3269753
+module.backbone.block3.0.mlp.fc2.weight                       |               [320, 1280] |         409,600 | af6cbc05
+module.backbone.block3.0.mlp.fc2.bias                         |                     [320] |             320 | 101cd45d
+module.backbone.block3.1.norm1.weight                         |                     [320] |             320 | e6e46b45
+module.backbone.block3.1.norm1.bias                           |                     [320] |             320 | eb1b10dc
+module.backbone.block3.1.attn.q.weight                        |                [320, 320] |         102,400 | b857d041
+module.backbone.block3.1.attn.q.bias                          |                     [320] |             320 | b600af4f
+module.backbone.block3.1.attn.kv.weight                       |                [640, 320] |         204,800 | 3b7dde0d
+module.backbone.block3.1.attn.kv.bias                         |                     [640] |             640 | 15b7e7bf
+module.backbone.block3.1.attn.proj.weight                     |                [320, 320] |         102,400 | c04ed490
+module.backbone.block3.1.attn.proj.bias                       |                     [320] |             320 | ebdd6e87
+module.backbone.block3.1.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | bb38082e
+module.backbone.block3.1.attn.sr.bias                         |                     [320] |             320 | 26aaf68b
+module.backbone.block3.1.attn.norm.weight                     |                     [320] |             320 | 51ef28c9
+module.backbone.block3.1.attn.norm.bias                       |                     [320] |             320 | e3a05323
+module.backbone.block3.1.norm2.weight                         |                     [320] |             320 | e60744e6
+module.backbone.block3.1.norm2.bias                           |                     [320] |             320 | dde9bf55
+module.backbone.block3.1.mlp.fc1.weight                       |               [1280, 320] |         409,600 | 566eed45
+module.backbone.block3.1.mlp.fc1.bias                         |                    [1280] |           1,280 | 72aa9c1c
+module.backbone.block3.1.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | 44bf09a7
+module.backbone.block3.1.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | e2b84746
+module.backbone.block3.1.mlp.fc2.weight                       |               [320, 1280] |         409,600 | 68a7c167
+module.backbone.block3.1.mlp.fc2.bias                         |                     [320] |             320 | 51296c54
+module.backbone.block3.2.norm1.weight                         |                     [320] |             320 | 0e135241
+module.backbone.block3.2.norm1.bias                           |                     [320] |             320 | a7a3bd76
+module.backbone.block3.2.attn.q.weight                        |                [320, 320] |         102,400 | e5aadbc2
+module.backbone.block3.2.attn.q.bias                          |                     [320] |             320 | 32341912
+module.backbone.block3.2.attn.kv.weight                       |                [640, 320] |         204,800 | a3018ab5
+module.backbone.block3.2.attn.kv.bias                         |                     [640] |             640 | 9291f3ce
+module.backbone.block3.2.attn.proj.weight                     |                [320, 320] |         102,400 | c41d317e
+module.backbone.block3.2.attn.proj.bias                       |                     [320] |             320 | 37217e01
+module.backbone.block3.2.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | 39baf9e6
+module.backbone.block3.2.attn.sr.bias                         |                     [320] |             320 | d18e7b20
+module.backbone.block3.2.attn.norm.weight                     |                     [320] |             320 | 2d7a2359
+module.backbone.block3.2.attn.norm.bias                       |                     [320] |             320 | 9056e687
+module.backbone.block3.2.norm2.weight                         |                     [320] |             320 | 62e656f7
+module.backbone.block3.2.norm2.bias                           |                     [320] |             320 | 93a65517
+module.backbone.block3.2.mlp.fc1.weight                       |               [1280, 320] |         409,600 | b0e794be
+module.backbone.block3.2.mlp.fc1.bias                         |                    [1280] |           1,280 | 6f1e2b55
+module.backbone.block3.2.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | 9c26680b
+module.backbone.block3.2.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | 3f79df83
+module.backbone.block3.2.mlp.fc2.weight                       |               [320, 1280] |         409,600 | 8e58fab2
+module.backbone.block3.2.mlp.fc2.bias                         |                     [320] |             320 | 75766706
+module.backbone.block3.3.norm1.weight                         |                     [320] |             320 | 39ac8c3d
+module.backbone.block3.3.norm1.bias                           |                     [320] |             320 | d0dfb275
+module.backbone.block3.3.attn.q.weight                        |                [320, 320] |         102,400 | 828cd91b
+module.backbone.block3.3.attn.q.bias                          |                     [320] |             320 | 627caa8e
+module.backbone.block3.3.attn.kv.weight                       |                [640, 320] |         204,800 | 0e362623
+module.backbone.block3.3.attn.kv.bias                         |                     [640] |             640 | 391d2b3d
+module.backbone.block3.3.attn.proj.weight                     |                [320, 320] |         102,400 | cbddc887
+module.backbone.block3.3.attn.proj.bias                       |                     [320] |             320 | 65cebd0f
+module.backbone.block3.3.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | 7ebeafa4
+module.backbone.block3.3.attn.sr.bias                         |                     [320] |             320 | b3870e9b
+module.backbone.block3.3.attn.norm.weight                     |                     [320] |             320 | 97734f64
+module.backbone.block3.3.attn.norm.bias                       |                     [320] |             320 | 4cd7557c
+module.backbone.block3.3.norm2.weight                         |                     [320] |             320 | 38cc312b
+module.backbone.block3.3.norm2.bias                           |                     [320] |             320 | b4399af2
+module.backbone.block3.3.mlp.fc1.weight                       |               [1280, 320] |         409,600 | 0ba3b11f
+module.backbone.block3.3.mlp.fc1.bias                         |                    [1280] |           1,280 | d9017c97
+module.backbone.block3.3.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | f3b1295d
+module.backbone.block3.3.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | 1944b816
+module.backbone.block3.3.mlp.fc2.weight                       |               [320, 1280] |         409,600 | fbd0f2f4
+module.backbone.block3.3.mlp.fc2.bias                         |                     [320] |             320 | 5b42897c
+module.backbone.block3.4.norm1.weight                         |                     [320] |             320 | 328d4612
+module.backbone.block3.4.norm1.bias                           |                     [320] |             320 | 74c3291c
+module.backbone.block3.4.attn.q.weight                        |                [320, 320] |         102,400 | 1ed69ec0
+module.backbone.block3.4.attn.q.bias                          |                     [320] |             320 | fa775d85
+module.backbone.block3.4.attn.kv.weight                       |                [640, 320] |         204,800 | 537715ef
+module.backbone.block3.4.attn.kv.bias                         |                     [640] |             640 | 1f371588
+module.backbone.block3.4.attn.proj.weight                     |                [320, 320] |         102,400 | 1b63f170
+module.backbone.block3.4.attn.proj.bias                       |                     [320] |             320 | d65144d9
+module.backbone.block3.4.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | f0b7b742
+module.backbone.block3.4.attn.sr.bias                         |                     [320] |             320 | a4ada5e3
+module.backbone.block3.4.attn.norm.weight                     |                     [320] |             320 | 85776177
+module.backbone.block3.4.attn.norm.bias                       |                     [320] |             320 | b5d1a7db
+module.backbone.block3.4.norm2.weight                         |                     [320] |             320 | cb3c441e
+module.backbone.block3.4.norm2.bias                           |                     [320] |             320 | d27fbe94
+module.backbone.block3.4.mlp.fc1.weight                       |               [1280, 320] |         409,600 | 79c3a993
+module.backbone.block3.4.mlp.fc1.bias                         |                    [1280] |           1,280 | db6eae6d
+module.backbone.block3.4.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | d0489a5a
+module.backbone.block3.4.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | a9001430
+module.backbone.block3.4.mlp.fc2.weight                       |               [320, 1280] |         409,600 | fbcaa0b6
+module.backbone.block3.4.mlp.fc2.bias                         |                     [320] |             320 | f15dce7f
+module.backbone.block3.5.norm1.weight                         |                     [320] |             320 | 68d7e2c7
+module.backbone.block3.5.norm1.bias                           |                     [320] |             320 | ec17febe
+module.backbone.block3.5.attn.q.weight                        |                [320, 320] |         102,400 | 3656c667
+module.backbone.block3.5.attn.q.bias                          |                     [320] |             320 | 1111fa07
+module.backbone.block3.5.attn.kv.weight                       |                [640, 320] |         204,800 | 9c0f537f
+module.backbone.block3.5.attn.kv.bias                         |                     [640] |             640 | 310b47ad
+module.backbone.block3.5.attn.proj.weight                     |                [320, 320] |         102,400 | 53699d73
+module.backbone.block3.5.attn.proj.bias                       |                     [320] |             320 | 8aa37131
+module.backbone.block3.5.attn.sr.weight                       |          [320, 320, 2, 2] |         409,600 | dcb8c348
+module.backbone.block3.5.attn.sr.bias                         |                     [320] |             320 | 8dfa39b9
+module.backbone.block3.5.attn.norm.weight                     |                     [320] |             320 | 79e1f308
+module.backbone.block3.5.attn.norm.bias                       |                     [320] |             320 | 1fd218a4
+module.backbone.block3.5.norm2.weight                         |                     [320] |             320 | 5505a945
+module.backbone.block3.5.norm2.bias                           |                     [320] |             320 | a0ef43e1
+module.backbone.block3.5.mlp.fc1.weight                       |               [1280, 320] |         409,600 | 3be1003e
+module.backbone.block3.5.mlp.fc1.bias                         |                    [1280] |           1,280 | 2ee429a2
+module.backbone.block3.5.mlp.dwconv.dwconv.weight             |           [1280, 1, 3, 3] |          11,520 | 41704550
+module.backbone.block3.5.mlp.dwconv.dwconv.bias               |                    [1280] |           1,280 | 31123b39
+module.backbone.block3.5.mlp.fc2.weight                       |               [320, 1280] |         409,600 | e996066a
+module.backbone.block3.5.mlp.fc2.bias                         |                     [320] |             320 | 2865bb32
+module.backbone.norm3.weight                                  |                     [320] |             320 | fd3f7b8a
+module.backbone.norm3.bias                                    |                     [320] |             320 | ed0f5027
+module.backbone.block4.0.norm1.weight                         |                     [512] |             512 | ffdb8f25
+module.backbone.block4.0.norm1.bias                           |                     [512] |             512 | 150962a5
+module.backbone.block4.0.attn.q.weight                        |                [512, 512] |         262,144 | 81f0ced7
+module.backbone.block4.0.attn.q.bias                          |                     [512] |             512 | 4af7d774
+module.backbone.block4.0.attn.kv.weight                       |               [1024, 512] |         524,288 | 99acf48a
+module.backbone.block4.0.attn.kv.bias                         |                    [1024] |           1,024 | a8dfac1b
+module.backbone.block4.0.attn.proj.weight                     |                [512, 512] |         262,144 | e7103b30
+module.backbone.block4.0.attn.proj.bias                       |                     [512] |             512 | 815e2e22
+module.backbone.block4.0.norm2.weight                         |                     [512] |             512 | 13497b86
+module.backbone.block4.0.norm2.bias                           |                     [512] |             512 | 3347d2f1
+module.backbone.block4.0.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | a982bcf1
+module.backbone.block4.0.mlp.fc1.bias                         |                    [2048] |           2,048 | b9dde84c
+module.backbone.block4.0.mlp.dwconv.dwconv.weight             |           [2048, 1, 3, 3] |          18,432 | c5d13827
+module.backbone.block4.0.mlp.dwconv.dwconv.bias               |                    [2048] |           2,048 | 925688c6
+module.backbone.block4.0.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | b6b39f96
+module.backbone.block4.0.mlp.fc2.bias                         |                     [512] |             512 | f101641e
+module.backbone.block4.1.norm1.weight                         |                     [512] |             512 | a5a2bf64
+module.backbone.block4.1.norm1.bias                           |                     [512] |             512 | a072433c
+module.backbone.block4.1.attn.q.weight                        |                [512, 512] |         262,144 | 3183c6a3
+module.backbone.block4.1.attn.q.bias                          |                     [512] |             512 | 0f14286d
+module.backbone.block4.1.attn.kv.weight                       |               [1024, 512] |         524,288 | b68f2882
+module.backbone.block4.1.attn.kv.bias                         |                    [1024] |           1,024 | 537d7011
+module.backbone.block4.1.attn.proj.weight                     |                [512, 512] |         262,144 | 9d0e1bff
+module.backbone.block4.1.attn.proj.bias                       |                     [512] |             512 | 2ae4346d
+module.backbone.block4.1.norm2.weight                         |                     [512] |             512 | 58adf285
+module.backbone.block4.1.norm2.bias                           |                     [512] |             512 | 73ee4ec4
+module.backbone.block4.1.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 121047bb
+module.backbone.block4.1.mlp.fc1.bias                         |                    [2048] |           2,048 | ade90763
+module.backbone.block4.1.mlp.dwconv.dwconv.weight             |           [2048, 1, 3, 3] |          18,432 | 15d5a6e7
+module.backbone.block4.1.mlp.dwconv.dwconv.bias               |                    [2048] |           2,048 | 35cf7f43
+module.backbone.block4.1.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 5bd6869b
+module.backbone.block4.1.mlp.fc2.bias                         |                     [512] |             512 | a46670c2
+module.backbone.block4.2.norm1.weight                         |                     [512] |             512 | 25705c7a
+module.backbone.block4.2.norm1.bias                           |                     [512] |             512 | 2c7e665e
+module.backbone.block4.2.attn.q.weight                        |                [512, 512] |         262,144 | efe22898
+module.backbone.block4.2.attn.q.bias                          |                     [512] |             512 | 6a7f404c
+module.backbone.block4.2.attn.kv.weight                       |               [1024, 512] |         524,288 | 6a348243
+module.backbone.block4.2.attn.kv.bias                         |                    [1024] |           1,024 | 1c408a90
+module.backbone.block4.2.attn.proj.weight                     |                [512, 512] |         262,144 | da62626b
+module.backbone.block4.2.attn.proj.bias                       |                     [512] |             512 | 497c0ea7
+module.backbone.block4.2.norm2.weight                         |                     [512] |             512 | 553ce4cc
+module.backbone.block4.2.norm2.bias                           |                     [512] |             512 | 3d178daf
+module.backbone.block4.2.mlp.fc1.weight                       |               [2048, 512] |       1,048,576 | 62811dfe
+module.backbone.block4.2.mlp.fc1.bias                         |                    [2048] |           2,048 | d949275e
+module.backbone.block4.2.mlp.dwconv.dwconv.weight             |           [2048, 1, 3, 3] |          18,432 | 91b657af
+module.backbone.block4.2.mlp.dwconv.dwconv.bias               |                    [2048] |           2,048 | 9ebd23e2
+module.backbone.block4.2.mlp.fc2.weight                       |               [512, 2048] |       1,048,576 | 9d4f1da4
+module.backbone.block4.2.mlp.fc2.bias                         |                     [512] |             512 | a640b801
+module.backbone.norm4.weight                                  |                     [512] |             512 | 96499c69
+module.backbone.norm4.bias                                    |                     [512] |             512 | 9dabfcb9
+module.resnet_f.conv1.weight                                  |             [64, 1, 7, 7] |           3,136 | ca5b4394
+module.resnet_f.bn1.weight                                    |                      [64] |              64 | 67364db5
+module.resnet_f.bn1.bias                                      |                      [64] |              64 | a266f31e
+module.resnet_f.bn1.running_mean                              |                      [64] |              64 | 26293d1e
+module.resnet_f.bn1.running_var                               |                      [64] |              64 | 87f70014
+module.resnet_f.bn1.num_batches_tracked                       |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.0.conv1.weight                         |            [64, 64, 1, 1] |           4,096 | e486829a
+module.resnet_f.layer1.0.bn1.weight                           |                      [64] |              64 | a66bb5ba
+module.resnet_f.layer1.0.bn1.bias                             |                      [64] |              64 | 9dbadb87
+module.resnet_f.layer1.0.bn1.running_mean                     |                      [64] |              64 | a09f3973
+module.resnet_f.layer1.0.bn1.running_var                      |                      [64] |              64 | 04405a8c
+module.resnet_f.layer1.0.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.0.conv2.weight                         |            [64, 64, 3, 3] |          36,864 | 1796268b
+module.resnet_f.layer1.0.bn2.weight                           |                      [64] |              64 | 57f91876
+module.resnet_f.layer1.0.bn2.bias                             |                      [64] |              64 | 26ac2c07
+module.resnet_f.layer1.0.bn2.running_mean                     |                      [64] |              64 | a5d5a0ee
+module.resnet_f.layer1.0.bn2.running_var                      |                      [64] |              64 | 75047336
+module.resnet_f.layer1.0.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.0.conv3.weight                         |           [256, 64, 1, 1] |          16,384 | cb93c81f
+module.resnet_f.layer1.0.bn3.weight                           |                     [256] |             256 | d5976c9a
+module.resnet_f.layer1.0.bn3.bias                             |                     [256] |             256 | 0bcee0bd
+module.resnet_f.layer1.0.bn3.running_mean                     |                     [256] |             256 | 27d7688e
+module.resnet_f.layer1.0.bn3.running_var                      |                     [256] |             256 | e1842cd0
+module.resnet_f.layer1.0.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.0.downsample.0.weight                  |           [256, 64, 1, 1] |          16,384 | e3fbf91d
+module.resnet_f.layer1.0.downsample.1.weight                  |                     [256] |             256 | cfab4fa4
+module.resnet_f.layer1.0.downsample.1.bias                    |                     [256] |             256 | 0bcee0bd
+module.resnet_f.layer1.0.downsample.1.running_mean            |                     [256] |             256 | 181a1d5c
+module.resnet_f.layer1.0.downsample.1.running_var             |                     [256] |             256 | 3a87d556
+module.resnet_f.layer1.0.downsample.1.num_batches_tracked     |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.1.conv1.weight                         |           [64, 256, 1, 1] |          16,384 | 97f97990
+module.resnet_f.layer1.1.bn1.weight                           |                      [64] |              64 | ae8d76c6
+module.resnet_f.layer1.1.bn1.bias                             |                      [64] |              64 | b5fa0cb0
+module.resnet_f.layer1.1.bn1.running_mean                     |                      [64] |              64 | 63038333
+module.resnet_f.layer1.1.bn1.running_var                      |                      [64] |              64 | 0a8c2715
+module.resnet_f.layer1.1.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.1.conv2.weight                         |            [64, 64, 3, 3] |          36,864 | 80d22294
+module.resnet_f.layer1.1.bn2.weight                           |                      [64] |              64 | a58fa1f1
+module.resnet_f.layer1.1.bn2.bias                             |                      [64] |              64 | e128d1c7
+module.resnet_f.layer1.1.bn2.running_mean                     |                      [64] |              64 | b593c3a6
+module.resnet_f.layer1.1.bn2.running_var                      |                      [64] |              64 | 3fdc0699
+module.resnet_f.layer1.1.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.1.conv3.weight                         |           [256, 64, 1, 1] |          16,384 | dd783074
+module.resnet_f.layer1.1.bn3.weight                           |                     [256] |             256 | 82332de4
+module.resnet_f.layer1.1.bn3.bias                             |                     [256] |             256 | 417a392c
+module.resnet_f.layer1.1.bn3.running_mean                     |                     [256] |             256 | 23e09b24
+module.resnet_f.layer1.1.bn3.running_var                      |                     [256] |             256 | b01ff688
+module.resnet_f.layer1.1.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.2.conv1.weight                         |           [64, 256, 1, 1] |          16,384 | 8f592dda
+module.resnet_f.layer1.2.bn1.weight                           |                      [64] |              64 | 48111c88
+module.resnet_f.layer1.2.bn1.bias                             |                      [64] |              64 | e9f5216b
+module.resnet_f.layer1.2.bn1.running_mean                     |                      [64] |              64 | 1bb71eec
+module.resnet_f.layer1.2.bn1.running_var                      |                      [64] |              64 | 71776d02
+module.resnet_f.layer1.2.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.2.conv2.weight                         |            [64, 64, 3, 3] |          36,864 | 036dc721
+module.resnet_f.layer1.2.bn2.weight                           |                      [64] |              64 | 99a198bc
+module.resnet_f.layer1.2.bn2.bias                             |                      [64] |              64 | 139bf195
+module.resnet_f.layer1.2.bn2.running_mean                     |                      [64] |              64 | df4ba8b0
+module.resnet_f.layer1.2.bn2.running_var                      |                      [64] |              64 | c43f3a17
+module.resnet_f.layer1.2.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer1.2.conv3.weight                         |           [256, 64, 1, 1] |          16,384 | f64aed58
+module.resnet_f.layer1.2.bn3.weight                           |                     [256] |             256 | 2759b70e
+module.resnet_f.layer1.2.bn3.bias                             |                     [256] |             256 | 1c72b2d4
+module.resnet_f.layer1.2.bn3.running_mean                     |                     [256] |             256 | 83728775
+module.resnet_f.layer1.2.bn3.running_var                      |                     [256] |             256 | 4288f45d
+module.resnet_f.layer1.2.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.0.conv1.weight                         |          [128, 256, 1, 1] |          32,768 | f9e2070a
+module.resnet_f.layer2.0.bn1.weight                           |                     [128] |             128 | 084900ef
+module.resnet_f.layer2.0.bn1.bias                             |                     [128] |             128 | 3ca9428e
+module.resnet_f.layer2.0.bn1.running_mean                     |                     [128] |             128 | ffacefde
+module.resnet_f.layer2.0.bn1.running_var                      |                     [128] |             128 | 730904c8
+module.resnet_f.layer2.0.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.0.conv2.weight                         |          [128, 128, 3, 3] |         147,456 | 66e946c8
+module.resnet_f.layer2.0.bn2.weight                           |                     [128] |             128 | d69dc41f
+module.resnet_f.layer2.0.bn2.bias                             |                     [128] |             128 | 6d853f8d
+module.resnet_f.layer2.0.bn2.running_mean                     |                     [128] |             128 | a23566fb
+module.resnet_f.layer2.0.bn2.running_var                      |                     [128] |             128 | 16490b07
+module.resnet_f.layer2.0.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.0.conv3.weight                         |          [512, 128, 1, 1] |          65,536 | a2f51c35
+module.resnet_f.layer2.0.bn3.weight                           |                     [512] |             512 | 0c79f647
+module.resnet_f.layer2.0.bn3.bias                             |                     [512] |             512 | d28aab2e
+module.resnet_f.layer2.0.bn3.running_mean                     |                     [512] |             512 | 2dae4fb5
+module.resnet_f.layer2.0.bn3.running_var                      |                     [512] |             512 | 2d2589e4
+module.resnet_f.layer2.0.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.0.downsample.0.weight                  |          [512, 256, 1, 1] |         131,072 | f83313bd
+module.resnet_f.layer2.0.downsample.1.weight                  |                     [512] |             512 | 079ed9d0
+module.resnet_f.layer2.0.downsample.1.bias                    |                     [512] |             512 | d28aab2e
+module.resnet_f.layer2.0.downsample.1.running_mean            |                     [512] |             512 | b979adaf
+module.resnet_f.layer2.0.downsample.1.running_var             |                     [512] |             512 | 65705a32
+module.resnet_f.layer2.0.downsample.1.num_batches_tracked     |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.1.conv1.weight                         |          [128, 512, 1, 1] |          65,536 | 1093369d
+module.resnet_f.layer2.1.bn1.weight                           |                     [128] |             128 | f2777578
+module.resnet_f.layer2.1.bn1.bias                             |                     [128] |             128 | 80d39054
+module.resnet_f.layer2.1.bn1.running_mean                     |                     [128] |             128 | df594f7e
+module.resnet_f.layer2.1.bn1.running_var                      |                     [128] |             128 | 4cd4529e
+module.resnet_f.layer2.1.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.1.conv2.weight                         |          [128, 128, 3, 3] |         147,456 | 1d76b66d
+module.resnet_f.layer2.1.bn2.weight                           |                     [128] |             128 | 900dae00
+module.resnet_f.layer2.1.bn2.bias                             |                     [128] |             128 | e6d9d263
+module.resnet_f.layer2.1.bn2.running_mean                     |                     [128] |             128 | b86dfeef
+module.resnet_f.layer2.1.bn2.running_var                      |                     [128] |             128 | 8c85d5d5
+module.resnet_f.layer2.1.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.1.conv3.weight                         |          [512, 128, 1, 1] |          65,536 | 0dfd98fe
+module.resnet_f.layer2.1.bn3.weight                           |                     [512] |             512 | 90d05160
+module.resnet_f.layer2.1.bn3.bias                             |                     [512] |             512 | 59e31617
+module.resnet_f.layer2.1.bn3.running_mean                     |                     [512] |             512 | fce5a78c
+module.resnet_f.layer2.1.bn3.running_var                      |                     [512] |             512 | 179f45a2
+module.resnet_f.layer2.1.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.2.conv1.weight                         |          [128, 512, 1, 1] |          65,536 | d00161aa
+module.resnet_f.layer2.2.bn1.weight                           |                     [128] |             128 | 9a65a1a8
+module.resnet_f.layer2.2.bn1.bias                             |                     [128] |             128 | cdf0280d
+module.resnet_f.layer2.2.bn1.running_mean                     |                     [128] |             128 | 7ef4f990
+module.resnet_f.layer2.2.bn1.running_var                      |                     [128] |             128 | 05bd35bb
+module.resnet_f.layer2.2.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.2.conv2.weight                         |          [128, 128, 3, 3] |         147,456 | 3df7b880
+module.resnet_f.layer2.2.bn2.weight                           |                     [128] |             128 | 40801724
+module.resnet_f.layer2.2.bn2.bias                             |                     [128] |             128 | 988e445e
+module.resnet_f.layer2.2.bn2.running_mean                     |                     [128] |             128 | bf343377
+module.resnet_f.layer2.2.bn2.running_var                      |                     [128] |             128 | f5c66702
+module.resnet_f.layer2.2.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.2.conv3.weight                         |          [512, 128, 1, 1] |          65,536 | ffc88beb
+module.resnet_f.layer2.2.bn3.weight                           |                     [512] |             512 | d700f847
+module.resnet_f.layer2.2.bn3.bias                             |                     [512] |             512 | cce53bb7
+module.resnet_f.layer2.2.bn3.running_mean                     |                     [512] |             512 | e64ac8c5
+module.resnet_f.layer2.2.bn3.running_var                      |                     [512] |             512 | 50faec0b
+module.resnet_f.layer2.2.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.3.conv1.weight                         |          [128, 512, 1, 1] |          65,536 | fa40b13d
+module.resnet_f.layer2.3.bn1.weight                           |                     [128] |             128 | 8a2498d5
+module.resnet_f.layer2.3.bn1.bias                             |                     [128] |             128 | db235edb
+module.resnet_f.layer2.3.bn1.running_mean                     |                     [128] |             128 | 060620eb
+module.resnet_f.layer2.3.bn1.running_var                      |                     [128] |             128 | 34e96cbe
+module.resnet_f.layer2.3.bn1.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.3.conv2.weight                         |          [128, 128, 3, 3] |         147,456 | 1d23b5e7
+module.resnet_f.layer2.3.bn2.weight                           |                     [128] |             128 | 38657d69
+module.resnet_f.layer2.3.bn2.bias                             |                     [128] |             128 | 9ea68914
+module.resnet_f.layer2.3.bn2.running_mean                     |                     [128] |             128 | 0e689515
+module.resnet_f.layer2.3.bn2.running_var                      |                     [128] |             128 | ba14c283
+module.resnet_f.layer2.3.bn2.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer2.3.conv3.weight                         |          [512, 128, 1, 1] |          65,536 | 8e7015b1
+module.resnet_f.layer2.3.bn3.weight                           |                     [512] |             512 | d6da1938
+module.resnet_f.layer2.3.bn3.bias                             |                     [512] |             512 | 31418ff5
+module.resnet_f.layer2.3.bn3.running_mean                     |                     [512] |             512 | aa8b5218
+module.resnet_f.layer2.3.bn3.running_var                      |                     [512] |             512 | 20c9f671
+module.resnet_f.layer2.3.bn3.num_batches_tracked              |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.0.conv1.weight                       |          [256, 512, 1, 1] |         131,072 | 3c75a53f
+module.resnet_f.layer3_1.0.bn1.weight                         |                     [256] |             256 | 69e50774
+module.resnet_f.layer3_1.0.bn1.bias                           |                     [256] |             256 | 2788ffc6
+module.resnet_f.layer3_1.0.bn1.running_mean                   |                     [256] |             256 | 4090d84c
+module.resnet_f.layer3_1.0.bn1.running_var                    |                     [256] |             256 | 11723254
+module.resnet_f.layer3_1.0.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.0.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | b9e97521
+module.resnet_f.layer3_1.0.bn2.weight                         |                     [256] |             256 | afc62fc7
+module.resnet_f.layer3_1.0.bn2.bias                           |                     [256] |             256 | a4ecf19f
+module.resnet_f.layer3_1.0.bn2.running_mean                   |                     [256] |             256 | 727a809b
+module.resnet_f.layer3_1.0.bn2.running_var                    |                     [256] |             256 | 5319a8c4
+module.resnet_f.layer3_1.0.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.0.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | a4208f25
+module.resnet_f.layer3_1.0.bn3.weight                         |                    [1024] |           1,024 | 23ed70aa
+module.resnet_f.layer3_1.0.bn3.bias                           |                    [1024] |           1,024 | 255b674b
+module.resnet_f.layer3_1.0.bn3.running_mean                   |                    [1024] |           1,024 | 590aaaaf
+module.resnet_f.layer3_1.0.bn3.running_var                    |                    [1024] |           1,024 | 40773852
+module.resnet_f.layer3_1.0.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.0.downsample.0.weight                |         [1024, 512, 1, 1] |         524,288 | fb80f476
+module.resnet_f.layer3_1.0.downsample.1.weight                |                    [1024] |           1,024 | 07af86a0
+module.resnet_f.layer3_1.0.downsample.1.bias                  |                    [1024] |           1,024 | 255b674b
+module.resnet_f.layer3_1.0.downsample.1.running_mean          |                    [1024] |           1,024 | 990385bf
+module.resnet_f.layer3_1.0.downsample.1.running_var           |                    [1024] |           1,024 | 9a778c8e
+module.resnet_f.layer3_1.0.downsample.1.num_batches_tracked   |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.1.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | a660ec38
+module.resnet_f.layer3_1.1.bn1.weight                         |                     [256] |             256 | d731460d
+module.resnet_f.layer3_1.1.bn1.bias                           |                     [256] |             256 | 3cbf09e2
+module.resnet_f.layer3_1.1.bn1.running_mean                   |                     [256] |             256 | 4894d86f
+module.resnet_f.layer3_1.1.bn1.running_var                    |                     [256] |             256 | ff440f7c
+module.resnet_f.layer3_1.1.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.1.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 9afdfdf8
+module.resnet_f.layer3_1.1.bn2.weight                         |                     [256] |             256 | cd73947f
+module.resnet_f.layer3_1.1.bn2.bias                           |                     [256] |             256 | 298720ba
+module.resnet_f.layer3_1.1.bn2.running_mean                   |                     [256] |             256 | b2c64ff9
+module.resnet_f.layer3_1.1.bn2.running_var                    |                     [256] |             256 | 4c5c04b0
+module.resnet_f.layer3_1.1.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.1.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 73199389
+module.resnet_f.layer3_1.1.bn3.weight                         |                    [1024] |           1,024 | 61444b24
+module.resnet_f.layer3_1.1.bn3.bias                           |                    [1024] |           1,024 | 6303943d
+module.resnet_f.layer3_1.1.bn3.running_mean                   |                    [1024] |           1,024 | 82a77bfb
+module.resnet_f.layer3_1.1.bn3.running_var                    |                    [1024] |           1,024 | 5524f076
+module.resnet_f.layer3_1.1.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.2.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | d1126a8c
+module.resnet_f.layer3_1.2.bn1.weight                         |                     [256] |             256 | 4bcb7e52
+module.resnet_f.layer3_1.2.bn1.bias                           |                     [256] |             256 | d7412161
+module.resnet_f.layer3_1.2.bn1.running_mean                   |                     [256] |             256 | 68d3d0a4
+module.resnet_f.layer3_1.2.bn1.running_var                    |                     [256] |             256 | e18ce017
+module.resnet_f.layer3_1.2.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.2.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 38bee510
+module.resnet_f.layer3_1.2.bn2.weight                         |                     [256] |             256 | 8c8aa6c2
+module.resnet_f.layer3_1.2.bn2.bias                           |                     [256] |             256 | d3772f67
+module.resnet_f.layer3_1.2.bn2.running_mean                   |                     [256] |             256 | 628b83d6
+module.resnet_f.layer3_1.2.bn2.running_var                    |                     [256] |             256 | d600e47b
+module.resnet_f.layer3_1.2.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.2.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 603645df
+module.resnet_f.layer3_1.2.bn3.weight                         |                    [1024] |           1,024 | f2b8c01e
+module.resnet_f.layer3_1.2.bn3.bias                           |                    [1024] |           1,024 | ca4aed2d
+module.resnet_f.layer3_1.2.bn3.running_mean                   |                    [1024] |           1,024 | c934ca67
+module.resnet_f.layer3_1.2.bn3.running_var                    |                    [1024] |           1,024 | caa2096c
+module.resnet_f.layer3_1.2.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.3.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | 376fbc57
+module.resnet_f.layer3_1.3.bn1.weight                         |                     [256] |             256 | c05a30a0
+module.resnet_f.layer3_1.3.bn1.bias                           |                     [256] |             256 | e6e9efe3
+module.resnet_f.layer3_1.3.bn1.running_mean                   |                     [256] |             256 | 27d9e764
+module.resnet_f.layer3_1.3.bn1.running_var                    |                     [256] |             256 | e6157cf9
+module.resnet_f.layer3_1.3.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.3.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 75551c09
+module.resnet_f.layer3_1.3.bn2.weight                         |                     [256] |             256 | fe5ec638
+module.resnet_f.layer3_1.3.bn2.bias                           |                     [256] |             256 | 0e0e2e6a
+module.resnet_f.layer3_1.3.bn2.running_mean                   |                     [256] |             256 | 95e71ace
+module.resnet_f.layer3_1.3.bn2.running_var                    |                     [256] |             256 | d99dbd6e
+module.resnet_f.layer3_1.3.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.3.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 79cfd516
+module.resnet_f.layer3_1.3.bn3.weight                         |                    [1024] |           1,024 | 0ad9832a
+module.resnet_f.layer3_1.3.bn3.bias                           |                    [1024] |           1,024 | 08c61ef6
+module.resnet_f.layer3_1.3.bn3.running_mean                   |                    [1024] |           1,024 | 0fde4e3f
+module.resnet_f.layer3_1.3.bn3.running_var                    |                    [1024] |           1,024 | 95b4d5fb
+module.resnet_f.layer3_1.3.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.4.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | d1251e91
+module.resnet_f.layer3_1.4.bn1.weight                         |                     [256] |             256 | 784fdc7c
+module.resnet_f.layer3_1.4.bn1.bias                           |                     [256] |             256 | 4f4426d0
+module.resnet_f.layer3_1.4.bn1.running_mean                   |                     [256] |             256 | 3da02235
+module.resnet_f.layer3_1.4.bn1.running_var                    |                     [256] |             256 | b0a27144
+module.resnet_f.layer3_1.4.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.4.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 16cc32a5
+module.resnet_f.layer3_1.4.bn2.weight                         |                     [256] |             256 | 32e95e3e
+module.resnet_f.layer3_1.4.bn2.bias                           |                     [256] |             256 | 6504f0b9
+module.resnet_f.layer3_1.4.bn2.running_mean                   |                     [256] |             256 | 0233e086
+module.resnet_f.layer3_1.4.bn2.running_var                    |                     [256] |             256 | 59b35520
+module.resnet_f.layer3_1.4.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.4.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 0924631f
+module.resnet_f.layer3_1.4.bn3.weight                         |                    [1024] |           1,024 | 69f4f496
+module.resnet_f.layer3_1.4.bn3.bias                           |                    [1024] |           1,024 | 67c9e47f
+module.resnet_f.layer3_1.4.bn3.running_mean                   |                    [1024] |           1,024 | 1d15b12f
+module.resnet_f.layer3_1.4.bn3.running_var                    |                    [1024] |           1,024 | 573548e1
+module.resnet_f.layer3_1.4.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.5.conv1.weight                       |         [256, 1024, 1, 1] |         262,144 | 7ad2320c
+module.resnet_f.layer3_1.5.bn1.weight                         |                     [256] |             256 | 6b138be5
+module.resnet_f.layer3_1.5.bn1.bias                           |                     [256] |             256 | 535634d5
+module.resnet_f.layer3_1.5.bn1.running_mean                   |                     [256] |             256 | e7fac631
+module.resnet_f.layer3_1.5.bn1.running_var                    |                     [256] |             256 | 723f096a
+module.resnet_f.layer3_1.5.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.5.conv2.weight                       |          [256, 256, 3, 3] |         589,824 | 5bc0d433
+module.resnet_f.layer3_1.5.bn2.weight                         |                     [256] |             256 | 05ceeb87
+module.resnet_f.layer3_1.5.bn2.bias                           |                     [256] |             256 | 28dd0c1d
+module.resnet_f.layer3_1.5.bn2.running_mean                   |                     [256] |             256 | 5c5d51a0
+module.resnet_f.layer3_1.5.bn2.running_var                    |                     [256] |             256 | 9034a307
+module.resnet_f.layer3_1.5.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer3_1.5.conv3.weight                       |         [1024, 256, 1, 1] |         262,144 | 585595dd
+module.resnet_f.layer3_1.5.bn3.weight                         |                    [1024] |           1,024 | 0d2418ce
+module.resnet_f.layer3_1.5.bn3.bias                           |                    [1024] |           1,024 | c385efbf
+module.resnet_f.layer3_1.5.bn3.running_mean                   |                    [1024] |           1,024 | ae3490eb
+module.resnet_f.layer3_1.5.bn3.running_var                    |                    [1024] |           1,024 | 8018d9d7
+module.resnet_f.layer3_1.5.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.0.conv1.weight                       |         [512, 1024, 1, 1] |         524,288 | a8bfb074
+module.resnet_f.layer4_1.0.bn1.weight                         |                     [512] |             512 | 07ddb383
+module.resnet_f.layer4_1.0.bn1.bias                           |                     [512] |             512 | cfb192c7
+module.resnet_f.layer4_1.0.bn1.running_mean                   |                     [512] |             512 | 257f9596
+module.resnet_f.layer4_1.0.bn1.running_var                    |                     [512] |             512 | a5f2476a
+module.resnet_f.layer4_1.0.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.0.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | 574ead78
+module.resnet_f.layer4_1.0.bn2.weight                         |                     [512] |             512 | e374210d
+module.resnet_f.layer4_1.0.bn2.bias                           |                     [512] |             512 | d07ed1d3
+module.resnet_f.layer4_1.0.bn2.running_mean                   |                     [512] |             512 | 4c9ecc81
+module.resnet_f.layer4_1.0.bn2.running_var                    |                     [512] |             512 | 6c09d528
+module.resnet_f.layer4_1.0.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.0.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | caab30a0
+module.resnet_f.layer4_1.0.bn3.weight                         |                    [2048] |           2,048 | 00bc0340
+module.resnet_f.layer4_1.0.bn3.bias                           |                    [2048] |           2,048 | 03b6bed5
+module.resnet_f.layer4_1.0.bn3.running_mean                   |                    [2048] |           2,048 | e1f0cc0f
+module.resnet_f.layer4_1.0.bn3.running_var                    |                    [2048] |           2,048 | 78934ddf
+module.resnet_f.layer4_1.0.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.0.downsample.0.weight                |        [2048, 1024, 1, 1] |       2,097,152 | 2a459883
+module.resnet_f.layer4_1.0.downsample.1.weight                |                    [2048] |           2,048 | f42b7385
+module.resnet_f.layer4_1.0.downsample.1.bias                  |                    [2048] |           2,048 | 03b6bed5
+module.resnet_f.layer4_1.0.downsample.1.running_mean          |                    [2048] |           2,048 | 33264916
+module.resnet_f.layer4_1.0.downsample.1.running_var           |                    [2048] |           2,048 | e9f20d76
+module.resnet_f.layer4_1.0.downsample.1.num_batches_tracked   |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.1.conv1.weight                       |         [512, 2048, 1, 1] |       1,048,576 | 722dd15a
+module.resnet_f.layer4_1.1.bn1.weight                         |                     [512] |             512 | 26b87246
+module.resnet_f.layer4_1.1.bn1.bias                           |                     [512] |             512 | 744a0ab7
+module.resnet_f.layer4_1.1.bn1.running_mean                   |                     [512] |             512 | 2e0a38cb
+module.resnet_f.layer4_1.1.bn1.running_var                    |                     [512] |             512 | cfbd8537
+module.resnet_f.layer4_1.1.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.1.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | b204cf04
+module.resnet_f.layer4_1.1.bn2.weight                         |                     [512] |             512 | b290ec9a
+module.resnet_f.layer4_1.1.bn2.bias                           |                     [512] |             512 | efe3bb39
+module.resnet_f.layer4_1.1.bn2.running_mean                   |                     [512] |             512 | 91ff927d
+module.resnet_f.layer4_1.1.bn2.running_var                    |                     [512] |             512 | 6b68085d
+module.resnet_f.layer4_1.1.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.1.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | c45f4c8e
+module.resnet_f.layer4_1.1.bn3.weight                         |                    [2048] |           2,048 | 8479de67
+module.resnet_f.layer4_1.1.bn3.bias                           |                    [2048] |           2,048 | bdcb81eb
+module.resnet_f.layer4_1.1.bn3.running_mean                   |                    [2048] |           2,048 | 90adf7f9
+module.resnet_f.layer4_1.1.bn3.running_var                    |                    [2048] |           2,048 | 11500f86
+module.resnet_f.layer4_1.1.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.2.conv1.weight                       |         [512, 2048, 1, 1] |       1,048,576 | 5fe8e9d0
+module.resnet_f.layer4_1.2.bn1.weight                         |                     [512] |             512 | 71b6ea20
+module.resnet_f.layer4_1.2.bn1.bias                           |                     [512] |             512 | 9aa4744a
+module.resnet_f.layer4_1.2.bn1.running_mean                   |                     [512] |             512 | 77c1e99f
+module.resnet_f.layer4_1.2.bn1.running_var                    |                     [512] |             512 | 1a3c7d64
+module.resnet_f.layer4_1.2.bn1.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.2.conv2.weight                       |          [512, 512, 3, 3] |       2,359,296 | 0390e2c9
+module.resnet_f.layer4_1.2.bn2.weight                         |                     [512] |             512 | 793dfa99
+module.resnet_f.layer4_1.2.bn2.bias                           |                     [512] |             512 | bed890dd
+module.resnet_f.layer4_1.2.bn2.running_mean                   |                     [512] |             512 | 13c5ccc6
+module.resnet_f.layer4_1.2.bn2.running_var                    |                     [512] |             512 | 86d25f42
+module.resnet_f.layer4_1.2.bn2.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.resnet_f.layer4_1.2.conv3.weight                       |         [2048, 512, 1, 1] |       1,048,576 | 238e1f25
+module.resnet_f.layer4_1.2.bn3.weight                         |                    [2048] |           2,048 | b3a176aa
+module.resnet_f.layer4_1.2.bn3.bias                           |                    [2048] |           2,048 | ed3d9a5b
+module.resnet_f.layer4_1.2.bn3.running_mean                   |                    [2048] |           2,048 | f0a03efd
+module.resnet_f.layer4_1.2.bn3.running_var                    |                    [2048] |           2,048 | b6f3db1b
+module.resnet_f.layer4_1.2.bn3.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.se1.fc.0.weight                                        |                   [4, 64] |             256 | 1bc270ee
+module.se1.fc.2.weight                                        |                   [64, 4] |             256 | 702a6f5d
+module.se2.fc.0.weight                                        |                  [8, 128] |           1,024 | 968fee50
+module.se2.fc.2.weight                                        |                  [128, 8] |           1,024 | d52cfa73
+module.se3.fc.0.weight                                        |                 [20, 320] |           6,400 | 8ddffe79
+module.se3.fc.2.weight                                        |                 [320, 20] |           6,400 | 0099c6c7
+module.se4.fc.0.weight                                        |                 [32, 512] |          16,384 | eb73fa19
+module.se4.fc.2.weight                                        |                 [512, 32] |          16,384 | f88f5a9a
+module.conv_1.weight                                          |           [64, 256, 1, 1] |          16,384 | b63b8970
+module.conv_1.bias                                            |                      [64] |              64 | fe2bfb50
+module.conv_2.weight                                          |          [128, 512, 1, 1] |          65,536 | a4749bf2
+module.conv_2.bias                                            |                     [128] |             128 | 5767c09a
+module.conv_3.weight                                          |         [320, 1024, 1, 1] |         327,680 | 798420cc
+module.conv_3.bias                                            |                     [320] |             320 | aeb70185
+module.conv_4.weight                                          |         [512, 2048, 1, 1] |       1,048,576 | 1a453aba
+module.conv_4.bias                                            |                     [512] |             512 | 1c62cad5
+module.rfb1_after.branch1_1.0.conv.weight                     |            [64, 64, 1, 1] |           4,096 | 014ee80a
+module.rfb1_after.branch1_1.0.bn.weight                       |                      [64] |              64 | 0a2d5077
+module.rfb1_after.branch1_1.0.bn.bias                         |                      [64] |              64 | d7a2c641
+module.rfb1_after.branch1_1.0.bn.running_mean                 |                      [64] |              64 | ca734125
+module.rfb1_after.branch1_1.0.bn.running_var                  |                      [64] |              64 | c37e48d1
+module.rfb1_after.branch1_1.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_1.1.conv.weight                     |            [64, 64, 1, 3] |          12,288 | d7b38527
+module.rfb1_after.branch1_1.1.bn.weight                       |                      [64] |              64 | ebe85f2a
+module.rfb1_after.branch1_1.1.bn.bias                         |                      [64] |              64 | fba2b60a
+module.rfb1_after.branch1_1.1.bn.running_mean                 |                      [64] |              64 | 7500592e
+module.rfb1_after.branch1_1.1.bn.running_var                  |                      [64] |              64 | e7659693
+module.rfb1_after.branch1_1.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_1.2.conv.weight                     |            [64, 64, 3, 1] |          12,288 | 6bfb3b03
+module.rfb1_after.branch1_1.2.bn.weight                       |                      [64] |              64 | 732d5e91
+module.rfb1_after.branch1_1.2.bn.bias                         |                      [64] |              64 | 23f40d77
+module.rfb1_after.branch1_1.2.bn.running_mean                 |                      [64] |              64 | d2a5cbb9
+module.rfb1_after.branch1_1.2.bn.running_var                  |                      [64] |              64 | 84c228c9
+module.rfb1_after.branch1_1.2.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_2.0.conv.weight                     |           [64, 128, 1, 5] |          40,960 | 31a7892a
+module.rfb1_after.branch1_2.0.bn.weight                       |                      [64] |              64 | 3a3af403
+module.rfb1_after.branch1_2.0.bn.bias                         |                      [64] |              64 | e5a89eb9
+module.rfb1_after.branch1_2.0.bn.running_mean                 |                      [64] |              64 | bf8de6da
+module.rfb1_after.branch1_2.0.bn.running_var                  |                      [64] |              64 | 10c145ad
+module.rfb1_after.branch1_2.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_2.1.conv.weight                     |            [64, 64, 5, 1] |          20,480 | a4830047
+module.rfb1_after.branch1_2.1.bn.weight                       |                      [64] |              64 | a5cf874b
+module.rfb1_after.branch1_2.1.bn.bias                         |                      [64] |              64 | 7f5cfb54
+module.rfb1_after.branch1_2.1.bn.running_mean                 |                      [64] |              64 | 19185658
+module.rfb1_after.branch1_2.1.bn.running_var                  |                      [64] |              64 | 73f32087
+module.rfb1_after.branch1_2.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_3.0.conv.weight                     |           [64, 128, 1, 7] |          57,344 | e1f6facf
+module.rfb1_after.branch1_3.0.bn.weight                       |                      [64] |              64 | f3dd6c22
+module.rfb1_after.branch1_3.0.bn.bias                         |                      [64] |              64 | 05db0dbb
+module.rfb1_after.branch1_3.0.bn.running_mean                 |                      [64] |              64 | be4331f7
+module.rfb1_after.branch1_3.0.bn.running_var                  |                      [64] |              64 | 1e401240
+module.rfb1_after.branch1_3.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch1_3.1.conv.weight                     |            [64, 64, 7, 1] |          28,672 | b2d48a7d
+module.rfb1_after.branch1_3.1.bn.weight                       |                      [64] |              64 | e0bc7b99
+module.rfb1_after.branch1_3.1.bn.bias                         |                      [64] |              64 | 019e6204
+module.rfb1_after.branch1_3.1.bn.running_mean                 |                      [64] |              64 | 40ff1433
+module.rfb1_after.branch1_3.1.bn.running_var                  |                      [64] |              64 | c38499be
+module.rfb1_after.branch1_3.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch2.0.conv.weight                       |            [64, 64, 1, 1] |           4,096 | 5013db40
+module.rfb1_after.branch2.0.bn.weight                         |                      [64] |              64 | 7f7bab0d
+module.rfb1_after.branch2.0.bn.bias                           |                      [64] |              64 | 410fb2ca
+module.rfb1_after.branch2.0.bn.running_mean                   |                      [64] |              64 | 1fe37f7e
+module.rfb1_after.branch2.0.bn.running_var                    |                      [64] |              64 | 76e93286
+module.rfb1_after.branch2.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch3.0.conv.weight                       |            [64, 64, 1, 1] |           4,096 | 2c50609d
+module.rfb1_after.branch3.0.bn.weight                         |                      [64] |              64 | a42f86e8
+module.rfb1_after.branch3.0.bn.bias                           |                      [64] |              64 | 503bd8c1
+module.rfb1_after.branch3.0.bn.running_mean                   |                      [64] |              64 | 7dc75b8f
+module.rfb1_after.branch3.0.bn.running_var                    |                      [64] |              64 | c3204a0e
+module.rfb1_after.branch3.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch4.0.conv.weight                       |            [64, 64, 1, 1] |           4,096 | 3c1040c0
+module.rfb1_after.branch4.0.bn.weight                         |                      [64] |              64 | 6e28c2c6
+module.rfb1_after.branch4.0.bn.bias                           |                      [64] |              64 | cf7356e2
+module.rfb1_after.branch4.0.bn.running_mean                   |                      [64] |              64 | 2903217c
+module.rfb1_after.branch4.0.bn.running_var                    |                      [64] |              64 | db5ed3ab
+module.rfb1_after.branch4.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb1_after.branch5.0.conv.weight                       |            [64, 64, 1, 1] |           4,096 | b4db3b4b
+module.rfb1_after.branch5.0.bn.weight                         |                      [64] |              64 | 22f8390a
+module.rfb1_after.branch5.0.bn.bias                           |                      [64] |              64 | 47d16e83
+module.rfb1_after.branch5.0.bn.running_mean                   |                      [64] |              64 | 653753e0
+module.rfb1_after.branch5.0.bn.running_var                    |                      [64] |              64 | c1e1c4a1
+module.rfb1_after.branch5.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb1_after.conv_cat.conv.weight                        |           [64, 128, 3, 3] |          73,728 | 5178b7ce
+module.rfb1_after.conv_cat.bn.weight                          |                      [64] |              64 | 4b0b8b0e
+module.rfb1_after.conv_cat.bn.bias                            |                      [64] |              64 | 47d16e83
+module.rfb1_after.conv_cat.bn.running_mean                    |                      [64] |              64 | a7e21d02
+module.rfb1_after.conv_cat.bn.running_var                     |                      [64] |              64 | 854b1486
+module.rfb1_after.conv_cat.bn.num_batches_tracked             |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_1.0.conv.weight                     |           [64, 512, 1, 1] |          32,768 | c0f3c065
+module.rfb2_after.branch1_1.0.bn.weight                       |                      [64] |              64 | d699f39a
+module.rfb2_after.branch1_1.0.bn.bias                         |                      [64] |              64 | 7a962162
+module.rfb2_after.branch1_1.0.bn.running_mean                 |                      [64] |              64 | 1508b03b
+module.rfb2_after.branch1_1.0.bn.running_var                  |                      [64] |              64 | 1f8e2464
+module.rfb2_after.branch1_1.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_1.1.conv.weight                     |            [64, 64, 1, 3] |          12,288 | 6faf8a06
+module.rfb2_after.branch1_1.1.bn.weight                       |                      [64] |              64 | ad9c6b2f
+module.rfb2_after.branch1_1.1.bn.bias                         |                      [64] |              64 | b5238cae
+module.rfb2_after.branch1_1.1.bn.running_mean                 |                      [64] |              64 | 172ec526
+module.rfb2_after.branch1_1.1.bn.running_var                  |                      [64] |              64 | e39c3dfd
+module.rfb2_after.branch1_1.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_1.2.conv.weight                     |            [64, 64, 3, 1] |          12,288 | 14357bef
+module.rfb2_after.branch1_1.2.bn.weight                       |                      [64] |              64 | cdacc0d5
+module.rfb2_after.branch1_1.2.bn.bias                         |                      [64] |              64 | 1eb938ee
+module.rfb2_after.branch1_1.2.bn.running_mean                 |                      [64] |              64 | 8e568ef1
+module.rfb2_after.branch1_1.2.bn.running_var                  |                      [64] |              64 | e1ed3c7c
+module.rfb2_after.branch1_1.2.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_2.0.conv.weight                     |           [64, 128, 1, 5] |          40,960 | 90eba866
+module.rfb2_after.branch1_2.0.bn.weight                       |                      [64] |              64 | 0e6d527b
+module.rfb2_after.branch1_2.0.bn.bias                         |                      [64] |              64 | 8b725bbe
+module.rfb2_after.branch1_2.0.bn.running_mean                 |                      [64] |              64 | b1fc8611
+module.rfb2_after.branch1_2.0.bn.running_var                  |                      [64] |              64 | b4d07e19
+module.rfb2_after.branch1_2.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_2.1.conv.weight                     |            [64, 64, 5, 1] |          20,480 | 243e2292
+module.rfb2_after.branch1_2.1.bn.weight                       |                      [64] |              64 | 0d197062
+module.rfb2_after.branch1_2.1.bn.bias                         |                      [64] |              64 | bbb4d062
+module.rfb2_after.branch1_2.1.bn.running_mean                 |                      [64] |              64 | 4e640c1a
+module.rfb2_after.branch1_2.1.bn.running_var                  |                      [64] |              64 | 5ff23947
+module.rfb2_after.branch1_2.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_3.0.conv.weight                     |           [64, 128, 1, 7] |          57,344 | 07020be8
+module.rfb2_after.branch1_3.0.bn.weight                       |                      [64] |              64 | 3ad8734b
+module.rfb2_after.branch1_3.0.bn.bias                         |                      [64] |              64 | 1e061714
+module.rfb2_after.branch1_3.0.bn.running_mean                 |                      [64] |              64 | b9bb6b80
+module.rfb2_after.branch1_3.0.bn.running_var                  |                      [64] |              64 | 86a9ec1e
+module.rfb2_after.branch1_3.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch1_3.1.conv.weight                     |            [64, 64, 7, 1] |          28,672 | 09ef6861
+module.rfb2_after.branch1_3.1.bn.weight                       |                      [64] |              64 | a1903321
+module.rfb2_after.branch1_3.1.bn.bias                         |                      [64] |              64 | 84b23503
+module.rfb2_after.branch1_3.1.bn.running_mean                 |                      [64] |              64 | c59d8ee0
+module.rfb2_after.branch1_3.1.bn.running_var                  |                      [64] |              64 | ea3b5d6a
+module.rfb2_after.branch1_3.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch2.0.conv.weight                       |           [64, 512, 1, 1] |          32,768 | 02152a08
+module.rfb2_after.branch2.0.bn.weight                         |                      [64] |              64 | 895a7438
+module.rfb2_after.branch2.0.bn.bias                           |                      [64] |              64 | 889101ed
+module.rfb2_after.branch2.0.bn.running_mean                   |                      [64] |              64 | 367f6a8e
+module.rfb2_after.branch2.0.bn.running_var                    |                      [64] |              64 | 23bd326e
+module.rfb2_after.branch2.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch3.0.conv.weight                       |           [64, 512, 1, 1] |          32,768 | 158cb473
+module.rfb2_after.branch3.0.bn.weight                         |                      [64] |              64 | 2921ed45
+module.rfb2_after.branch3.0.bn.bias                           |                      [64] |              64 | 2691f6b2
+module.rfb2_after.branch3.0.bn.running_mean                   |                      [64] |              64 | 18b88e91
+module.rfb2_after.branch3.0.bn.running_var                    |                      [64] |              64 | c2159f29
+module.rfb2_after.branch3.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch4.0.conv.weight                       |           [64, 512, 1, 1] |          32,768 | 1ac1dc63
+module.rfb2_after.branch4.0.bn.weight                         |                      [64] |              64 | c0f0f005
+module.rfb2_after.branch4.0.bn.bias                           |                      [64] |              64 | bd5f982b
+module.rfb2_after.branch4.0.bn.running_mean                   |                      [64] |              64 | a319f4ab
+module.rfb2_after.branch4.0.bn.running_var                    |                      [64] |              64 | 500d6315
+module.rfb2_after.branch4.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb2_after.branch5.0.conv.weight                       |           [64, 512, 1, 1] |          32,768 | 36ec78c0
+module.rfb2_after.branch5.0.bn.weight                         |                      [64] |              64 | d230402b
+module.rfb2_after.branch5.0.bn.bias                           |                      [64] |              64 | a661dc7f
+module.rfb2_after.branch5.0.bn.running_mean                   |                      [64] |              64 | c8eafbb5
+module.rfb2_after.branch5.0.bn.running_var                    |                      [64] |              64 | c97ec56a
+module.rfb2_after.branch5.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb2_after.conv_cat.conv.weight                        |           [64, 128, 3, 3] |          73,728 | bafe9184
+module.rfb2_after.conv_cat.bn.weight                          |                      [64] |              64 | e5061856
+module.rfb2_after.conv_cat.bn.bias                            |                      [64] |              64 | a661dc7f
+module.rfb2_after.conv_cat.bn.running_mean                    |                      [64] |              64 | b9ae6d8c
+module.rfb2_after.conv_cat.bn.running_var                     |                      [64] |              64 | b3d2af98
+module.rfb2_after.conv_cat.bn.num_batches_tracked             |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_1.0.conv.weight                     |          [64, 2816, 1, 1] |         180,224 | 5eac87c2
+module.rfb3_after.branch1_1.0.bn.weight                       |                      [64] |              64 | daa039b9
+module.rfb3_after.branch1_1.0.bn.bias                         |                      [64] |              64 | 4c3ae9e7
+module.rfb3_after.branch1_1.0.bn.running_mean                 |                      [64] |              64 | 56f0665a
+module.rfb3_after.branch1_1.0.bn.running_var                  |                      [64] |              64 | 4365d8bc
+module.rfb3_after.branch1_1.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_1.1.conv.weight                     |            [64, 64, 1, 3] |          12,288 | eba8c429
+module.rfb3_after.branch1_1.1.bn.weight                       |                      [64] |              64 | 20d9e46f
+module.rfb3_after.branch1_1.1.bn.bias                         |                      [64] |              64 | aed9d588
+module.rfb3_after.branch1_1.1.bn.running_mean                 |                      [64] |              64 | f6837af9
+module.rfb3_after.branch1_1.1.bn.running_var                  |                      [64] |              64 | 66993039
+module.rfb3_after.branch1_1.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_1.2.conv.weight                     |            [64, 64, 3, 1] |          12,288 | 8d230cdc
+module.rfb3_after.branch1_1.2.bn.weight                       |                      [64] |              64 | a3af9236
+module.rfb3_after.branch1_1.2.bn.bias                         |                      [64] |              64 | becc42ed
+module.rfb3_after.branch1_1.2.bn.running_mean                 |                      [64] |              64 | 87cfda2c
+module.rfb3_after.branch1_1.2.bn.running_var                  |                      [64] |              64 | c7f4de83
+module.rfb3_after.branch1_1.2.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_2.0.conv.weight                     |           [64, 128, 1, 5] |          40,960 | f4352536
+module.rfb3_after.branch1_2.0.bn.weight                       |                      [64] |              64 | 612ea402
+module.rfb3_after.branch1_2.0.bn.bias                         |                      [64] |              64 | be8fd227
+module.rfb3_after.branch1_2.0.bn.running_mean                 |                      [64] |              64 | bb482e5e
+module.rfb3_after.branch1_2.0.bn.running_var                  |                      [64] |              64 | ce3d6213
+module.rfb3_after.branch1_2.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_2.1.conv.weight                     |            [64, 64, 5, 1] |          20,480 | 6a90a3cd
+module.rfb3_after.branch1_2.1.bn.weight                       |                      [64] |              64 | 20471ccb
+module.rfb3_after.branch1_2.1.bn.bias                         |                      [64] |              64 | 957233b9
+module.rfb3_after.branch1_2.1.bn.running_mean                 |                      [64] |              64 | c8b04115
+module.rfb3_after.branch1_2.1.bn.running_var                  |                      [64] |              64 | 91ce314e
+module.rfb3_after.branch1_2.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_3.0.conv.weight                     |           [64, 128, 1, 7] |          57,344 | b563c463
+module.rfb3_after.branch1_3.0.bn.weight                       |                      [64] |              64 | 84b8c01c
+module.rfb3_after.branch1_3.0.bn.bias                         |                      [64] |              64 | 593dc999
+module.rfb3_after.branch1_3.0.bn.running_mean                 |                      [64] |              64 | b3ba3482
+module.rfb3_after.branch1_3.0.bn.running_var                  |                      [64] |              64 | e2b95505
+module.rfb3_after.branch1_3.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch1_3.1.conv.weight                     |            [64, 64, 7, 1] |          28,672 | 2b14d032
+module.rfb3_after.branch1_3.1.bn.weight                       |                      [64] |              64 | 71899f04
+module.rfb3_after.branch1_3.1.bn.bias                         |                      [64] |              64 | cb8db890
+module.rfb3_after.branch1_3.1.bn.running_mean                 |                      [64] |              64 | 4e16ef7b
+module.rfb3_after.branch1_3.1.bn.running_var                  |                      [64] |              64 | 1083f07b
+module.rfb3_after.branch1_3.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch2.0.conv.weight                       |          [64, 2816, 1, 1] |         180,224 | deceb811
+module.rfb3_after.branch2.0.bn.weight                         |                      [64] |              64 | 34adc4d7
+module.rfb3_after.branch2.0.bn.bias                           |                      [64] |              64 | 4b753176
+module.rfb3_after.branch2.0.bn.running_mean                   |                      [64] |              64 | 4c1167f9
+module.rfb3_after.branch2.0.bn.running_var                    |                      [64] |              64 | b4739594
+module.rfb3_after.branch2.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch3.0.conv.weight                       |          [64, 2816, 1, 1] |         180,224 | 8441ffb2
+module.rfb3_after.branch3.0.bn.weight                         |                      [64] |              64 | 11c0927b
+module.rfb3_after.branch3.0.bn.bias                           |                      [64] |              64 | e5e1da20
+module.rfb3_after.branch3.0.bn.running_mean                   |                      [64] |              64 | f60e6c3c
+module.rfb3_after.branch3.0.bn.running_var                    |                      [64] |              64 | 0e5116da
+module.rfb3_after.branch3.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch4.0.conv.weight                       |          [64, 2816, 1, 1] |         180,224 | 59dc7c77
+module.rfb3_after.branch4.0.bn.weight                         |                      [64] |              64 | 4643519c
+module.rfb3_after.branch4.0.bn.bias                           |                      [64] |              64 | 965dd072
+module.rfb3_after.branch4.0.bn.running_mean                   |                      [64] |              64 | 06a3dd53
+module.rfb3_after.branch4.0.bn.running_var                    |                      [64] |              64 | e7789b45
+module.rfb3_after.branch4.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb3_after.branch5.0.conv.weight                       |          [64, 2816, 1, 1] |         180,224 | a1468102
+module.rfb3_after.branch5.0.bn.weight                         |                      [64] |              64 | b848ffcf
+module.rfb3_after.branch5.0.bn.bias                           |                      [64] |              64 | 02888766
+module.rfb3_after.branch5.0.bn.running_mean                   |                      [64] |              64 | ffcfbf8c
+module.rfb3_after.branch5.0.bn.running_var                    |                      [64] |              64 | 78977051
+module.rfb3_after.branch5.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb3_after.conv_cat.conv.weight                        |           [64, 128, 3, 3] |          73,728 | a192dd69
+module.rfb3_after.conv_cat.bn.weight                          |                      [64] |              64 | 3ef160f0
+module.rfb3_after.conv_cat.bn.bias                            |                      [64] |              64 | 02888766
+module.rfb3_after.conv_cat.bn.running_mean                    |                      [64] |              64 | c9593e34
+module.rfb3_after.conv_cat.bn.running_var                     |                      [64] |              64 | 39ad6ecc
+module.rfb3_after.conv_cat.bn.num_batches_tracked             |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_1.0.conv.weight                     |          [64, 4864, 1, 1] |         311,296 | cf8d23d0
+module.rfb4_after.branch1_1.0.bn.weight                       |                      [64] |              64 | b68bb622
+module.rfb4_after.branch1_1.0.bn.bias                         |                      [64] |              64 | 7b3b35c8
+module.rfb4_after.branch1_1.0.bn.running_mean                 |                      [64] |              64 | 9886be88
+module.rfb4_after.branch1_1.0.bn.running_var                  |                      [64] |              64 | 5f01a287
+module.rfb4_after.branch1_1.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_1.1.conv.weight                     |            [64, 64, 1, 3] |          12,288 | c92a9710
+module.rfb4_after.branch1_1.1.bn.weight                       |                      [64] |              64 | 10f78041
+module.rfb4_after.branch1_1.1.bn.bias                         |                      [64] |              64 | 71f637ff
+module.rfb4_after.branch1_1.1.bn.running_mean                 |                      [64] |              64 | a83c4c18
+module.rfb4_after.branch1_1.1.bn.running_var                  |                      [64] |              64 | 1a8fd297
+module.rfb4_after.branch1_1.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_1.2.conv.weight                     |            [64, 64, 3, 1] |          12,288 | 983a6e89
+module.rfb4_after.branch1_1.2.bn.weight                       |                      [64] |              64 | cceaa47a
+module.rfb4_after.branch1_1.2.bn.bias                         |                      [64] |              64 | 82d106df
+module.rfb4_after.branch1_1.2.bn.running_mean                 |                      [64] |              64 | b749ba61
+module.rfb4_after.branch1_1.2.bn.running_var                  |                      [64] |              64 | 69459ef0
+module.rfb4_after.branch1_1.2.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_2.0.conv.weight                     |           [64, 128, 1, 5] |          40,960 | b9a12951
+module.rfb4_after.branch1_2.0.bn.weight                       |                      [64] |              64 | 9759b1aa
+module.rfb4_after.branch1_2.0.bn.bias                         |                      [64] |              64 | 0acd1181
+module.rfb4_after.branch1_2.0.bn.running_mean                 |                      [64] |              64 | 536e996c
+module.rfb4_after.branch1_2.0.bn.running_var                  |                      [64] |              64 | b1091402
+module.rfb4_after.branch1_2.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_2.1.conv.weight                     |            [64, 64, 5, 1] |          20,480 | 838b0501
+module.rfb4_after.branch1_2.1.bn.weight                       |                      [64] |              64 | 69cf7c20
+module.rfb4_after.branch1_2.1.bn.bias                         |                      [64] |              64 | 6cdbfb2e
+module.rfb4_after.branch1_2.1.bn.running_mean                 |                      [64] |              64 | 04746fb5
+module.rfb4_after.branch1_2.1.bn.running_var                  |                      [64] |              64 | e600594b
+module.rfb4_after.branch1_2.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_3.0.conv.weight                     |           [64, 128, 1, 7] |          57,344 | 499d31f2
+module.rfb4_after.branch1_3.0.bn.weight                       |                      [64] |              64 | 038b53f8
+module.rfb4_after.branch1_3.0.bn.bias                         |                      [64] |              64 | a9bfddcb
+module.rfb4_after.branch1_3.0.bn.running_mean                 |                      [64] |              64 | 21da8a67
+module.rfb4_after.branch1_3.0.bn.running_var                  |                      [64] |              64 | adbf9cb9
+module.rfb4_after.branch1_3.0.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch1_3.1.conv.weight                     |            [64, 64, 7, 1] |          28,672 | 9328ef15
+module.rfb4_after.branch1_3.1.bn.weight                       |                      [64] |              64 | b86aabb8
+module.rfb4_after.branch1_3.1.bn.bias                         |                      [64] |              64 | e1698b34
+module.rfb4_after.branch1_3.1.bn.running_mean                 |                      [64] |              64 | fdeea346
+module.rfb4_after.branch1_3.1.bn.running_var                  |                      [64] |              64 | 04b3376b
+module.rfb4_after.branch1_3.1.bn.num_batches_tracked          |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch2.0.conv.weight                       |          [64, 4864, 1, 1] |         311,296 | 9335e674
+module.rfb4_after.branch2.0.bn.weight                         |                      [64] |              64 | 4e04d6f1
+module.rfb4_after.branch2.0.bn.bias                           |                      [64] |              64 | a1f681d1
+module.rfb4_after.branch2.0.bn.running_mean                   |                      [64] |              64 | 09fd9b8a
+module.rfb4_after.branch2.0.bn.running_var                    |                      [64] |              64 | 5514f54c
+module.rfb4_after.branch2.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch3.0.conv.weight                       |          [64, 4864, 1, 1] |         311,296 | b7c18daf
+module.rfb4_after.branch3.0.bn.weight                         |                      [64] |              64 | 17cf276b
+module.rfb4_after.branch3.0.bn.bias                           |                      [64] |              64 | 6e210c21
+module.rfb4_after.branch3.0.bn.running_mean                   |                      [64] |              64 | b40b8c31
+module.rfb4_after.branch3.0.bn.running_var                    |                      [64] |              64 | 0d394d8b
+module.rfb4_after.branch3.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch4.0.conv.weight                       |          [64, 4864, 1, 1] |         311,296 | 22df33d9
+module.rfb4_after.branch4.0.bn.weight                         |                      [64] |              64 | 8aa48561
+module.rfb4_after.branch4.0.bn.bias                           |                      [64] |              64 | dba6d8b9
+module.rfb4_after.branch4.0.bn.running_mean                   |                      [64] |              64 | 191781f0
+module.rfb4_after.branch4.0.bn.running_var                    |                      [64] |              64 | 81644690
+module.rfb4_after.branch4.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb4_after.branch5.0.conv.weight                       |          [64, 4864, 1, 1] |         311,296 | 01b367cf
+module.rfb4_after.branch5.0.bn.weight                         |                      [64] |              64 | f771dbf0
+module.rfb4_after.branch5.0.bn.bias                           |                      [64] |              64 | 8760c885
+module.rfb4_after.branch5.0.bn.running_mean                   |                      [64] |              64 | 51ed6a31
+module.rfb4_after.branch5.0.bn.running_var                    |                      [64] |              64 | c3f53cf1
+module.rfb4_after.branch5.0.bn.num_batches_tracked            |                        [] |               1 | 535eeb0a
+module.rfb4_after.conv_cat.conv.weight                        |           [64, 128, 3, 3] |          73,728 | 5957bfdb
+module.rfb4_after.conv_cat.bn.weight                          |                      [64] |              64 | 3ad5f8c9
+module.rfb4_after.conv_cat.bn.bias                            |                      [64] |              64 | 8760c885
+module.rfb4_after.conv_cat.bn.running_mean                    |                      [64] |              64 | e92960e4
+module.rfb4_after.conv_cat.bn.running_var                     |                      [64] |              64 | 65dffa2d
+module.rfb4_after.conv_cat.bn.num_batches_tracked             |                        [] |               1 | 535eeb0a
+module.upsample4_2.conv1.weight                               |          [320, 512, 1, 1] |         163,840 | 317ed958
+module.upsample4_2.conv1.bias                                 |                     [320] |             320 | c0763d10
+module.upsample4_2.bn.weight                                  |                     [320] |             320 | 434504e3
+module.upsample4_2.bn.bias                                    |                     [320] |             320 | 7fa18b44
+module.upsample4_2.bn.running_mean                            |                     [320] |             320 | 3a4794d0
+module.upsample4_2.bn.running_var                             |                     [320] |             320 | 0637773c
+module.upsample4_2.bn.num_batches_tracked                     |                        [] |               1 | 535eeb0a
+module.upsample4_4.conv1.weight                               |          [128, 512, 1, 1] |          65,536 | 2b598c14
+module.upsample4_4.conv1.bias                                 |                     [128] |             128 | 508b35e2
+module.upsample4_4.bn.weight                                  |                     [128] |             128 | d380be39
+module.upsample4_4.bn.bias                                    |                     [128] |             128 | e354183c
+module.upsample4_4.bn.running_mean                            |                     [128] |             128 | e74e0edb
+module.upsample4_4.bn.running_var                             |                     [128] |             128 | c61353b4
+module.upsample4_4.bn.num_batches_tracked                     |                        [] |               1 | 535eeb0a
+module.upsample3_2.conv1.weight                               |          [128, 320, 1, 1] |          40,960 | ea76f5e7
+module.upsample3_2.conv1.bias                                 |                     [128] |             128 | e934fe99
+module.upsample3_2.bn.weight                                  |                     [128] |             128 | 24c9ed3f
+module.upsample3_2.bn.bias                                    |                     [128] |             128 | 83f8da97
+module.upsample3_2.bn.running_mean                            |                     [128] |             128 | 06d92f68
+module.upsample3_2.bn.running_var                             |                     [128] |             128 | f48476e6
+module.upsample3_2.bn.num_batches_tracked                     |                        [] |               1 | 535eeb0a
+module.upsample41_2.conv1.weight                              |        [1024, 2048, 1, 1] |       2,097,152 | e5d825bc
+module.upsample41_2.conv1.bias                                |                    [1024] |           1,024 | c182e53c
+module.upsample41_2.bn.weight                                 |                    [1024] |           1,024 | 3d8a18be
+module.upsample41_2.bn.bias                                   |                    [1024] |           1,024 | 1f97a3ad
+module.upsample41_2.bn.running_mean                           |                    [1024] |           1,024 | 46d9b287
+module.upsample41_2.bn.running_var                            |                    [1024] |           1,024 | f1672952
+module.upsample41_2.bn.num_batches_tracked                    |                        [] |               1 | 535eeb0a
+module.down1_2.conv1.weight                                   |           [128, 64, 3, 3] |          73,728 | 2bb86ca3
+module.down1_2.conv1.bias                                     |                     [128] |             128 | 980950d4
+module.down1_2.bn.weight                                      |                     [128] |             128 | 3f4d0851
+module.down1_2.bn.bias                                        |                     [128] |             128 | f2c4c649
+module.down1_2.bn.running_mean                                |                     [128] |             128 | 7281ec1b
+module.down1_2.bn.running_var                                 |                     [128] |             128 | 79f569d6
+module.down1_2.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down1_4.conv1.weight                                   |           [128, 64, 3, 3] |          73,728 | f911e59a
+module.down1_4.conv1.bias                                     |                     [128] |             128 | 089389f4
+module.down1_4.conv2.weight                                   |          [320, 128, 3, 3] |         368,640 | 300d5f0e
+module.down1_4.conv2.bias                                     |                     [320] |             320 | 1fad0a15
+module.down1_4.bn.weight                                      |                     [320] |             320 | 4775e33f
+module.down1_4.bn.bias                                        |                     [320] |             320 | c8ff59a6
+module.down1_4.bn.running_mean                                |                     [320] |             320 | 70ebefde
+module.down1_4.bn.running_var                                 |                     [320] |             320 | b88a4445
+module.down1_4.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down1_8.conv1.weight                                   |           [128, 64, 3, 3] |          73,728 | d05454b9
+module.down1_8.conv1.bias                                     |                     [128] |             128 | 7403183a
+module.down1_8.conv2.weight                                   |          [320, 128, 3, 3] |         368,640 | a186ea8f
+module.down1_8.conv2.bias                                     |                     [320] |             320 | 4207f9a7
+module.down1_8.conv3.weight                                   |          [512, 320, 3, 3] |       1,474,560 | 8e09712e
+module.down1_8.conv3.bias                                     |                     [512] |             512 | d9b0a2f6
+module.down1_8.bn.weight                                      |                     [512] |             512 | e8ff5652
+module.down1_8.bn.bias                                        |                     [512] |             512 | 877d58e2
+module.down1_8.bn.running_mean                                |                     [512] |             512 | 7efe2e9c
+module.down1_8.bn.running_var                                 |                     [512] |             512 | c9c07add
+module.down1_8.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down2_2.conv1.weight                                   |          [320, 128, 3, 3] |         368,640 | 23f228ff
+module.down2_2.conv1.bias                                     |                     [320] |             320 | 7b8232a7
+module.down2_2.bn.weight                                      |                     [320] |             320 | 0d2e8029
+module.down2_2.bn.bias                                        |                     [320] |             320 | f18aa967
+module.down2_2.bn.running_mean                                |                     [320] |             320 | 9103a91e
+module.down2_2.bn.running_var                                 |                     [320] |             320 | d1f7e5b0
+module.down2_2.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down2_4.conv1.weight                                   |          [128, 128, 3, 3] |         147,456 | dd62b112
+module.down2_4.conv1.bias                                     |                     [128] |             128 | 2e5ee618
+module.down2_4.conv2.weight                                   |          [512, 128, 3, 3] |         589,824 | b5e7044c
+module.down2_4.conv2.bias                                     |                     [512] |             512 | 8db986a4
+module.down2_4.bn.weight                                      |                     [512] |             512 | 817c6f0b
+module.down2_4.bn.bias                                        |                     [512] |             512 | b7dcdfcb
+module.down2_4.bn.running_mean                                |                     [512] |             512 | 8c612811
+module.down2_4.bn.running_var                                 |                     [512] |             512 | 22d13b4a
+module.down2_4.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down3_2.conv1.weight                                   |          [512, 320, 3, 3] |       1,474,560 | 9893c6c7
+module.down3_2.conv1.bias                                     |                     [512] |             512 | 5d349c22
+module.down3_2.bn.weight                                      |                     [512] |             512 | f8491e98
+module.down3_2.bn.bias                                        |                     [512] |             512 | bd788200
+module.down3_2.bn.running_mean                                |                     [512] |             512 | 5b0d36dd
+module.down3_2.bn.running_var                                 |                     [512] |             512 | 26465a80
+module.down3_2.bn.num_batches_tracked                         |                        [] |               1 | 535eeb0a
+module.down21_2.conv1.weight                                  |          [512, 512, 3, 3] |       2,359,296 | a1e00e75
+module.down21_2.conv1.bias                                    |                     [512] |             512 | 2d73b9aa
+module.down21_2.bn.weight                                     |                     [512] |             512 | 9386715e
+module.down21_2.bn.bias                                       |                     [512] |             512 | 4c7633fe
+module.down21_2.bn.running_mean                               |                     [512] |             512 | 8f69cada
+module.down21_2.bn.running_var                                |                     [512] |             512 | 5857ecdd
+module.down21_2.bn.num_batches_tracked                        |                        [] |               1 | 535eeb0a
+module.down21_4.conv1.weight                                  |          [512, 512, 3, 3] |       2,359,296 | dc2e4a70
+module.down21_4.conv1.bias                                    |                     [512] |             512 | 28f3189e
+module.down21_4.conv2.weight                                  |          [512, 512, 3, 3] |       2,359,296 | e1781e5f
+module.down21_4.conv2.bias                                    |                     [512] |             512 | a7c9e038
+module.down21_4.bn.weight                                     |                     [512] |             512 | 143d23f0
+module.down21_4.bn.bias                                       |                     [512] |             512 | 5fdd8a61
+module.down21_4.bn.running_mean                               |                     [512] |             512 | cbcd8a3f
+module.down21_4.bn.running_var                                |                     [512] |             512 | cfcd901b
+module.down21_4.bn.num_batches_tracked                        |                        [] |               1 | 535eeb0a
+module.down31_2.conv1.weight                                  |        [1280, 1280, 3, 3] |      14,745,600 | e57d1bde
+module.down31_2.conv1.bias                                    |                    [1280] |           1,280 | 737b2e4c
+module.down31_2.bn.weight                                     |                    [1280] |           1,280 | 18bd2732
+module.down31_2.bn.bias                                       |                    [1280] |           1,280 | 8e898608
+module.down31_2.bn.running_mean                               |                    [1280] |           1,280 | fec4b391
+module.down31_2.bn.running_var                                |                    [1280] |           1,280 | cd89e6f7
+module.down31_2.bn.num_batches_tracked                        |                        [] |               1 | 535eeb0a
+module.down32_2.conv1.weight                                  |        [1024, 2816, 3, 3] |      25,952,256 | be806ebc
+module.down32_2.conv1.bias                                    |                    [1024] |           1,024 | 3bd8e4f2
+module.down32_2.bn.weight                                     |                    [1024] |           1,024 | 49ae7ece
+module.down32_2.bn.bias                                       |                    [1024] |           1,024 | 6cdd09ab
+module.down32_2.bn.running_mean                               |                    [1024] |           1,024 | ea4b0c66
+module.down32_2.bn.running_var                                |                    [1024] |           1,024 | ef51cb9e
+module.down32_2.bn.num_batches_tracked                        |                        [] |               1 | 535eeb0a
+module.conv2_1.weight                                         |             [1, 64, 3, 3] |             576 | c195e067
+module.conv2_1.bias                                           |                       [1] |               1 | cdc882e9
+module.conv_up1.weight                                        |            [64, 64, 3, 3] |          36,864 | b18630b4
+module.conv_up1.bias                                          |                      [64] |              64 | 958c31e4
+module.conv_up2.weight                                        |            [64, 64, 3, 3] |          36,864 | a70df66b
+module.conv_up2.bias                                          |                      [64] |              64 | 8cdf0e0c
+module.conv_up3.weight                                        |            [64, 64, 3, 3] |          36,864 | aaaeafe5
+module.conv_up3.bias                                          |                      [64] |              64 | 0936f5c8
+module.conv_up4.weight                                        |            [64, 64, 3, 3] |          36,864 | a8f9545c
+module.conv_up4.bias                                          |                      [64] |              64 | 15886a3b
+----------------------------------------------------------------------------------------------------------------------------
+Total                                                         |                           |     109,269,102 |
+[DEBUG] PVT: Dims: [64, 128, 320, 512] Depths: [3, 4, 6, 3] (RemoveBackground_SET - arch.py:642)
+[DEBUG] Model backbone: pvt_v2_b2 (RemoveBackground_SET - arch.py:255)
+[DEBUG] Model type: FSANet (RemoveBackground_SET - arch.py:301)
+Model type: FSANet (torch.float32)
+Back bone type: pvt_v2_b2
+Model version: 1

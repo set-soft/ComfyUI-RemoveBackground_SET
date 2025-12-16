@@ -999,5 +999,23 @@
         "size_divisor": 4,
         "file_t": "safetensors",
         "dataset": "HRSOD, DAVIS-SOD, UHRSD"
+    },
+    #
+    # FSANet model
+    #
+    "FSANet Base 100": {
+        "name": "Base 100",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/FSANet/FSANet_100.safetensors",
+        "file_name": null,
+        "train_w": 992,
+        "train_h": 992,
+        "model_t": "FSANet",
+        "size": "417 MiB",
+        "ops_name": "Base 100 (417 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
+        "size_divisor": 32,
+        "file_t": "safetensors",
+        "dataset": "DIS5K"
     }
 }

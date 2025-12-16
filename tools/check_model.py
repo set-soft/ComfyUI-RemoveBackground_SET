@@ -104,6 +104,10 @@ if __name__ == "__main__":
             # BADIS v2
             state_dict = state_dict['net']
             # safetensors.torch.save_file(state_dict, "model.safetensors")
+        elif 'model' in state_dict:
+            # FSANet
+            state_dict = state_dict['model']
+            safetensors.torch.save_file(state_dict, "model.safetensors")
     # Optional print keys
     if args.keys:
         show_keys(state_dict)

@@ -372,6 +372,13 @@ class AutoDownloadESNetModel(AutoDownloadBiRefNetModel):
 AutoDownloadESNetModel.fill_description()
 
 
+class AutoDownloadFSANetModel(AutoDownloadBiRefNetModel):
+    model_type = 'FSANet'
+
+
+AutoDownloadFSANetModel.fill_description()
+
+
 class GetMaskLow(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:

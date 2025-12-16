@@ -40,6 +40,7 @@ from ..pgnet.PGNet import PGNet
 from ..rmformer.RMFormer import RMF
 from ..esnet.ESNet_first import ESNet_first
 from ..esnet.ESNet import ESNet
+from ..fsanet.FSANet import FSANet
 from .. import DEFAULT_UPSCALE
 
 UNWANTED_PREFIXES = ['module.', '_orig_mod.',
@@ -222,7 +223,7 @@ class RemBg(object):
             return
 
         # #########################################################################################
-        # Models with Swin/Res2Net/ResNet as backbone
+        # Models with Swin/PVT/Res2Net/ResNet as backbone
         # #########################################################################################
         bb_name = self.is_res2net(['backbone'], state_dict)
         if bb_name is None:
@@ -230,6 +231,11 @@ class RemBg(object):
 
         if not bb_name:
             bb_name = self.is_resnet(['bkbone', 'first.bkbone'], state_dict)
+            if bb_name is None:
+                return
+
+        if not bb_name:
+            bb_name = self.is_pvt(['backbone'], state_dict)
             if bb_name is None:
                 return
 
@@ -255,6 +261,10 @@ class RemBg(object):
         elif self.bb == 'res2net50_v1b_26w_4s':
             if not self.is_inspyrenet(state_dict, lower_case_fname):
                 self.why = 'Unknown Res2Net variant model'
+                return
+        elif self.bb == 'pvt_v2_b2':
+            if not self.is_fsanet(state_dict):
+                self.why = 'Unknown PVT variant model'
                 return
         elif self.bb == 'swin_v1_b':
             # PDFNet?
@@ -293,6 +303,17 @@ class RemBg(object):
     def matches(self, embed_dim, depths, num_heads, window_size):
         return (embed_dim == self.embed_dim and self.depths == depths and self.num_heads == num_heads and
                 self.window_size == window_size)
+
+    # FSANet
+    def is_fsanet(self, state_dict):
+        layer = 'sff.sea.local_att.0.bias'
+        if layer not in state_dict:
+            return False
+        self.w = self.h = 992
+        self.model_type = 'FSANet'
+        self.dtype = state_dict[layer].dtype
+        self.size_divisor = 32
+        return True
 
     # ESNet
     def is_esnet(self, state_dict):
@@ -599,6 +620,39 @@ class RemBg(object):
         self.bb_ok = True
         return True
 
+    # Pyramid Vision Transformer foundation model
+    def is_pvt(self, names, state_dict):
+        for n in names:
+            tensor = state_dict.get(n+".patch_embed1.proj.bias")
+            if tensor is not None:
+                break
+        else:
+            return False
+
+        self.bb_prefix = n
+        self.embed_dim = [state_dict.get(n+f".patch_embed{i+1}.proj.bias").shape[0] for i in range(4)]
+
+        self.depths = []
+        for i in range(4):
+            j = 0
+            while n+f".block{i+1}.{j}.norm1.bias" in state_dict:
+                j += 1
+            self.depths.append(j)
+
+        self.logger.debug(f"PVT: Dims: {self.embed_dim} Depths: {self.depths}")
+
+        if self.matches_pvt(dims=[64, 128, 320, 512], depths=[3, 4, 6, 3]):
+            self.bb = 'pvt_v2_b2'
+        else:
+            self.why = 'unknown geometry'
+            return None
+
+        self.bb_ok = True
+        return True
+
+    def matches_pvt(self, dims, depths):
+        return self.embed_dim == dims and self.depths == depths
+
     def matches_rn(self, layers):
         return layers == self.layer_blocks
 
@@ -678,6 +732,8 @@ class RemBg(object):
             raise ValueError("You can't use the second half of ESNet alone")
         elif self.model_type == 'ESNet':
             model = ESNet(self.bb)
+        elif self.model_type == 'FSANet':
+            model = FSANet()
         else:
             raise ValueError(f"Unknown model type: {self.model_type}")
 
