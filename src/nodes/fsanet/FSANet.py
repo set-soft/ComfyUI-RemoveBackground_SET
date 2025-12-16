@@ -201,7 +201,8 @@ class HighPassFilter(nn.Module):
         hpf = 1 - lpf
 
         # move data to Fourier domain
-        x_fft = torch.fft.fftn(x, dim=(-2, -1))
+        # Note: CUDA FFT only implements power of 2 sizes for F16, so we always use F32 here
+        x_fft = torch.fft.fftn(x.to(dtype=torch.float), dim=(-2, -1))
         x_fft = torch.roll(x_fft, (H // 2, W // 2), dims=(2, 3))
         # apply high pass filter
         hf = x_fft * hpf
@@ -209,7 +210,7 @@ class HighPassFilter(nn.Module):
         # move data back to image domain
         img_h = torch.fft.ifftn(hf, dim=(-2, -1)).abs()
 
-        return img_h
+        return img_h.to(dtype=x.dtype)
 
 
 class SEA(nn.Module):

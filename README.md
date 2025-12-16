@@ -394,10 +394,12 @@ This is not a formal benchmark, is just the result of a few tests using an RTX30
 | BASNet                  |       269 |          527 |        256 |
 | RMFormer KUH F16        |       283 |          737 |       1536 |
 | ESNet Swin384           |       289 |          912 |       1280 |
+| FSANet DIS5K 100 F16    |       301 |          596 |        992 |
 | BADIS                   |       307 |          894 |       1024 |
 | RMFormer KUH            |       375 |         1383 |       1536 |
 | InSPyReNet SwinB DHU LR |       383 |          710 |        384 |
 | MVANet General BEN2 F16 |       421 |         1605 |       1024 |
+| FSANet DIS5K 100        |       473 |         1192 |        992 |
 | BiRefNet General F16    |       516 |         1592 |       1024 |
 | InSPyReNet Base 1.2.12  |       661 |         2910 |       1024 |
 | BiRefNet BRIA v2.0      |      1029 |         3181 |       1024 |
@@ -469,6 +471,7 @@ Most models has some degree of flexibility in the input size, here is table of t
 | BiRefNet     |  512x512, 1024x1024, 2048x2048, 2560x1440  |       32 |
 | DiffDIS      |  1024x1024                                 |       64 |
 | ESNet        |  1280x1280                                 |        4 |
+| FSANet       |  992x992                                   |       32 |
 | IS-Net       |  1024x1024                                 |        1 |
 | InSPyReNet   |  1024x1024                                 |        4 |
 | MODNet       |  512x512                                   |       32 |
