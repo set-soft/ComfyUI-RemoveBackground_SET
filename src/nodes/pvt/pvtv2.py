@@ -1,16 +1,20 @@
+#
+# PVT: Pyramid Vision Transformer
+# PVT v2: Improved Baselines with Pyramid Vision Transformer
+# Wenhai Wang, Enze Xie, Xiang Li, Deng-Ping Fan, Kaitao Song, Ding Liang, Tong Lu, Ping Luo, Ling Shao
+# https://arxiv.org/abs/2106.13797
+#
+# https://github.com/whai362/PVT
+#
+# License: Apache v2
+#
+# Code adapted by Salvador E. Tropea
+#
 import collections.abc
 from functools import partial
 from itertools import repeat
 import torch
 import torch.nn as nn
-# import torch.nn.functional as F
-
-# from timm.models.layers import DropPath, to_2tuple, trunc_normal_
-# from timm.models.registry import register_model
-# from timm.models.vision_transformer import _cfg
-# from timm.models.registry import register_model
-
-# import math
 
 
 # Copied and simplified implementation of to_2tuple.
@@ -36,23 +40,6 @@ class Mlp(nn.Module):
         self.act = act_layer()
         self.fc2 = nn.Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
-
-#        self.apply(self._init_weights)
-
-#     def _init_weights(self, m):
-#         if isinstance(m, nn.Linear):
-#             trunc_normal_(m.weight, std=.02)
-#             if isinstance(m, nn.Linear) and m.bias is not None:
-#                 nn.init.constant_(m.bias, 0)
-#         elif isinstance(m, nn.LayerNorm):
-#             nn.init.constant_(m.bias, 0)
-#             nn.init.constant_(m.weight, 1.0)
-#         elif isinstance(m, nn.Conv2d):
-#             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-#             fan_out //= m.groups
-#             m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-#             if m.bias is not None:
-#                 m.bias.data.zero_()
 
     def forward(self, x, H, W):
         x = self.fc1(x)
@@ -84,23 +71,6 @@ class Attention(nn.Module):
         if sr_ratio > 1:
             self.sr = nn.Conv2d(dim, dim, kernel_size=sr_ratio, stride=sr_ratio)
             self.norm = nn.LayerNorm(dim)
-
-#        self.apply(self._init_weights)
-
-#     def _init_weights(self, m):
-#         if isinstance(m, nn.Linear):
-#             trunc_normal_(m.weight, std=.02)
-#             if isinstance(m, nn.Linear) and m.bias is not None:
-#                 nn.init.constant_(m.bias, 0)
-#         elif isinstance(m, nn.LayerNorm):
-#             nn.init.constant_(m.bias, 0)
-#             nn.init.constant_(m.weight, 1.0)
-#         elif isinstance(m, nn.Conv2d):
-#             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-#             fan_out //= m.groups
-#             m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-#             if m.bias is not None:
-#                 m.bias.data.zero_()
 
     def forward(self, x, H, W):
         B, N, C = x.shape
@@ -143,23 +113,6 @@ class Block(nn.Module):
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)
 
-#        self.apply(self._init_weights)
-
-#     def _init_weights(self, m):
-#         if isinstance(m, nn.Linear):
-#             trunc_normal_(m.weight, std=.02)
-#             if isinstance(m, nn.Linear) and m.bias is not None:
-#                 nn.init.constant_(m.bias, 0)
-#         elif isinstance(m, nn.LayerNorm):
-#             nn.init.constant_(m.bias, 0)
-#             nn.init.constant_(m.weight, 1.0)
-#         elif isinstance(m, nn.Conv2d):
-#             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-#             fan_out //= m.groups
-#             m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-#             if m.bias is not None:
-#                 m.bias.data.zero_()
-
     def forward(self, x, H, W):
         x = x + self.drop_path(self.attn(self.norm1(x), H, W))
         x = x + self.drop_path(self.mlp(self.norm2(x), H, W))
@@ -168,9 +121,7 @@ class Block(nn.Module):
 
 
 class OverlapPatchEmbed(nn.Module):
-    """ Image to Patch Embedding
-    """
-
+    """ Image to Patch Embedding """
     def __init__(self, img_size=224, patch_size=7, stride=4, in_chans=3, embed_dim=768):
         super().__init__()
         img_size = to_2tuple(img_size)
@@ -183,23 +134,6 @@ class OverlapPatchEmbed(nn.Module):
         self.proj = nn.Conv2d(in_chans, embed_dim, kernel_size=patch_size, stride=stride,
                               padding=(patch_size[0] // 2, patch_size[1] // 2))
         self.norm = nn.LayerNorm(embed_dim)
-
-#        self.apply(self._init_weights)
-
-#     def _init_weights(self, m):
-#         if isinstance(m, nn.Linear):
-#             trunc_normal_(m.weight, std=.02)
-#             if isinstance(m, nn.Linear) and m.bias is not None:
-#                 nn.init.constant_(m.bias, 0)
-#         elif isinstance(m, nn.LayerNorm):
-#             nn.init.constant_(m.bias, 0)
-#             nn.init.constant_(m.weight, 1.0)
-#         elif isinstance(m, nn.Conv2d):
-#             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-#             fan_out //= m.groups
-#             m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-#             if m.bias is not None:
-#                 m.bias.data.zero_()
 
     def forward(self, x):
         x = self.proj(x)
@@ -265,28 +199,6 @@ class PyramidVisionTransformerImpr(nn.Module):
 
         # classification head
         # self.head = nn.Linear(embed_dims[3], num_classes) if num_classes > 0 else nn.Identity()
-
-#        self.apply(self._init_weights)
-
-#     def _init_weights(self, m):
-#         if isinstance(m, nn.Linear):
-#             trunc_normal_(m.weight, std=.02)
-#             if isinstance(m, nn.Linear) and m.bias is not None:
-#                 nn.init.constant_(m.bias, 0)
-#         elif isinstance(m, nn.LayerNorm):
-#             nn.init.constant_(m.bias, 0)
-#             nn.init.constant_(m.weight, 1.0)
-#         elif isinstance(m, nn.Conv2d):
-#             fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-#             fan_out //= m.groups
-#             m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-#             if m.bias is not None:
-#                 m.bias.data.zero_()
-
-#     def init_weights(self, pretrained=None):
-#         if isinstance(pretrained, str):
-#             logger = 1
-#             #load_checkpoint(self, pretrained, map_location='cpu', strict=False, logger=logger)
 
     def reset_drop_path(self, drop_path_rate):
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(self.depths))]
@@ -400,7 +312,6 @@ def _conv_filter(state_dict, patch_size=16):
     return out_dict
 
 
-# @register_model
 # class pvt_v2_b0(PyramidVisionTransformerImpr):
 #     def __init__(self, **kwargs):
 #         super(pvt_v2_b0, self).__init__(
@@ -409,7 +320,6 @@ def _conv_filter(state_dict, patch_size=16):
 #             drop_rate=0.0, drop_path_rate=0.1)
 
 
-# @register_model
 # class pvt_v2_b1(PyramidVisionTransformerImpr):
 #     def __init__(self, **kwargs):
 #         super(pvt_v2_b1, self).__init__(
@@ -418,7 +328,6 @@ def _conv_filter(state_dict, patch_size=16):
 #             drop_rate=0.0, drop_path_rate=0.1)
 
 
-# @register_model
 class pvt_v2_b2(PyramidVisionTransformerImpr):
     def __init__(self, **kwargs):
         super().__init__(
@@ -427,7 +336,6 @@ class pvt_v2_b2(PyramidVisionTransformerImpr):
             drop_rate=0.0, drop_path_rate=0.1)
 
 
-# @register_model
 # class pvt_v2_b3(PyramidVisionTransformerImpr):
 #     def __init__(self, **kwargs):
 #         super(pvt_v2_b3, self).__init__(
@@ -436,7 +344,6 @@ class pvt_v2_b2(PyramidVisionTransformerImpr):
 #             drop_rate=0.0, drop_path_rate=0.1)
 
 
-# @register_model
 # class pvt_v2_b4(PyramidVisionTransformerImpr):
 #     def __init__(self, **kwargs):
 #         super(pvt_v2_b4, self).__init__(
@@ -445,7 +352,6 @@ class pvt_v2_b2(PyramidVisionTransformerImpr):
 #             drop_rate=0.0, drop_path_rate=0.1)
 
 
-# @register_model
 # class pvt_v2_b5(PyramidVisionTransformerImpr):
 #     def __init__(self, **kwargs):
 #         super(pvt_v2_b5, self).__init__(

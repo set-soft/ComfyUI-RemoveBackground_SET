@@ -107,7 +107,7 @@ if __name__ == "__main__":
         elif 'model' in state_dict:
             # FSANet
             state_dict = state_dict['model']
-            safetensors.torch.save_file(state_dict, "model.safetensors")
+            # safetensors.torch.save_file(state_dict, "model.safetensors")
     # Optional print keys
     if args.keys:
         show_keys(state_dict)

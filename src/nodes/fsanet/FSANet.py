@@ -16,8 +16,8 @@ import torch.nn.functional as F
 
 from seconohe.tensor import sigmoid_and_batched_min_max_norm
 
-from .ResNet import ResNet50
-from .pvtv2 import pvt_v2_b2
+from ..resnet.resnet_fsanet import ResNet50
+from ..pvt.pvtv2 import pvt_v2_b2
 
 
 def cus_sample(feat, **kwargs):
@@ -100,8 +100,6 @@ class HCF(nn.Module):
 
     def forward(self, x):
         x1 = self.branch1_1(x)
-        print("@"*100)
-        print(x1.shape)
         x2 = self.branch2(x)
         x3 = self.branch3(x)
         x4 = self.branch4(x)
@@ -120,7 +118,7 @@ class HCF(nn.Module):
 # downsampling by 8
 class Down_8(nn.Module):
     def __init__(self, in_chan, out_chan1, out_chan2, out_chan3, kernal_size=3, stride=2, pad=1):
-        super(Down_8, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_chan, out_channels=out_chan1, kernel_size=kernal_size, stride=stride,
                                padding=pad)
         self.conv2 = nn.Conv2d(in_channels=out_chan1, out_channels=out_chan2, kernel_size=kernal_size, stride=stride,
@@ -311,22 +309,13 @@ class SFF(nn.Module):
 
 class FSANet(nn.Module):
     # res2net based encoder decoder
-    def __init__(self):  # , channel=64):
+    def __init__(self):
         super().__init__()
         self.sff = SFF()
         self.frequency = HighPassFilter()
 
         self.backbone = pvt_v2_b2()  # [64, 128, 320, 512]
-
-#         path = 'G:\CJG\PVT-HRNet\pvt_v2_b2.pth'
-#         save_model = torch.load(path)
-#         model_dict = self.backbone.state_dict()
-#         state_dict = {k: v for k, v in save_model.items() if k in model_dict.keys()}
-#         model_dict.update(state_dict)
-#         self.backbone.load_state_dict(model_dict)
-
         self.relu = nn.ReLU(inplace=True)
-
         self.resnet_f = ResNet50('rgbf')
 
         self.se1 = se_block(64)
@@ -338,11 +327,6 @@ class FSANet(nn.Module):
         self.conv_2 = nn.Conv2d(512, 128, 1, 1)
         self.conv_3 = nn.Conv2d(1024, 320, 1, 1)
         self.conv_4 = nn.Conv2d(2048, 512, 1, 1)
-
-        # self.conv_1 = RFB_v2(256, 64)
-        # self.conv_2 = RFB_v2(512, 128)
-        # self.conv_3 = RFB_v2(1024, 320)
-        # self.conv_4 = RFB_v2(2048, 512)
 
         self.rfb1_after = HCF(64, 64)
         self.rfb2_after = HCF(512, 64)
@@ -379,22 +363,19 @@ class FSANet(nn.Module):
         layer = self.backbone(x)
         frequency = self.frequency(x)
         frequency = torch.mean(frequency, dim=1, keepdim=True)
-        # print(frequency.shape)
-        # feature = self.backbone_f(frequency)
 
         x1 = layer[0]  # bs, 64, 256, 256
         x2 = layer[1]  # bs, 128, 128, 128
         x3 = layer[2]  # bs, 320, 64, 64
         x4 = layer[3]  # bs, 512, 32, 32
 
+        # ResNet50 for frequency forward
         x1_f = self.resnet_f.conv1(frequency)
         x_f = self.resnet_f.bn1(x1_f)
         x_f = self.resnet_f.relu(x_f)
         x_f = self.resnet_f.maxpool(x_f)
 
-        # print(x_f.shape)
         y1 = self.resnet_f.layer1(x_f)
-        # print(y1.shape)
         y2 = self.resnet_f.layer2(y1)
         y3 = self.resnet_f.layer3_1(y2)
         y4 = self.resnet_f.layer4_1(y3)
@@ -434,9 +415,6 @@ class FSANet(nn.Module):
         x32_down2 = self.down32_2(x32)
         x43 = torch.cat((x32_down2, x42), dim=1)  # [1, 4864, 32, 32]
 
-        # x1 = self.sa1(x1) * x1
-        # x1 = self.ca1(x1) * x1
-
         x1_rfb = self.rfb1_after(x1)
         x21_rfb = self.rfb2_after(x21)
         x32_rfb = self.rfb3_after(x32)
@@ -457,14 +435,6 @@ class FSANet(nn.Module):
         x43_rfb = self.conv_up1(x43_rfb)
 
         p1 = self.conv2_1(out4321)
-        # p2 = self.conv2_1(out432)
-        # p3 = self.conv2_1(out43)
-        # p4 = self.conv2_1(x43_rfb)
-
         P1 = F.interpolate(p1, scale_factor=2, mode='bilinear')
-        # P2 = F.interpolate(p2, scale_factor=4, mode='bilinear')
-        # P3 = F.interpolate(p3, scale_factor=8, mode='bilinear')
-        # P4 = F.interpolate(p4, scale_factor=16, mode='bilinear')
 
-        # return P1, P2, P3, P4, frequency
         return sigmoid_and_batched_min_max_norm(P1)
