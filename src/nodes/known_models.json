@@ -940,21 +940,21 @@
     #
     # ESNet model
     #
-    "ESNet Swin384 F16": {
-        "name": "Swin384 F16",
-        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_Swin384_F16.safetensors",
-        "file_name": null,
-        "train_w": 1280,
-        "train_h": 1280,
-        "model_t": "ESNet",
-        "size": "179 MiB",
-        "ops_name": "Swin384 F16 (179 MiB)",
-        "no_commercial": false,
-        "dtype": "float16",
-        "size_divisor": 4,
-        "file_t": "safetensors",
-        "dataset": "HRSOD, DAVIS-SOD, UHRSD"
-    },
+#    "ESNet Swin384 F16": {
+#        "name": "Swin384 F16",
+#        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_Swin384_F16.safetensors",
+#        "file_name": null,
+#        "train_w": 1280,
+#        "train_h": 1280,
+#        "model_t": "ESNet",
+#        "size": "179 MiB",
+#        "ops_name": "Swin384 F16 (179 MiB)",
+#        "no_commercial": false,
+#        "dtype": "float16",
+#        "size_divisor": 4,
+#        "file_t": "safetensors",
+#        "dataset": "HRSOD, DAVIS-SOD, UHRSD"
+#    },
     "ESNet Swin384": {
         "name": "Swin384",
         "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_Swin384_F32.safetensors",
@@ -970,21 +970,21 @@
         "file_t": "safetensors",
         "dataset": "HRSOD, DAVIS-SOD, UHRSD"
     },
-    "ESNet ResNet50 F16": {
-        "name": "ResNet50 F16",
-        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_ResNet50_F16.safetensors",
-        "file_name": null,
-        "train_w": 1280,
-        "train_h": 1280,
-        "model_t": "ESNet",
-        "size": "179 MiB",
-        "ops_name": "ResNet50 F16 (179 MiB)",
-        "no_commercial": false,
-        "dtype": "float16",
-        "size_divisor": 4,
-        "file_t": "safetensors",
-        "dataset": "HRSOD, DAVIS-SOD, UHRSD"
-    },
+#    "ESNet ResNet50 F16": {
+#        "name": "ResNet50 F16",
+#        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_ResNet50_F16.safetensors",
+#        "file_name": null,
+#        "train_w": 1280,
+#        "train_h": 1280,
+#        "model_t": "ESNet",
+#        "size": "179 MiB",
+#        "ops_name": "ResNet50 F16 (179 MiB)",
+#        "no_commercial": false,
+#        "dtype": "float16",
+#        "size_divisor": 4,
+#        "file_t": "safetensors",
+#        "dataset": "HRSOD, DAVIS-SOD, UHRSD"
+#    },
     "ESNet ResNet50": {
         "name": "ResNet50",
         "url": "https://huggingface.co/set-soft/RemBG/resolve/main/ESNet/ESNet_ResNet50_F32.safetensors",
