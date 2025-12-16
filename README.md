@@ -385,10 +385,8 @@ This is not a formal benchmark, is just the result of a few tests using an RTX30
 |:------------------------|----------:|-------------:|-----------:|
 | MODNet Photo portrait   |        60 |          175 |        512 |
 | U-2-Net Small           |       104 |          207 |        320 |
-| ESNet ResNet50 F16      |       120 |          354 |       1280 |
 | U-2-Net Base            |       147 |          371 |        320 |
 | PGNet DUT+HRSOD F16     |       150 |          233 |       1024 |
-| ESNet Swin384 F16       |       182 |          458 |       1280 |
 | PGNet DUT+HRSOD F32     |       192 |          433 |       1024 |
 | IS-Net Base             |       196 |          776 |       1024 |
 | IS-Net BRIA v1.4        |       200 |          776 |       1024 |
@@ -447,7 +445,6 @@ Using various metrics, like MAE, E-measure (mean for the dataset), F-measure (me
 | PGNet DUT+HRSOD           | 0.580 |
 | BASNET Base               | 0.541 |
 | U-2-Net Base (u2net)      | 0.512 |
-| ESNet Swin384 F16         | 0.507 |
 
 I'll extend it to TE1, TE2 and TE3.
 
@@ -525,7 +522,6 @@ The BEN2 (MVANet) model behaves exactly the same.
 So I recommend always trying with the F16 version. A few models doesn't work when using F16 and this is why they don't have F16 versions
 (i.e. "U-2-Net Base (u2net)"). In other cases is just that nobody resized the weights (i.e. "BiRefNet BRIA v2.0").
 
-The only exception is the ESNet model.
 
 ### Debug
 
