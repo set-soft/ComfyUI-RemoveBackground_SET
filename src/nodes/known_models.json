@@ -1003,21 +1003,6 @@
     #
     # FSANet model
     #
-    "FSANet DIS5K 100": {
-        "name": "DIS5K 100",
-        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/FSANet/FSANet_DIS5K_F32.safetensors",
-        "file_name": null,
-        "train_w": 992,
-        "train_h": 992,
-        "model_t": "FSANet",
-        "size": "417 MiB",
-        "ops_name": "DIS5K 100 (417 MiB)",
-        "no_commercial": false,
-        "dtype": "float32",
-        "size_divisor": 32,
-        "file_t": "safetensors",
-        "dataset": "DIS5K"
-    },
     "FSANet DIS5K 100 F16": {
         "name": "DIS5K 100 F16",
         "url": "https://huggingface.co/set-soft/RemBG/resolve/main/FSANet/FSANet_DIS5K_F16.safetensors",
@@ -1029,6 +1014,21 @@
         "ops_name": "DIS5K 100 F16 (209 MiB)",
         "no_commercial": false,
         "dtype": "float16",
+        "size_divisor": 32,
+        "file_t": "safetensors",
+        "dataset": "DIS5K"
+    },
+    "FSANet DIS5K 100": {
+        "name": "DIS5K 100",
+        "url": "https://huggingface.co/set-soft/RemBG/resolve/main/FSANet/FSANet_DIS5K_F32.safetensors",
+        "file_name": null,
+        "train_w": 992,
+        "train_h": 992,
+        "model_t": "FSANet",
+        "size": "417 MiB",
+        "ops_name": "DIS5K 100 (417 MiB)",
+        "no_commercial": false,
+        "dtype": "float32",
         "size_divisor": 32,
         "file_t": "safetensors",
         "dataset": "DIS5K"
