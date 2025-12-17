@@ -67,6 +67,7 @@ class BasicConv2d(nn.Module):
 
 
 class HCF(nn.Module):
+    """ Hierarchical Context Fusion """
     def __init__(self, in_channel, out_channel):
         super().__init__()
         self.relu = nn.ReLU(True)
@@ -266,6 +267,7 @@ class SEA(nn.Module):
 
 
 class SFF(nn.Module):
+    """ Selective Feature Fusion """
     def __init__(self, channels=64):
         super().__init__()
 
