@@ -314,7 +314,6 @@ class SFF(nn.Module):
 
 
 class FSANet(nn.Module):
-    # res2net based encoder decoder
     def __init__(self):
         super().__init__()
         self.sff = SFF()
