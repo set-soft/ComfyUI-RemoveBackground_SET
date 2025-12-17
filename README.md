@@ -551,6 +551,7 @@ So I recommend always trying with the F16 version. A few models doesn't work whe
   - [Diffusers](https://huggingface.co/docs/diffusers/index): The HuggingFace Team
   - [DINO](https://github.com/facebookresearch/dinov2): Meta AI Research
   - [ESNet](https://github.com/big-feather/ESNet_ICML24): Hongyu Liu, Runmin Cong, Hua Li, Qianqian Xu, Qingming Huang, Wei Zhang
+  - [FSANet](https://github.com/chasecjg/FSANet): Qiuping Jiang, Jinguang Cheng, Zongwei Wu, Runmin Cong, Radu Timofte
   - [InSPyReNet](https://github.com/plemeri/InSPyReNet): Taehun Kim, Kunhee Kim, Joonyeong Lee, Dongmin Cha, Jiho Lee, Daijin Kim
   - [MODNet](https://github.com/ZHKKKe/MODNet): Zhanghan Ke, Jiayu Sun, Kaican Li, Qiong Yan, Rynson W.H. Lau
   - [MVANet](https://github.com/qianyu-dlut/MVANet/): Qian Yu, Xiaoqi Zhao, Youwei Pang, Lihe Zhang, Huchuan Lu
