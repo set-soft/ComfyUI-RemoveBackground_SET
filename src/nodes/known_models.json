@@ -651,7 +651,7 @@
     "IS-Net Anime (ISNet_anime-seg)": {
         "name": "Anime (ISNet_anime-seg)",
         "url": "https://huggingface.co/skytnt/anime-seg/resolve/main/model.safetensors",
-        "file_name": "ISNet_anime-seg.safetensors",
+        "file_name": "ISNet_anime-seg",
         "train_w": 640,
         "train_h": 640,
         "model_t": "IS-Net",
@@ -665,7 +665,7 @@
     "IS-Net BRIA v1.4": {
         "name": "BRIA v1.4",
         "url": "https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.safetensors",
-        "file_name": "BRIA-RMBG1_4.safetensors",
+        "file_name": "BRIA-RMBG1_4",
         "train_w": 1024,
         "train_h": 1024,
         "model_t": "IS-Net",
