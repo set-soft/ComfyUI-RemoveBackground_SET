@@ -5,7 +5,10 @@
 #
 # https://github.com/chasecjg/FSANet
 #
-# License:
+# License: "The entire FSANet code is fully open-source you can use, modify, redistribute,
+#           and commercialize it without any restrictions (unrestricted usage for all
+#           purposes). Pre-trained weights follow the same open license."
+# See: https://github.com/chasecjg/FSANet/issues/1#issuecomment-3665570258
 #
 # Note by Salvador E. Tropea (SET):
 # I removed training code and included some functions that were separated
