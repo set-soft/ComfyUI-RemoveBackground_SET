@@ -422,33 +422,27 @@ As mentioned before is hard to compare the models. Some of them might be better 
 
 Is also important to understand that here we are talking about trained results. A model might be far better than another, but the weaker might be much better trained.
 
-I used the images from [DIS5K](https://xuebinqin.github.io/dis/index.html) TE4 (Test Set) to compare the models. This isn't fair because some of the models might be trained using them, even when this is not supposed to be the case.
+I used the images from [DIS5K](https://xuebinqin.github.io/dis/index.html) TE1, TE2, TE3 and TE4 (Test Set) to compare the models. This isn't fair because some of the models might be trained using them, even when this is not supposed to be the case.
 
 Using various metrics, like MAE, E-measure (mean for the dataset), F-measure (mean for the dataset), S-measure and weighted F-measure I got this ranking:
 
 | Model                     | Score |
 |:--------------------------|------:|
 | IS-Net BRIA v1.4          | 1.000 |
-| InSPyReNet Base 1.2.12    | 0.952 |
-| BiRefNet BRIA v2.0        | 0.951 |
-| BiRefNet General          | 0.951 |
-| IS-Net Base (isnet)       | 0.925 |
-| PDFNet General            | 0.906 |
-| MVANet General BEN2 F16   | 0.898 |
-| MVANet General BEN2 F32   | 0.898 |
-| DiffDIS Base F16          | 0.816 |
-| DiffDIS Base              | 0.815 |
-| BADIS v2 Base F16         | 0.782 |
-| BADIS v2 Base F32         | 0.782 |
-| RMFormer KUH F16          | 0.722 |
-| RMFormer KUH              | 0.721 |
-| ESNet Swin384             | 0.644 |
-| PGNet DUT+HRSOD F16       | 0.581 |
-| PGNet DUT+HRSOD           | 0.580 |
-| BASNET Base               | 0.541 |
-| U-2-Net Base (u2net)      | 0.512 |
-
-I'll extend it to TE1, TE2 and TE3.
+| BiRefNet General          | 0.971 |
+| BiRefNet BRIA v2.0        | 0.963 |
+| InSPyReNet Base 1.2.12    | 0.949 |
+| IS-Net Base (isnet)       | 0.914 |
+| PDFNet General            | 0.908 |
+| MVANet General BEN2 F16   | 0.906 |
+| DiffDIS Base F16          | 0.782 |
+| FSANet DIS5K 100 F16      | 0.746 |
+| BADIS v2 Base F16         | 0.743 |
+| RMFormer KUH F16          | 0.701 |
+| ESNet Swin384             | 0.654 |
+| PGNet DUT+HRSOD F16       | 0.598 |
+| BASNET Base               | 0.505 |
+| U-2-Net Base (u2net)      | 0.486 |
 
 The result of this evaluation is that IS-Net is the best, in particular the BRIA v1.4 non-commercial model.
 Is fast, needs less than 1 GiB of VRAM and provides the best results.
