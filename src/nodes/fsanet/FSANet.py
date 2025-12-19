@@ -57,7 +57,8 @@ class se_block(nn.Module):
         return x * y.expand_as(x)
 
 
-class BasicConv2d(nn.Module):
+class CBR(nn.Module):
+    """ CBR (Convolution, Batch Normalization, ReLu) (for HCF) """
     def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1, relu=False, bn=True):
         super().__init__()
         self.conv = nn.Conv2d(in_planes, out_planes,
@@ -76,37 +77,38 @@ class BasicConv2d(nn.Module):
 
 
 class HCF(nn.Module):
-    """ Hierarchical Context Fusion """
+    """ Hierarchical Context Fusion
+        Compresses the output features from CSFM, reducing feature dimensionality while preserving essential information. """
     def __init__(self, in_channel, out_channel):
         super().__init__()
         self.relu = nn.ReLU(True)
 
         self.branch1_1 = nn.Sequential(
-            BasicConv2d(in_channel, out_channel, 1),
-            BasicConv2d(out_channel, out_channel, kernel_size=(1, 3), padding=(0, 1)),
-            BasicConv2d(out_channel, out_channel, kernel_size=(3, 1), padding=(1, 0)),
+            CBR(in_channel, out_channel, 1),
+            CBR(out_channel, out_channel, kernel_size=(1, 3), padding=(0, 1)),
+            CBR(out_channel, out_channel, kernel_size=(3, 1), padding=(1, 0)),
         )
         self.branch1_2 = nn.Sequential(
-            BasicConv2d(out_channel * 2, out_channel, kernel_size=(1, 5), padding=(0, 2)),
-            BasicConv2d(out_channel, out_channel, kernel_size=(5, 1), padding=(2, 0)),
+            CBR(out_channel * 2, out_channel, kernel_size=(1, 5), padding=(0, 2)),
+            CBR(out_channel, out_channel, kernel_size=(5, 1), padding=(2, 0)),
         )
         self.branch1_3 = nn.Sequential(
-            BasicConv2d(out_channel * 2, out_channel, kernel_size=(1, 7), padding=(0, 3)),
-            BasicConv2d(out_channel, out_channel, kernel_size=(7, 1), padding=(3, 0)),
+            CBR(out_channel * 2, out_channel, kernel_size=(1, 7), padding=(0, 3)),
+            CBR(out_channel, out_channel, kernel_size=(7, 1), padding=(3, 0)),
         )
         self.branch2 = nn.Sequential(
-            BasicConv2d(in_channel, out_channel, 1)
+            CBR(in_channel, out_channel, 1)
         )
         self.branch3 = nn.Sequential(
-            BasicConv2d(in_channel, out_channel, 1)
+            CBR(in_channel, out_channel, 1)
         )
         self.branch4 = nn.Sequential(
-            BasicConv2d(in_channel, out_channel, 1)
+            CBR(in_channel, out_channel, 1)
         )
         self.branch5 = nn.Sequential(
-            BasicConv2d(in_channel, out_channel, 1)
+            CBR(in_channel, out_channel, 1)
         )
-        self.conv_cat = BasicConv2d(2 * out_channel, out_channel, 3, padding=1)
+        self.conv_cat = CBR(2 * out_channel, out_channel, 3, padding=1)
 
     def forward(self, x):
         x1 = self.branch1_1(x)
