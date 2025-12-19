@@ -2,6 +2,7 @@
 # High-Precision Dichotomous Image Segmentation with Frequency and Scale Awareness
 # Qiuping Jiang; Jinguang Cheng; Zongwei Wu; Runmin Cong; Radu Timofte
 # https://ieeexplore.ieee.org/document/10638122
+# https://github.com/chasecjg/FSANet/blob/main/paper/
 #
 # https://github.com/chasecjg/FSANet
 #
