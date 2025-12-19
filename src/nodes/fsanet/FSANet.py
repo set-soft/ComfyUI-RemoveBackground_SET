@@ -14,6 +14,11 @@
 # Note by Salvador E. Tropea (SET):
 # I removed training code and included some functions that were separated
 #
+# Key features:
+# 1) Include frequency domain information: to capture subtle details and fine textures
+#    while being robust to image variations.
+# 2) Introduce cross-resolution fusion strategy that combines HRNet with UNet to address
+#    information loss across scales, leading to more accurate DIS with sharpened edges.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
