@@ -18,20 +18,14 @@ import torch.nn as nn
 from ..resnet.resnet import Bottleneck
 
 
-class ResNet50(nn.Module):
-    def __init__(self, mode='rgb'):
+class ResNet50_F(nn.Module):
+    """ Modified to use 1 input channel and output the 4 raw layers """
+    def __init__(self):
         self.inplanes = 64
         super().__init__()
-        if (mode == 'rgb'):
-            self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        elif (mode == 'rgbf'):
-            self.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        elif (mode == "share"):
-            self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
-            self.conv1_d = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-        else:
-            raise
-        self.bn1 = nn.BatchNorm2d(64)
+        # Just 1 channel input, not 3
+        self.conv1 = nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
+        self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(Bottleneck, 64, 3)
@@ -57,3 +51,16 @@ class ResNet50(nn.Module):
             layers.append(block(self.inplanes, planes))
 
         return nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+
+        y1 = self.layer1(x)
+        y2 = self.layer2(y1)
+        y3 = self.layer3_1(y2)
+        y4 = self.layer4_1(y3)
+
+        return y1, y2, y3, y4

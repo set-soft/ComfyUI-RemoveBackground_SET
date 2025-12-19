@@ -25,23 +25,20 @@ import torch.nn.functional as F
 
 from seconohe.tensor import sigmoid_and_batched_min_max_norm
 
-from ..resnet.resnet_fsanet import ResNet50
+from ..resnet.resnet_fsanet import ResNet50_F
 from ..pvt.pvtv2 import pvt_v2_b2
 
 
-def cus_sample(feat, **kwargs):
-    """
-    :param feat: Input features
-    :param kwargs: size or scale_factor
-    """
-    assert len(kwargs.keys()) == 1 and list(kwargs.keys())[0] in ["size", "scale_factor"]
-    return F.interpolate(feat, **kwargs, mode="bilinear", align_corners=False)
+def upscale2(feat):
+    """ Helper for 2x bilinear upscaler """
+    return F.interpolate(feat, scale_factor=2, mode="bilinear", align_corners=False)
 
 
-# SE attention mechanism
-class se_block(nn.Module):
+class SE_attn(nn.Module):
+    """ Squeeze & Excitation attention mechanism (for MF)
+        To learn the most relevant channels """
     def __init__(self, channel=64, reduction=16):
-        super(se_block, self).__init__()
+        super().__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Sequential(
             nn.Linear(channel, channel // reduction, bias=False),
@@ -127,8 +124,8 @@ class HCF(nn.Module):
         return out
 
 
-# downsampling by 8
 class Down_8(nn.Module):
+    """ Downsampling by 8 (for CSFM) """
     def __init__(self, in_chan, out_chan1, out_chan2, out_chan3, kernal_size=3, stride=2, pad=1):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_chan, out_channels=out_chan1, kernel_size=kernal_size, stride=stride,
@@ -147,8 +144,8 @@ class Down_8(nn.Module):
         return out
 
 
-# downsampling by 4
 class Down_4(nn.Module):
+    """ Downsampling by 4 (for CSFM) """
     def __init__(self, in_chan, out_chan1, out_chan2, kernal_size=3, stride=2, pad=1):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_chan, out_channels=out_chan1, kernel_size=kernal_size, stride=stride,
@@ -164,8 +161,8 @@ class Down_4(nn.Module):
         return out
 
 
-# downsampling by 2
 class Down_2(nn.Module):
+    """ Downsampling by 2 (for CSFM) """
     def __init__(self, in_chan, out_chan, kernal_size=3, stride=2, pad=1):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_chan, out_channels=out_chan, kernel_size=kernal_size, stride=stride,
@@ -178,8 +175,8 @@ class Down_2(nn.Module):
         return out
 
 
-# n-times upsampling
 class Up_n(nn.Module):
+    """ # N-times upsampling (for CSFM) """
     def __init__(self, in_chan, out_chan, kernal_size=1, stride=1, pad=0, n=2):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels=in_chan, out_channels=out_chan, kernel_size=kernal_size, stride=stride,
@@ -194,7 +191,8 @@ class Up_n(nn.Module):
         return out
 
 
-class HighPassFilter(nn.Module):
+class LSF(nn.Module):
+    """ Learnable Spectral Filtering """
     def __init__(self):
         super().__init__()
         self.radius = nn.Parameter(torch.tensor([100.0], dtype=torch.float), requires_grad=True)
@@ -226,11 +224,12 @@ class HighPassFilter(nn.Module):
 
 
 class SEA(nn.Module):
+    """ Semantic Enhanced Attention """
     def __init__(self, channels=64, r=4):
         super().__init__()
         out_channels = int(channels // r)
 
-        # local_att
+        # Local attention
         self.local_att = nn.Sequential(
             nn.Conv2d(channels, out_channels, kernel_size=1, stride=1, padding=0),
             nn.BatchNorm2d(out_channels),
@@ -239,7 +238,7 @@ class SEA(nn.Module):
             nn.BatchNorm2d(channels)
         )
 
-        # global_att
+        # Global attention
         self.global_att = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Conv2d(channels, out_channels, kernel_size=1, stride=1, padding=0),
@@ -249,7 +248,7 @@ class SEA(nn.Module):
             nn.BatchNorm2d(channels)
         )
 
-        # channel_att
+        # Channel attention
         self.channel_att = nn.Sequential(
             nn.Conv2d(channels, channels // r, kernel_size=1),
             nn.BatchNorm2d(channels // r),
@@ -278,12 +277,12 @@ class SEA(nn.Module):
 
 
 class SFF(nn.Module):
-    """ Selective Feature Fusion """
+    """ Selective Feature Fusion
+        Performs high-precision feature decoding, producing the binary segmentation maps P1-P4 from different scales."""
     def __init__(self, channels=64):
         super().__init__()
 
         self.sea = SEA(channels)
-        self.upsample = cus_sample
         # feature fusion with gated mechanism
         self.conv_xy = nn.Conv2d(channels * 2, channels * 2, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn_xy = nn.BatchNorm2d(channels * 2)
@@ -292,14 +291,13 @@ class SFF(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
         self.conv_out = nn.Conv2d(channels * 2, channels, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn_out = nn.BatchNorm2d(channels)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x, y):
-        y = self.upsample(y, scale_factor=2)
+        y = upscale2(y)
         xy = torch.cat((x, y), dim=1)
 
-        # feature fusion with gated mechanism
+        # Feature fusion with gated mechanism (Fuse)
         xy_conv = self.conv_xy(xy)
         xy_bn = self.bn_xy(xy_conv)
         xy_relu = self.relu(xy_bn)
@@ -310,13 +308,16 @@ class SFF(nn.Module):
 
         feat = xy_relu * gate_sigmoid
         feat = self.conv_out(feat)
+        # End of Fuse (bn_out and relu skipped)
 
+        # Semantic Enhanced Attention
         feat_weight = self.sea(feat)
 
         feat_weighted_x = x * feat_weight
         feat_weighted_y = y * (1 - feat_weight)
 
         feat_sum = feat_weighted_x + feat_weighted_y
+        # CBR skipped
 
         return feat_sum
 
@@ -324,27 +325,25 @@ class SFF(nn.Module):
 class FSANet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.sff = SFF()
-        self.frequency = HighPassFilter()
+        # Learnable Spectral Filtering
+        self.frequency = LSF()
 
-        self.backbone = pvt_v2_b2()  # [64, 128, 320, 512]
-        self.relu = nn.ReLU(inplace=True)
-        self.resnet_f = ResNet50('rgbf')
+        # Feature Extraction
+        # - Visual feature extraction
+        self.backbone = pvt_v2_b2()  # [64, 128, 320, 512]  For
+        # - Frequency feature extraction
+        self.resnet_f = ResNet50_F()
 
-        self.se1 = se_block(64)
-        self.se2 = se_block(128)
-        self.se3 = se_block(320)
-        self.se4 = se_block(512)
+        # Collaborative Scale Fusion Module
+        self.se1 = SE_attn(64)
+        self.se2 = SE_attn(128)
+        self.se3 = SE_attn(320)
+        self.se4 = SE_attn(512)
 
         self.conv_1 = nn.Conv2d(256, 64, 1, 1)
         self.conv_2 = nn.Conv2d(512, 128, 1, 1)
         self.conv_3 = nn.Conv2d(1024, 320, 1, 1)
         self.conv_4 = nn.Conv2d(2048, 512, 1, 1)
-
-        self.rfb1_after = HCF(64, 64)
-        self.rfb2_after = HCF(512, 64)
-        self.rfb3_after = HCF(2816, 64)
-        self.rfb4_after = HCF(4864, 64)
 
         self.upsample4_2 = Up_n(512, 320, 1, 1, 0, 2)
         self.upsample4_4 = Up_n(512, 128, 1, 1, 0, 4)
@@ -367,37 +366,43 @@ class FSANet(nn.Module):
 
         self.conv2_1 = nn.Conv2d(64, 1, 3, 1, 1)
 
+        # High-Precision Perception Fusion Module
+        # - Hierarchical Context Fusion
+        self.rfb1_after = HCF(64, 64)
+        self.rfb2_after = HCF(512, 64)
+        self.rfb3_after = HCF(2816, 64)
+        self.rfb4_after = HCF(4864, 64)
+        # - Selective Feature Fusion
+        self.sff = SFF()
+
         self.conv_up1 = nn.Conv2d(64, 64, 3, 1, 1)
-        self.conv_up2 = nn.Conv2d(64, 64, 3, 1, 1)
-        self.conv_up3 = nn.Conv2d(64, 64, 3, 1, 1)
-        self.conv_up4 = nn.Conv2d(64, 64, 3, 1, 1)
 
     def forward(self, x):
-        layer = self.backbone(x)
+        #
+        # A) Backbone Module
+        #
+        # A.1) Learnable Spectral Filtering
         frequency = self.frequency(x)
         frequency = torch.mean(frequency, dim=1, keepdim=True)
 
-        x1 = layer[0]  # bs, 64, 256, 256
-        x2 = layer[1]  # bs, 128, 128, 128
-        x3 = layer[2]  # bs, 320, 64, 64
-        x4 = layer[3]  # bs, 512, 32, 32
+        # A.2) Feature extraction
+        # Visual feature extraction (PVTv2)
+        # bs, 64, 256, 256 / bs, 128, 128, 128 / bs, 320, 64, 64 / bs, 512, 32, 32
+        x1, x2, x3, x4 = self.backbone(x)
 
-        # ResNet50 for frequency forward
-        x1_f = self.resnet_f.conv1(frequency)
-        x_f = self.resnet_f.bn1(x1_f)
-        x_f = self.resnet_f.relu(x_f)
-        x_f = self.resnet_f.maxpool(x_f)
+        # Frequency feature extraction (ResNet50)
+        y1, y2, y3, y4 = self.resnet_f(frequency)
 
-        y1 = self.resnet_f.layer1(x_f)
-        y2 = self.resnet_f.layer2(y1)
-        y3 = self.resnet_f.layer3_1(y2)
-        y4 = self.resnet_f.layer4_1(y3)
-
+        # A.3) Multimodal Fusion (MF)
         x1 = x1 + self.se1(self.conv_1(y1))
         x2 = x2 + self.se2(self.conv_2(y2))
         x3 = x3 + self.se3(self.conv_3(y3))
         x4 = x4 + self.se4(self.conv_4(y4))
 
+        #
+        # B) Collaborative Scale Fusion Module (CSFM)
+        # Instead of UNet or HRNet
+        #
         x1_down2 = self.down1_2(x1)
         x1_down4 = self.down1_4(x1)
         x1_down8 = self.down1_8(x1)
@@ -428,26 +433,23 @@ class FSANet(nn.Module):
         x32_down2 = self.down32_2(x32)
         x43 = torch.cat((x32_down2, x42), dim=1)  # [1, 4864, 32, 32]
 
+        #
+        # C) High-Precision Perception Fusion Module
+        #
+        # C.1) Hierarchical Context Fusion (compress)
         x1_rfb = self.rfb1_after(x1)
         x21_rfb = self.rfb2_after(x21)
         x32_rfb = self.rfb3_after(x32)
         x43_rfb = self.rfb4_after(x43)
 
+        # C.2) Selective Feature Fusion
         out43 = self.sff(x32_rfb, x43_rfb)
         out432 = self.sff(x21_rfb, out43)
-        out4321 = self.sff(x1_rfb, out432)
+        pred = self.sff(x1_rfb, out432)  # 4321
 
-        out4321 = F.interpolate(out4321, scale_factor=2, mode='bilinear')
-        out432 = F.interpolate(out432, scale_factor=2, mode='bilinear')
-        out43 = F.interpolate(out43, scale_factor=2, mode='bilinear')
-        x43_rfb = F.interpolate(x43_rfb, scale_factor=2, mode='bilinear')
+        pred = upscale2(pred)
+        pred = self.conv_up1(pred)
+        pred = self.conv2_1(pred)
+        pred = upscale2(pred)
 
-        out4321 = self.conv_up1(out4321)
-        out432 = self.conv_up1(out432)
-        out43 = self.conv_up1(out43)
-        x43_rfb = self.conv_up1(x43_rfb)
-
-        p1 = self.conv2_1(out4321)
-        P1 = F.interpolate(p1, scale_factor=2, mode='bilinear')
-
-        return sigmoid_and_batched_min_max_norm(P1)
+        return sigmoid_and_batched_min_max_norm(pred)

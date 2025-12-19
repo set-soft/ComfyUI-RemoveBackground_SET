@@ -60,6 +60,9 @@ FINEGRAIN_SWIN_KEY = ('SwinTransformer.Chain_1.BasicLayer.SwinTransformerBlock_1
                       'rpb.relative_position_bias_table')
 RMFORMER_BOGUS = ["lr_branch.norm_up.weight", "lr_branch.norm_up.bias", "rrs1.swinlayers.norm_up.weight",
                   "rrs1.swinlayers.norm_up.bias", "rrs2.swinlayers.norm_up.weight", "rrs2.swinlayers.norm_up.bias"]
+FSANET_BOGUS = ["conv_up2.bias", "conv_up2.weight", "conv_up3.bias", "conv_up3.weight", "conv_up4.bias", "conv_up4.weight",
+                "sff.bn_out.num_batches_tracked", "sff.bn_out.bias", "sff.bn_out.running_mean", "sff.bn_out.running_var",
+                "sff.bn_out.weight"]
 ESNET_ATTN = re.compile(r'(.*).attn_mask$')
 ENABLE_TORCH_SCRIPT = False
 ENABLE_TORCH_COMPILE = False
@@ -313,6 +316,9 @@ class RemBg(object):
         self.model_type = 'FSANet'
         self.dtype = state_dict[layer].dtype
         self.size_divisor = 32
+        for la in FSANET_BOGUS:
+            if la in state_dict:
+                del state_dict[la]
         return True
 
     # ESNet
